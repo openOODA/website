@@ -1,0 +1,11 @@
+// # assets/ — Static Binary Assets
+//
+// Logline: Browser-loadable binary files referenced from the HTML
+//          shell and from social card scrapers.
+//
+// Beats:
+//   1. favicon.svg   — the browser tab icon (24-line SVG, 281 bytes).
+//   2. open-graph.png — the 1200x630 social card used by OpenGraph
+//      and Twitter crawlers when a link is shared.
+//
+// No build step. Hand-maintained. Replace by overwriting the file.

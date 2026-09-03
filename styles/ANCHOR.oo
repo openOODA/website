@@ -1,0 +1,17 @@
+// # styles/ — The Single Stylesheet
+//
+// Logline: One CSS file, all themes + all layout.
+//
+// Beats:
+//   1. main.css — minified single-line CSS. Defines:
+//      a) 9 theme palettes via `[data-theme="…"]` blocks
+//         (night, paper, magma, flare, solar, cyber, frost,
+//         tokyo, laser)
+//      b) layout (header, sidebar, main, footer)
+//      c) the install box (.install, .install-cmd, .copy)
+//      d) the gen bar (Gen 1-7 toggle buttons)
+//      e) the dogfight canvas + sky starfield
+//      f) the license badge animation
+//      g) the responsive breakpoints (max-width 800px, 480px)
+//
+// Hand-maintained. Re-minify by hand if edited. No build step.

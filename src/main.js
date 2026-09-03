@@ -8,49 +8,6 @@ const ROUTE_ID_TO_NAME = {
 2: "ooda", 3: "std", 4: "opm", 5: "cli", 6: "lsp", 7: "mcp",
 8: "oodac", 9: "runtime"
 };
-// ====================================================
-// WebAssembly Sovereign Engine Activation Controller
-// ====================================================
-if (typeof window !== "undefined") {
-  window.wasmInstance = null;
-  window.wasmActive = false;
-}
-const WASI_SHIM = {
-fd_write: () => 0, fd_read: () => 0,
-clock_time_get: () => 0, random_get: () => 0,
-proc_exit: (c) => console.log("[WASM exit]", c)
-};
-async function loadWasmBinary() {
-if (window.wasmInstance) return window.wasmInstance;
-try {
-const importObj = {
-wasi_snapshot_preview1: WASI_SHIM,
-env: { wui_host_patch: () => {}, wui_host_log: () => {} }
-};
-let res;
-const wasmUrl = "/wasm/site.wasm";
-if (WebAssembly.instantiateStreaming) {
-try {
-res = await WebAssembly.instantiateStreaming(fetch(wasmUrl), importObj);
-} catch(e) {
-const buf = await (await fetch(wasmUrl)).arrayBuffer();
-res = await WebAssembly.instantiate(buf, importObj);
-}
-} else {
-const buf = await (await fetch(wasmUrl)).arrayBuffer();
-res = await WebAssembly.instantiate(buf, importObj);
-}
-window.wasmInstance = res.instance;
-if (window.wasmInstance.exports._start) {
-window.wasmInstance.exports._start();
-}
-console.log("[WASM] openOODA sovereign WebAssembly core loaded. Exports:", Object.keys(window.wasmInstance.exports).length);
-return window.wasmInstance;
-} catch (err) {
-console.warn("[WASM] WebAssembly load notice:", err);
-return null;
-}
-}
 
 /**
  * setDomText
@@ -68,30 +25,6 @@ if (typeof window !== "undefined") {
   window.setDomText = setDomText;
 }
 
-function updateWasmToggleUI() {
-const btn = document.getElementById("wasm-toggle");
-const label = document.getElementById("wasm-toggle-label");
-if (!btn || !label) return;
-if (window.wasmActive) {
-if (!btn.classList.contains("is-active")) btn.classList.add("is-active");
-setDomText(label, "wasm: on");
-btn.setAttribute("aria-pressed", "true");
-} else {
-if (btn.classList.contains("is-active")) btn.classList.remove("is-active");
-setDomText(label, "wasm: off");
-btn.setAttribute("aria-pressed", "false");
-}
-}
-async function setWasmActive(active, shouldSave = true) {
-window.wasmActive = !!active;
-if (shouldSave) {
-localStorage.setItem("ooda-wasm-active", window.wasmActive ? "1" : "0");
-}
-if (window.wasmActive) {
-await loadWasmBinary();
-}
-updateWasmToggleUI();
-}
 const DEFAULT_ROUTE = "openOODA";
 const INSTALL_HTML = '<div class="install"><span class="install-cmd">curl -fsSL <a href="https://openooda.org/install.sh">https://openooda.org/install.sh</a> | bash</span><button type="button" class="copy" aria-label="Copy install command">copy</button></div>';
 
@@ -347,191 +280,7 @@ function getAlphaColor(colorKey, alpha) {
   return globalAlphaLUT.get(curTheme, colorKey, alpha);
 }
 
-// Hoisted static arrays & constants across micro-visualizers
-const DASH_2_4 = [2, 4];
-const DASH_2_2 = [2, 2];
 const DASH_4_4 = [4, 4];
-const F16_PHASES = ["OBSERVE", "ORIENT", "DECIDE", "ACT"];
-const EM_OODA_NODES = ["OBSERVE", "ORIENT", "DECIDE", "ACT"];
-const TARGET_SIM_STAGES = [
-  { name: "1. AST Parser", y: 55 },
-  { name: "2. Capability Check", y: 95 },
-  { name: "3. SSA Optimizer", y: 135 },
-  { name: "4. Target Emitter", y: 175 }
-];
-const TARGET_SIM_DATA = {
-  c99: {
-    title: "ISO C99 Hard Science Kernel (std/phys/physics/orbital.oo)",
-    badge: "ISO C99",
-    code: [
-      "// Keplerian Vis-Viva Instantaneous Orbital Velocity",
-      "double orb_vis_viva(double r, double a, double mu) {",
-      "  if (r <= 0.0 || a <= 0.0) return 0.0;",
-      "  double term = (2.0 / r) - (1.0 / a);",
-      "  return (term > 0.0) ? sqrt(mu * term) : 0.0;",
-      "}"
-    ],
-    status: "Codegen Latency: 0.18ms | Output Footprint: 28,210 B | Zero Libc Dependencies"
-  },
-  llvm: {
-    title: "LLVM SSA IR (-O3 Optimized Hard Science Kernel)",
-    badge: "LLVM SSA -O3",
-    code: [
-      "define double @orb_vis_viva(double %r, double %a, double %mu) #0 {",
-      "  %1 = fdiv fast double 2.0, %r",
-      "  %2 = fdiv fast double 1.0, %a",
-      "  %3 = fsub fast double %1, %2",
-      "  %4 = fmul fast double %mu, %3",
-      "  %5 = tail call double @llvm.sqrt.f64(double %4)",
-      "  ret double %5",
-      "}"
-    ],
-    status: "Codegen Latency: 0.24ms | SSA Passes: 18 | DWARF5 Symbols | Vectorized"
-  },
-  x86: {
-    title: "Bare-Metal x86-64 ELF Vectorized Assembly",
-    badge: "x86-64 ELF",
-    code: [
-      "0x1000: vmovsd  xmm2, [rel c_two]    ; Load 2.0",
-      "0x1008: vdivsd  xmm2, xmm2, xmm0     ; 2.0 / r",
-      "0x100d: vmovsd  xmm3, [rel c_one]    ; Load 1.0",
-      "0x1015: vdivsd  xmm3, xmm3, xmm1     ; 1.0 / a",
-      "0x101a: vsubsd  xmm2, xmm2, xmm3     ; (2/r) - (1/a)",
-      "0x101f: vmulsd  xmm2, xmm2, xmm4     ; mu * term",
-      "0x1024: vsqrtsd xmm0, xmm2, xmm2     ; sqrt(mu * term)",
-      "0x1029: ret"
-    ],
-    status: "Codegen Latency: 0.12ms | Output Footprint: 4,096 B | Direct Syscall Trampoline"
-  },
-  arm: {
-    title: "Bare-Metal AArch64 ELF Vectorized Assembly",
-    badge: "AArch64 ELF",
-    code: [
-      "0x1000: fmov    d3, #2.0             ; Load 2.0",
-      "0x1004: fdiv    d3, d3, d0           ; 2.0 / r",
-      "0x1008: fmov    d4, #1.0             ; Load 1.0",
-      "0x100c: fdiv    d4, d4, d1           ; 1.0 / a",
-      "0x1010: fsub    d3, d3, d4           ; (2/r) - (1/a)",
-      "0x1014: fmul    d3, d3, d2           ; mu * term",
-      "0x1018: fsqrt   d0, d3               ; sqrt(mu * term)",
-      "0x101c: ret"
-    ],
-    status: "Codegen Latency: 0.14ms | Output Footprint: 4,096 B | AArch64 Direct Syscall"
-  },
-  wasm: {
-    title: "WebAssembly WasmGC Compact Bytecode",
-    badge: "WasmGC",
-    code: [
-      "(func $orb_vis_viva (param $r f64) (param $a f64) (param $mu f64) (result f64)",
-      "  (f64.sqrt",
-      "    (f64.mul (local.get $mu)",
-      "      (f64.sub",
-      "        (f64.div (f64.const 2.0) (local.get $r))",
-      "        (f64.div (f64.const 1.0) (local.get $a))))))"
-    ],
-    status: "Codegen Latency: 0.08ms | Output Footprint: 1,842 B | Edge Sandbox Isolation"
-  },
-  "6dof": {
-    title: "6-DoF Aerospace Flight Dynamics (std/phys/aero/aero_state.oo)",
-    badge: "6-DoF Aero",
-    code: [
-      "import \"std/phys/aero/atmosphere.oo\";",
-      "import \"std/phys/aero/aero_state.oo\";",
-      "import \"std/phys/aero/boyd_em.oo\";",
-      "import \"std/phys/aero/lift_force_law.oo\";",
-      "let atmo: IsaAtmosphere = isa_atmosphere_at(alt_m);",
-      "let q: Float = aero_compute_dynamic_pressure(atmo.density_kg_m3, tas_mps);",
-      "let mach: Float = aero_compute_mach(tas_mps, atmo.speed_of_sound_mps);",
-      "let lift: Float = calculate_lift_force(q, s, calculate_lift_coefficient(w, n_g, q, s));"
-    ],
-    status: "Aero State: TAS 482 m/s | Mach 1.55 | Alpha: 6.8° | G-Load: 4.8G | CADC Sweep: 58° Delta"
-  },
-  orbit: {
-    title: "Keplerian 2-Body Orbital Mechanics (std/phys/physics/orbital.oo)",
-    badge: "Kepler Orbit",
-    code: [
-      "// Vis-Viva Orbital Velocity: v = sqrt(GM * (2/r - 1/a))",
-      "let v: Float = orb_vis_viva(r_meters, a_meters, m_central);",
-      "let t_period: Float = orb_period(a_meters, m_central);",
-      "let v_esc: Float = orb_escape_velocity(r_meters, m_central);"
-    ],
-    status: "Orbital Mechanics: Semi-Major Axis 7,200 km | e=0.48 | Vis-Viva: 9.84 km/s | Period: 104.2 min"
-  },
-  lorentz: {
-    title: "Special Relativity & Lorentz Transforms (std/phys/physics/relativity.oo)",
-    badge: "Lorentz Rel",
-    code: [
-      "// Lorentz Factor: γ = 1 / sqrt(1 - (v/c)²)",
-      "let gamma: Float = rel_gamma(v_mps);",
-      "let delta_t: Float = rel_time_dilation(tau_sec, v_mps);",
-      "let l_contract: Float = rel_length_contraction(l0_meters, v_mps);"
-    ],
-    status: "Relativity: Velocity 0.88c (beta=0.880) | Lorentz Gamma: 2.105 | Length: 47.5% L0 | Dilation: 2.11x"
-  }
-};
-const MTD_ASLR_BASES = [
-  "0x7FFF_84A0_0000",
-  "0x7FFF_91B4_2000",
-  "0x7FFF_C03E_8000",
-  "0x7FFF_A75D_4000",
-  "0x7FFF_5E20_1000",
-  "0x7FFF_B3C9_6000",
-  "0x7FFF_19D8_F000",
-  "0x7FFF_D4E2_A000"
-];
-const MTD_CANONICAL_NODES = [
-  { id: 1, label: "0x10 Entry", x: 45, y: 125, targetX: 45, targetY: 125, vx: 0, vy: 0, isKey: true },
-  { id: 2, label: "&FsCap Grant", x: 120, y: 68, targetX: 120, targetY: 68, vx: 0, vy: 0, isKey: false },
-  { id: 3, label: "0x30 Dispatcher", x: 195, y: 125, targetX: 195, targetY: 125, vx: 0, vy: 0, isKey: true },
-  { id: 4, label: "0x40 BasicBlock_A", x: 275, y: 68, targetX: 275, targetY: 68, vx: 0, vy: 0, isKey: false },
-  { id: 5, label: "0x50 BasicBlock_B", x: 275, y: 182, targetX: 275, targetY: 182, vx: 0, vy: 0, isKey: false },
-  { id: 6, label: "0x60 RASP Watchdog", x: 120, y: 182, targetX: 120, targetY: 182, vx: 0, vy: 0, isKey: false },
-  { id: 7, label: "0x70 Return", x: 345, y: 125, targetX: 345, targetY: 125, vx: 0, vy: 0, isKey: true }
-];
-const MTD_INDEXED_EDGES = [
-  [0, 1], [0, 5], [1, 2], [5, 2], [2, 3], [2, 4], [3, 6], [4, 6]
-];
-const MTD_RAND_Y = [68, 98, 125, 155, 182];
-const MTD_RAND_X = [45, 105, 165, 225, 285, 345];
-const MTD_NODE_MORPH_LABELS = [
-  ["0x10 Entry", "0x1A Prologue", "0x14 FrameSet", "0x1F Entry_MTD"],
-  ["&FsCap Grant", "&Cap Check", "&Fs Token", "&Cap Valid"],
-  ["0x30 Dispatcher", "0x3B Switch", "0x32 StateMux", "0x3F MTD_Disp"],
-  ["0x40 Block_A", "0x44 XOR r1,r2", "0x48 SUB r1,r2", "0x4C Morph_A"],
-  ["0x50 Block_B", "0x54 ROR r3,5", "0x58 ROL r3,3", "0x5C Morph_B"],
-  ["0x60 RASP Watchdog", "0x66 CanaryChk", "0x6A 0-ROP Trap", "0x6E Watchdog"],
-  ["0x70 Return", "0x78 Epilogue", "0x7C Ret_Poison", "0x7F SafeRet"]
-];
-const MTD_RAM_PAGES = [
-  { name: ".text", crc: "A4F1" },
-  { name: ".rodata", crc: "9E02" },
-  { name: "&Cap", crc: "C73B" },
-  { name: "Stack", crc: "5D14" },
-  { name: "Shadow", crc: "F88A" },
-  { name: "CFI", crc: "3C90" },
-  { name: "Morph", crc: "B17E" },
-  { name: "Heap", crc: "084D" },
-  { name: "State", crc: "E61A" },
-  { name: "Canary", crc: "2F4C" },
-  { name: "KeyRot", crc: "D570" },
-  { name: "DynBB", crc: "8B33" },
-  { name: "CRC32", crc: "1C89" },
-  { name: "SigRing", crc: "6A2F" },
-  { name: "IOGate", crc: "77D1" },
-  { name: "Trap", crc: "4E5B" }
-];
-const VERIFY_GATE_XS = [160, 290, 420, 550];
-const VERIFY_GATE_NAMES = ["NIST", "0-Byte", "RAII", "SHA-256"];
-const VERIFY_GATE_INVARIANTS = ["KAT Vector", "0 Heap Leak", "&Cap Scope", "SHA-256 Match"];
-const VERIFY_TARGET_BADGES = [
-  { name: "WasmGC", x: 184, y: 14, w: 58, h: 14, tag: "wasm32-gc" },
-  { name: "ELF x86_64", x: 248, y: 14, w: 72, h: 14, tag: "bare-metal" },
-  { name: "ELF AArch64", x: 326, y: 14, w: 78, h: 14, tag: "bare-metal" },
-  { name: "ISO C99", x: 410, y: 14, w: 56, h: 14, tag: "0-libc" }
-];
-const VERIFY_AST_STREAM = ["FnDecl(ps)", "&AeroCap", "Simd8x32", "KAT", "Ret(f32)"];
-const VERIFY_STREAM_TOKENS_REF = ["vmovaps", "0x48 0x89", "syscall", "fmla.4s", "svc #0", "0xD503201F"];
-const VERIFY_STREAM_TOKENS_SYNTH = ["wasm32", "(func $ps)", "local.get", "i64.const", "struct.get", "0-libc"];
 
 
 var _cachedThemeColors = null;
@@ -753,17 +502,10 @@ if (typeof window !== "undefined") {
   window.getAlphaColor = getAlphaColor;
 }
 
-function initEmEngine() { /* dead: simulator was removed in v1.1.0 */ }
 
-function initCapSandbox() { /* dead: simulator was removed in v1.1.0 */ }
 
-function initSwarmCanvas() { /* dead: simulator was removed in v1.1.0 */ }
 
-/* dead: science/orbital simulator helpers removed in v1.1.0 */
 
-function initMtdEngine() { /* dead: simulator was removed in v1.1.0 */ }
-
-function initVerifyProver() { /* dead: simulator was removed in v1.1.0 */ }
 function setupOpenOODA() {
 var copyBtns = document.querySelectorAll("main .copy");
 for (var i = 0; i < copyBtns.length; i++) {
@@ -3110,60 +2852,7 @@ if (typeof window !== "undefined") {
   window.V_CORNER = V_CORNER;
   window.evaluateMissileSeekerDegradation = evaluateMissileSeekerDegradation;
 }
-if (typeof module !== "undefined" && module.exports) {
-  module.exports.FACTION_COLORS = FACTION_COLORS;
-  module.exports.drawJetSilhouette = drawJetSilhouette;
-  module.exports.AIRCRAFT_SPECS = AIRCRAFT_SPECS;
-  module.exports.WEAPON_DAMAGE_SPECS = WEAPON_DAMAGE_SPECS;
-  module.exports.applyAirframeDamage = applyAirframeDamage;
-  module.exports.StaticEntityPoolF32 = StaticEntityPoolF32;
-  module.exports.VfxParticlePool = VfxParticlePool;
-  module.exports.WreckagePool = WreckagePool;
-  module.exports.globalVfxParticlePool = globalVfxParticlePool;
-  module.exports.globalWreckagePool = globalWreckagePool;
-  module.exports.spawnStage1Fireball = spawnStage1Fireball;
-  module.exports.spawnStage2Wreckage = spawnStage2Wreckage;
-  module.exports.triggerStage3GroundImpact = triggerStage3GroundImpact;
-  module.exports.updateAndDrawWreckage = updateAndDrawWreckage;
-  module.exports.updateAndDrawVfxParticles = updateAndDrawVfxParticles;
-  module.exports.drawHudOverlay = drawHudOverlay;
-  module.exports.drawSegmentedHealthBar = drawSegmentedHealthBar;
-  module.exports.drawInWorldHealthBar = drawInWorldHealthBar;
-  module.exports.drawThrustScaledExhaust = drawThrustScaledExhaust;
-  module.exports.ThemeAlphaLUT = ThemeAlphaLUT;
-  module.exports.NINE_THEME_DEFINITIONS = NINE_THEME_DEFINITIONS;
-  module.exports.getHealthColor = getHealthColor;
-  module.exports.getHealthStatus = getHealthStatus;
-  module.exports.triggerTacticalRadio = triggerTacticalRadio;
-  module.exports.setGlobalRadioCallback = setGlobalRadioCallback;
-  module.exports.getAltitudeFeet = getAltitudeFeet;
-  module.exports.getYFromAltitude = getYFromAltitude;
-  module.exports.getBarometricDensity = getBarometricDensity;
-  module.exports.getDynamicPressure = getDynamicPressure;
-  module.exports.calculateEnergyHeight = calculateEnergyHeight;
-  module.exports.calculateSpecificExcessPower = calculateSpecificExcessPower;
-  module.exports.calculateAspectAngle = calculateAspectAngle;
-  module.exports.calculateRadarDetectionRange = calculateRadarDetectionRange;
-  module.exports.oodaDeployFlares = oodaDeployFlares;
-  module.exports.oodaDeployChaff = oodaDeployChaff;
-  module.exports.oodaObserveThreats = oodaObserveThreats;
-  module.exports.oodaOrientTactics = oodaOrientTactics;
-  module.exports.oodaDecideAction = oodaDecideAction;
-  module.exports.canAcquireTargetLock = canAcquireTargetLock;
-  module.exports.SERVICE_CEILINGS = SERVICE_CEILINGS;
-  module.exports.RESPAWN_CEILINGS = RESPAWN_CEILINGS;
-  module.exports.activeGens = activeGens;
-  module.exports.hasAnyActiveGen = hasAnyActiveGen;
-  module.exports.toggleGeneration = toggleGeneration;
-  module.exports.syncFleetToActiveGenerations = syncFleetToActiveGenerations;
-  module.exports.globalDogfightJets = globalDogfightJetsState;
-  module.exports.V_CORNER = V_CORNER;
-  module.exports.evaluateMissileSeekerDegradation = evaluateMissileSeekerDegradation;
-}
 
-var globalRadioAdd = null;
-var globalReassignHero = null;
-var globalSetAllOffline = null;
 
 function updateGenSelectorUI() {
   var btns = document.querySelectorAll(".gen-btn");
@@ -5890,11 +5579,7 @@ fetch("/pulled/openOODA.json").then(function (r) {
   html += INSTALL_HTML;
   if (data.content) {
     var parsed = "";
-    if (typeof marked !== "undefined" && marked.parse) {
-      try { parsed = marked.parse(data.content); } catch (e) { parsed = simpleMarkdown(data.content); }
-    } else {
-      parsed = simpleMarkdown(data.content);
-    }
+    parsed = simpleMarkdown(data.content);
     html += parsed;
   }
   // Install box at the bottom, after the prose — same component, no change
@@ -5916,11 +5601,7 @@ fetch("/pulled/" + raw + ".json").then(function (r) {
   if (data.source) html += '<p class="canon">Source: ' + data.source + "</p>";
   if (data.content) {
     var parsed = "";
-    if (typeof marked !== "undefined" && marked.parse) {
-      try { parsed = marked.parse(data.content); } catch (e) { parsed = simpleMarkdown(data.content); }
-    } else {
-      parsed = simpleMarkdown(data.content);
-    }
+    parsed = simpleMarkdown(data.content);
     html += parsed;
   }
   contentEl.innerHTML = html;
@@ -5936,12 +5617,6 @@ contentEl.innerHTML = "<p>Not found.</p>";
 }
 window.scrollTo(0, 0);
 setupGenSelector();
-if (typeof RadarVisualizers !== "undefined" && RadarVisualizers.initRadarCanvas) {
-  var cvsSci = document.getElementById("canvas-radar-science");
-  if (cvsSci && !cvsSci._radarInstance) cvsSci._radarInstance = RadarVisualizers.initRadarCanvas(cvsSci, RadarVisualizers.RADAR_SCIENCE_CONFIG);
-  var cvsSys = document.getElementById("canvas-radar-systems");
-  if (cvsSys && !cvsSys._radarInstance) cvsSys._radarInstance = RadarVisualizers.initRadarCanvas(cvsSys, RadarVisualizers.RADAR_SYSTEMS_CONFIG);
-}
 }
 if (typeof document !== "undefined" && typeof window !== "undefined") {
   // Global search shortcut (Ctrl+K, Cmd+K, /)
@@ -5991,19 +5666,7 @@ renderRoute = function(rawRoute) {
   // door route added in v1.1.0). When the WASM returns an ID that maps
   // to a *different* route than what the user asked for, we honor the
   // JS route instead so the user always lands where they clicked.
-  if (typeof window !== "undefined" && window.wasmActive && window.wasmInstance && window.wasmInstance.exports.ooda_app_route) {
-    var inputId = ROUTE_NAME_TO_ID[r] || 1;
-    var executedId = window.wasmInstance.exports.ooda_app_route(inputId);
-    var dispatchedName = ROUTE_ID_TO_NAME[executedId] || r;
-    if (dispatchedName !== r && ROUTE_NAME_TO_ID[r]) {
-      // WASM disagreed with a known JS route — JS wins.
-      originalRenderRoute(r);
-    } else {
-      originalRenderRoute(dispatchedName);
-    }
-  } else {
-    originalRenderRoute(r);
-  }
+  originalRenderRoute(r);
 };
 
 function getInitialRoute() {
@@ -6187,12 +5850,6 @@ if (typeof document !== "undefined") {
   // Initialize toggle state from localStorage or URL path
   const storedWasm = (typeof localStorage !== "undefined" && localStorage.getItem) ? localStorage.getItem("ooda-wasm-active") : null;
   const initialWasm = storedWasm !== null ? storedWasm === "1" : (typeof location !== "undefined" && location.pathname ? location.pathname.includes("/wasm") : false);
-  setWasmActive(initialWasm, false);
-  const wasmToggleBtn = document.getElementById("wasm-toggle");
-  if (wasmToggleBtn) {
-  wasmToggleBtn.onclick = function () {
-  setWasmActive(!window.wasmActive, true);
-  };
-  }
+
   })();
 }

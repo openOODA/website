@@ -5,4 +5,4 @@
 # pulled/ mechanism, route additions). Content updates from the
 # polyrepo pull don't bump this version.
 
-website=1.0.6
+website=1.1.2

@@ -1,0 +1,26 @@
+// # pulled/ — Per-Repo Documentation Sources
+//
+// Logline: The JSON files fetched by the SPA when a sub-menu item
+//          is clicked. One file per route.
+//
+// Setup: Each file is a 3-section document (## What it is / ## Install
+//        / ## Surface) with the same shape. The SPA fetches
+//        `/pulled/{repo}.json`, renders the title + Source: line +
+//        markdown content.
+//
+// Beats:
+//   1. openOODA.json — the polyrepo front door (8 repos, install).
+//   2. ooda.json     — the compiler/runtime substrate.
+//   3. std.json      — the 8-domain standard library.
+//   4. opm.json      — the content-addressed package manager.
+//   5. cli.json      — the `ooda` binary driver.
+//   6. lsp.json      — the language server.
+//   7. mcp.json      — the MCP server for AI agents.
+//
+// oodac and runtime have no JSON yet — the SPA renders a "coming
+// soon" placeholder for those two routes until the repos are
+// extracted from ooda/.
+//
+// No build step today. Each file is hand-synced from the matching
+// `openOODA/{repo}/docs/` source. A future `site_pull_repo_docs.oo`
+// (not in this repo) would automate the sync.

@@ -1,0 +1,12 @@
+// # .github/workflows/ — GitHub Pages Deploy
+//
+// Logline: The CI pipeline that publishes the website to GitHub
+//          Pages on every push to main.
+//
+// Beats:
+//   1. deploy.yml — single job: checkout, configure-pages,
+//      upload-pages-artifact (path: .), deploy-pages. No build
+//      step. The website is published as-is.
+//
+// This directory is for GitHub-managed CI configuration only. No
+// hand-maintained application code belongs here.
