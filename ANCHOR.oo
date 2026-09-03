@@ -1,0 +1,16 @@
+// # openOODA Website — Anchor for Agents
+//
+// Logline: Public website and interactive demo for openOODA.
+//
+// Setup: Static site served from GitHub Pages at openooda.org.
+//
+// Beats:
+//   1. index.html — single-page app shell.
+//   2. 404.html — not found page.
+//   3. src/main.js — the SPA and dogfight simulator.
+//   4. styles/main.css — theme and layout.
+//   5. assets/favicon.svg — browser tab icon.
+//   6. assets/open-graph.png — social card image.
+//   7. wasm/site.wasm — the compiled WebAssembly runtime.
+//   8. sitemap.xml and robots.txt — crawler metadata.
+//   9. llms.txt and llms-full.txt — public LLM context.

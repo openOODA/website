@@ -1,0 +1,157 @@
+# LLMS — Sovereign AI Orientation Codex & Capabilities Manual
+Floor: 2
+Thrust: 9
+Patch: 4
+File: openOODA/LLMS.oot
+
+This codex provides instant, high-bandwidth orientation for autonomous AI agents and LLMs.
+openOODA is a sovereign, zero-ambient-capability language and runtime ecosystem.
+It executes deterministic computing, hard-science aerodynamics, AI tensors, and active binary self-defense.
+
+## 1. Syntax Laws & Language Mechanics
+
+openOODA enforces strict grammar and file segregation rules:
+- File Extensions: Pure `.oo` for executable code. Pure `.oot` for documentation and specifications.
+- File Length Limit: Every `.oo` and `.oot` file contains a maximum of 256 lines.
+- Static Typing: Type annotations are mandatory (`let x: Int = 10;`). Untyped variables are prohibited.
+- Struct Syntax: Struct definitions and literals prohibit trailing commas:
+  pub type Vector3 = struct { x: Float, y: Float, z: Float };
+- Error Handling: Fallible operations return `Result[T, E]` (`Ok(val)` or `Err("msg")`). Optional values use `Option[T]` (`Some(v)` or `None`).
+- Standard Types: `Int` (64-bit signed), `Float` (IEEE 754 64-bit), `Bool`, `String` (UTF-8 ARC), `List[T]` (dynamic ARC array).
+- Vector Registers: `f32x8` (256-bit 8-lane 32-bit float) and `f64x4` (256-bit 4-lane 64-bit float).
+- Code Academy Header: Every product `.oo` file starts with a 4-element Academy header (`# Title`, `Logline:`, `Setup:`, `Beats:`).
+- Document Header: Every `.oot` file starts with a 4-element header (`# Title`, `Floor:`, `Thrust:`, `Patch:`, `File:`).
+
+## 2. Zero-Ambient Authority & Capability Security Model
+
+openOODA prohibits ambient system authority. Functions possess zero default permissions.
+Every privileged operation requires an unforgeable capability token reference (`&CapName`).
+
+### 2.1 The 14 Core Capability Tokens
+1. `&FsReadCap`: Authorizes `read_file`, `file_size`, `path_exists`, and `fs_read_dir` inside `OODA_FS_READDIR`.
+2. `&FsWriteCap`: Authorizes `write_file`, `fs_mkdir`, and `remove_file` inside `OODA_FS_WRITEDIR`.
+3. `&FsCap`: Broad filesystem token that satisfies both `&FsReadCap` and `&FsWriteCap` (zero-trust mandates granular attenuation).
+4. `&ProcessCap`: Authorizes `sys_exec`, `sys_spawn`, `sys_wait`, and `sys_kill` with sanitized environments.
+5. `&SysCap`: Authorizes kernel primitives, Landlock sandboxing (`landlock_restrict`), and POSIX `rlimit` controls.
+6. `&NetCap`: Authorizes broad networking and raw socket creation.
+7. `&HttpCap`: Authorizes HTTP client requests (`fetch`).
+8. `&TcpCap`: Authorizes TCP streams (`tcp_connect`, `tcp_read`, `tcp_write`, `tls_connect`).
+9. `&UdpCap`: Authorizes UDP datagrams (`bind_udp`, `udp_recv`) and DNS queries (`resolve_ipv4`).
+10. `&BindCap`: Authorizes server socket listening ports (`tcp_bind`).
+11. `&EnvCap`: Authorizes environment inspection (`env_get`) restricted to `OODA_*` and `OO_*` keys.
+12. `&TimeCap`: Authorizes monotonic clocks and timers (`now_ms`, `sleep_ms`).
+13. `&RandCap`: Authorizes cryptographically secure entropy and PRNG seeding (`random`, `seed`).
+14. `&AllocCap`: Authorizes linear arena allocation (`alloc_bytes`, `arena_create`, `reset`) with quota limits.
+Additional tokens: `&ThreadCap` (mutex/channels), `&GpuCap` (compute shaders), `&UnsafeFFICap` (`import_c` within `/usr/include`).
+
+### 2.2 Argument-Flow Law (F01) & Sandboxing
+- Argument Flow (F01): Privileged functions must pass the capability token as the first parameter or method receiver.
+- Runtime Seals: Lowered runtime operations validate 64-bit HMAC-sealed tokens (`CHS_CAP_*` bands `0x01`..`0x17`) via `oo_cap_require_*`.
+- Fail-Closed Gate: Missing, null, or forged tokens immediately terminate execution with error status (`ERR\tcap\t...`).
+- OS Sandboxing: The runtime applies Landlock ABI 1-6 rules and Seccomp-BPF filters matching granted capabilities.
+
+## 3. Active Binary Defense & Autonomic RASP
+
+openOODA hardens executables against reverse engineering, debugging, and memory corruption.
+
+### 3.1 Moving Target Defense (MTD) & AST Morphing
+- Control Flow Flattening: Flattens basic blocks into centralized switch dispatchers.
+- Basic Block Permutation: Shuffles physical instruction sequences randomly on every compilation.
+- Modulo 7 Opaque Predicates: Injects algebraic quadratic non-residues ($x^2 \not\equiv 3, 5 \pmod 7$) to explode symbolic solver paths.
+- Anti-ROP/JOP Destroyer: Eliminates unintended `0xC3` (`ret`) and `0xFF 0x25` (`jmp`) bytes via multi-byte NOP padding.
+- Secret Sanitization: Dynamic string encryption decrypts data on the stack and zeroizes memory immediately on scope exit.
+
+### 3.2 Autonomic Live-RAM RASP Rollback
+- Gold Master Registry: The runtime registers pristine `.text` segments and SHA-256 digests in `GoldMasterImage`.
+- Live Watchdog Scan: `memory_watchdog_scan` continuously verifies running memory pages against expected SHA-256 digests.
+- In-Memory Rollback: `tamper_rollback_execute` hot-patches corrupted memory pages from Gold Master bytes without restarting.
+- Fail-Closed Abort: Unrecoverable memory tampering triggers immediate emergency suicide abort (`process_exit(127)`).
+
+## 4. 256-Bit SIMD Vector Engine
+
+openOODA provides hardware-accelerated 256-bit SIMD vector primitives for high-throughput computing:
+- Vector Types: `f32x8` (8 single-precision floats) and `f64x4` (4 double-precision floats).
+- IEEE 754-2019 FMA: `f32x8_fma(a, b, c)` calculates $(a \cdot b) + c$ with error bound $\le 1$ ULP.
+- Quiet NaN Propagation: Operations propagate quiet NaNs on invalid inputs ($NaN \cdot b + c$, $0 \cdot \infty$, $+\infty - \infty$).
+- Arithmetic Operations: Parallel element-wise `f32x8_add`, `f32x8_sub`, `f32x8_mul`, and `f32x8_div`.
+- Horizontal Reductions: `f32x8_reduce_sum`, `f32x8_reduce_min`, `f32x8_reduce_max`, and Euclidean `f32x8_dot`.
+- 32-Byte Alignment: SIMD loads and stores enforce 32-byte alignment. Misaligned access triggers `TRAP_0x20_SIMD_ALIGNMENT_FAULT`.
+- AVX2 Machine Emission: Direct emission of 3-byte VEX prefixes (`0xC4`) and native instructions (`vfmadd213ps`, `vmovaps`).
+
+## 5. Hard Science, Aerodynamics & AI Tensor Standard Libraries
+
+### 5.1 Boyd Energy-Maneuverability (E-M) Subsystem
+- Specific Excess Power: $P_s = \frac{V \cdot (T - D)}{W}$ (physical standard in ft/s).
+- Tactical Gauge Metric: $P_s = \frac{V \cdot (T - D)}{W} \times 850.0$ (imperial excess power gauge).
+- Dynamic Pressure: $q = \frac{1}{2} \rho V^2$ (psf). Lift Coefficient: $C_L = \frac{W \cdot n}{q \cdot S}$, clamped to $C_L \le 2.50$.
+- Induced Drag: $C_{Di} = \frac{C_L^2}{\pi \cdot AR \cdot e}$. Total Drag: $D = q \cdot S \cdot (C_{D0} + C_{Di} + C_{D,\text{wave}})$.
+- Sustained Turn Rate: $\omega_{\text{deg}} = \frac{g \cdot \sqrt{n^2 - 1}}{V} \times \frac{180}{\pi}$ (deg/s). Turn Radius: $R = \frac{V^2}{g \cdot \sqrt{n^2 - 1}}$ (ft).
+- Max Sustained Load Factor: $n_{\text{sustained}} = \sqrt{\frac{(T - q S C_{D0}) \cdot q S \pi AR e}{W^2}}$.
+- Specific Energy Height: $H_e = h + \frac{V^2}{2g}$ ($g = 32.174 \text{ ft/s}^2$).
+
+### 5.2 U.S. Standard Atmosphere 1976 (ISA 1976)
+- Physical Constants: $R = 287.058 \text{ J/(kg}\cdot\text{K)}$, $\gamma = 1.40$, $g_0 = 9.80665 \text{ m/s}^2$, $T_0 = 288.15\text{ K}$, $P_0 = 101325\text{ Pa}$, $\rho_0 = 1.2250\text{ kg/m}^3$, $a_0 = 340.294\text{ m/s}$.
+- Troposphere ($h \le 11,000\text{m}$): $T(h) = 288.15 - 0.0065 \cdot h$, $P(h) = 101325.0 \cdot (T(h) / 288.15)^{5.255877}$.
+- Lower Stratosphere ($h > 11,000\text{m}$): Isothermal $T = 216.65\text{ K}$, $P(h) = 22632.06 \cdot \exp\left(-\frac{g_0 (h - 11000)}{R \cdot 216.65}\right)$.
+- Local Air Density: $\rho(h) = \frac{P(h)}{R \cdot T(h)}$. Local Speed of Sound: $a(h) = \sqrt{\gamma \cdot R \cdot T(h)}$.
+
+### 5.3 AI Tensor Engine & 4-Bit Quantized Inference
+- Tensor Architecture: Multi-dimensional `Tensor` with `TensorShape` (ranks 1D to 4D, row-major strides).
+- 8-Lane SIMD RMSNorm: $\text{RMSNorm}(x, \gamma) = \frac{x}{\sqrt{\frac{1}{N} \sum x_i^2 + \epsilon}} \odot \gamma$ via `f32x8_fma` accumulator and scalar peel.
+- Gated Activations: SiLU ($\text{SiLU}(x) = \frac{x}{1 + e^{-x}}$) via Taylor expansion; SwiGLU ($\text{SwiGLU}(x_g, x_u) = \text{SiLU}(x_g) \odot x_u$).
+- Rotary Position Embeddings (RoPE): 8-lane SIMD vector rotation using $\cos\theta_i$ and $\sin\theta_i$ trigonometric pairs.
+- Scaled Dot Attention: `ta_scaled_score` computes $\frac{Q \cdot K}{\sqrt{d_k}}$ with 8-lane FMA inner products.
+- 4-Bit Quantization: Block Q4_0 (32 weights per block) and Q4_K (256 weights per superblock) direct GEMV execution.
+
+### 5.4 Nanosecond Constant-Time Cryptography
+- Branchless Primitives: `ct_select(mask, a, b) = (a & m) | (b & ~m)`, `ct_eq(a, b)`, and `ct_buffer_eq` eliminate data-dependent branching.
+- Statistical Side-Channel Gate: Welch t-test analysis on latency distributions enforces threshold $|t| < 4.500$.
+- Cryptographic Ciphers: RFC 8439 ChaCha20-Poly1305 AEAD and RFC 8032 Ed25519 digital signatures.
+- Secure Erasure: `crypto_secure_wipe` zeroes memory buffers with compiler-resistant memory barriers.
+
+## 6. The 13 Canonical Process Boards Routing Guide
+
+All strategic governance and repository rules reside in 13 stationary `.oot` process boards:
+
+| Board File | Primary Domain & Responsibility | Reading Priority |
+|---|---|---|
+| `START.oot` | Agent Entry Gate, 10 Strategic Governance Pillars, and Subsystem Routing | Always Read First |
+| `RULES.oot` | Repository Laws, Zero-Ambient Authority, and Grammar Axioms | Mandatory Core Law |
+| `NORTHSTAR.oot` | Architectural Vision, Merkle AST, SSA IR, and Type System | Architecture Design |
+| `MOONSHOTS.oot` | Next-Generation Horizons (Generations 5-7, Swarm Protocols) | Strategic Planning |
+| `ROADMAP.oot` | Active Milestone Pin, Rebuild Sequence, and Multi-Agent Plan | Active Sprint Tasks |
+| `SHIPPED.oot` | Verified Product Capabilities and Proven Execution Paths | Reference Baseline |
+| `FORMAT.oot` | Code Academy Headers, ASD-STE100 Rules, and <= 256 Line Limit | Code Formatting |
+| `SECURITY.oot` | Capability Token Taxonomy, DINNER CAPs, and 28-Op Lookup Table | Privileged Operations |
+| `WORKFLOW.oot` | 5-Step OODA Execution Loop, Token Economy, and Handoff Specs | Workflow & Git Sync |
+| `QUICKREF.oot` | Syntax Cheat Sheet, Type Mappings, and Operational Constraints | Rapid Reference |
+| `CONSTRAINTS.oot` | Subtractive Architecture, Forbidden Patterns, and Invariants | Invariant Checking |
+| `STRUCTURE_EM.oot`| Informational Boyd E-M Formulation and Directory Topology Map | Performance & Layout |
+| `REDTEAM.oot` | 8-Dimensional Adversarial Falsification and 8-Gate Veto Protocol | Quality Certification |
+
+## 7. Telemetry, Energy Metrics & Stream Protocol
+
+### 7.1 Boyd Specific Excess Power Telemetry
+openOODA measures computational efficiency using informational Boyd E-M metrics:
+  $P_{s,\text{info}} = \frac{T_{\text{semantic}} - D_{\text{systemic}}}{W_{\text{entropy}}} \cdot V_{\text{ooda}}$
+- Semantic Thrust ($T$): Machine code generation rate and SIMD vector throughput.
+- Systemic Drag ($D$): Rebuild latency ($D_{\text{rebuild}}$), token burn ($D_{\text{token}}$), and memory allocator contention ($D_{\text{alloc}}$).
+- Entropy Weight ($W$): AST footprint, dependency weight, and context token overhead.
+- OODA Velocity ($V$): Turnover frequency of the Observe-Orient-Decide-Act loop.
+
+### 7.2 SIMD Vector Throughput Gauges
+- Throughput Gauge: Real-time MFLOPS / GFLOPS metering across 8-lane AVX2 vector pipelines.
+- Vector Saturation: Monitors percentage of arithmetic operations executing via 256-bit SIMD registers.
+- Cacheline Efficiency: Validates 32-byte memory alignment and zero-copy linear arena bandwidth.
+
+### 7.3 Stream & Pipe Emission Protocol
+- Interactive Terminal Mode: Emits visual telemetry gauges, high-tech progress bars, and countdown animations.
+- Redirected / Piped Mode: Automatically detects non-TTY stdout and disables terminal escape codes.
+- Zero-Latency Plain Text: Emits raw, clean `.oot` or JSON streams instantly for AI context ingestion.
+
+## 8. Cross References
+- Agent Routing: `openOODA/START.oot`
+- Core Principles: `openOODA/RULES.oot`
+- Capability Security: `openOODA/SECURITY.oot`
+- Adversarial Certification: `openOODA/REDTEAM.oot`
+- Aerodynamic Energy-Maneuverability: `openOODA/STRUCTURE_EM.oot`
