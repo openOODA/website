@@ -1,0 +1,6 @@
+{
+  "repo": "ooda",
+  "title": "openOODA Compiler + Runtime Monorepo",
+  "source": "openOODA/ooda/",
+  "content": "## Coming soon to this page\n\nThe `ooda/` monorepo holds the compiler (`oodac/`), the Gen 1 C runtime shims (`runtime/`), the smoke tests, and the fixtures. It's the substrate — every other openOODA repo builds on top of it.\n\nThe full docs pull for this repo is queued. The monorepo is currently the home of gemini's compiler work, and the docs buildout is gated on that finishing.\n\nIn the meantime:\n\n- Browse the source: [github.com/openOODA/ooda](https://github.com/openOODA/ooda)\n- See the 6 existing docs in `ooda/docs/`: `CAP_BOUNDARY.oot`, `CAP_LEGACY_SUPERSEDE_REMOVAL_TODO.oot`, `TOKEN_TOOLING.oot`, `TOKEN_OPT.oot`, `silent-miscompile-prevention.oot`, `x86-codegen-style.oot`\n- The `VERSION` file declares `name=ooda version=2.11.0 caps=15`\n- 23 LSP methods, 14 capability tokens, 7 generations of architecture"
+}

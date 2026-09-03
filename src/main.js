@@ -9990,6 +9990,32 @@ setupSearch();
 document.title = "openOODA — WebAssembly Playground";
 contentEl.innerHTML = PLAY_HTML;
 setupPlayground();
+} else if (raw === "ooda" || raw === "std" || raw === "opm" || raw === "cli" || raw === "lsp" || raw === "mcp") {
+document.title = "openOODA — " + raw.toUpperCase();
+contentEl.innerHTML = '<p class="canon">Loading ' + raw + ' docs from openOODA/' + raw + '/docs/&hellip;</p>';
+fetch("/pulled/" + raw + ".json").then(function (r) {
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}).then(function (data) {
+  var html = "";
+  if (data.title) html += '<h1 class="visually-hidden">' + data.title + "</h1>";
+  if (data.source) html += '<p class="canon">Source: ' + data.source + "</p>";
+  if (data.content) {
+    var parsed = "";
+    if (typeof marked !== "undefined" && marked.parse) {
+      try { parsed = marked.parse(data.content); } catch (e) { parsed = simpleMarkdown(data.content); }
+    } else {
+      parsed = simpleMarkdown(data.content);
+    }
+    html += parsed;
+  }
+  contentEl.innerHTML = html;
+}).catch(function (err) {
+  contentEl.innerHTML = '<h1>' + raw + '</h1><p>Failed to load docs: ' + (err && err.message ? err.message : "unknown") + '.</p><p><a href="https://github.com/openOODA/' + raw + '" target="_blank" rel="noopener noreferrer">View on GitHub</a>.</p>';
+});
+} else if (raw === "oodac" || raw === "runtime") {
+document.title = "openOODA — " + raw + " (coming soon)";
+contentEl.innerHTML = '<h1>' + raw + '</h1><p class="canon">coming soon</p><p>This repo will be extracted from <a href="https://github.com/openOODA/ooda" target="_blank" rel="noopener noreferrer">openOODA/ooda</a> once gemini\'s compiler work ships.</p><p>For now, the compiler and runtime live inside the <a href="https://github.com/openOODA/ooda" target="_blank" rel="noopener noreferrer">oda monorepo</a>.</p>';
 } else if (typeof raw === "string" && Object.prototype.hasOwnProperty.call(ROUTE_TO_DOC, raw)) {
 var docFile = ROUTE_TO_DOC[raw];
 var text = DOCS[docFile] || "# Not Found";
