@@ -15,14 +15,18 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Install ooda toolchain
+        run: |
+          curl -fsSL https://openooda.org/install.sh -o /tmp/install.sh
+          bash /tmp/install.sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Build site
+        run: ooda run scripts/site_build_fresh.oo
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
@@ -31,6 +35,13 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
