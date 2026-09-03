@@ -137,7 +137,7 @@ const DOC_TO_ROUTE = Object.assign(Object.create(null), {
 const HOME_HTML = "\n" +
 "      <h1 class=\"visually-hidden\">openOODA — Sovereign Systems Language for the AI Era</h1>\n" +
 "      <!-- Intro & OODA Tactical Dogfight Dropdown (AUTO-EXPANDED) -->\n" +
-"      <details class=\"drop\" open>\n" +
+"      <details class=\"drop\">\n" +
 "        <summary>openOODA is an AI-native, capability-secure systems programming language built for sovereign software synthesis.</summary>\n" +
 "        <div class=\"drop-body\">\n" +
 "          <div class=\"ooda-hud-card\">\n" +
