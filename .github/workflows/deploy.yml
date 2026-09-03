@@ -15,33 +15,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install ooda toolchain
-        run: |
-          curl -fsSL https://openooda.org/install.sh -o /tmp/install.sh
-          bash /tmp/install.sh
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-      - name: Build site
-        run: ooda run scripts/site_build_fresh.oo
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: "true"
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
   deploy:
-    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: "true"
+      # TODO(website): wire in the build step once install.sh packaging ships.
+      # The pure-.oo build pipeline at scripts/site_build_fresh.oo regenerates
+      # index.html / app.js / llms.txt from sources. To enable:
+      #   1. Add an 'Install ooda toolchain' step that fetches install.sh from
+      #      a working URL (today: 404 — install.sh is the package manager's
+      #      responsibility, not the website's, per openOODA packaging model).
+      #   2. Add a 'Build site' step: `ooda run scripts/site_build_fresh.oo`.
+      #   3. Add .gitignore entries for the regenerated artifacts so only
+      #      sources are tracked.
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
