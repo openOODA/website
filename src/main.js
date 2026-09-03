@@ -102,110 +102,255 @@ const HOME_HTML = "\n" +
 "        <button type=\"button\" id=\"copy\">copy</button>\n" +
 "      </div>\n" +
 "      <!-- E-M & OODA Loop (COLLAPSED) -->\n" +
-"      <details class=\"drop\">\n" +
-"        <summary>E-M &amp; OODA Loop</summary>\n" +
-"        <div class=\"drop-body\">\n" +
-"          <p>Governed by the Energy-Maneuverability formula: <code>P_s = V * (T - D) / W</code>. Eliminating language drag (<code>D = 0</code>, 0ms GC pauses) and weight (28 KB ELF) accelerates the OODA cycle to sub-microsecond times (2,500 Hz / 0.4ms), enabling agents to out-loop adversaries. See <a href=\"#internals\">compiler limits</a>.</p>\n" +
-"          <div class=\"sim-container\" style=\"margin-top: 1rem; margin-bottom: 0.5rem;\">\n" +
-"            <div class=\"sim-toolbar\">\n" +
-"              <span class=\"sim-title\">⚡ OODA Cycle Engine: Velocity &amp; Automation Tachometer</span>\n" +
-"              <div class=\"sim-actions\">\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"em-boost-thrust\">⚡ Boost Thrust</button>\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"em-cut-drag\">🛑 Zero Drag</button>\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"em-strip-weight\">🪶 Zero Weight</button>\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"em-reset\">Reset</button>\n" +
-"              </div>\n" +
-"            </div>\n" +
-"            <div class=\"sim-canvas-wrap\">\n" +
-"              <canvas id=\"em-canvas\" width=\"672\" height=\"240\" aria-label=\"E-M Performance Polar Graph\"></canvas>\n" +
-"              <div class=\"sim-caption\" id=\"em-status\">E-M Formula: P_s = V * (T - D) / W | openOODA Loop (2,500 Hz) vs Legacy Stack (0.02 Hz)</div>\n" +
-"            </div>\n" +
-"          </div>\n" +
-"        </div>\n" +
-"      </details>\n" +
-"      <!-- Zero Ambient Authority (COLLAPSED) -->\n" +
-"      <details class=\"drop\">\n" +
-"        <summary>Zero Ambient Authority</summary>\n" +
-"        <div class=\"drop-body\">\n" +
-"          <p>In openOODA, <strong>no token means zero effects</strong>. Exactly 14 unforgeable capability tokens (<a href=\"#security\"><code>&amp;FsReadCap</code></a>, <a href=\"#security\"><code>&amp;NetCap</code></a>, <a href=\"#security\"><code>&amp;ProcessCap</code></a>, <a href=\"#security\"><code>&amp;AllocCap</code></a>) eliminate ambient I/O and unauthorized side effects. Tokens cannot be forged from bytes. See <a href=\"#security\">capability tokens</a>.</p>\n" +
-"          <div class=\"sim-container\" style=\"margin-top: 1rem; margin-bottom: 0.5rem;\">\n" +
-"            <div class=\"sim-toolbar\">\n" +
-"              <span class=\"sim-title\">🔒 Capability Sandbox Gate &amp; Landlock Tripwire</span>\n" +
-"              <div class=\"sim-actions\">\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"cap-untrusted\">🚨 Untrusted I/O</button>\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"cap-grant\">🔑 Pass Token</button>\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"cap-reset\">Reset</button>\n" +
-"              </div>\n" +
-"            </div>\n" +
-"            <div class=\"sim-canvas-wrap\">\n" +
-"              <canvas id=\"cap-canvas\" width=\"672\" height=\"220\" aria-label=\"Capability Sandbox Gate Simulation\"></canvas>\n" +
-"              <div class=\"sim-caption\" id=\"cap-log\">Landlock tripwire active: No ambient authority. Test Untrusted I/O vs Scoped Token dispatch.</div>\n" +
-"            </div>\n" +
-"          </div>\n" +
-"        </div>\n" +
-"      </details>\n" +
-"      <!-- Active Binary Defense (COLLAPSED) -->\n" +
-"      <details class=\"drop\">\n" +
-"        <summary>Active Binary Defense</summary>\n" +
-"        <div class=\"drop-body\">\n" +
-"          <p>Embedded active binary protections: Moving Target Defense (MTD) control flow flattening, rolling XOR string encryption, anti-ROP gadget destruction, and live-RAM Runtime Application Self-Protection (RASP) watchdog. See <a href=\"#defense\">defense architecture</a>.</p>\n" +
-"          <div class=\"sim-container\" style=\"margin-top: 1rem; margin-bottom: 0.5rem;\">\n" +
-"            <div class=\"sim-toolbar\">\n" +
-"              <span class=\"sim-title\">🛡️ Live MTD Control-Flow Flattening Visualizer</span>\n" +
-"              <div class=\"sim-actions\">\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"mtd-trigger\">🛡️ Trigger MTD Morph</button>\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"mtd-reset\">Reset</button>\n" +
-"              </div>\n" +
-"            </div>\n" +
-"            <div class=\"sim-canvas-wrap\">\n" +
-"              <canvas id=\"mtd-canvas\" width=\"672\" height=\"260\" aria-label=\"Moving Target Defense Visualizer\"></canvas>\n" +
-"              <div class=\"sim-caption\">Click any block or trigger morph to explode, re-key, and flatten control-flow basic blocks.</div>\n" +
-"            </div>\n" +
-"          </div>\n" +
-"        </div>\n" +
-"      </details>\n" +
-"      <!-- AI-Native Architecture (COLLAPSED) -->\n" +
-"      <details class=\"drop\">\n" +
-"        <summary>AI-Native Architecture</summary>\n" +
-"        <div class=\"drop-body\">\n" +
-"          <p>Built for LLMs and autonomous swarms. Bounded sub-256 line units, mandatory 4-element <a href=\"#start\">Academy headers</a> (<code># Summary</code>, <code># Invariants</code>, <code># Capabilities</code>, <code># Verification</code>), and static typing eliminate context bloat and hallucination drift during agentic synthesis. See <a href=\"#syntax\">AI specification</a>.</p>\n" +
-"          <div class=\"sim-container\" style=\"margin-top: 1rem; margin-bottom: 0.5rem;\">\n" +
-"            <div class=\"sim-toolbar\">\n" +
-"              <span class=\"sim-title\">🤖 Multi-Agent Swarm Ring (4 AI Agents, &le;256 Lines)</span>\n" +
-"              <div class=\"sim-actions\">\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"swarm-patch\">⚡ Concurrent AST Patch</button>\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"swarm-split\">✂️ Submodule Split</button>\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"swarm-reset\">Reset</button>\n" +
-"              </div>\n" +
-"            </div>\n" +
-"            <div class=\"sim-canvas-wrap\">\n" +
-"              <canvas id=\"swarm-canvas\" width=\"672\" height=\"240\" aria-label=\"Multi-Agent Swarm Ring Simulation\"></canvas>\n" +
-"              <div class=\"sim-caption\" id=\"swarm-metrics\">Agent Line Budget: 210/256 Lines (82%) | Hallucination Drift: 0.00% | Consensus: Synchronized</div>\n" +
-"            </div>\n" +
-"          </div>\n" +
-"        </div>\n" +
-"      </details>\n" +
-"      <!-- Sovereign Multi-Target (COLLAPSED) -->\n" +
-"      <details class=\"drop\">\n" +
-"        <summary>Sovereign Multi-Target</summary>\n" +
-"        <div class=\"drop-body\">\n" +
-"          <p>Standalone emission with zero toolchain lock-in. Direct emission to pure WebAssembly (WasmGC) for edge isolation, bare-metal x86_64/AArch64 ELF, optimized LLVM SSA IR (-O3), or portable ISO C99 without libc dependencies. See <a href=\"#cli\">compiler pipeline</a>.</p>\n" +
-"          <div class=\"sim-container\" style=\"margin-top: 1rem; margin-bottom: 0.5rem;\">\n" +
-"            <div class=\"sim-toolbar\">\n" +
-"              <span class=\"sim-title\">🔬 Adversarial Double-Run Invariant Prover &amp; Hard-Science Verifier</span>\n" +
-"              <div class=\"sim-actions\">\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"verify-run\">▶ Run Sequential Proof</button>\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"verify-leak\">🧪 Inject State Leak</button>\n" +
-"                <button type=\"button\" class=\"sim-action-btn\" id=\"verify-reset\">Reset</button>\n" +
-"              </div>\n" +
-"            </div>\n" +
-"            <div class=\"sim-canvas-wrap\">\n" +
-"              <canvas id=\"verify-canvas\" width=\"672\" height=\"240\" aria-label=\"Zero-Trust Verification Double-Run Invariant Prover\"></canvas>\n" +
-"              <div class=\"sim-caption\" id=\"verify-status\">Sequential Double-Run Prover: Run #1 SHA-256 == Run #2 SHA-256 (Delta: 0x00 | Invariant Holds)</div>\n" +
-"            </div>\n" +
-"          </div>\n" +
-"        </div>\n" +
-"      </details>\n";
+"      "<!-- ooda -->\n" +
+"<details class=\"drop\">\n" +
+"<summary>ooda — one source, four native targets</summary>\n" +
+"<div class=\"drop-body\">\n" +
+"<p>One <code>.oo</code> source. Four native output formats chosen at build time: bare-metal ELF (x86_64 / AArch64), WebAssembly, portable C99, or LLVM SSA IR. Same semantics, four execution surfaces. No toolchain lock-in.</p>\n" +
+"<div class=\"sim-container\" style=\"margin-top: 1rem; margin-bottom: 0.5rem;\">\n" +
+"<div class=\"sim-toolbar\"><span class=\"sim-title\">⚙ ooda — single source, four targets</span></div>\n" +
+"<div class=\"sim-canvas-wrap\">\n" +
+"<svg viewBox=\"0 0 672 280\" style=\"width:100%;height:auto;max-width:672px;display:block;background:var(--panel);border:1px solid var(--border);border-radius:4px;\">\n" +
+"<defs><marker id=\"arrow-o\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\"><path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"var(--accent)\"/></marker></defs>\n" +
+"<rect x=\"276\" y=\"110\" width=\"120\" height=\"60\" rx=\"4\" fill=\"var(--bg)\" stroke=\"var(--accent)\" stroke-width=\"1.5\"/>\n" +
+"<text x=\"336\" y=\"138\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"13\" fill=\"var(--fg)\" font-weight=\"700\">hello.oo</text>\n" +
+"<text x=\"336\" y=\"156\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"9\" fill=\"var(--muted)\">fn main() { ... }</text>\n" +
+"<line x1=\"276\" y1=\"140\" x2=\"180\" y2=\"60\" stroke=\"var(--accent)\" stroke-width=\"1.5\" marker-end=\"url(#arrow-o)\"/>\n" +
+"<line x1=\"396\" y1=\"140\" x2=\"492\" y2=\"60\" stroke=\"var(--accent)\" stroke-width=\"1.5\" marker-end=\"url(#arrow-o)\"/>\n" +
+"<line x1=\"276\" y1=\"140\" x2=\"180\" y2=\"220\" stroke=\"var(--accent)\" stroke-width=\"1.5\" marker-end=\"url(#arrow-o)\"/>\n" +
+"<line x1=\"396\" y1=\"140\" x2=\"492\" y2=\"220\" stroke=\"var(--accent)\" stroke-width=\"1.5\" marker-end=\"url(#arrow-o)\"/>\n" +
+"<rect x=\"40\" y=\"20\" width=\"140\" height=\"50\" rx=\"4\" fill=\"var(--bg)\" stroke=\"#3b82f6\" stroke-width=\"1.5\"/>\n" +
+"<text x=\"110\" y=\"42\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"14\" fill=\"#3b82f6\" font-weight=\"700\">ELF</text>\n" +
+"<text x=\"110\" y=\"58\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"9\" fill=\"var(--muted)\">x86_64 / AArch64</text>\n" +
+"<rect x=\"492\" y=\"20\" width=\"140\" height=\"50\" rx=\"4\" fill=\"var(--bg)\" stroke=\"#a855f7\" stroke-width=\"1.5\"/>\n" +
+"<text x=\"562\" y=\"42\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"14\" fill=\"#a855f7\" font-weight=\"700\">WASM</text>\n" +
+"<text x=\"562\" y=\"58\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"9\" fill=\"var(--muted)\">WasmGC</text>\n" +
+"<rect x=\"40\" y=\"210\" width=\"140\" height=\"50\" rx=\"4\" fill=\"var(--bg)\" stroke=\"#10b981\" stroke-width=\"1.5\"/>\n" +
+"<text x=\"110\" y=\"232\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"14\" fill=\"#10b981\" font-weight=\"700\">C99</text>\n" +
+"<text x=\"110\" y=\"248\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"9\" fill=\"var(--muted)\">portable, no libc</text>\n" +
+"<rect x=\"492\" y=\"210\" width=\"140\" height=\"50\" rx=\"4\" fill=\"var(--bg)\" stroke=\"#f97316\" stroke-width=\"1.5\"/>\n" +
+"<text x=\"562\" y=\"232\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"14\" fill=\"#f97316\" font-weight=\"700\">LLVM</text>\n" +
+"<text x=\"562\" y=\"248\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"9\" fill=\"var(--muted)\">SSA IR</text>\n" +
+"</svg>\n" +
+"<div class=\"sim-caption\">Same .oo source → four execution surfaces. Pick at build time.</div>\n" +
+"</div>\n" +
+"</div>\n" +
+"</div>\n" +
+"</details>\n" +
+"\n" +
+"<!-- std -->\n" +
+"<details class=\"drop\">\n" +
+"<summary>std — eight functional domains, zero ambient authority</summary>\n" +
+"<div class=\"drop-body\">\n" +
+"<p>The library you import. Eight functional domains (app, core, fs, hw, meta, net, science, sec) covering collections, math, filesystem, network, hardware, security, and hard-science primitives. No ambient authority — every effect requires an explicit capability token.</p>\n" +
+"<div class=\"sim-container\" style=\"margin-top: 1rem; margin-bottom: 0.5rem;\">\n" +
+"<div class=\"sim-toolbar\"><span class=\"sim-title\">📚 std — 8 functional domains</span></div>\n" +
+"<div class=\"sim-canvas-wrap\">\n" +
+"<svg viewBox=\"0 0 672 280\" style=\"width:100%;height:auto;max-width:672px;display:block;background:var(--panel);border:1px solid var(--border);border-radius:4px;\">\n" +
+"<g transform=\"translate(336,140)\">\n" +
+"<circle r=\"100\" fill=\"none\" stroke=\"var(--border)\" stroke-width=\"0.5\"/>\n" +
+"<circle r=\"70\" fill=\"none\" stroke=\"var(--border)\" stroke-width=\"0.5\"/>\n" +
+"<circle r=\"40\" fill=\"var(--bg)\" stroke=\"var(--accent)\" stroke-width=\"1.5\"/>\n" +
+"<text y=\"-2\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"11\" fill=\"var(--accent)\" font-weight=\"700\">173</text>\n" +
+"<text y=\"10\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"8\" fill=\"var(--muted)\">modules</text>\n" +
+"</g>\n" +
+"<path d=\"M 336 40 A 100 100 0 0 1 415 75\" fill=\"none\" stroke=\"#3b82f6\" stroke-width=\"22\"/>\n" +
+"<path d=\"M 415 75 A 100 100 0 0 1 436 165\" fill=\"none\" stroke=\"#a855f7\" stroke-width=\"22\"/>\n" +
+"<path d=\"M 436 165 A 100 100 0 0 1 376 235\" fill=\"none\" stroke=\"#10b981\" stroke-width=\"22\"/>\n" +
+"<path d=\"M 376 235 A 100 100 0 0 1 296 235\" fill=\"none\" stroke=\"#f97316\" stroke-width=\"22\"/>\n" +
+"<path d=\"M 296 235 A 100 100 0 0 1 236 165\" fill=\"none\" stroke=\"#ec4899\" stroke-width=\"22\"/>\n" +
+"<path d=\"M 236 165 A 100 100 0 0 1 257 75\" fill=\"none\" stroke=\"#06b6d4\" stroke-width=\"22\"/>\n" +
+"<path d=\"M 257 75 A 100 100 0 0 1 336 40\" fill=\"none\" stroke=\"#eab308\" stroke-width=\"22\"/>\n" +
+"<path d=\"M 336 40 A 100 100 0 0 1 257 75\" fill=\"none\" stroke=\"#8b5cf6\" stroke-width=\"22\"/>\n" +
+"<text x=\"442\" y=\"65\" font-family=\"monospace\" font-size=\"11\" fill=\"var(--fg)\">app</text>\n" +
+"<text x=\"468\" y=\"135\" font-family=\"monospace\" font-size=\"11\" fill=\"var(--fg)\">core</text>\n" +
+"<text x=\"460\" y=\"200\" font-family=\"monospace\" font-size=\"11\" fill=\"var(--fg)\">fs</text>\n" +
+"<text x=\"402\" y=\"252\" font-family=\"monospace\" font-size=\"11\" fill=\"var(--fg)\">hw</text>\n" +
+"<text x=\"270\" y=\"252\" font-family=\"monospace\" font-size=\"11\" fill=\"var(--fg)\">meta</text>\n" +
+"<text x=\"208\" y=\"200\" font-family=\"monospace\" font-size=\"11\" fill=\"var(--fg)\">net</text>\n" +
+"<text x=\"200\" y=\"135\" font-family=\"monospace\" font-size=\"11\" fill=\"var(--fg)\">science</text>\n" +
+"<text x=\"226\" y=\"65\" font-family=\"monospace\" font-size=\"11\" fill=\"var(--fg)\">sec</text>\n" +
+"</svg>\n" +
+"<div class=\"sim-caption\">173 modules across 8 domains. Zero ambient authority. Every effect needs an explicit cap token.</div>\n" +
+"</div>\n" +
+"</div>\n" +
+"</div>\n" +
+"</details>\n" +
+"\n" +
+"<!-- opm -->\n" +
+"<details class=\"drop\">\n" +
+"<summary>opm — content-addressed, capability-declared packages</summary>\n" +
+"<div class=\"drop-body\">\n" +
+"<p>The package manager. Every package is content-addressed by SHA-256 and declares its capability requirements up front. Install, search, publish, lock. No supply chain surprises, no ambient dependencies.</p>\n" +
+"<div class=\"sim-container\" style=\"margin-top: 1rem; margin-bottom: 0.5rem;\">\n" +
+"<div class=\"sim-toolbar\"><span class=\"sim-title\">📦 opm — cas-by-sha + capability tags</span></div>\n" +
+"<div class=\"sim-canvas-wrap\">\n" +
+"<svg viewBox=\"0 0 672 280\" style=\"width:100%;height:auto;max-width:672px;display:block;background:var(--panel);border:1px solid var(--border);border-radius:4px;\">\n" +
+"<rect x=\"200\" y=\"60\" width=\"272\" height=\"160\" rx=\"6\" fill=\"var(--bg)\" stroke=\"var(--accent)\" stroke-width=\"1.5\"/>\n" +
+"<text x=\"336\" y=\"88\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"14\" fill=\"var(--fg)\" font-weight=\"700\">openooda-std</text>\n" +
+"<text x=\"336\" y=\"106\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"10\" fill=\"var(--muted)\">version 1.0.0 · MIT / Apache-2.0</text>\n" +
+"<line x1=\"220\" y1=\"118\" x2=\"452\" y2=\"118\" stroke=\"var(--border)\" stroke-width=\"0.5\"/>\n" +
+"<text x=\"220\" y=\"134\" font-family=\"monospace\" font-size=\"9\" fill=\"var(--muted)\">sha256:</text>\n" +
+"<text x=\"220\" y=\"148\" font-family=\"monospace\" font-size=\"9\" fill=\"var(--accent)\">ba7816bf8f01cfea414140de</text>\n" +
+"<text x=\"220\" y=\"160\" font-family=\"monospace\" font-size=\"9\" fill=\"var(--accent)\">5dae2223b00361a396177a9c</text>\n" +
+"<line x1=\"220\" y1=\"172\" x2=\"452\" y2=\"172\" stroke=\"var(--border)\" stroke-width=\"0.5\"/>\n" +
+"<text x=\"220\" y=\"190\" font-family=\"monospace\" font-size=\"9\" fill=\"var(--muted)\">capabilities:</text>\n" +
+"<rect x=\"218\" y=\"196\" width=\"80\" height=\"16\" rx=\"3\" fill=\"var(--bg)\" stroke=\"var(--accent)\" stroke-width=\"0.5\"/>\n" +
+"<text x=\"258\" y=\"207\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"9\" fill=\"var(--accent)\">&amp;AllocCap</text>\n" +
+"<rect x=\"304\" y=\"196\" width=\"80\" height=\"16\" rx=\"3\" fill=\"var(--bg)\" stroke=\"var(--accent)\" stroke-width=\"0.5\"/>\n" +
+"<text x=\"344\" y=\"207\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"9\" fill=\"var(--accent)\">&amp;FsReadCap</text>\n" +
+"<rect x=\"390\" y=\"196\" width=\"62\" height=\"16\" rx=\"3\" fill=\"var(--bg)\" stroke=\"var(--accent)\" stroke-width=\"0.5\"/>\n" +
+"<text x=\"421\" y=\"207\" text-anchor=\"middle\" font-family=\"monospace\" font-size=\"9\" fill=\"var(--accent)\">&amp;NetCap</text>\n" +
+"</svg>\n" +
+"<div class=\"sim-caption\">Every package: SHA-256 pinned, capability-declared, no ambient dependencies.</div>\n" +
+"</div>\n" +
+"</div>\n" +
+"</div>\n" +
+"</details>\n" +
+"\n" +
+"<!-- cli -->\n" +
+"<details class=\"drop\">\n" +
+"<summary>cli — thirteen subcommands, parallel double-run invariant</summary>\n" +
+"<div class=\"drop-body\">\n" +
+"<p>The <code>ooda</code> binary. Thirteen subcommands that compose like Unix: build, run, gen, test, install, bench, init, context, health, fix, digest, fmt, token. Tests run twice sequentially; if outputs diverge, the build fails.</p>\n" +
+"<div class=\"sim-container\" style=\"margin-top: 1rem; margin-bottom: 0.5rem;\">\n" +
+"<div class=\"sim-toolbar\"><span class=\"sim-title\">$ cli — composable, double-run invariant</span></div>\n" +
+"<div class=\"sim-canvas-wrap\">\n" +
+"<div style=\"background:#0d1117;border:1px solid var(--border);border-radius:4px;padding:1rem;font-family:monospace;font-size:0.85rem;color:#c9d1d9;line-height:1.5;\">\n" +
+"<div style=\"color:#8b949e;\">$ ooda build &amp;&amp; ooda test &amp;&amp; ooda ship</div>\n" +
+"<div style=\"color:#7ee787;\">✓ build: 12ms · 4 modules · 1 cap token</div>\n" +
+"<div style=\"color:#7ee787;\">✓ test: 4/4 pass · deterministic · 0.4ms</div>\n" +
+"<div style=\"color:#7ee787;\">✓ ship: artifact ready · 28 KB ELF</div>\n" +
+"<div style=\"color:#8b949e;margin-top:0.5rem;\">$ ooda test --double-run</div>\n" +
+"<div style=\"color:#c9d1d9;\">run #1 sha256: 3a7f...d8e2</div>\n" +
+"<div style=\"color:#c9d1d9;\">run #2 sha256: 3a7f...d8e2</div>\n" +
+"<div style=\"color:#7ee787;\">✓ deterministic — hashes match</div>\n" +
+"</div>\n" +
+"<div class=\"sim-caption\">Composes like Unix. Verifies determinism on every test run.</div>\n" +
+"</div>\n" +
+"</div>\n" +
+"</div>\n" +
+"</details>\n" +
+"\n" +
+"<!-- lsp -->\n" +
+"<details class=\"drop\">\n" +
+"<summary>lsp — your editor knows the fourteen capability tokens</summary>\n" +
+"<div class=\"drop-body\">\n" +
+"<p>The Language Server. Brings completion, hover, definition, formatting, and capability-aware documentation to any LSP editor (VS Code, Neovim, Helix, Emacs, Vim). Sixteen methods, five editor integrations, one truth.</p>\n" +
+"<div class=\"sim-container\" style=\"margin-top: 1rem; margin-bottom: 0.5rem;\">\n" +
+"<div class=\"sim-toolbar\"><span class=\"sim-title\">⌨ lsp — completion + cap-token awareness</span></div>\n" +
+"<div class=\"sim-canvas-wrap\">\n" +
+"<div style=\"background:#0d1117;border:1px solid var(--border);border-radius:4px;padding:1rem;font-family:monospace;font-size:0.82rem;color:#c9d1d9;line-height:1.5;position:relative;\">\n" +
+"<div style=\"color:#8b949e;\">1</div>\n" +
+"<div style=\"color:#8b949e;\">2</div>\n" +
+"<div style=\"color:#8b949e;\">3</div>\n" +
+"<div style=\"color:#8b949e;\">4</div>\n" +
+"<div style=\"position:absolute;left:2.5rem;top:1rem;color:#ff7b72;\">pub fn</div>\n" +
+"<div style=\"position:absolute;left:5.5rem;top:1rem;color:#d2a8ff;\">read_user</div>\n" +
+"<div style=\"position:absolute;left:9.5rem;top:1rem;color:#c9d1d9;\">(</div>\n" +
+"<div style=\"position:absolute;left:2.5rem;top:2.2rem;color:#c9d1d9;\">  fs: <span style=\"color:#ffa657;\">&amp;FsReadCap</span>,</div>\n" +
+"<div style=\"position:absolute;left:2.5rem;top:3.4rem;color:#c9d1d9;\">) -&gt; Result&lt;String, String&gt; {</div>\n" +
+"<div style=\"position:absolute;left:6.5rem;top:4.6rem;background:#1f6feb;color:#fff;padding:0.1rem 0.5rem;border-radius:3px;\">&amp;FsReadCap</div>\n" +
+"</div>\n" +
+"<div style=\"margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:0.3rem;font-family:monospace;font-size:0.7rem;\">\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;FsReadCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;FsWriteCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;NetCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;AllocCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;ProcessCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;SysCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;ThreadCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;GpuCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;RandCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;TimeCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;TcpCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;UdpCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;BindCap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;UnsafeFFICap</span>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--muted);text-decoration:line-through;opacity:0.5;\">&amp;EnvCap (deprecated)</span>\n" +
+"</div>\n" +
+"<div class=\"sim-caption\">14 capability tokens. The editor knows which one your function takes.</div>\n" +
+"</div>\n" +
+"</div>\n" +
+"</div>\n" +
+"</details>\n" +
+"\n" +
+"<!-- mcp -->\n" +
+"<details class=\"drop\">\n" +
+"<summary>mcp — twenty-three tools for AI agents, five tiers</summary>\n" +
+"<div class=\"drop-body\">\n" +
+"<p>The Model Context Protocol server. Twenty-three typed tools that AI agents (Claude, Cursor, custom) call to read code, run tests, inspect capability graphs, and audit. Tool calls are capability-scoped. The agent doesn't escape its authority.</p>\n" +
+"<div class=\"sim-container\" style=\"margin-top: 1rem; margin-bottom: 0.5rem;\">\n" +
+"<div class=\"sim-toolbar\"><span class=\"sim-title\">🤖 mcp — agent + 23 tools, 5 tiers</span></div>\n" +
+"<div class=\"sim-canvas-wrap\">\n" +
+"<svg viewBox=\"0 0 672 300\" style=\"width:100%;height:auto;max-width:672px;display:block;background:var(--panel);border:1px solid var(--border);border-radius:4px;\">\n" +
+"<g transform=\"translate(336,150)\">\n" +
+"<circle r=\"22\" fill=\"var(--bg)\" stroke=\"var(--accent)\" stroke-width=\"1.5\"/>\n" +
+"<text y=\"3\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"10\" fill=\"var(--accent)\" font-weight=\"700\">agent</text>\n" +
+"</g>\n" +
+"<g transform=\"translate(336,150)\" fill=\"none\" stroke=\"var(--border)\" stroke-width=\"0.5\">\n" +
+"<circle r=\"42\"/>\n" +
+"<circle r=\"72\"/>\n" +
+"<circle r=\"102\"/>\n" +
+"<circle r=\"132\"/>\n" +
+"</g>\n" +
+"<g fill=\"#3b82f6\">\n" +
+"<circle cx=\"378\" cy=\"150\" r=\"4\"/>\n" +
+"<circle cx=\"294\" cy=\"150\" r=\"4\"/>\n" +
+"<circle cx=\"336\" cy=\"108\" r=\"4\"/>\n" +
+"<circle cx=\"336\" cy=\"192\" r=\"4\"/>\n" +
+"<circle cx=\"368\" cy=\"113\" r=\"4\"/>\n" +
+"</g>\n" +
+"<g fill=\"#a855f7\">\n" +
+"<circle cx=\"408\" cy=\"150\" r=\"4\"/>\n" +
+"<circle cx=\"264\" cy=\"150\" r=\"4\"/>\n" +
+"<circle cx=\"400\" cy=\"115\" r=\"4\"/>\n" +
+"<circle cx=\"272\" cy=\"185\" r=\"4\"/>\n" +
+"<circle cx=\"365\" cy=\"78\" r=\"4\"/>\n" +
+"</g>\n" +
+"<g fill=\"#10b981\">\n" +
+"<circle cx=\"438\" cy=\"150\" r=\"4\"/>\n" +
+"<circle cx=\"234\" cy=\"150\" r=\"4\"/>\n" +
+"<circle cx=\"430\" cy=\"112\" r=\"4\"/>\n" +
+"<circle cx=\"242\" cy=\"188\" r=\"4\"/>\n" +
+"</g>\n" +
+"<g fill=\"#f97316\">\n" +
+"<circle cx=\"466\" cy=\"150\" r=\"4\"/>\n" +
+"<circle cx=\"206\" cy=\"150\" r=\"4\"/>\n" +
+"<circle cx=\"460\" cy=\"118\" r=\"4\"/>\n" +
+"<circle cx=\"212\" cy=\"182\" r=\"4\"/>\n" +
+"</g>\n" +
+"<g fill=\"#ec4899\">\n" +
+"<circle cx=\"466\" cy=\"105\" r=\"4\"/>\n" +
+"<circle cx=\"466\" cy=\"195\" r=\"4\"/>\n" +
+"<circle cx=\"206\" cy=\"105\" r=\"4\"/>\n" +
+"<circle cx=\"206\" cy=\"195\" r=\"4\"/>\n" +
+"<circle cx=\"336\" cy=\"18\" r=\"4\"/>\n" +
+"<circle cx=\"468\" cy=\"18\" r=\"4\"/>\n" +
+"<circle cx=\"204\" cy=\"18\" r=\"4\"/>\n" +
+"</g>\n" +
+"<text x=\"468\" y=\"48\" font-family=\"monospace\" font-size=\"8\" fill=\"#3b82f6\">T0 core</text>\n" +
+"<text x=\"468\" y=\"78\" font-family=\"monospace\" font-size=\"8\" fill=\"#a855f7\">T1 tokens</text>\n" +
+"<text x=\"468\" y=\"108\" font-family=\"monospace\" font-size=\"8\" fill=\"#10b981\">T2 ooda</text>\n" +
+"<text x=\"468\" y=\"138\" font-family=\"monospace\" font-size=\"8\" fill=\"#f97316\">T3 fmt</text>\n" +
+"<text x=\"468\" y=\"168\" font-family=\"monospace\" font-size=\"8\" fill=\"#ec4899\">T4 ws</text>\n" +
+"<text x=\"12\" y=\"288\" font-family=\"monospace\" font-size=\"8\" fill=\"var(--muted)\">23 tools · 5 tiers · 14 cap tokens</text>\n" +
+"<circle cx=\"50\" cy=\"20\" r=\"3\" fill=\"#3b82f6\"/>\n" +
+"<text x=\"58\" y=\"23\" font-family=\"monospace\" font-size=\"8\" fill=\"var(--muted)\">5</text>\n" +
+"<circle cx=\"78\" cy=\"20\" r=\"3\" fill=\"#a855f7\"/>\n" +
+"<text x=\"86\" y=\"23\" font-family=\"monospace\" font-size=\"8\" fill=\"var(--muted)\">5</text>\n" +
+"<circle cx=\"106\" cy=\"20\" r=\"3\" fill=\"#10b981\"/>\n" +
+"<text x=\"114\" y=\"23\" font-family=\"monospace\" font-size=\"8\" fill=\"var(--muted)\">4</text>\n" +
+"<circle cx=\"134\" cy=\"20\" r=\"3\" fill=\"#f97316\"/>\n" +
+"<text x=\"142\" y=\"23\" font-family=\"monospace\" font-size=\"8\" fill=\"var(--muted)\">2</text>\n" +
+"<circle cx=\"162\" cy=\"20\" r=\"3\" fill=\"#ec4899\"/>\n" +
+"<text x=\"170\" y=\"23\" font-family=\"monospace\" font-size=\"8\" fill=\"var(--muted)\">7</text>\n" +
+"</svg>\n" +
+"<div class=\"sim-caption\">AI agents can introspect the whole system — but only through capability-scoped tools.</div>\n" +
+"</div>\n" +
+"</div>\n" +
+"</div>\n" +
+"</details>\n";
 
 
 function isExternalUrl(target) {
