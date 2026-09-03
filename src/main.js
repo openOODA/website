@@ -96,10 +96,7 @@ const DEFAULT_ROUTE = "home";
 const HOME_HTML = "\n" +
 "      <h1 class=\"visually-hidden\">openOODA — Sovereign Systems Language for the AI Era</h1>\n" +
 "      <!-- Intro & OODA Tactical Dogfight Dropdown (AUTO-EXPANDED) -->\n" +
-"      <details class=\"drop\">\n" +
-"        <summary>openOODA is an AI-native, capability-secure systems programming language built for sovereign software synthesis.</summary>\n" +
-"        \n" +
-"      </details>\n" +
+"      <p class=\"intro\" style=\"font-size:1.05rem;font-weight:600;margin:0 0 1.5rem;line-height:1.5;\">openOODA is an AI-native, capability-secure systems programming language built for sovereign software synthesis.</p>\n" +
 "      <div class=\"install\">\n" +
 "        <span class=\"install-cmd\">curl -fsSL <a href=\"https://openooda.org/install.sh\">https://openooda.org/install.sh</a> | bash</span>\n" +
 "        <button type=\"button\" id=\"copy\">copy</button>\n" +
