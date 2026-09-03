@@ -6238,11 +6238,21 @@ renderRoute = function(rawRoute) {
     originalRenderRoute(r);
     return;
   }
+  // The WASM ooda_app_route() was an experiment; it's compiled against an
+  // older route table that doesn't know about "openOODA" (the new front-
+  // door route added in v1.1.0). When the WASM returns an ID that maps
+  // to a *different* route than what the user asked for, we honor the
+  // JS route instead so the user always lands where they clicked.
   if (typeof window !== "undefined" && window.wasmActive && window.wasmInstance && window.wasmInstance.exports.ooda_app_route) {
     var inputId = ROUTE_NAME_TO_ID[r] || 1;
     var executedId = window.wasmInstance.exports.ooda_app_route(inputId);
     var dispatchedName = ROUTE_ID_TO_NAME[executedId] || r;
-    originalRenderRoute(dispatchedName);
+    if (dispatchedName !== r && ROUTE_NAME_TO_ID[r]) {
+      // WASM disagreed with a known JS route — JS wins.
+      originalRenderRoute(r);
+    } else {
+      originalRenderRoute(dispatchedName);
+    }
   } else {
     originalRenderRoute(r);
   }
