@@ -234,7 +234,7 @@ const HOME_HTML = "\n" +
 "\n" +
 "<!-- lsp -->\n" +
 "<details class=\"drop\">\n" +
-"<summary>lsp — your editor knows the fourteen capability tokens</summary>\n" +
+"<summary>lsp — your editor knows the capability tokens</summary>\n" +
 "<div class=\"drop-body\">\n" +
 "<p>The Language Server. Brings completion, hover, definition, formatting, and capability-aware documentation to any LSP editor (VS Code, Neovim, Helix, Emacs, Vim). Sixteen methods, five editor integrations, one truth.</p>\n" +
 "<div class=\"sim-container\" style=\"margin-top: 1rem; margin-bottom: 0.5rem;\">\n" +
@@ -267,8 +267,7 @@ const HOME_HTML = "\n" +
 "<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;UdpCap</span>\n" +
 "<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;BindCap</span>\n" +
 "<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;UnsafeFFICap</span>\n" +
-"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--muted);text-decoration:line-through;opacity:0.5;\">&amp;EnvCap (deprecated)</span>\n" +
-"</div>\n" +
+"<span style=\"background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);\">&amp;EnvCap</span>\n" +"</div>\n" +
 "<div class=\"sim-caption\">14 capability tokens. The editor knows which one your function takes.</div>\n" +
 "</div>\n" +
 "</div>\n" +
