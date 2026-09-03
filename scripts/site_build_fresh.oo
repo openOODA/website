@@ -1,6 +1,6 @@
 // # SSG Hermetic Rebuild Orchestrator
 //
-// Logline: Validate OODA_REPO_ROOT against an absolute, shell-metachar-free allowlist, purge .ooda-cache subtrees, /tmp scratch binaries, *.oo.bin emit artifacts, and the openOODA.github.io/ output tree, then run site_build.oo and site_sync_appjs.oo inside an env -i hermetic subshell so the resulting site is bit-exact reproducible from current source.
+// Logline: Validate OODA_REPO_ROOT against an absolute, shell-metachar-free allowlist, purge .ooda-cache subtrees, /tmp scratch binaries, *.oo.bin emit artifacts, and the openOODA/website/ output tree, then run site_build.oo and site_sync_appjs.oo inside an env -i hermetic subshell so the resulting site is bit-exact reproducible from current source.
 //
 // Setup: Requires &ProcessCap for subshell invocation, &EnvCap for OODA_REPO_ROOT resolution, &FsReadCap for path existence and ooda binary probe, &FsWriteCap for recursive purges and directory creation. No ambient authority is assumed; every precondition is fail-closed.
 //
@@ -62,7 +62,7 @@ pub fn main(p: &ProcessCap, env: &EnvCap, fs: &FsReadCap, fw: &FsWriteCap) {
     if !path_exists(fs, ooda_bin) { fail("ooda binary missing: " + ooda_bin); }
 
     let scripts_dir: String = root + "/openOODA/website/scripts";
-    let site_dir: String = root + "/openOODA.github.io";
+    let site_dir: String = root + "/openOODA/website";
 
     if !ok_cmd(p, "rm -rf '" + root + "/.ooda-cache/check' '" + root + "/.ooda-cache/manifests' '" + root + "/.ooda-cache/ooda-tmp' /tmp/build_ssg* /tmp/ssg_*") { fail(".ooda-cache subdir purge failed"); }
     purge_oo_bins(fs, fw, scripts_dir);

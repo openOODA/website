@@ -373,7 +373,7 @@ desc: "Installation via curl, authoring your first .oo program, running tests, a
 {
 title: "Sovereign Package Manager & CAS Registry",
 route: "packages",
-desc: "Content-Addressed Storage (CAS) hashes, zero ambient dependency sandboxing, capability grants, and registry.openooda.org."
+desc: "Content-Addressed Storage (CAS) hashes, zero ambient dependency sandboxing, capability grants, and openooda.org/#registry."
 },
 {
 title: "Sovereign Manifesto",

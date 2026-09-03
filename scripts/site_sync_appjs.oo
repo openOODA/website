@@ -1,6 +1,6 @@
 // # Sync app.js DOCS
 //
-// Logline: Embed openOODA.github.io/guide/*.oot documents into app.js as the DOCS object.
+// Logline: Embed openOODA/website/guide/*.oot documents into app.js as the DOCS object.
 //
 // Setup: Run from repository root with FsReadCap, FsWriteCap, ProcessCap, EnvCap.
 //

@@ -5,7 +5,7 @@
 // Setup: Requires &FsReadCap, &FsWriteCap, &EnvCap. Run via ./ooda/bin/ooda run openOODA/website/scripts/site_build.oo.
 //
 // Beats:
-//   1. Resolve site root directory (openOODA.github.io) and absolute sandbox path.
+//   1. Resolve site root directory (openOODA/website) and absolute sandbox path.
 //   2. Load shell template and iterate route configurations.
 //   3. Compile markdown guides and template bodies into pre-rendered static HTML shells.
 //   4. Minify markup and emit all target HTML fallback files under &FsWriteCap.
