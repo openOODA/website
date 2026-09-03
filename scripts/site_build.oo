@@ -1,0 +1,194 @@
+// # SSG Master Build Orchestrator
+//
+// Logline: Master Static Site Generator compiling routes, fallback HTML shells, and AI orientation endpoints under capability grants.
+//
+// Setup: Requires &FsReadCap, &FsWriteCap, &EnvCap. Run via ./ooda/bin/ooda run openOODA/website/scripts/site_build.oo.
+//
+// Beats:
+//   1. Resolve site root directory (openOODA.github.io) and absolute sandbox path.
+//   2. Load shell template and iterate route configurations.
+//   3. Compile markdown guides and template bodies into pre-rendered static HTML shells.
+//   4. Minify markup and emit all target HTML fallback files under &FsWriteCap.
+//   5. Generate 404 error fallback shell.
+//   6. Synchronize /llms.txt and /llms-full.txt directly from canonical openOODA/LLMS.oot.
+
+import "std/core/str.oo";
+import "site_routes.oo";
+import "site_template.oo";
+import "site_minify.oo";
+import "util_env.oo";
+
+pub fn resolve_site_root(fs: &FsReadCap, env: &EnvCap) -> String {
+    let site_root: String = env_required_dir(fs, env, "OODA_SITE_ROOT");
+    if path_exists(fs, site_root + "/templates/shell.html") { return site_root; }
+    println("FAIL [SSG] OODA_SITE_ROOT does not contain templates/shell.html");
+    process_exit(1);
+}
+
+fn resolve_abs_dest(rel_path: String) -> String {
+    if str_starts_with(rel_path, "/") {
+        return rel_path;
+    }
+    println("FAIL [SSG] destination path is not absolute: " + rel_path);
+    process_exit(1);
+}
+
+fn ensure_parent_dir(fs_w: &FsWriteCap, path: String) {
+    let n: Int = str_len(path);
+    let mut last_slash: Int = -1;
+    let mut i: Int = 0;
+    while i < n {
+        if char_at(path, i) == "/" {
+            last_slash = i;
+        }
+        i = i + 1;
+    }
+    if last_slash > 0 {
+        let dir: String = byte_slice(path, 0, last_slash);
+        let mk: Result[Void, String] = oo_fs_mkdir(fs_w, dir);
+        if mk.is_err() {
+            println("FAIL [SSG] cannot create directory: " + dir);
+            process_exit(1);
+        }
+    }
+}
+
+fn write_html_file(fs_w: &FsWriteCap, rel_dest: String, content: String) -> Result[Void, String] {
+    let abs_path: String = resolve_abs_dest(rel_dest);
+    ensure_parent_dir(fs_w, abs_path);
+    return write_file(fs_w, abs_path, content);
+}
+
+pub fn main(fs_r: &FsReadCap, fs_w: &FsWriteCap, env: &EnvCap) {
+    let site_root: String = resolve_site_root(fs_r, env);
+    let shell_path: String = site_root + "/templates/shell.html";
+    let shell_res: Result[String, String] = read_file(fs_r, shell_path);
+    if shell_res.is_err() {
+        println("FAIL [SSG] cannot load shell template: " + shell_path);
+        process_exit(1);
+        return;
+    }
+    let shell_tmpl: String = match shell_res { Ok(t) => t, Err(_) => "" };
+
+    let num_routes: Int = get_routes_count();
+    let mut generated_count: Int = 0;
+    let mut idx: Int = 0;
+
+    while idx < num_routes {
+        let cfg: RouteConfig = get_route_by_idx(idx);
+        let r_name: String = route_name(cfg);
+        let r_out: String = route_out_file(cfg);
+        let r_canon: String = route_canonical(cfg);
+        let r_title: String = route_title(cfg);
+        let r_desc: String = route_description(cfg);
+        let r_og: String = route_og_title(cfg);
+        let r_st: String = route_schema_type(cfg);
+        let r_has_a: Bool = route_has_alias(cfg);
+        let r_alias: String = route_alias_file(cfg);
+
+        let body_res: Result[String, String] = get_route_body(fs_r, site_root, cfg);
+        if body_res.is_err() {
+            println("FAIL [SSG] " + r_name);
+            process_exit(1);
+            return;
+        }
+        let body_html: String = match body_res { Ok(b) => b, Err(_) => "" };
+
+        let og_type: String = if str_eq(r_st, "TechArticle") { "article" } else { "website" };
+        let json_ld: String = generate_json_ld(cfg);
+        let page_html: String = render_shell(
+            shell_tmpl,
+            r_title,
+            r_desc,
+            r_og,
+            og_type,
+            r_canon,
+            json_ld,
+            body_html
+        );
+        let minified: String = minify_html(page_html);
+
+        // Write primary target
+        let dest1: String = site_root + "/" + r_out;
+        let wr1: Result[Void, String] = write_html_file(fs_w, dest1, minified + "\n");
+        if wr1.is_err() {
+            let err_msg: String = match wr1 { Ok(_) => "", Err(e) => e };
+            println("FAIL [SSG] write " + dest1 + " (" + err_msg + ")");
+            process_exit(1);
+            return;
+        }
+        println("[SSG] Generated " + r_out + " (Route: #" + r_name + ", Size: " + str_len(minified).to_string() + " bytes)");
+        generated_count = generated_count + 1;
+
+        // Write alias target if configured
+        if r_has_a {
+            let dest2: String = site_root + "/" + r_alias;
+            let wr2: Result[Void, String] = write_html_file(fs_w, dest2, minified + "\n");
+            if wr2.is_err() {
+                let err_msg2: String = match wr2 { Ok(_) => "", Err(e) => e };
+                println("FAIL [SSG] write alias " + dest2 + " (" + err_msg2 + ")");
+                process_exit(1);
+                return;
+            }
+            println("[SSG] Generated " + r_alias + " (Alias: #" + r_name + ", Size: " + str_len(minified).to_string() + " bytes)");
+            generated_count = generated_count + 1;
+        }
+
+        idx = idx + 1;
+    }
+
+    // Generate 404.html
+    let p404_res: Result[String, String] = read_file(fs_r, site_root + "/templates/404.html");
+    let p404_body: String = match p404_res {
+        Ok(b404) => b404,
+        Err(_) => "<h1>Page Not Found</h1>\n<p>The requested route does not exist. <a href=\"/\">Return to Home</a>.</p>"
+    };
+    let p404_html: String = render_shell(
+        shell_tmpl,
+        "openOODA — 404 Not Found",
+        "The requested route does not exist on the openOODA sovereign platform.",
+        "openOODA — 404 Not Found",
+        "website",
+        "https://openooda.org/404.html",
+        "{}",
+        p404_body
+    );
+    let minified_404: String = minify_html(p404_html);
+    let dest_404: String = site_root + "/404.html";
+    let wr_404: Result[Void, String] = write_html_file(fs_w, dest_404, minified_404 + "\n");
+    if wr_404.is_err() {
+        println("FAIL [SSG] write 404.html");
+        process_exit(1);
+        return;
+    }
+    println("[SSG] Updated 404.html (Size: " + str_len(minified_404).to_string() + " bytes)");
+    generated_count = generated_count + 1;
+
+    // Synchronize /llms.txt and /llms-full.txt directly from canonical openOODA/LLMS.oot
+    let repo_root: String = env_required_dir(fs_r, env, "OODA_REPO_ROOT");
+    let llms_path: String = repo_root + "/openOODA/LLMS.oot";
+    if path_exists(fs_r, llms_path) {
+        let llms_res: Result[String, String] = read_file(fs_r, llms_path);
+        if llms_res.is_ok() {
+            let llms_text: String = match llms_res { Ok(s) => s, Err(_) => "" };
+            let dest_llms: String = site_root + "/llms.txt";
+            let wr_llms: Result[Void, String] = write_html_file(fs_w, dest_llms, llms_text);
+            if wr_llms.is_err() {
+                println("FAIL [SSG] write " + dest_llms);
+                process_exit(1);
+                return;
+            }
+            let dest_full: String = site_root + "/llms-full.txt";
+            let wr_full: Result[Void, String] = write_html_file(fs_w, dest_full, llms_text);
+            if wr_full.is_err() {
+                println("FAIL [SSG] write " + dest_full);
+                process_exit(1);
+                return;
+            }
+            println("[SSG] Synchronized llms.txt & llms-full.txt (Source: " + llms_path + ", Size: " + str_len(llms_text).to_string() + " bytes)");
+            generated_count = generated_count + 2;
+        }
+    }
+
+    println("[SSG] Complete: " + generated_count.to_string() + " targets generated with zero ambient authority.");
+}

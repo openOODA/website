@@ -1,0 +1,109 @@
+// # Sync app.js DOCS
+//
+// Logline: Embed openOODA.github.io/guide/*.oot documents into app.js as the DOCS object.
+//
+// Setup: Run from repository root with FsReadCap, FsWriteCap, ProcessCap, EnvCap.
+//
+// Beats:
+//   1. Resolve site root from OODA_SITE_ROOT; fail closed if templates/shell.html is missing.
+//   2. Enumerate .oot guide files and build a compact JSON object.
+//   3. Locate and replace the existing const DOCS block in app.js.
+//   4. Write the refreshed app.js under FsWriteCap.
+// RULES.oot 1.4: Pure .oo replacement for the unauthorized sync_appjs.py helper.
+
+import "util_env.oo";
+
+fn fail(p: &ProcessCap, msg: String) {
+    println("FAIL [sync_appjs] " + msg);
+    process_exit(1);
+}
+
+fn resolve_site_root(fs: &FsReadCap, env: &EnvCap) -> String {
+    let site_root: String = env_required_dir(fs, env, "OODA_SITE_ROOT");
+    if path_exists(fs, site_root + "/templates/shell.html") { return site_root; }
+    println("FAIL [sync_appjs] OODA_SITE_ROOT does not contain templates/shell.html");
+    process_exit(1);
+}
+
+fn json_escape_str(s: String) -> String {
+    let n: Int = chars_len(s);
+    let mut out: String = "";
+    let mut i: Int = 0;
+    while i < n {
+        let c: String = char_at(s, i);
+        if c == "\"" {
+            out = out + "\\\"";
+        } else if c == "\\" {
+            out = out + "\\\\";
+        } else if c == "\n" {
+            out = out + "\\n";
+        } else if c == "\r" {
+            out = out + "\\r";
+        } else if c == "\t" {
+            out = out + "\\t";
+        } else {
+            out = out + c;
+        }
+        i = i + 1;
+    }
+    return out;
+}
+
+fn build_docs_json(fs: &FsReadCap, guide_dir: String, entries: List[String]) -> String {
+    let mut out: String = "{";
+    let mut first: Bool = true;
+    let mut i: Int = 0;
+    let n: Int = list_len(entries);
+    while i < n {
+        let name: String = list_get(entries, i);
+        if !str_ends_with(name, ".oot") {
+            i = i + 1;
+            continue;
+        }
+        let path: String = guide_dir + "/" + name;
+        let r: Result[String, String] = read_file(fs, path);
+        if r.is_err() {
+            i = i + 1;
+            continue;
+        }
+        let text: String = match r { Ok(s) => s, Err(_) => "" };
+        if text == "" {
+            i = i + 1;
+            continue;
+        }
+        if !first {
+            out = out + ",";
+        }
+        first = false;
+        out = out + "\"" + json_escape_str(name) + "\":\"" + json_escape_str(text) + "\"";
+        i = i + 1;
+    }
+    out = out + "}";
+    return out;
+}
+
+pub fn main(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &EnvCap) {
+    let site_dir: String = resolve_site_root(fs, env);
+    let app_js: String = site_dir + "/app.js";
+    let guide_dir: String = site_dir + "/guide";
+    if !path_exists(fs, app_js) { fail(p, "app.js missing: " + app_js); }
+    if !path_exists(fs, guide_dir) { fail(p, "guide directory missing: " + guide_dir); }
+    let js_r: Result[String, String] = read_file(fs, app_js);
+    let js: String = match js_r {
+        Ok(s) => s,
+        Err(e) => { fail(p, "cannot read app.js: " + e); return; }
+    };
+    let prefix: String = "const DOCS = {";
+    let start: Int = str_index_of(js, prefix);
+    if start < 0 { fail(p, "const DOCS marker missing in app.js"); }
+    let next_marker: String = "const ROUTE_TO_DOC";
+    let end: Int = str_index_of(js, next_marker);
+    if end < 0 { fail(p, "cannot find const ROUTE_TO_DOC marker in app.js"); }
+    let entries: List[String] = oo_fs_read_dir(fs, guide_dir);
+    let docs: String = build_docs_json(fs, guide_dir, entries);
+    let head: String = byte_slice(js, 0, start);
+    let tail: String = byte_slice(js, end, bytes_len(js));
+    let new_js: String = head + "const DOCS = " + docs + ";\n" + tail;
+    if write_file(fw, app_js, new_js).is_err() { fail(p, "cannot write app.js"); }
+    println("[sync_appjs] embedded " + list_len(entries).to_string() + " entries into " + app_js);
+}

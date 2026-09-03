@@ -14,3 +14,4 @@
 //   7. wasm/site.wasm — the compiled WebAssembly runtime.
 //   8. sitemap.xml and robots.txt — crawler metadata.
 //   9. llms.txt and llms-full.txt — public LLM context.
+//  10. scripts/site_*.oo — pure .oo build pipeline (build, template, routes, markdown, minify, highlight, inline, sync_appjs, build_fresh).
