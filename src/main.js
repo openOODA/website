@@ -4088,6 +4088,15 @@ navigator.clipboard.writeText(cmd).then(ok, function () {});
 }
 };
 }
+// Force-collapse all home details on initial render.
+// Some browsers auto-open a <details> when focus moves to an
+// element inside it (e.g. the 9G Tactical Break button).
+// The HTML has no 'open' attribute; this guarantees the visual
+// state matches the attribute.
+var drops = document.querySelectorAll("main details.drop");
+for (var i = 0; i < drops.length; i++) {
+  drops[i].open = false;
+}
 }
 function setupPlayground() {
 var PRESETS = {
