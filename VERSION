@@ -1,0 +1,8 @@
+# website version
+#
+# The website is content-driven by the polyrepo. Bump when the
+# deployment shape changes (new repos added, sub-menu structure,
+# pulled/ mechanism, route additions). Content updates from the
+# polyrepo pull don't bump this version.
+
+website=1.0.0
