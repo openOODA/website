@@ -8708,13 +8708,6 @@ var raw = (route || "").replace(/^#/, "").trim();
 if (!raw || raw === "home" || raw === "/") raw = "home";
 var contentEl = document.getElementById("content");
 if (!contentEl) return;
-// Global nav active state
-document.querySelectorAll("aside .global a[data-route]").forEach(function (a) {
-var isAct = a.dataset.route === raw;
-if (a.classList.contains("active") !== isAct) {
-a.classList.toggle("active", isAct);
-}
-});
 // Local sub-menu active state
 document.querySelectorAll("aside .local a").forEach(function (a) {
 var isAct = a.dataset.route === raw;
