@@ -43,7 +43,7 @@ function setDomText(el, text) {
     apply(n);
   };
   var mail = document.getElementById("mail");
-  if (mail) mail.addEventListener("submit", function (ev) {
+  if (mail && typeof mail.addEventListener === "function") mail.addEventListener("submit", function (ev) {
     ev.preventDefault();
     var btn = document.getElementById("join");
     var email = (mail.email && mail.email.value) || "";

@@ -66,7 +66,7 @@ DRAW_JET[3] = function (ctx, jet, fPrimary, fAccent) {
   ctx.fillRect(-3, 10, 5, 2); // Starboard outer wing dihedral tip panel
 
 };
-DRAW_JET[4] = function (ctx, jet, fPrimary, fAccent) {
+DRAW_JET[4] = function (ctx, jet, fPrimary, fAccent, isLead, colors, alpha) {
   if (jet && (jet.variant === "F16" || (jet.callsign && jet.callsign.indexOf("VIPER") !== -1))) {
     // F-16 Fighting Falcon: single-engine lightweight agile fighter with cropped delta wings
     ctx.fillRect(8, -1, 4, 2);

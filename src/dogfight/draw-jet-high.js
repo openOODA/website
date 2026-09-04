@@ -2,7 +2,7 @@
 //
 // Logline: Raptor, NGAD, quantum swarm.
 //
-DRAW_JET[5] = function (ctx, jet, fPrimary, fAccent) {
+DRAW_JET[5] = function (ctx, jet, fPrimary, fAccent, isLead, colors, alpha) {
   // Base stealth diamond airframe
   ctx.fillRect(7, -1, 5, 3);
   ctx.fillRect(0, -2, 7, 5);

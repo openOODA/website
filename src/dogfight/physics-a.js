@@ -167,6 +167,6 @@ function updateJetPhysics(jet, targetEnemy, incomingThreat, opposingPool, missil
     jet.turnLockTimer = 18; // 15-20 tick commitment lock
   }
 
-  updateJetPhysicsTurn(jet, targetEnemy, spec, isF16, mass, densityRatio, altFt, sCeiling);
+  updateJetPhysicsTurn(jet, targetEnemy, spec, isF16, mass, densityRatio, altFt, sCeiling, da);
   updateJetPhysicsLate(jet, targetEnemy, incomingThreat, opposingPool, missilesPoolRef);
 }

@@ -2,10 +2,15 @@
 //
 // Logline: Turn rate, thrust, drag, sonic boom.
 //
-function updateJetPhysicsTurn(jet, targetEnemy, spec, isF16, mass, densityRatio, altFt, sCeiling) {
+function updateJetPhysicsTurn(jet, targetEnemy, spec, isF16, mass, densityRatio, altFt, sCeiling, da) {
   densityRatio = (typeof densityRatio === "number" && densityRatio > 0) ? densityRatio : 1;
   altFt = (typeof altFt === "number") ? altFt : 0;
   sCeiling = (typeof sCeiling === "number") ? sCeiling : 60000;
+  if (typeof da !== "number") {
+    da = jet.targetAngle - jet.angle;
+    while (da < -Math.PI) da += Math.PI * 2;
+    while (da > Math.PI) da -= Math.PI * 2;
+  }
   var maxTurnRate = spec.maxTurnRate || 0.170;
   if (jet.gen === 1) {
     maxTurnRate = 0.220; // Agile Sabre / MiG-15 gunfighter

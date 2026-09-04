@@ -3,6 +3,7 @@
 // Logline: Pursuit, merge, and patrol when not in a named mode.
 //
 function oodaDecideEngage(jet, obs, ori, targetEnemy, altFt, sCeiling, flaresPool, chaffPool) {
+  var isNearCeil = (altFt >= 95000 || (typeof jet.y === "number" && jet.y <= 36.0));
   if (targetEnemy && targetEnemy.active && !targetEnemy.isDying) {
     var dx = targetEnemy.x - jet.x;
     var dy = targetEnemy.y - jet.y;

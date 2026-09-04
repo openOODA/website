@@ -3,6 +3,8 @@
 // Logline: Afterburner sparks and gen-7 drones.
 //
 function updateJetPhysicsLate(jet, targetEnemy, incomingThreat, opposingPool, missilesPoolRef) {
+  var altFt = getAltitudeFeet(jet.y, DF.height);
+  var spec = AIRCRAFT_SPECS[jet.gen] || AIRCRAFT_SPECS[4] || {};
 
   // Thermal ionization sparks when afterburner is active
   if (jet.afterburner && jet.gen !== 7 && Math.random() < 0.35 && globalVfxParticlePool) {
@@ -145,17 +147,19 @@ function updateJetPhysicsLate(jet, targetEnemy, incomingThreat, opposingPool, mi
       if (jet.damageSmokeTimer % 3 === 0) {
         var vxVapDmg = jet.x - Math.cos(jet.angle) * 10 + Math.sin(jet.angle) * (Math.random() > 0.5 ? 6 : -6);
         var vyVapDmg = jet.y - Math.sin(jet.angle) * 10 - Math.cos(jet.angle) * (Math.random() > 0.5 ? 6 : -6);
-        jet.wingVapor.push(vxVapDmg, vyVapDmg, 0.65, 0);
+        if (jet.wingVapor) jet.wingVapor.push(vxVapDmg, vyVapDmg, 0.65, 0);
       }
     }
   }
 
-  jet.contrail.push(
-    jet.x - Math.cos(jet.angle) * 16,
-    jet.y - Math.sin(jet.angle) * 16,
-    jet.afterburner ? 0.75 : 0.35,
-    jet.gForce
-  );
+  if (jet.contrail) {
+    jet.contrail.push(
+      jet.x - Math.cos(jet.angle) * 16,
+      jet.y - Math.sin(jet.angle) * 16,
+      jet.afterburner ? 0.75 : 0.35,
+      jet.gForce
+    );
+  }
 
   if (jet.flareCooldown > 0) jet.flareCooldown--;
   if (jet.gunCooldown > 0) jet.gunCooldown--;

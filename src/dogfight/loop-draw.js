@@ -13,8 +13,7 @@ function dfDrawAircraft(now, colors) {
 
     var rFaction = (rJet.team === "red" || rJet.isRed) ? FACTION_COLORS.red : FACTION_COLORS.blue;
 
-    // Contrails
-    rJet.contrail.forEach(function (cx, cy, alpha, g, i, idx) {
+    if (rJet.contrail) rJet.contrail.forEach(function (cx, cy, alpha, g, i, idx) {
       var co = idx * rJet.contrail.stride;
       rJet.contrail.buffer[co + 2] *= 0.93;
       var a = rJet.contrail.buffer[co + 2];
@@ -23,7 +22,7 @@ function dfDrawAircraft(now, colors) {
     });
 
     // Wing Vapor & Wingtip Faction Tracers
-    rJet.wingVapor.forEach(function (vx, vy, alpha, extra, i, idx) {
+    if (rJet.wingVapor) rJet.wingVapor.forEach(function (vx, vy, alpha, extra, i, idx) {
       var vo = idx * rJet.wingVapor.stride;
       rJet.wingVapor.buffer[vo + 2] *= 0.88;
       var a = rJet.wingVapor.buffer[vo + 2];

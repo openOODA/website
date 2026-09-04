@@ -46,16 +46,23 @@ function dfDrawGrid(colors) {
 function updateDogfight(now) {
   if (!dogfightAnimId) return;
   dogfightAnimId = requestAnimationFrame(updateDogfight);
+  if (!DF.ctx) return;
   if (now && DF.lastTime && (now - DF.lastTime < 33)) return;
   DF.lastTime = now;
-  DF.ctx.clearRect(0, 0, DF.width, DF.height);
-  if (!hasAnyActiveGen()) return;
-  var colors = getThemeColors();
-  dfDrawGrid(colors);
-  dfStepSim();
-  dfDrawAircraft(now, colors);
-  dfStepProjectiles(colors);
-  updateAndDrawWreckage(DF.ctx, 1.0, DF.height);
-  updateAndDrawVfxParticles(DF.ctx, 1.0, DF.height, colors);
-  globalHudFrameCount = (globalHudFrameCount + 1) | 0;
+  try {
+    DF.ctx.clearRect(0, 0, DF.width, DF.height);
+    if (!hasAnyActiveGen()) return;
+    var colors = getThemeColors();
+    dfDrawGrid(colors);
+    dfStepSim();
+    dfDrawAircraft(now, colors);
+    dfStepProjectiles(colors);
+    updateAndDrawWreckage(DF.ctx, 1.0, DF.height);
+    updateAndDrawVfxParticles(DF.ctx, 1.0, DF.height, colors);
+    globalHudFrameCount = (globalHudFrameCount + 1) | 0;
+  } catch (err) {
+    if (typeof console !== "undefined" && console.error) {
+      console.error("dogfight frame", err);
+    }
+  }
 }
