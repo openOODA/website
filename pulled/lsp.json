@@ -1,7 +1,7 @@
 {
   "repo": "lsp",
   "title": "openOODA Language Server",
-  "tagline": "Editor integration. v0.5.0.",
+  "tagline": "Editor integration. v0.6.2.",
   "source": "openOODA/lsp/docs/",
   "content": "## What it is\n\nThe Language Server Protocol implementation for openOODA. Brings completion, hover, definition, formatting, code actions, document symbols, and inlay hints to any LSP-aware editor (VS Code, Neovim, Helix, Emacs, Vim).\n\nInvoked via `ooda lsp` (or your editor hosts the server directly).\n\n## Install\n\nThe LSP server ships as part of the `ooda` toolchain. Once `ooda` is on PATH, you have `ooda lsp`.\n\n## Surface\n\n16 methods (4 lifecycle + 11 document + 1 workspace):\n\n| Tier | Methods |\n|------|---------|\n| Lifecycle | `initialize`, `initialized`, `shutdown`, `exit` |\n| Document | `textDocument/didOpen`, `didChange`, `completion`, `hover`, `definition`, `formatting`, `documentSymbol`, `codeAction`, `diagnostic`, `documentLink`, `inlayHint` |\n| Workspace | `workspace/executeCommand` |\n| Server-to-client | `textDocument/publishDiagnostics` |"
 }

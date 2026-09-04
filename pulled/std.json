@@ -1,7 +1,7 @@
 {
   "repo": "std",
   "title": "openOODA Standard Library",
-  "tagline": "The library you import. v1.0.0.",
+  "tagline": "The library you import. v1.0.3.",
   "source": "openOODA/std/docs/",
   "content": "## What it is\n\nThe openOODA standard library. The collections, math, fs, net, science, and security primitives you import into your openOODA programs.\n\n## Install\n\nstd installs as a separate package on top of the toolchain: `opm install openOODA/std`. Requires the `ooda` toolchain installed first.\n\n## Surface\n\nThe 8 functional domains:\n\n| Domain | Scope |\n|--------|-------|\n| `app` | Application primitives: UI, I/O orchestration |\n| `core` | Foundational types: `Option`, `Result`, `List`, arithmetic |\n| `fs` | Filesystem operations under `&FsReadCap` / `&FsWriteCap` |\n| `hw` | Hardware abstraction: SIMD, accelerators, low-level primitives |\n| `meta` | Reflection, AST inspection, tooling primitives |\n| `net` | Network operations under `&NetCap` (TCP, UDP, bind) |\n| `science` | Hard-science primitives: math, physics, chem, bio, AI, economics |\n| `sec` | Capability security: OCap tokens, Landlock, HMAC, taint tracking |"
 }
