@@ -1,0 +1,13 @@
+// # website/docs — Package Manual
+//
+// Logline: RFC-0005 docs for the website repo. The public pages
+//          live in pulled/. Each page cites a sibling docs/.
+//
+// Setup: No caps. This directory is the package manual for
+//        website/. Website Source: for every nav route is
+//        openOODA/<repo>/docs/. Do not cite a repo root.
+//
+// Beats:
+//   1. pulled/*.oot Source: line must be openOODA/<repo>/docs/.
+//   2. That path must have docs/ANCHOR.oo in the cited repo.
+//   3. website and .github have no nav route.

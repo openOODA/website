@@ -3,9 +3,9 @@
 // Logline: One .oot file per nav route. The SPA fetches
 //          /pulled/{repo}.oot and renders the body as markdown.
 //
-// Setup: 2-line .oot header, optional Source: line, then body.
-//        parsePulledOot in src/route/markdown.js reads that shape.
-//        Tags below are 2026-09-04. Nav order is substratum first.
+// Setup: 2-line .oot header, then Source: openOODA/<repo>/docs/,
+//        then body. parsePulledOot reads that shape. Tags are
+//        2026-09-04. Nav order is substratum first.
 //
 // Beats:
 //   1. openOODA.oot  — governance. Strategic front door.

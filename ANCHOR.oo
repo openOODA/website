@@ -9,14 +9,13 @@
 // Beats:
 //   1. index.html — shell, nav, static home body, script list.
 //   2. 404.html — static not-found. data-page=404 skips router.
-//   3. pulled/*.oot — one page per product repo. Nav order:
-//      openOODA, oodar, oodac, std, ooda, packaging, opm,
-//      catalog, lsp, mcp. website and .github are not routes.
-//   4. src/ — theme, route, dogfight, sky. See src/ANCHOR.oo.
-//   5. styles/main.css — system monospace. No Google Fonts.
-//   6. llms.txt — public LLM manual.
-//   7. audit/ — 2026-09-04 zero-trust audit.
+//   3. pulled/*.oot — one page per product repo. Source: is
+//      always openOODA/<repo>/docs/.
+//   4. docs/ANCHOR.oo — RFC-0005 package manual for this repo.
+//   5. src/ — theme, route, dogfight, sky.
+//   6. styles/, llms.txt, audit/ — chrome, LLM manual, audit.
 
 import "audit/ANCHOR.oo";
+import "docs/ANCHOR.oo";
 import "src/ANCHOR.oo";
 import "pulled/ANCHOR.oo";
