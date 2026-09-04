@@ -37,7 +37,6 @@ function scrambleWave(team, gen) {
 function initGlobalDogfight() {
   var canvas = document.getElementById("dogfight-canvas");
   if (!canvas) return;
-  canvas.style.display = "block";
   var ctx = canvas.getContext("2d");
   if (!ctx) return;
   DF.canvas = canvas;
@@ -84,7 +83,6 @@ function initGlobalDogfight() {
     if (dogfightAnimId) { cancelAnimationFrame(dogfightAnimId); dogfightAnimId = null; }
   }
   CanvasLifecycleManager.register("global-dogfight", {
-    canvas: canvas, start: start, stop: stop, respectReducedMotion: false
+    canvas: canvas, start: start, stop: stop, respectReducedMotion: true
   });
-  start();
 }

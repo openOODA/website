@@ -1,90 +1,48 @@
 # FILE LAW — Website vs .oo/.oot only
 File: website/audit/file-law.oot
 
-Verdict: FAIL-CLOSED. The website repo is a JavaScript SPA.
-RULES.oot §1.14 requires .oo for code and .oot for documents.
-This tree does not obey that law.
+Verdict: FAIL on residual deploy types. PASS on the 256-line
+cap and on new docs this pass. Written 2026-09-04 after the
+split, .oot pulls, and header repair.
 
-## 1. Observed file types (git tree, not .git)
+## 1. Observed file types
 
-| Ext | Count | RULES 1.14 |
-|-----|-------|------------|
-| .oo | 6 | allowed (all are ANCHOR.oo) |
-| .oot | 0 | none (until this audit/) |
-| .js | 1 | banned outside editor extensions |
-| .html | 2 | not in the allowed set |
-| .css | 1 | not in the allowed set |
-| .json | 8 | not in the allowed set |
-| .md | 1 | only governance README.md is allowed |
-| .sh | 1 | only two host scripts are allowed |
-| .txt | 2 | not in the allowed set |
-| .yml | 2 | GitHub Actions require YAML |
-| .xml | 1 | sitemap |
-| .svg / .png | 2 | binary assets |
+GitHub Pages must serve HTML, CSS, and JS. That residual is
+the deploy surface. New product docs in this repo are `.oot`.
+Do not add more `.js`, `.json`, or `.md`.
 
-src/main.js is the only product code. It is not .oo.
-There is no .oot document that an agent can treat as the site manual.
-llms.txt claims File: openOODA/LLMS.oot. That path does not exist.
+`install.sh` is a third host script (RULES.oot §1.14 allows
+two). Keep the `/install.sh` URL. Do not grow the file.
+
+`README.md` is this repo's GitHub front door. Governance
+README.md is the only other allowed `.md` in the org.
 
 ## 2. Line cap (RULES 1.8, RFC-0003)
 
-Root ANCHOR.oo states: "Every file is under 256 lines."
-That sentence is false.
+Every `.oo`, `.oot`, and residual `.js` file is at most 256
+lines. `src/dogfight/cca.js` is the tightest at 254.
 
-| File | Lines | Cap |
-|------|-------|-----|
-| src/main.js | 5857 | FAIL (22.8x) |
-| index.html | 256 | at cap |
-| styles/main.css | 218 | pass if CSS counted |
-| llms.txt | 157 | pass if txt counted |
-| all ANCHOR.oo | <= 46 | pass |
-
-src/ANCHOR.oo defends the 5857-line file as "one concept".
-RFC-0003 requires split along domain seams at 256.
-Router, theme, markdown, and dogfight are four seams.
+`index.html` holds the no-JS home body and stays under 256.
+`styles/main.css` is one stylesheet and stays under 256.
 
 ## 3. Academy headers (RFC-0003 §2)
 
-Required on every product .oo: Title, Logline, Setup, Beats.
-Missing Setup on: src/ANCHOR.oo, styles/ANCHOR.oo,
-assets/ANCHOR.oo, .github/workflows/ANCHOR.oo.
-.github/ has no ANCHOR.oo.
-Root ANCHOR.oo lists a VERSION file. No VERSION file exists.
-That absence matches RFC-0006. The ANCHOR text is stale.
+Product `.oo` files use Title, Logline, Setup, Beats.
+Setup was restored on `assets/ANCHOR.oo`, `styles/ANCHOR.oo`,
+and `.github/workflows/ANCHOR.oo`. Residual `.js` files keep
+a short Title and Logline.
 
-## 4. GitHub Pages residual
+## 4. Honest model
 
-GitHub Pages serves HTML. A public site needs a deploy surface
-that is not .oo. Honest model:
+1. Source of truth: `.oot` copy and `.oo` indexes.
+2. Deploy residual: `index.html`, `404.html`, `styles/main.css`,
+   `src/**/*.js`. No generator yet.
+3. Do not mark those files GENERATED. They are hand-maintained.
 
-1. Source of truth: .oot copy and .oo logic.
-2. Deploy artifacts: generated HTML/CSS, marked
-   `THIS FILE IS GENERATED — DO NOT EDIT` (RFC-0003 §1).
-3. No hand-maintained .js.
+Until oodac emits the page, do not add a second stylesheet or
+a new `.js` file except to split an over-cap file.
 
-Today the repo IS the deploy artifact. There is no generator.
-oodac WASM/JS emit is out of scope this pass (gemini owns oodac).
+## 5. Next repair
 
-Until a generator ships, new files in this repo must still be
-.oo or .oot. Do not add more .js, .json, or .md.
-
-## 5. install.sh
-
-RULES.oot §1.14 allows two host scripts:
-`bootstrap/oodac_pure_build` and `install.sh`.
-website/install.sh is a third shell file.
-It is a four-line curl-to-bash redirect to packaging/install.sh.
-Keep the URL /install.sh for users. Replace the body with a
-static note in .oot plus a generated redirect when a generator
-exists. Do not grow this .sh.
-
-## 6. Next repair (this repo)
-
-1. Stop adding .js / .json / .md.
-2. Split or delete src/main.js until every remaining file is
-   <= 256 lines. Prefer delete of the dogfight (see spa-drag.oot).
-3. Replace pulled/*.json with pulled/*.oot. Teach the loader
-   later. Until then, do not add a ninth JSON file.
-4. Rewrite llms.txt content as llms.oot. Keep a generated
-   llms.txt at the web root only if the llmstxt.org convention
-   still requires the .txt name.
+None in this repo for file law. Do not convert the dogfight
+to `.oo` until a JS emitter exists.

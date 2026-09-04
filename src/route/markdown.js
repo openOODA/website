@@ -29,14 +29,9 @@ function parsePulledOot(text) {
   }
   return { title: title, source: source, content: lines.slice(i).join("\n") };
 }
+
 function simpleMarkdown(text) {
-  var htmlBlocks = [];
-  var preserved = text.replace(/<[a-zA-Z\/][^>]*>/g, function (match) {
-    var idx = htmlBlocks.length;
-    htmlBlocks.push(match);
-    return "\x00RAWHTML" + idx + "\x00";
-  });
-  var html = preserved.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  var html = escapeHtml(String(text));
   html = html.replace(/```([\s\S]*?)```/g, function (match, code) {
     return "<pre><code>" + code.trim() + "</code></pre>";
   });
@@ -48,8 +43,14 @@ function simpleMarkdown(text) {
   html = html.replace(/^---$/gim, "<hr>");
   html = html.replace(/^\|(.+)\|$/gim, function (match, row) {
     var cells = row.split("|").map(function (c) { return c.trim(); });
+    var allRule = true;
+    for (var i = 0; i < cells.length; i++) {
+      if (!/^:?-+:?$/.test(cells[i])) { allRule = false; break; }
+    }
+    if (allRule) return "";
     return "<tr>" + cells.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>";
   });
+  html = html.replace(/<\/tr>\n+(?=<tr>)/g, "</tr>\n");
   html = html.replace(/((?:<tr>.*<\/tr>\n?)+)/g, "<table>$1</table>");
   html = html.replace(/^\s*-\s+(.*$)/gim, "<li>$1</li>");
   html = html.replace(/^\s*\d+\.\s+(.*$)/gim, "<li>$1</li>");
@@ -58,11 +59,8 @@ function simpleMarkdown(text) {
   html = paras.map(function (p) {
     p = p.trim();
     if (!p) return "";
-    if (/^<(h[1-6]|pre|table|ul|ol|blockquote|hr)/.test(p) || p.indexOf("\x00RAWHTML") === 0) return p;
+    if (/^<(h[1-6]|pre|table|ul|ol|blockquote|hr)/.test(p)) return p;
     return "<p>" + p.replace(/\n/g, "<br>") + "</p>";
   }).join("\n");
-  html = html.replace(/\x00RAWHTML(\d+)\x00/g, function (match, idx) {
-    return htmlBlocks[parseInt(idx, 10)] || "";
-  });
   return html;
 }

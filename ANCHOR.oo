@@ -7,9 +7,11 @@
 //        Browser residual is .js under src/, each <= 256 lines.
 //
 // Beats:
-//   1. index.html — shell, nav, empty #content, script list.
+//   1. index.html — shell, nav, static home body, script list.
 //   2. 404.html — static not-found. data-page=404 skips router.
-//   3. pulled/*.oot — one page per repo. Repos own the copy.
+//   3. pulled/*.oot — one page per product repo. Nav order:
+//      openOODA, oodar, oodac, std, ooda, packaging, opm,
+//      catalog, lsp, mcp. website and .github are not routes.
 //   4. src/ — theme, route, dogfight, sky. See src/ANCHOR.oo.
 //   5. styles/main.css — system monospace. No Google Fonts.
 //   6. llms.txt — public LLM manual.

@@ -3,10 +3,10 @@
 // Logline: The CI pipeline that publishes the website to GitHub
 //          Pages on every push to main.
 //
-// Beats:
-//   1. deploy.yml — single job: checkout, configure-pages,
-//      upload-pages-artifact (path: .), deploy-pages. No build
-//      step. The website is published as-is.
+// Setup: GitHub-managed YAML only. No application code here.
 //
-// This directory is for GitHub-managed CI configuration only. No
-// hand-maintained application code belongs here.
+// Beats:
+//   1. ci.yml — reusable auto-release from openOODA/openOODA
+//      at pin v1.0.14. Fires on push to main.
+//   2. deploy.yml — checkout, configure-pages, upload artifact
+//      (path: .), deploy-pages. No build step. Published as-is.

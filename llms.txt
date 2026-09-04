@@ -35,16 +35,16 @@ To propose a change, copy `rfcs/0000-template.oot`.
 | Repo | Role | Tag |
 |------|------|-----|
 | openOODA | Governance: laws, RFCs, practices | v1.0.20 |
-| oodac | Compiler (lex, parse, check, emit) | v0.2.2 |
 | oodar | Gen 1 C host (`oo_*`, `gcc oodar.c`) | v4.0.0 |
+| oodac | Compiler (lex, parse, check, emit) | v0.2.2 |
 | std | Standard library, 8 domains | v1.0.8 |
 | ooda | Workflow driver (`ooda` binary) | v0.2.7 |
+| packaging | apt, dnf, pacman, install.sh | v0.1.6 |
 | opm | Package manager | v0.8.8 |
 | catalog | Public package list for `opm search` | v0.0.1 |
 | lsp | Language server | v0.6.12 |
 | mcp | MCP server, 22 tools | v0.6.10 |
 | website | This site | v1.2.10 |
-| packaging | apt, dnf, pacman, install.sh | v0.1.6 |
 | .github | Org profile and shared workflows | — |
 
 Do not prefix another `openOODA/` segment onto paths in ANCHOR.oo.

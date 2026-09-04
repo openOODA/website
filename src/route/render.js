@@ -4,8 +4,10 @@
 //
 var DEFAULT_ROUTE = "openOODA";
 var VALID_ROUTES = {
-  openOODA: 1, home: 1, ooda: 1, std: 1, opm: 1,
-  catalog: 1, lsp: 1, mcp: 1, oodar: 1, oodac: 1
+  openOODA: 1, home: 1,
+  oodar: 1, oodac: 1, std: 1,
+  ooda: 1, packaging: 1, opm: 1, catalog: 1,
+  lsp: 1, mcp: 1
 };
 var INSTALL_HTML = '<div class="install"><span class="install-cmd">curl -fsSL <a href="https://openooda.org/install.sh">https://openooda.org/install.sh</a> | bash</span><button type="button" class="copy" aria-label="Copy install command">copy</button></div>';
 
@@ -38,7 +40,12 @@ function renderRoute(route) {
   });
   if (raw === "openOODA") {
     document.title = "openOODA";
-    contentEl.innerHTML = '<p class="canon">Loading&hellip;</p>';
+    var keepHome = !!contentEl.querySelector(".install");
+    if (!keepHome) {
+      contentEl.innerHTML = '<p class="canon">Loading&hellip;</p>';
+    } else {
+      setupOpenOODA();
+    }
     fetch("/pulled/openOODA.oot").then(function (r) {
       if (!r.ok) throw new Error("HTTP " + r.status);
       return r.text();
@@ -53,6 +60,7 @@ function renderRoute(route) {
       contentEl.innerHTML = html;
       setupOpenOODA();
     }).catch(function (err) {
+      if (contentEl.querySelector(".install")) return;
       var msg = escapeHtml(err && err.message ? err.message : "unknown");
       contentEl.innerHTML = "<h1>openOODA</h1><p>Failed to load: " + msg + "</p>";
     });

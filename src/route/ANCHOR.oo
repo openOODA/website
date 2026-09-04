@@ -2,12 +2,12 @@
 //
 // Logline: Fill #content from pulled/{repo}.oot. Repos own the copy.
 //
-// Setup: Valid routes: openOODA, ooda, std, opm, catalog,
-//        lsp, mcp, oodar, oodac. 404.html skips this via
-//        data-page="404".
+// Setup: Valid routes, substratum first: openOODA, oodar,
+//        oodac, std, ooda, packaging, opm, catalog, lsp, mcp.
+//        404.html skips this via data-page="404".
 //
 // Beats:
-//   1. markdown.js — escapeHtml, parsePulledOot, simpleMarkdown.
+//   1. markdown.js — escape all body text, then markdown.
 //   2. render.js — fetch .oot, install box on the home route.
 
 import "markdown.js";

@@ -2,6 +2,9 @@
 //
 // Logline: One CSS file, all themes + all layout.
 //
+// Setup: Hand-maintained. Re-minify by hand if edited.
+//        No build step. System monospace. No Google Fonts.
+//
 // Beats:
 //   1. main.css — one stylesheet. System monospace stack.
 //      No Google Fonts. Defines:
@@ -14,5 +17,3 @@
 //      e) the dogfight canvas + sky starfield
 //      f) the license badge animation
 //      g) the responsive breakpoints (max-width 800px, 480px)
-//
-// Hand-maintained. Re-minify by hand if edited. No build step.

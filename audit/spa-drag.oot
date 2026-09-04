@@ -1,88 +1,55 @@
-# SPA DRAG — 5857-line JS, dead homepage, dogfight
+# SPA DRAG — dogfight mass, homepage, nav
 File: website/audit/spa-drag.oot
 
-Verdict: FAIL-CLOSED on Boyd drag. The SPA overwrites the
-static homepage. Most of src/main.js is a canvas dogfight.
-WORKFLOW.oot §0.3 asks for a monochrome monospace UI.
+Verdict: PASS on the two-homepage lie after the 2026-09-04
+repair. The dogfight remains by product choice. It is split
+to files at most 256 lines.
 
-## 1. Two homepages
+## 1. Homepage
 
-index.html <main id="content"> holds six <details> cards
-(ooda, std, opm, cli, lsp, mcp) plus SVG diagrams.
-On load, renderRoute() fetches /pulled/openOODA.json and
-sets contentEl.innerHTML. The static cards are discarded.
+`index.html` `#content` holds the install boxes and the
+`pulled/openOODA.oot` body as real HTML. No-JS and crawlers
+see that body. JS fetch replaces it from the `.oot` file.
+If the fetch fails and `.install` is already in the DOM, the
+static body stays. Copy buttons bind on the static body.
 
-No-JS and crawlers see the static cards (live fetch of
-https://openooda.org/ returned those cards).
-JS users see pulled/openOODA.json markdown.
+There is no second card set. There is no `cli` route.
 
-The two views disagree: static still says "cli"; JSON says
-eight repos and omits website/packaging/.github.
+## 2. Dogfight mass
 
-Subtractive fix: pick one homepage. Either delete the static
-cards and ship real markup, or stop the SPA from replacing
-#content on the default route.
+The product path is route + markdown + theme + install.
+The dogfight is the rest of `src/dogfight/`. It stays. Do
+not delete it unless the owner asks.
 
-## 2. What src/main.js actually is
-
-Approximate mass (line ranges):
-
-| Lines | Concern |
-|-------|---------|
-| 1–92 | routes, markdown, install HTML |
-| 93–527 | pools, theme LUT, copy button |
-| 528–5550 | dogfight: gens 1–7, weapons, rAF |
-| 5553–5621 | renderRoute |
-| 5623–5857 | hash router, theme, mail, sky |
-
-The product (router + markdown + theme + install) is under
-400 lines. The dogfight is about 5000 lines.
-src/ANCHOR.oo says splitting would "add import plumbing".
-The 256-line law does not grant that exception.
-
-WORKFLOW.oot §0.3: monochrome UI, monospace type.
-Nine theme palettes and a fighter-jet sim are extra weight.
-Gen 7 "singularity cannon" is marketing on a public page.
+`404.html` still loads the dogfight scripts so the 404 page
+matches home visually. That is extra bytes on a miss.
 
 ## 3. WASM residue
 
-renderRoute is wrapped to ignore ooda_app_route() from a WASM
-instance. Comments say the WASM route table is stale.
-window.wasmActive still drives theme_next if present.
-No WASM module is loaded from this repo.
-That is dead interface (RULES 1.1 anti-shortcut / Red 3).
+No WASM module loads from this repo. `window.wasmActive` is
+not read. Dead WASM route wrappers are gone.
 
-## 4. Copy button vs markup
+## 4. Nav order (substratum first)
 
-INSTALL_HTML uses class "copy".
-index.html static box uses id="copy".
-setupOpenOODA() binds main .copy. After SPA replace, the
-JSON homepage uses INSTALL_HTML, so the class matches.
-Before replace, the static button id="copy" is unbound.
-Another reason to delete one of the two homepages.
+Law of Substratum Integrity (RULES.oot §1.20) and RFC-0004
+3-layer order:
 
-## 5. Missing packaging route
+1. openOODA — strategic law
+2. oodar — Gen 1 host
+3. oodac — Gen 2 compiler
+4. std — library
+5. ooda — operational driver
+6. packaging — how bits land on a machine
+7. opm — package manager
+8. catalog — what opm search reads
+9. lsp — editor protocol
+10. mcp — agent protocol
 
-README.md lists 11 repos. Nav lists 8:
-openOODA, ooda, std, opm, lsp, mcp, oodar, oodac.
-packaging/ and website/ have no pulled page.
-.github/ is an org profile, not a product surface.
+website and .github are table-only. They are not product
+nav routes.
 
-## 6. Recommended subtractive sequence
+## 5. Next repair
 
-Do this in website/ only. Do not wait on oodac.
-
-1. Delete the dogfight and the sky canvas. Keep gen-bar only
-   if it still has a product meaning. It does not.
-2. Stop replacing #content on the default route, or delete
-   the static cards. One homepage.
-3. Split remaining JS along seams until each file is
-   <= 256 lines: route, markdown, theme, install.
-   New files must be .oo if a generator exists. Until then,
-   do not add a second .js. Prefer pre-rendered HTML from
-   .oot so the .js file can shrink to a theme toggle.
-4. Add packaging to the nav only after a pulled .oot page
-   exists with a true tag.
-
-E-M effect: remove ~5000 lines of D (drag), keep the install
-line and the eight repo pages. That is the 80/20 cut.
+Optional: drop dogfight scripts from `404.html`. Optional:
+pre-render the other nine routes as static HTML. Do not do
+either unless asked.
