@@ -45,7 +45,7 @@ To propose a change, copy `rfcs/0000-template.oot`.
 | catalog | Public package list for `opm search` | v0.0.1 |
 | lsp | Language server | v0.6.12 |
 | mcp | MCP server, 22 tools | v0.6.10 |
-| blackbox | The telemetry: flight recorder & crash autopsy | v0.1.0 |
+| blackbox | Operational Logistics: Agent-native execution flight recorder and crash autopsy engine | v0.1.0 |
 | website | This site | v1.2.10 |
 | .github | Org profile and shared workflows | — |
 

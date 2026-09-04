@@ -44,6 +44,7 @@ Law of Substratum Integrity (RULES.oot §1.20) and RFC-0004
 8. catalog — what opm search reads
 9. lsp — editor protocol
 10. mcp — agent protocol
+11. blackbox — Operational Logistics: flight recorder & crash autopsy
 
 website and .github are table-only. They are not product
 nav routes.

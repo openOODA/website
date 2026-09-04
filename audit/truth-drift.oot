@@ -16,7 +16,7 @@ dated 2026-09-04.
 
 | Route | Tagline | Disk tag |
 |-------|---------|----------|
-| openOODA | v1.0.20, 12 repos | v1.0.20 |
+| openOODA | v1.0.20, 13 repos | v1.0.20 |
 | oodar | v4.0.0 | v4.0.0 |
 | oodac | v0.2.2, 12 subdirs | v0.2.2 |
 | std | v1.0.8, 188 ANCHOR.oo | v1.0.8 |
@@ -26,9 +26,10 @@ dated 2026-09-04.
 | catalog | v0.0.1 | v0.0.1 |
 | lsp | v0.6.12 | v0.6.12 |
 | mcp | v0.6.10, 22 tools | v0.6.10 |
+| blackbox | v0.1.0, flight recorder | v0.1.0 |
 
 website and .github are not sidebar routes. Home lists the
-ten product repos. Cache query is `?v=20260904l`.
+eleven product repos. Cache query is `?v=20260904l`.
 Default route is `home` from `.github/docs/HOME.oot`.
 Product pulled `Source:` lines are `openOODA/<repo>/docs/`.
 That directory has `docs/ANCHOR.oo` in the cited repo.
