@@ -4,7 +4,8 @@
 //
 // Setup: Default route is home (Source: .github/docs/).
 //        Product routes, substratum first: openOODA, oodar,
-//        oodac, std, ooda, install, opm, catalog, lsp, mcp.
+//        oodac, std, ooda, install, opm, catalog, lsp, mcp,
+//        blackbox.
 //        #packaging aliases to #install for one release.
 //        404.html skips this via data-page="404".
 //

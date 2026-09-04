@@ -13,8 +13,8 @@ practices/ANCHOR.oo.
 
 ## Surface
 
-Twelve repos. Git tags as of 2026-09-04.
-Nav lists the ten product repos in this order. website and
+Thirteen repos. Git tags as of 2026-09-04.
+Nav lists the eleven product repos in this order. website and
 .github are not nav routes.
 
 | Repo | Role | Tag |
@@ -29,8 +29,16 @@ Nav lists the ten product repos in this order. website and
 | catalog | Public package list | v0.0.1 |
 | lsp | Language server | v0.6.12 |
 | mcp | MCP server | v0.6.10 |
+| blackbox | Operational Logistics: Flight recorder & autopsy | v0.1.0 |
 | website | openooda.org | v1.2.10 |
 | .github | Org profile | — |
+
+## Architecture: 3-Layer Topology
+
+- Strategic Governance: openOODA (laws, RFCs, practices)
+- Operational Logistics: ooda, lsp, mcp, opm, catalog, install, blackbox
+- Tactical Code Physics: std, oodac, oodar
+- Meta: website, .github
 
 The compiler is the substrate. The other repos are siblings.
 Governance edits must not trigger compiler rebuilds.

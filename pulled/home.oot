@@ -73,7 +73,7 @@ rename.
 
 ## Repos
 
-Ten product repos. Substratum first.
+Eleven product repos. Substratum first.
 
 | Repo | Role |
 |------|------|
@@ -87,6 +87,7 @@ Ten product repos. Substratum first.
 | [catalog](#catalog) | The public list. No accounts. |
 | [lsp](#lsp) | The editor. Humans first. |
 | [mcp](#mcp) | The agent. Same rules as the human. |
+| [blackbox](#blackbox) | Operational Logistics: Agent-native execution flight recorder and crash autopsy engine |
 
 The install line is above. Piping curl to bash
 is the one ambient authority we still admit.

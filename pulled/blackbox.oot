@@ -9,6 +9,13 @@ The agent-native execution flight recorder and crash autopsy engine. Tag v0.1.0.
 Captures process telemetry, intercepts unhandled crash signals (SIGSEGV, SIGABRT, SIGBUS, SIGILL),
 and diffs compiler intermediate representations across passes.
 
+## First Principles
+
+- Layer: Operational Logistics layer.
+- Boyd's E-M Law: minimizes turnover latency by replacing multi-turn debugging with 1-turn repair.
+- Zero Ambient Authority: telemetry uses explicit capability tokens; traps fail closed.
+- Substratum Integrity: zero-heap C sensor in oodar executes on an alternate signal stack.
+
 ## Surface
 
 Commands from `blackbox/docs/CLI.oot`:

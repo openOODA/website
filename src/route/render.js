@@ -7,7 +7,7 @@ var VALID_ROUTES = {
   home: 1, openOODA: 1,
   oodar: 1, oodac: 1, std: 1,
   ooda: 1, install: 1, packaging: 1, opm: 1, catalog: 1,
-  lsp: 1, mcp: 1
+  lsp: 1, mcp: 1, blackbox: 1
 };
 var INSTALL_HTML = '<div class="install"><span class="install-cmd">curl -fsSL <a href="https://openooda.org/install.sh">https://openooda.org/install.sh</a> | bash</span><button type="button" class="copy" aria-label="Copy install command">copy</button></div>';
 
