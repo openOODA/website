@@ -1,0 +1,15 @@
+# Build / cache artifacts
+.ooda-cache/
+node_modules/
+dist/
+build/
+*.log
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
