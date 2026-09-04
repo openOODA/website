@@ -19,6 +19,7 @@
 //   9. catalog.oot   — public package list for opm search/add.
 //  10. lsp.oot       — advertised LSP methods.
 //  11. mcp.oot       — 22 tools from mcp/docs/TOOLS.oot.
+//  12. blackbox.oot  — telemetry and crash autopsy for agents.
 
 import "home.oot";
 import "openOODA.oot";
@@ -31,3 +32,4 @@ import "opm.oot";
 import "catalog.oot";
 import "lsp.oot";
 import "mcp.oot";
+import "blackbox.oot";

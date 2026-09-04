@@ -31,7 +31,7 @@ Start at `openOODA/ANCHOR.oo`. Then:
 
 To propose a change, copy `rfcs/0000-template.oot`.
 
-## 3. 12-repo polyrepo (tags 2026-09-04)
+## 3. 13-repo polyrepo (tags 2026-09-04)
 
 | Repo | Role | Tag |
 |------|------|-----|
@@ -45,6 +45,7 @@ To propose a change, copy `rfcs/0000-template.oot`.
 | catalog | Public package list for `opm search` | v0.0.1 |
 | lsp | Language server | v0.6.12 |
 | mcp | MCP server, 22 tools | v0.6.10 |
+| blackbox | The telemetry: flight recorder & crash autopsy | v0.1.0 |
 | website | This site | v1.2.10 |
 | .github | Org profile and shared workflows | — |
 
@@ -63,7 +64,7 @@ Pass a borrowed token (`&FsReadCap`). Missing token fails compile
 
 RFCs: 0001 capability security, 0002 design by contract, 0003 file
 format, 0004 engineering model, 0005 tactical subsystem template,
-0006 auto-release.
+0006 auto-release, 0007 blackbox flight recorder.
 
 Practices: `8d-red-team.oot`, `ooda-workflow.oot`, `release.oot`.
 Practices evolve. RULES and accepted RFCs do not.

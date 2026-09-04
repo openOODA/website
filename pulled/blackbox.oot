@@ -1,0 +1,29 @@
+# blackbox — Telemetry & Crash Autopsy
+File: website/pulled/blackbox.oot
+
+Source: openOODA/blackbox/docs/
+
+## What it is
+
+The agent-native execution flight recorder and crash autopsy engine. Tag v0.1.0.
+Captures process telemetry, intercepts unhandled crash signals (SIGSEGV, SIGABRT, SIGBUS, SIGILL),
+and diffs compiler intermediate representations across passes.
+
+## Surface
+
+Commands from `blackbox/docs/CLI.oot`:
+
+| Command | Purpose |
+|---------|---------|
+| blackbox autopsy [path] | Parse crash telemetry and output 1-turn diagnosis |
+| blackbox diff <file.oo> | Diff AST across compiler passes (lex, ast, check, emit) |
+| blackbox trace <file.oo> | Record and dump execution flight events |
+
+## Architecture
+
+Follows RFC 0005 layout:
+- `record/`: In-memory flight data recorder and telemetry ring buffer.
+- `autopsy/`: Crash analyzer, failure coordinate locator, and root cause classifier.
+- `diff/`: AST pass diffing engine tailored for oodac debugging.
+- `bridge/`: Process execution runner under explicit capability tokens.
+- `cli/`: Terminal entry point for AI harnesses (antigravity-cli, devin, grok, mcode).
