@@ -1,7 +1,7 @@
 {
   "repo": "cli",
   "title": "openOODA CLI",
-  "tagline": "The `ooda` binary. v2.11.x.",
+  "tagline": "The `ooda` binary. v0.2.1.",
   "source": "openOODA/cli/docs/",
   "content": "## What it is\n\nThe main `ooda` binary. Compiles your `.oo` source files, runs them, runs tests, and dispatches to the package manager (`ooda opm`), the language server (`ooda lsp`), and the MCP server (`ooda mcp`).\n\n## Install\n\ncli IS the `ooda` binary — they're the same thing. Install with `curl -fsSL https://openooda.org/install.sh | bash`.\n\n## Surface\n\n13 subcommands, dispatched by `cli/main.oo`:\n\n| Command | Purpose |\n|---------|---------|\n| `ooda build` | Build a `.oo` source to a target (ELF, WASM, C99, LLVM IR) |\n| `ooda run` | Compile and execute a `.oo` source |\n| `ooda gen` | Generate code (AST → target) without executing |\n| `ooda test` | Run tests (with sequential double-run invariant) |\n| `ooda install` | Install the toolchain or a package |\n| `ooda bench` | Run benchmarks |\n| `ooda init` | Initialize a new project |\n| `ooda context` | Inspect context (LLM-facing: token budget, caps, audit) |\n| `ooda health` | Server health check |\n| `ooda fix` | Auto-repair a `.oo` source file (adversarial repair) |\n| `ooda digest` | Compute the Merkle digest of a source tree |\n| `ooda fmt` | Format a `.oo` source file |\n| `ooda token` | 12 token sub-subcommands (issue, attenuate, verify, etc.) |"
 }
