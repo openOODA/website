@@ -1,13 +1,14 @@
-# packaging — distribution
-File: website/pulled/packaging.oot
+# install — how bits land
+File: website/pulled/install.oot
 
-Source: openOODA/packaging/docs/
-
-## What it is
+Source: openOODA/install/docs/
 
 How the toolchain lands on a machine. Tag v0.1.6.
 Ships `install.sh` plus apt, dnf, and pacman recipes.
 winget is deferred.
+
+This repo is `openOODA/install`. It is not the
+`ooda install` subcommand.
 
 The public URL `https://openooda.org/install.sh` redirects
 to this repo's `install.sh` on GitHub `main`.

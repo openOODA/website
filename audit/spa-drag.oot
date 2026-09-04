@@ -39,7 +39,7 @@ Law of Substratum Integrity (RULES.oot §1.20) and RFC-0004
 3. oodac — Gen 2 compiler
 4. std — library
 5. ooda — operational driver
-6. packaging — how bits land on a machine
+6. install — how bits land on a machine
 7. opm — package manager
 8. catalog — what opm search reads
 9. lsp — editor protocol

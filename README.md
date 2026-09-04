@@ -39,7 +39,7 @@ All design, RFCs, practices, and onboarding live in [openOODA/openOODA](https://
 | [openOODA/oodac](https://github.com/openOODA/oodac) | Compiler |
 | [openOODA/std](https://github.com/openOODA/std) | Standard library |
 | [openOODA/ooda](https://github.com/openOODA/ooda) | `ooda` workflow driver |
-| [openOODA/packaging](https://github.com/openOODA/packaging) | Distribution packaging (apt, dnf, pacman) |
+| [openOODA/install](https://github.com/openOODA/install) | How the toolchain lands (install.sh, apt, dnf, pacman) |
 | [openOODA/opm](https://github.com/openOODA/opm) | Package manager |
 | [openOODA/catalog](https://github.com/openOODA/catalog) | Public package catalog |
 | [openOODA/lsp](https://github.com/openOODA/lsp) | Language server |

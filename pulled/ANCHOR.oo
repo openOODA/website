@@ -14,7 +14,7 @@
 //   4. oodac.oot     — compiler, 12 public subdirs, v0.2.2.
 //   5. std.oot       — 8 domains, 188 ANCHOR.oo counted.
 //   6. ooda.oot      — driver, 13 commands + 3 spawns.
-//   7. packaging.oot — install.sh, apt, dnf, pacman, v0.1.6.
+//   7. install.oot   — install.sh, apt, dnf, pacman, v0.1.6.
 //   8. opm.oot       — package manager live commands.
 //   9. catalog.oot   — public package list for opm search/add.
 //  10. lsp.oot       — advertised LSP methods.
@@ -26,7 +26,7 @@ import "oodar.oot";
 import "oodac.oot";
 import "std.oot";
 import "ooda.oot";
-import "packaging.oot";
+import "install.oot";
 import "opm.oot";
 import "catalog.oot";
 import "lsp.oot";

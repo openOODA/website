@@ -36,7 +36,7 @@ repo without an owner decision.
 
 ## 4. install.sh pipe to bash
 
-`website/install.sh` curls packaging `install.sh` and pipes
+`website/install.sh` curls install-repo `install.sh` and pipes
 to bash. Keep the URL. Do not add more shell.
 
 ## 5. Reduced motion

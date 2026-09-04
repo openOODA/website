@@ -82,7 +82,7 @@ Ten product repos. Substratum first.
 | [oodac](#oodac) | The compiler. Everything else borrows it. |
 | [std](#std) | The library. Still needs a token. |
 | [ooda](#ooda) | The binary you type. Not the compiler. |
-| [packaging](#packaging) | How bits land on a machine. |
+| [install](#install) | How bits land on a machine. |
 | [opm](#opm) | Packages. Extra caps are a refusal. |
 | [catalog](#catalog) | The public list. No accounts. |
 | [lsp](#lsp) | The editor. Humans first. |

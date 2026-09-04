@@ -6,7 +6,7 @@ var DEFAULT_ROUTE = "home";
 var VALID_ROUTES = {
   home: 1, openOODA: 1,
   oodar: 1, oodac: 1, std: 1,
-  ooda: 1, packaging: 1, opm: 1, catalog: 1,
+  ooda: 1, install: 1, packaging: 1, opm: 1, catalog: 1,
   lsp: 1, mcp: 1
 };
 var INSTALL_HTML = '<div class="install"><span class="install-cmd">curl -fsSL <a href="https://openooda.org/install.sh">https://openooda.org/install.sh</a> | bash</span><button type="button" class="copy" aria-label="Copy install command">copy</button></div>';
@@ -41,6 +41,12 @@ function pageHtml(data) {
 function renderRoute(route) {
   var raw = (route || "").replace(/^#/, "").trim();
   if (!raw || raw === "/") raw = "home";
+  if (raw === "packaging") {
+    raw = "install";
+    if (typeof history !== "undefined" && history.replaceState) {
+      history.replaceState(null, "", "#install");
+    }
+  }
   var contentEl = document.getElementById("content");
   if (!contentEl) return;
   document.querySelectorAll("aside .local a").forEach(function (a) {
