@@ -4,21 +4,23 @@
 //          /pulled/{repo}.oot and renders the body as markdown.
 //
 // Setup: 2-line .oot header, then Source: openOODA/<repo>/docs/,
-//        then body. parsePulledOot reads that shape. Tags are
-//        2026-09-04. Nav order is substratum first.
+//        then body. Home is Source: openOODA/.github/docs/.
+//        Default route is home. Nav order is substratum first.
 //
 // Beats:
-//   1. openOODA.oot  — governance. Strategic front door.
-//   2. oodar.oot     — Gen 1 host, tag v4.0.0.
-//   3. oodac.oot     — compiler, 12 public subdirs, v0.2.2.
-//   4. std.oot       — 8 domains, 188 ANCHOR.oo counted.
-//   5. ooda.oot      — driver, 13 commands + 3 spawns.
-//   6. packaging.oot — install.sh, apt, dnf, pacman, v0.1.6.
-//   7. opm.oot       — package manager live commands.
-//   8. catalog.oot   — public package list for opm search/add.
-//   9. lsp.oot       — advertised LSP methods.
-//  10. mcp.oot       — 22 tools from mcp/docs/TOOLS.oot.
+//   1. home.oot      — marketing home from .github/docs/.
+//   2. openOODA.oot  — governance.
+//   3. oodar.oot     — Gen 1 host, tag v4.0.0.
+//   4. oodac.oot     — compiler, 12 public subdirs, v0.2.2.
+//   5. std.oot       — 8 domains, 188 ANCHOR.oo counted.
+//   6. ooda.oot      — driver, 13 commands + 3 spawns.
+//   7. packaging.oot — install.sh, apt, dnf, pacman, v0.1.6.
+//   8. opm.oot       — package manager live commands.
+//   9. catalog.oot   — public package list for opm search/add.
+//  10. lsp.oot       — advertised LSP methods.
+//  11. mcp.oot       — 22 tools from mcp/docs/TOOLS.oot.
 
+import "home.oot";
 import "openOODA.oot";
 import "oodar.oot";
 import "oodac.oot";

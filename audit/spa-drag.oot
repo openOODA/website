@@ -8,7 +8,7 @@ to files at most 256 lines.
 ## 1. Homepage
 
 `index.html` `#content` holds one install box and the
-`pulled/openOODA.oot` body as real HTML. No-JS and crawlers
+`pulled/home.oot` body as real HTML. No-JS and crawlers
 see that body. JS fetch replaces it from the `.oot` file.
 If the fetch fails and `.install` is already in the DOM, the
 static body stays. Copy buttons bind on the static body.

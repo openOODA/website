@@ -9,8 +9,9 @@
 // Beats:
 //   1. index.html — shell, nav, static home body, script list.
 //   2. 404.html — static not-found. data-page=404 skips router.
-//   3. pulled/*.oot — one page per product repo. Source: is
-//      always openOODA/<repo>/docs/.
+//   3. pulled/home.oot — default route. Source:
+//      openOODA/.github/docs/. Product pages cite
+//      openOODA/<repo>/docs/.
 //   4. docs/ANCHOR.oo — RFC-0005 package manual for this repo.
 //   5. src/ — theme, route, dogfight, sky.
 //   6. styles/, llms.txt, audit/ — chrome, LLM manual, audit.

@@ -1,0 +1,34 @@
+# openOODA
+File: website/pulled/home.oot
+
+Source: openOODA/.github/docs/
+
+A capability-secure systems language.
+Every effect needs an unforgeable cap token.
+The compiler checks source ahead of time.
+Zero ambient authority.
+
+## Caps
+
+Fourteen tokens: filesystem, network, process, GPU, FFI.
+A network call takes `&NetCap`. No token, no effect.
+Fail closed (`E_CAP`).
+
+## Repos
+
+Ten product repos. Substratum first.
+
+| Repo | Role |
+|------|------|
+| [openOODA](#openOODA) | Laws, RFCs, practices |
+| [oodar](#oodar) | Gen 1 C host |
+| [oodac](#oodac) | Compiler |
+| [std](#std) | Standard library |
+| [ooda](#ooda) | `ooda` driver |
+| [packaging](#packaging) | apt, dnf, pacman |
+| [opm](#opm) | Package manager |
+| [catalog](#catalog) | Public package list |
+| [lsp](#lsp) | Language server |
+| [mcp](#mcp) | MCP server |
+
+The site is this page. Org files live in `.github`.

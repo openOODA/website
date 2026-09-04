@@ -27,9 +27,10 @@ dated 2026-09-04.
 | lsp | v0.6.12 | v0.6.12 |
 | mcp | v0.6.10, 22 tools | v0.6.10 |
 
-website and .github stay in the home table. They are not nav
-routes. Cache query is `?v=20260904k`.
-Each pulled `Source:` line is `openOODA/<repo>/docs/`.
+website and .github are not sidebar routes. Home lists the
+ten product repos. Cache query is `?v=20260904l`.
+Default route is `home` from `.github/docs/HOME.oot`.
+Product pulled `Source:` lines are `openOODA/<repo>/docs/`.
 That directory has `docs/ANCHOR.oo` in the cited repo.
 
 ## 3. License

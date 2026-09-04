@@ -62,5 +62,9 @@ function simpleMarkdown(text) {
     if (/^<(h[1-6]|pre|table|ul|ol|blockquote|hr)/.test(p)) return p;
     return "<p>" + p.replace(/\n/g, "<br>") + "</p>";
   }).join("\n");
+  html = html.replace(/\[([^\]]+)\]\((#[A-Za-z][A-Za-z0-9._-]*|https:\/\/[^)\s]+)\)/g,
+    function (m, text, href) {
+      return '<a href="' + href + '">' + text + "</a>";
+    });
   return html;
 }

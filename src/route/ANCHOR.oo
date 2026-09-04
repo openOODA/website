@@ -2,7 +2,8 @@
 //
 // Logline: Fill #content from pulled/{repo}.oot. Repos own the copy.
 //
-// Setup: Valid routes, substratum first: openOODA, oodar,
+// Setup: Default route is home (Source: .github/docs/).
+//        Product routes, substratum first: openOODA, oodar,
 //        oodac, std, ooda, packaging, opm, catalog, lsp, mcp.
 //        404.html skips this via data-page="404".
 //

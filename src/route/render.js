@@ -2,9 +2,9 @@
 //
 // Logline: Fill #content from pulled/{repo}.oot.
 //
-var DEFAULT_ROUTE = "openOODA";
+var DEFAULT_ROUTE = "home";
 var VALID_ROUTES = {
-  openOODA: 1, home: 1,
+  home: 1, openOODA: 1,
   oodar: 1, oodac: 1, std: 1,
   ooda: 1, packaging: 1, opm: 1, catalog: 1,
   lsp: 1, mcp: 1
@@ -40,7 +40,7 @@ function pageHtml(data) {
 
 function renderRoute(route) {
   var raw = (route || "").replace(/^#/, "").trim();
-  if (!raw || raw === "home" || raw === "/") raw = "openOODA";
+  if (!raw || raw === "/") raw = "home";
   var contentEl = document.getElementById("content");
   if (!contentEl) return;
   document.querySelectorAll("aside .local a").forEach(function (a) {
@@ -53,7 +53,7 @@ function renderRoute(route) {
     window.scrollTo(0, 0);
     return;
   }
-  var isHome = (raw === "openOODA");
+  var isHome = (raw === "home");
   document.title = isHome ? "openOODA" : "openOODA — " + raw;
   var keep = isHome && !!contentEl.querySelector(".install");
   if (!keep) {

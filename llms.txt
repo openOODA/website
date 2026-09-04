@@ -7,6 +7,7 @@ Canonical agent front door: github.com/openOODA/openOODA/ANCHOR.oo.
 
 openOODA is a capability-secure systems language. The compiler checks
 source ahead of time. Privileged work needs an unforgeable cap token.
+Public home: https://openooda.org loads `.github/docs/HOME.oot`.
 
 ## 1. File law
 
