@@ -9,12 +9,6 @@ The `ooda` binary. Tag v0.2.7. It compiles, runs, tests, and
 formats `.oo` files. It spawns `opm`, `lsp`, and `mcp` as
 separate packages. It does not contain the compiler.
 
-## Install
-
-```
-curl -fsSL https://openooda.org/install.sh | bash
-```
-
 ## Surface
 
 13 in-process commands (from `ooda/docs/COMMANDS.oot`):

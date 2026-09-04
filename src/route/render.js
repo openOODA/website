@@ -11,7 +11,7 @@ var VALID_ROUTES = {
 };
 var INSTALL_HTML = '<div class="install"><span class="install-cmd">curl -fsSL <a href="https://openooda.org/install.sh">https://openooda.org/install.sh</a> | bash</span><button type="button" class="copy" aria-label="Copy install command">copy</button></div>';
 
-function setupOpenOODA() {
+function bindCopyButtons() {
   var copyBtns = document.querySelectorAll("main .copy");
   for (var i = 0; i < copyBtns.length; i++) {
     (function (btn) {
@@ -29,6 +29,15 @@ function setupOpenOODA() {
   }
 }
 
+function pageHtml(data) {
+  var html = "";
+  if (data.title) html += '<h1 class="visually-hidden">' + escapeHtml(data.title) + "</h1>";
+  if (data.source) html += '<p class="canon">Source: ' + escapeHtml(data.source) + "</p>";
+  html += INSTALL_HTML;
+  if (data.content) html += simpleMarkdown(data.content);
+  return html;
+}
+
 function renderRoute(route) {
   var raw = (route || "").replace(/^#/, "").trim();
   if (!raw || raw === "home" || raw === "/") raw = "openOODA";
@@ -38,53 +47,32 @@ function renderRoute(route) {
     var isAct = a.dataset.route === raw;
     if (a.classList.contains("active") !== isAct) a.classList.toggle("active", isAct);
   });
-  if (raw === "openOODA") {
-    document.title = "openOODA";
-    var keepHome = !!contentEl.querySelector(".install");
-    if (!keepHome) {
-      contentEl.innerHTML = '<p class="canon">Loading&hellip;</p>';
-    } else {
-      setupOpenOODA();
-    }
-    fetch("/pulled/openOODA.oot").then(function (r) {
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      return r.text();
-    }).then(function (text) {
-      var data = parsePulledOot(text);
-      var html = "";
-      if (data.title) html += '<h1 class="visually-hidden">' + escapeHtml(data.title) + "</h1>";
-      if (data.source) html += '<p class="canon">Source: ' + escapeHtml(data.source) + "</p>";
-      html += INSTALL_HTML;
-      if (data.content) html += simpleMarkdown(data.content);
-      html += INSTALL_HTML;
-      contentEl.innerHTML = html;
-      setupOpenOODA();
-    }).catch(function (err) {
-      if (contentEl.querySelector(".install")) return;
-      var msg = escapeHtml(err && err.message ? err.message : "unknown");
-      contentEl.innerHTML = "<h1>openOODA</h1><p>Failed to load: " + msg + "</p>";
-    });
-  } else if (VALID_ROUTES[raw]) {
-    document.title = "openOODA — " + raw;
-    contentEl.innerHTML = '<p class="canon">Loading ' + escapeHtml(raw) + "&hellip;</p>";
-    fetch("/pulled/" + raw + ".oot").then(function (r) {
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      return r.text();
-    }).then(function (text) {
-      var data = parsePulledOot(text);
-      var html = "";
-      if (data.title) html += '<h1 class="visually-hidden">' + escapeHtml(data.title) + "</h1>";
-      if (data.source) html += '<p class="canon">Source: ' + escapeHtml(data.source) + "</p>";
-      if (data.content) html += simpleMarkdown(data.content);
-      contentEl.innerHTML = html;
-    }).catch(function (err) {
-      var msg = escapeHtml(err && err.message ? err.message : "unknown");
-      contentEl.innerHTML = "<h1>" + escapeHtml(raw) + "</h1><p>Failed to load: " + msg + "</p>";
-    });
-  } else {
+  if (!VALID_ROUTES[raw]) {
     document.title = "openOODA — Not Found";
     contentEl.innerHTML = "<p>Not found.</p>";
+    window.scrollTo(0, 0);
+    return;
   }
+  var isHome = (raw === "openOODA");
+  document.title = isHome ? "openOODA" : "openOODA — " + raw;
+  var keep = isHome && !!contentEl.querySelector(".install");
+  if (!keep) {
+    contentEl.innerHTML = '<p class="canon">Loading&hellip;</p>';
+  } else {
+    bindCopyButtons();
+  }
+  fetch("/pulled/" + raw + ".oot").then(function (r) {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.text();
+  }).then(function (text) {
+    contentEl.innerHTML = pageHtml(parsePulledOot(text));
+    bindCopyButtons();
+  }).catch(function (err) {
+    if (contentEl.querySelector(".install")) return;
+    var msg = escapeHtml(err && err.message ? err.message : "unknown");
+    contentEl.innerHTML = "<h1>" + escapeHtml(isHome ? "openOODA" : raw) +
+      "</h1><p>Failed to load: " + msg + "</p>";
+  });
   window.scrollTo(0, 0);
 }
 

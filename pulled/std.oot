@@ -11,14 +11,7 @@ Each domain has its own `ANCHOR.oo`. Counted on 2026-09-04:
 old "173 modules" figure.
 
 Zero ambient authority. Effects take an explicit cap token.
-
-## Install
-
 The install script clones std with the toolchain.
-
-```
-curl -fsSL https://openooda.org/install.sh | bash
-```
 
 ## Surface
 

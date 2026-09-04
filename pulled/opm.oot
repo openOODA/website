@@ -11,12 +11,6 @@ content-addressed. Each package declares the caps it needs.
 
 Entry is `opm <subcommand>`. `ooda opm` spawns this binary.
 
-## Install
-
-```
-curl -fsSL https://openooda.org/install.sh | bash
-```
-
 ## Surface
 
 Live commands from `opm/docs/cli.oot`:

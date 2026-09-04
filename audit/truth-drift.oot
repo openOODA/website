@@ -28,7 +28,7 @@ dated 2026-09-04.
 | mcp | v0.6.10, 22 tools | v0.6.10 |
 
 website and .github stay in the home table. They are not nav
-routes. Cache query is `?v=20260904i`.
+routes. Cache query is `?v=20260904j`.
 Each pulled `Source:` line is `openOODA/<repo>/docs/`.
 That directory has `docs/ANCHOR.oo` in the cited repo.
 

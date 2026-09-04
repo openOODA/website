@@ -11,12 +11,6 @@ No compiler code lives here. Agent front door is `ANCHOR.oo`.
 Read order: RULES.oot, NORTHSTAR.oot, rfcs/ANCHOR.oo,
 practices/ANCHOR.oo.
 
-## Install
-
-```
-curl -fsSL https://openooda.org/install.sh | bash
-```
-
 ## Surface
 
 Twelve repos. Git tags as of 2026-09-04.

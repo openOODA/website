@@ -9,14 +9,7 @@ The Language Server Protocol server for `.oo` files.
 Release tag v0.6.12. Editors speak JSON-RPC over stdio.
 Cap grant files come from `${oodar_root}/sec/cap/cap_table.json`
 via `--oodar-root`. No hard-coded cap table.
-
-## Install
-
-```
-curl -fsSL https://openooda.org/install.sh | bash
-```
-
-Then point the editor at the `lsp` binary. See
+Point the editor at the `lsp` binary. See
 `lsp/docs/LSP_SETUP.oot`.
 
 ## Surface

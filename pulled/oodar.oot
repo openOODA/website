@@ -12,13 +12,6 @@ Public ABI is `oodar.h`. Shared types are `types.h`.
 Six per-domain subdirs match std vocabulary: core, sec, fs,
 net, hw, app. The umbrella translation unit includes the `.c`
 files in dependency order. `qa/` is not part of the public ABI.
-
-## Install
-
-```
-curl -fsSL https://openooda.org/install.sh | bash
-```
-
 From source: `gcc oodar.c`. See `oodar/docs/BUILD_AND_INSTALL.oot`.
 
 ## Surface

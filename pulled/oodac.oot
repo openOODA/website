@@ -14,13 +14,6 @@ Backends: ELF64 (x86_64 and AArch64), WebAssembly, C99
 
 The compiler is the substrate. std, ooda, lsp, mcp, and opm
 consume it. They are siblings, not children of a monorepo.
-
-## Install
-
-```
-curl -fsSL https://openooda.org/install.sh | bash
-```
-
 `ooda build` and `ooda run` exec this binary via
 `OODA_COMPILER`.
 

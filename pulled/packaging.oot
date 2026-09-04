@@ -11,13 +11,6 @@ winget is deferred.
 
 The public URL `https://openooda.org/install.sh` redirects
 to this repo's `install.sh` on GitHub `main`.
-
-## Install
-
-```
-curl -fsSL https://openooda.org/install.sh | bash
-```
-
 Installs to `~/.openooda/`. Adds `~/.openooda/bin` to PATH.
 
 ## Surface
