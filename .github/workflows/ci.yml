@@ -1,0 +1,9 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  auto-release:
+    uses: openOODA/openOODA/.github/workflows/auto-release.yml@v1.0.6
