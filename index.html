@@ -107,25 +107,29 @@
 <h1 class="visually-hidden">openOODA</h1>
 <p class="canon">Source: openOODA/.github/docs/</p>
 <div class="install"><span class="install-cmd">curl -fsSL <a href="https://openooda.org/install.sh">https://openooda.org/install.sh</a> | bash</span><button type="button" class="copy" aria-label="Copy install command">copy</button></div>
-<p>A capability-secure systems language.<br>Every effect needs an unforgeable cap token.<br>The compiler checks source ahead of time.<br>Zero ambient authority.</p>
+<p>Your process is born with no privileges.<br>That is not an accident. That is the type system.</p>
+<p>We assume the source is hostile, the tests are<br>optimistic, and the agent will try the network.<br>Then we make those attempts fail closed.</p>
 <h2>Caps</h2>
-<p>Fourteen tokens: filesystem, network, process, GPU, FFI.<br>A network call takes <code>&amp;NetCap</code>. No token, no effect.<br>Fail closed (<code>E_CAP</code>).</p>
+<p>Fourteen tokens. Unforgeable. Not environment<br>variables. Not a terms-of-service clause.<br>A function that talks to the network takes<br><code>&amp;NetCap</code> or it does not compile. <code>E_CAP</code> is<br>not a warning.</p>
+<p>Filesystem, network, process, GPU, FFI.<br>If it is not on the list, it does not happen.</p>
+<h2>First principles</h2>
+<p>Hardware first. IEEE 754, not folklore.<br>Subtract until the drag is gone.<br>The compiler is the substrate.<br>The other repos are siblings, not a monorepo<br>wearing a trench coat.</p>
 <h2>Repos</h2>
 <p>Ten product repos. Substratum first.</p>
 <table>
 <tr><td>Repo</td><td>Role</td></tr>
-<tr><td><a href="#openOODA">openOODA</a></td><td>Laws, RFCs, practices</td></tr>
-<tr><td><a href="#oodar">oodar</a></td><td>Gen 1 C host</td></tr>
-<tr><td><a href="#oodac">oodac</a></td><td>Compiler</td></tr>
-<tr><td><a href="#std">std</a></td><td>Standard library</td></tr>
-<tr><td><a href="#ooda">ooda</a></td><td><code>ooda</code> driver</td></tr>
-<tr><td><a href="#packaging">packaging</a></td><td>apt, dnf, pacman</td></tr>
-<tr><td><a href="#opm">opm</a></td><td>Package manager</td></tr>
-<tr><td><a href="#catalog">catalog</a></td><td>Public package list</td></tr>
-<tr><td><a href="#lsp">lsp</a></td><td>Language server</td></tr>
-<tr><td><a href="#mcp">mcp</a></td><td>MCP server</td></tr>
+<tr><td><a href="#openOODA">openOODA</a></td><td>The laws. They do not change.</td></tr>
+<tr><td><a href="#oodar">oodar</a></td><td>Gen 1. Silicon, in C.</td></tr>
+<tr><td><a href="#oodac">oodac</a></td><td>The compiler. Everything else borrows it.</td></tr>
+<tr><td><a href="#std">std</a></td><td>The library. Still needs a token.</td></tr>
+<tr><td><a href="#ooda">ooda</a></td><td>The binary you type. Not the compiler.</td></tr>
+<tr><td><a href="#packaging">packaging</a></td><td>How bits land on a machine.</td></tr>
+<tr><td><a href="#opm">opm</a></td><td>Packages. Extra caps are a refusal.</td></tr>
+<tr><td><a href="#catalog">catalog</a></td><td>The public list. No accounts.</td></tr>
+<tr><td><a href="#lsp">lsp</a></td><td>The editor. Humans first.</td></tr>
+<tr><td><a href="#mcp">mcp</a></td><td>The agent. Same rules as the human.</td></tr>
 </table>
-<p>The site is this page. Org files live in <code>.github</code>.</p>
+<p>The install line is above. Piping curl to bash<br>is the one ambient authority we still admit.<br>We are not proud. We are practical.</p>
 </main>
 <footer class="site-footer">
 <div class="gen-bar" id="gen-bar" aria-label="Toggle fighter generations">

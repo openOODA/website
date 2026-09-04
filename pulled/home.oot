@@ -3,16 +3,31 @@ File: website/pulled/home.oot
 
 Source: openOODA/.github/docs/
 
-A capability-secure systems language.
-Every effect needs an unforgeable cap token.
-The compiler checks source ahead of time.
-Zero ambient authority.
+Your process is born with no privileges.
+That is not an accident. That is the type system.
+
+We assume the source is hostile, the tests are
+optimistic, and the agent will try the network.
+Then we make those attempts fail closed.
 
 ## Caps
 
-Fourteen tokens: filesystem, network, process, GPU, FFI.
-A network call takes `&NetCap`. No token, no effect.
-Fail closed (`E_CAP`).
+Fourteen tokens. Unforgeable. Not environment
+variables. Not a terms-of-service clause.
+A function that talks to the network takes
+`&NetCap` or it does not compile. `E_CAP` is
+not a warning.
+
+Filesystem, network, process, GPU, FFI.
+If it is not on the list, it does not happen.
+
+## First principles
+
+Hardware first. IEEE 754, not folklore.
+Subtract until the drag is gone.
+The compiler is the substrate.
+The other repos are siblings, not a monorepo
+wearing a trench coat.
 
 ## Repos
 
@@ -20,15 +35,17 @@ Ten product repos. Substratum first.
 
 | Repo | Role |
 |------|------|
-| [openOODA](#openOODA) | Laws, RFCs, practices |
-| [oodar](#oodar) | Gen 1 C host |
-| [oodac](#oodac) | Compiler |
-| [std](#std) | Standard library |
-| [ooda](#ooda) | `ooda` driver |
-| [packaging](#packaging) | apt, dnf, pacman |
-| [opm](#opm) | Package manager |
-| [catalog](#catalog) | Public package list |
-| [lsp](#lsp) | Language server |
-| [mcp](#mcp) | MCP server |
+| [openOODA](#openOODA) | The laws. They do not change. |
+| [oodar](#oodar) | Gen 1. Silicon, in C. |
+| [oodac](#oodac) | The compiler. Everything else borrows it. |
+| [std](#std) | The library. Still needs a token. |
+| [ooda](#ooda) | The binary you type. Not the compiler. |
+| [packaging](#packaging) | How bits land on a machine. |
+| [opm](#opm) | Packages. Extra caps are a refusal. |
+| [catalog](#catalog) | The public list. No accounts. |
+| [lsp](#lsp) | The editor. Humans first. |
+| [mcp](#mcp) | The agent. Same rules as the human. |
 
-The site is this page. Org files live in `.github`.
+The install line is above. Piping curl to bash
+is the one ambient authority we still admit.
+We are not proud. We are practical.
