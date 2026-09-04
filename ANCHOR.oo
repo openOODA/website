@@ -22,12 +22,12 @@
 //   7. sitemap.xml and robots.txt — crawler metadata.
 //   8. llms.txt — public LLM context (single canonical manual).
 //   9. pulled/{repo}.json — per-repo docs loaded by the SPA when
-//      a sub-menu item is clicked. 7 routes today: openOODA,
-//      ooda, std, opm, cli, lsp, mcp. oodac + runtime are
-//      "coming soon" placeholders (no JSON yet).
+//      a sub-menu item is clicked. 8 routes today: openOODA,
+//      ooda, std, opm, cli, lsp, mcp, oodar. oodac is the
+//      remaining "coming soon" placeholder (no JSON yet).
 //  10. Sub-menu: 8 polyrepo repos in first-principles order —
-//      ooda, std, opm, cli, lsp, mcp; oodac + runtime as
-//      "coming soon" pending gemini's extraction from ooda/.
+//      ooda, std, opm, cli, lsp, mcp, oodar; oodac as
+//      "coming soon" pending extraction from ooda/.
 //
 // Layout (one concept, one location):
 //
