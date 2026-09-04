@@ -1,12 +1,12 @@
 const ROUTE_NAME_TO_ID = {
 "openOODA": 1, "home": 1,
 "ooda": 2, "std": 3, "opm": 4, "cli": 5, "lsp": 6, "mcp": 7,
-"oodac": 8, "runtime": 9
+"oodar": 8, "oodac": 9
 };
 const ROUTE_ID_TO_NAME = {
 1: "openOODA",
 2: "ooda", 3: "std", 4: "opm", 5: "cli", 6: "lsp", 7: "mcp",
-8: "oodac", 9: "runtime"
+8: "oodar", 9: "oodac"
 };
 
 /**
@@ -5589,7 +5589,7 @@ fetch("/pulled/openOODA.json").then(function (r) {
 }).catch(function (err) {
   contentEl.innerHTML = '<h1>openOODA</h1><p>Failed to load overview: ' + (err && err.message ? err.message : "unknown") + '.</p><p><a href="https://github.com/openOODA/openOODA" target="_blank" rel="noopener noreferrer">View on GitHub</a>.</p>';
 });
-} else if (raw === "ooda" || raw === "std" || raw === "opm" || raw === "cli" || raw === "lsp" || raw === "mcp") {
+} else if (raw === "ooda" || raw === "std" || raw === "opm" || raw === "cli" || raw === "lsp" || raw === "mcp" || raw === "oodar") {
 document.title = "openOODA — " + raw.toUpperCase();
 contentEl.innerHTML = '<p class="canon">Loading ' + raw + ' docs from openOODA/' + raw + '/docs/&hellip;</p>';
 fetch("/pulled/" + raw + ".json").then(function (r) {
@@ -5608,9 +5608,9 @@ fetch("/pulled/" + raw + ".json").then(function (r) {
 }).catch(function (err) {
   contentEl.innerHTML = '<h1>' + raw + '</h1><p>Failed to load docs: ' + (err && err.message ? err.message : "unknown") + '.</p><p><a href="https://github.com/openOODA/' + raw + '" target="_blank" rel="noopener noreferrer">View on GitHub</a>.</p>';
 });
-} else if (raw === "oodac" || raw === "runtime") {
-document.title = "openOODA — " + raw + " (coming soon)";
-contentEl.innerHTML = '<h1>' + raw + '</h1><p class="canon">coming soon</p><p>This repo will be extracted from <a href="https://github.com/openOODA/ooda" target="_blank" rel="noopener noreferrer">openOODA/ooda</a> once gemini\'s compiler work ships.</p><p>For now, the compiler and runtime live inside the <a href="https://github.com/openOODA/ooda" target="_blank" rel="noopener noreferrer">oda monorepo</a>.</p>';
+} else if (raw === "oodac") {
+document.title = "openOODA — oodac (coming soon)";
+contentEl.innerHTML = '<h1>oodac</h1><p class="canon">coming soon</p><p>The openOODA compiler is being extracted from <a href="https://github.com/openOODA/ooda" target="_blank" rel="noopener noreferrer">openOODA/ooda</a> into its own repo at <a href="https://github.com/openOODA/oodac" target="_blank" rel="noopener noreferrer">openOODA/oodac</a>. The source is in place; the binary is in security testing.</p>';
 } else {
 document.title = "openOODA — Not Found";
 contentEl.innerHTML = "<p>Not found.</p>";
