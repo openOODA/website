@@ -1,0 +1,42 @@
+# ooda — workflow driver
+File: website/pulled/ooda.oot
+
+Source: openOODA/ooda/docs/
+
+## What it is
+
+The `ooda` binary. Tag v0.2.7. It compiles, runs, tests, and
+formats `.oo` files. It spawns `opm`, `lsp`, and `mcp` as
+separate packages. It does not contain the compiler.
+
+## Install
+
+```
+curl -fsSL https://openooda.org/install.sh | bash
+```
+
+## Surface
+
+13 in-process commands (from `ooda/docs/COMMANDS.oot`):
+
+| Command | Purpose |
+|---------|---------|
+| `ooda build` | Compile with oodac |
+| `ooda run` | Compile and execute |
+| `ooda gen` | Scaffold a `.oo` file |
+| `ooda test` | Run one test file |
+| `ooda install` | Install a release pack |
+| `ooda bench` | Time `oodac check` |
+| `ooda init` | New project layout |
+| `ooda context` | List `.oo` files or stream the codex |
+| `ooda health` | Print `ooda health: ok` |
+| `ooda fix` | Apply at most 8 diagnostic edits |
+| `ooda digest` | SHA-256 of a file |
+| `ooda fmt` | Format `.oo` in place |
+| `ooda token` | Token ledger subcommands |
+
+Spawned: `ooda opm`, `ooda lsp`, `ooda mcp`. Those binaries
+live under `$OODACODEX/bin/`. OODACODEX is required.
+
+`ooda token` subcommands: status, report, audit, query, ask,
+schema, diff, tail, fix, snapshot, enforce, extra.

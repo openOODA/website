@@ -1,0 +1,16 @@
+// # dogfight/ — Background OODA dogfight
+//
+// Logline: Seven generations, two teams, guns, missiles, lasers.
+//          Unused HUD, WASM, WEAPON_DAMAGE_SPECS, and duplicate
+//          spec tables were deleted. Live fields only in specs.js.
+//
+// Setup: Classic scripts. Shared bag is DF in state.js.
+//        Gen bar toggles activeGens. Default gen 4.
+//
+// Beats:
+//   1. pools, specs, state, alt.
+//   2. ooda-obs, ooda-engage, ooda-decide.
+//   3. vfx-*, damage, draw-*.
+//   4. jets-on, create, sync.
+//   5. physics-*, cca, tactics, weapons-*.
+//   6. loop-*, init.js.

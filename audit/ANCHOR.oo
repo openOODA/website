@@ -1,0 +1,19 @@
+// # Website Audit — Anchor for Agents
+//
+// Logline: Zero-trust audit of website/ against the .oo/.oot file
+//          law, polyrepo truth, and fail-closed security.
+//
+// Setup: Written 2026-09-04. Scope is this repo only. Do not edit
+//        oodac/. Live fetch of https://openooda.org/ matches disk
+//        for static HTML. JavaScript was not executed in a browser.
+//
+// Beats:
+//   1. file-law.oot — unauthorized types, 256-line cap, header gaps.
+//   2. truth-drift.oot — stale versions, deleted boards, wrong counts.
+//   3. security.oot — XSS in markdown, CSP holes, third-party net.
+//   4. spa-drag.oot — 5857-line JS, dead homepage, dogfight drag.
+
+import "file-law.oot";
+import "truth-drift.oot";
+import "security.oot";
+import "spa-drag.oot";

@@ -1,0 +1,40 @@
+# openOODA — governance
+File: website/pulled/openOODA.oot
+
+Source: openOODA/openOODA/
+
+## What it is
+
+The governance repo. Process boards, RFCs, and the 23 laws.
+No compiler code lives here. Agent front door is `ANCHOR.oo`.
+
+Read order: RULES.oot, NORTHSTAR.oot, rfcs/ANCHOR.oo,
+practices/ANCHOR.oo.
+
+## Install
+
+```
+curl -fsSL https://openooda.org/install.sh | bash
+```
+
+## Surface
+
+Eleven repos. Git tags as of 2026-09-04.
+
+| Repo | Role | Tag |
+|------|------|-----|
+| openOODA | Laws, RFCs, practices | v1.0.20 |
+| oodac | Compiler | v0.2.2 |
+| oodar | Gen 1 C host | v4.0.0 |
+| std | Standard library | v1.0.8 |
+| ooda | `ooda` driver | v0.2.7 |
+| opm | Package manager | v0.8.8 |
+| lsp | Language server | v0.6.12 |
+| mcp | MCP server | v0.6.10 |
+| website | openooda.org | v1.2.10 |
+| packaging | apt, dnf, pacman | v0.1.6 |
+| .github | Org profile | — |
+
+The compiler is the substrate. The other repos are siblings.
+Governance edits must not trigger compiler rebuilds.
+Directory topology stays still: Delta_path = 0.

@@ -1,0 +1,38 @@
+# lsp — language server
+File: website/pulled/lsp.oot
+
+Source: openOODA/lsp/docs/
+
+## What it is
+
+The Language Server Protocol server for `.oo` files.
+Release tag v0.6.12. Editors speak JSON-RPC over stdio.
+Cap grant files come from `${oodar_root}/sec/cap/cap_table.json`
+via `--oodar-root`. No hard-coded cap table.
+
+## Install
+
+```
+curl -fsSL https://openooda.org/install.sh | bash
+```
+
+Then point the editor at the `lsp` binary. See
+`lsp/docs/LSP_SETUP.oot`.
+
+## Surface
+
+Advertised methods (from `lsp/docs/CAPABILITIES.oot`):
+
+| Tier | Methods |
+|------|---------|
+| Lifecycle | initialize, initialized, shutdown, exit |
+| Sync | textDocument/didOpen, didChange, didClose |
+| Document | completion, hover, definition, formatting, documentSymbol, codeAction, diagnostic, documentLink, inlayHint |
+| Workspace | workspace/executeCommand |
+
+Commands: `ooda.lsp.version`, `ooda.lsp.indexSize`,
+`ooda.lsp.echo`, `ooda.lsp.tokenCount`.
+
+Full document sync only (`change: 1`). Incremental sync is
+not implemented. Not advertised: rename, references,
+signatureHelp, semantic tokens, workspace/symbol.

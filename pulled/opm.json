@@ -1,7 +1,0 @@
-{
-  "repo": "opm",
-  "title": "openOODA Package Manager",
-  "tagline": "Install, search, publish, lock. v0.8.x.",
-  "source": "openOODA/opm/docs/",
-  "content": "## What it is\n\nThe openOODA package manager. Install packages from the registry, search by capability, publish your own, and lock the dependency graph. Content-addressed by SHA, capability declarations on every package, zero ambient supply chain.\n\nInvoked via `ooda opm` (or directly as `opm` once on PATH).\n\n## Install\n\nopm ships as part of the `ooda` toolchain. Once `ooda` is on PATH, you have `ooda opm`.\n\n## Surface\n\n19 subcommands, dispatched by `cli/main.oo`:\n\n| Command | Purpose |\n|---------|---------|\n| `opm add` | Add a dependency to the manifest |\n| `opm audit` | Verify installed packages against the lock |\n| `opm cat` | Print a package's manifest |\n| `opm git` | Git-based source control for packages |\n| `opm ingest` | Ingest a local directory as a package |\n| `opm init` | Initialize a new package in the current dir |\n| `opm launch` | Launch a packaged application |\n| `opm ops` | Operational commands (publish, retract) |\n| `opm pack` | Pack a directory into a tarball |\n| `opm pick` | Pick a specific version from a range |\n| `opm pkg` | Package-level operations |\n| `opm publish` | Publish a package to the registry |\n| `opm reg` / `registry` | Registry operations |\n| `opm regs` | Registry status |\n| `opm search` | Search the registry |\n| `opm tree` | Print the dependency tree |"
-}

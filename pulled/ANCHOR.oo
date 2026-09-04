@@ -1,23 +1,27 @@
 // # pulled/ — Per-Repo Documentation Sources
 //
-// Logline: The JSON files fetched by the SPA when a sub-menu item
-//          is clicked. One file per route.
+// Logline: One .oot file per nav route. The SPA fetches
+//          /pulled/{repo}.oot and renders the body as markdown.
 //
-// Setup: Each file is a 3-section document (## What it is / ## Install
-//        / ## Surface) with the same shape. The SPA fetches
-//        `/pulled/{repo}.json`, renders the title + Source: line +
-//        markdown content.
+// Setup: 2-line .oot header, optional Source: line, then body.
+//        parsePulledOot in src/main.js reads that shape.
+//        Tags below are 2026-09-04. No JSON files remain.
 //
 // Beats:
-//   1. openOODA.json — the polyrepo front door (8 repos, install).
-//   2. ooda.json     — the `ooda` binary driver.
-//   3. std.json      — the 8-domain standard library.
-//   4. opm.json      — the content-addressed package manager.
-//   5. lsp.json      — the language server.
-//   6. mcp.json      — the MCP server for AI agents.
-//   7. oodar.json    — the Gen 1 C host substrate.
-//   8. oodac.json    — the compiler.
-//
-// No build step today. Each file is hand-synced from the matching
-// `openOODA/{repo}/docs/` source. A future `site_pull_repo_docs.oo`
-// (not in this repo) would automate the sync.
+//   1. openOODA.oot — governance, 11-repo table.
+//   2. ooda.oot     — driver, 13 commands + 3 spawns.
+//   3. std.oot      — 8 domains, 188 ANCHOR.oo counted.
+//   4. opm.oot      — package manager live commands.
+//   5. lsp.oot      — advertised LSP methods.
+//   6. mcp.oot      — 22 tools from mcp/docs/TOOLS.oot.
+//   7. oodar.oot    — Gen 1 host, tag v4.0.0.
+//   8. oodac.oot    — compiler, 12 public subdirs, v0.2.2.
+
+import "openOODA.oot";
+import "ooda.oot";
+import "std.oot";
+import "opm.oot";
+import "lsp.oot";
+import "mcp.oot";
+import "oodar.oot";
+import "oodac.oot";

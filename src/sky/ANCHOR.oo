@@ -1,0 +1,11 @@
+// # sky/ — Starfield
+//
+// Logline: Theme-colored stars behind the dogfight.
+//
+// Setup: Creates #sky canvas. CanvasLifecycleManager honors
+//        prefers-reduced-motion.
+//
+// Beats:
+//   1. starfield.js — init, draw, register.
+
+import "starfield.js";

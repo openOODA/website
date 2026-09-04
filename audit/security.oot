@@ -1,0 +1,93 @@
+# SECURITY — XSS, CSP, third-party network
+File: website/audit/security.oot
+
+Verdict: FAIL-CLOSED on stored HTML injection in the markdown
+path. CSP allows unsafe-inline script. The page loads Google
+Fonts and posts email to collect.openooda.org.
+
+## 1. simpleMarkdown preserves raw HTML (Red 4)
+
+src/main.js simpleMarkdown (line 56) copies every HTML tag out
+of the pulled JSON, then writes it back after escaping the rest.
+
+  text.replace(/<[a-zA-Z\/][^>]*>/g, function (match) {
+    htmlBlocks.push(match);
+    ...
+  });
+  // later
+  return htmlBlocks[parseInt(idx, 10)] || "";
+
+contentEl.innerHTML = html follows that parse.
+A compromised or mistaken pulled/*.json field becomes script.
+data.title and data.source are concatenated without escapeHtml.
+Error paths concatenate err.message into innerHTML.
+
+isExternalUrl allows http, https, mailto, irc, ircs, magnet.
+It does not allow javascript:. wikiLinks escape the href.
+The raw-HTML preserve path bypasses that check.
+
+Fix: delete the RAWHTML preserve. Run escapeHtml on title,
+source, and error text. Use textContent for errors.
+
+## 2. Content-Security-Policy
+
+index.html and 404.html set:
+
+  script-src 'self' 'unsafe-inline'
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com
+  font-src 'self' https://fonts.gstatic.com
+  connect-src 'self' https://collect.openooda.org
+  form-action https://collect.openooda.org
+
+'unsafe-inline' is required by the theme boot script in <head>.
+That script reads a cookie and sets data-theme. Move it to
+src/ and drop 'unsafe-inline' from script-src.
+Google Fonts is ambient network authority on every page load.
+WORKFLOW.oot §0.3 asks for monospace. The CSS already lists
+ui-monospace, SFMono-Regular, Menlo, Consolas. Delete the
+Google Fonts link. Host nothing from fonts.googleapis.com.
+
+## 3. Email collect
+
+The join form POSTs to https://collect.openooda.org/v1/emails.
+The host is not this repo. Capability story: the public page
+grants the browser NetCap to a third origin by default.
+Honeypot field `website` is present. CSRF token is not.
+credentials: omit is set. That is the only fail-closed choice
+in this path.
+
+If collect.openooda.org is required, document the origin and
+the data retained. If it is not required, delete the form.
+
+## 4. 404.json-ld
+
+404.html embeds `<script type="application/ld+json">{}</script>`.
+Empty JSON-LD is a lie to crawlers. Delete it or give it a
+real SoftwareApplication block that matches index.html.
+
+## 5. install.sh pipe to bash
+
+website/install.sh:
+
+  curl -fsSL "...packaging/main/install.sh" "$@" | bash
+
+Users who hit /install.sh execute remote shell with no
+signature check in this file. The canonical script lives in
+packaging/. This file adds a second download hop.
+Keep the URL. Do not add more shell.
+
+## 6. Reduced motion
+
+initGlobalDogfight registers with respectReducedMotion: false.
+styles/main.css hides #sky under prefers-reduced-motion.
+The dogfight canvas stays on. That ignores the user signal.
+
+## 7. Next repair (this repo)
+
+1. Kill RAWHTML in simpleMarkdown. Escape all interpolated
+   strings.
+2. Drop Google Fonts. Drop 'unsafe-inline' after the theme
+   boot script moves out of the HTML.
+3. Honor prefers-reduced-motion in the dogfight, or delete
+   the dogfight (spa-drag.oot).
+4. Delete empty JSON-LD on 404.html.

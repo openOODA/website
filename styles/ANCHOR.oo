@@ -3,7 +3,8 @@
 // Logline: One CSS file, all themes + all layout.
 //
 // Beats:
-//   1. main.css — minified single-line CSS. Defines:
+//   1. main.css — one stylesheet. System monospace stack.
+//      No Google Fonts. Defines:
 //      a) 9 theme palettes via `[data-theme="…"]` blocks
 //         (night, paper, magma, flare, solar, cyber, frost,
 //         tokyo, laser)

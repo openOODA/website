@@ -1,46 +1,20 @@
 // # openOODA Website — Anchor for Agents
 //
-// Logline: Public website for the openOODA polyrepo, served from
-//          GitHub Pages at openooda.org.
+// Logline: Public site at openooda.org. Shell in HTML. Repo docs
+//          in pulled/*.oot fill #content. Dogfight is split JS.
 //
-// Setup: Static site. The deploy workflow pushes `main` to GitHub
-//        Pages as-is. No build step. The website content is hand-
-//        maintained; per-repo pages are pulled from each repo's
-//        `docs/` directory and hand-synced into `pulled/{repo}.json`.
+// Setup: GitHub Pages, no build. New docs are .oo/.oot.
+//        Browser residual is .js under src/, each <= 256 lines.
 //
 // Beats:
-//   1. index.html — single-page app shell (the SPA renders into
-//      <main id="content">).
-//   2. 404.html — not found page; same shell as index.html.
-//   3. src/main.js — the SPA: router, theme, install copy handler,
-//      gen bar, the background fighter-jet dogfight animation.
-//   4. styles/main.css — 9 theme palettes, layout, install box,
-//      gen-bar, dogfight canvas, sky starfield.
-//   5. assets/favicon.svg — browser tab icon.
-//   6. assets/open-graph.png — social card image (OpenGraph +
-//      Twitter).
-//   7. sitemap.xml and robots.txt — crawler metadata.
-//   8. llms.txt — public LLM context (single canonical manual).
-//   9. pulled/{repo}.json — per-repo docs loaded by the SPA when
-//      a sub-menu item is clicked. 8 routes today: openOODA,
-//      ooda, std, opm, cli, lsp, mcp, oodar. oodac is the
-//      remaining "coming soon" placeholder (no JSON yet).
-//  10. Sub-menu: 8 polyrepo repos in first-principles order —
-//      ooda, std, opm, cli, lsp, mcp, oodar; oodac as
-//      "coming soon" pending extraction from ooda/.
-//
-// Layout (one concept, one location):
-//
-//   /
-//     index.html, 404.html, sitemap.xml, robots.txt, llms.txt,
-//     CNAME, LICENSE, VERSION, ANCHOR.oo
-//     assets/   — static images (favicon, social card)
-//     pulled/   — 7 JSON files, one per route
-//     src/      — the SPA
-//     styles/   — the single CSS file
-//     .github/  — deploy workflow
-//
-// Banned names (no mod/util/helpers/common/misc/stubs/lib/interface/
-// types/impl): enforced. Every directory has an ANCHOR.oo. Every
-// file is under 256 lines. No compat layers, no fallbacks, no
-// dead-code stubs — old code is killed, not kept.
+//   1. index.html — shell, nav, empty #content, script list.
+//   2. 404.html — static not-found. data-page=404 skips router.
+//   3. pulled/*.oot — one page per repo. Repos own the copy.
+//   4. src/ — theme, route, dogfight, sky. See src/ANCHOR.oo.
+//   5. styles/main.css — system monospace. No Google Fonts.
+//   6. llms.txt — public LLM manual.
+//   7. audit/ — 2026-09-04 zero-trust audit.
+
+import "audit/ANCHOR.oo";
+import "src/ANCHOR.oo";
+import "pulled/ANCHOR.oo";

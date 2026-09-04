@@ -1,0 +1,36 @@
+# oodar — Gen 1 C host
+File: website/pulled/oodar.oot
+
+Source: openOODA/oodar/
+
+## What it is
+
+The Gen 1 host substrate. Tag v4.0.0. Compiled `.oo` binaries
+link against `oo_*` symbols. Build entry is `gcc oodar.c`.
+Public ABI is `oodar.h`. Shared types are `types.h`.
+
+Six per-domain subdirs match std vocabulary: core, sec, fs,
+net, hw, app. The umbrella translation unit includes the `.c`
+files in dependency order. `qa/` is not part of the public ABI.
+
+## Install
+
+```
+curl -fsSL https://openooda.org/install.sh | bash
+```
+
+From source: `gcc oodar.c`. See `oodar/docs/BUILD_AND_INSTALL.oot`.
+
+## Surface
+
+| Subdir | Scope |
+|--------|-------|
+| `core/` | str, list, mem, math, meta |
+| `sec/` | caps, Landlock, crypto, PQC |
+| `fs/` | OS syscalls, print |
+| `net/` | fetch, tls |
+| `hw/` | GPU HIP/ROCm dispatch |
+| `app/` | actor, FFI, HITL, telemetry |
+
+C shims stay in oodar/. They must not leak into `std/`
+(RULES.oot §1.14 Pillar 9).

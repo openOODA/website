@@ -1,0 +1,90 @@
+# TRUTH DRIFT — Stale versions, deleted boards, wrong counts
+File: website/audit/truth-drift.oot
+
+Verdict: FAIL-CLOSED. Public copy describes a repo layout that
+governance deleted on 2026-09-02. Version tags on disk do not
+match pulled/*.json or homepage cards.
+
+## 1. llms.txt routes agents to deleted boards
+
+llms.txt §6 lists 13 process boards:
+START, RULES, NORTHSTAR, MOONSHOTS, ROADMAP, SHIPPED, FORMAT,
+SECURITY, WORKFLOW, QUICKREF, CONSTRAINTS, STRUCTURE_EM, REDTEAM.
+
+Governance v1.0.8 front door is ANCHOR.oo plus RULES.oot,
+NORTHSTAR.oot, seven RFCs, and three practices.
+The 13-board set is gone. Cross references in §8 point at
+openOODA/START.oot and openOODA/SECURITY.oot. Those files
+do not exist.
+
+Floor: 2 / Thrust: 9 / Patch: 4 in the header is ooda 2.9.4 era.
+The website tag is v1.2.10. This file is the public LLM manual.
+It is the highest-drag lie in the repo.
+
+## 2. pulled/*.json vs git tags (2026-09-04)
+
+| Route | JSON tagline | Disk tag |
+|-------|--------------|----------|
+| openOODA | eight repos, v1.0.7 | v1.0.20, 11 repos |
+| ooda | v0.2.1, 13 subcommands | v0.2.7 |
+| std | v1.0.3, 173 modules | v1.0.8, thousands of .oo |
+| opm | v0.8.x, 19 subcommands | v0.8.8 |
+| lsp | v0.6.2, 16 methods | v0.6.12 |
+| mcp | v0.5.0, 23 tools, 5 tiers | v0.6.10, 22 tools |
+| oodar | v2.0.0 | v4.0.0 |
+| oodac | v0.1.x | v0.2.2 |
+
+openOODA.json omits website, packaging, and .github.
+mcp.json still lists `estimate_chars`. mcp killed that tool.
+mcp.json still lists get_security_threat_model and
+get_redteam_methodology. Those boards were folded into
+practices/. oodac.json tells users to `ooda build --target=`
+via `cli/` v0.2.1+. The cli/ directory was renamed to ooda/.
+
+pulled/ANCHOR.oo is closer to truth than root ANCHOR.oo.
+Root ANCHOR.oo still says oodac is "coming soon" and lists
+a `cli` route. pulled/oodac.json exists. There is no cli.json.
+
+## 3. index.html homepage cards
+
+Static cards: ooda, std, opm, cli, lsp, mcp.
+Missing cards: oodar, oodac, packaging.
+The `cli` card is the old name of ooda/.
+EnvCap is drawn with a strikethrough as deprecated.
+NORTHSTAR.oot §4.2 still lists EnvCap as a core token.
+std card claims 173 modules. That count is stale.
+mcp card claims 23 tools and 5 tiers. mcp/docs/TOOLS.oot
+lists 22 tools and no five-tier table.
+License badge href is github.com/openOODA/ooda/blob/main/LICENSE.
+README.md claims MIT or Apache 2.0. LICENSE is MIT only.
+
+## 4. Cache and sitemap
+
+index.html and 404.html load `/src/main.js?v=1.2.0`.
+The repo tag is v1.2.10. Browsers may keep a stale SPA.
+sitemap.xml lists only `/` and `/llms.txt`. Hash routes
+#ooda … #oodac are invisible to crawlers.
+WORKFLOW.oot §0 names website/guide/*.oot. That directory
+does not exist.
+
+## 5. Route table residue
+
+ROUTE_NAME_TO_ID uses ids 1,2,3,4,6,7,8,9. Id 5 is the
+deleted cli route. renderRoute has a dead `else if (raw ===
+"oodac")` branch after oodac is already handled. Ctrl+K and
+`/` set location.hash to #search. There is no search view.
+The wrapper also special-cases #registry. Both hashes render
+"Not found."
+
+## 6. Next repair (this repo)
+
+1. Rewrite llms.txt from ANCHOR.oo + RULES.oot + NORTHSTAR.oot.
+   Do not mention deleted ALLCAPS boards.
+2. Refresh pulled/*.json numbers from current git tags, or
+   replace JSON with .oot (file-law.oot §6).
+3. Remove the cli card. Add oodar and oodac cards, or delete
+   the static cards if the SPA already replaces them
+   (spa-drag.oot §1).
+4. Point the license badge at this repo LICENSE.
+5. Bump the main.js cache query to the current tag, or drop
+   the query and let Pages cache headers work.

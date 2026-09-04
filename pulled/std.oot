@@ -1,0 +1,38 @@
+# std — standard library
+File: website/pulled/std.oot
+
+Source: openOODA/std/docs/
+
+## What it is
+
+The library you import. Tag v1.0.8. Eight functional domains.
+Each domain has its own `ANCHOR.oo`. Counted on 2026-09-04:
+188 `ANCHOR.oo` front doors, 5813 `.oo` files. Do not use the
+old "173 modules" figure.
+
+Zero ambient authority. Effects take an explicit cap token.
+
+## Install
+
+The install script clones std with the toolchain.
+
+```
+curl -fsSL https://openooda.org/install.sh | bash
+```
+
+## Surface
+
+| Domain | Scope |
+|--------|-------|
+| `core` | Option, Result, List, math, text, encoding |
+| `fs` | Files, OS, time, archive under Fs caps |
+| `net` | HTTP, TCP, UDP, sync, actor under Net caps |
+| `sec` | Hash, AEAD, capability, RASP, constant-time |
+| `science` | Physics, chem, bio, econ |
+| `app` | AI tensors, UI, agents, data |
+| `hw` | Architecture theory (x86, RISC-V, GPU) |
+| `meta` | Test harnesses and diagnostics |
+
+Import a domain through its `ANCHOR.oo`. Do not add files
+under `std/` unless the user asks for library expansion
+(RULES.oot §1.22).

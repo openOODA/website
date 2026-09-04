@@ -1,256 +1,122 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>openOODA</title><meta name="description" content="openOODA is an AI-native, capability-secure systems programming language built for sovereign software synthesis."><meta name="theme-color" content="#0d1117"><meta name="color-scheme" content="dark light"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="dns-prefetch" href="https://fonts.googleapis.com"><meta property="og:site_name" content="openOODA"><meta property="og:type" content="website"><meta property="og:title" content="openOODA"><meta property="og:description" content="openOODA is an AI-native, capability-secure systems programming language built for sovereign software synthesis."><meta property="og:url" content="https://openooda.org/"><meta property="og:image" content="https://openooda.org/assets/open-graph.png"><meta property="og:image:alt" content="openOODA — Sovereign Systems Language for the AI Era"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="openOODA"><meta name="twitter:description" content="openOODA is an AI-native, capability-secure systems programming language built for sovereign software synthesis."><meta name="twitter:image" content="https://openooda.org/assets/open-graph.png"><meta name="twitter:image:alt" content="openOODA — Sovereign Systems Language for the AI Era"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://collect.openooda.org; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action https://collect.openooda.org;"><meta http-equiv="X-Frame-Options" content="DENY"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"><script>
-(function(){var THEMES=["night","paper","magma","flare","solar","cyber","frost","tokyo","laser"];var m=document.cookie.match(/(?:^|; )ooda-theme=([^;]*)/);var stored=(m&&m[1])||(typeof localStorage!=="undefined"&&localStorage.getItem("ooda-theme"));var t=(stored&&THEMES.indexOf(stored)!==-1)?stored:"night";document.documentElement.setAttribute("data-theme",t);})();
-</script><link rel="stylesheet" href="/styles/main.css"><link rel="canonical" href="https://openooda.org/">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"openOODA","operatingSystem":"Linux, WebAssembly","applicationCategory":"DeveloperApplication","description":"openOODA is an AI-native, capability-secure systems programming language built for sovereign software synthesis.","url":"https://openooda.org/","downloadUrl":"https://openooda.org/install.sh"}
-  </script>
-<script defer src="/src/main.js?v=1.2.0"></script></head><body><canvas id="dogfight-canvas"></canvas><a id="skip" href="#content">skip to content</a><div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div><header><div class="brand-row"><a class="brand" href="#openOODA" style="text-decoration:none;font-size:1rem;font-weight:600;color:var(--fg);background:transparent;padding:0;letter-spacing:normal;">openOODA — Sovereign Systems Language for the AI Era</a></div><div class="header-actions"><form class="mail-header" id="mail" action="https://collect.openooda.org/v1/emails" method="post"><input type="email" name="email" placeholder="join the email list" autocomplete="email" required aria-label="Email address for updates"><input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"><button type="submit" id="join">join</button></form></div></header><div class="wrap"><aside><nav class="local" aria-label="Repositories"><a href="#openOODA" data-route="openOODA">openOODA</a><a href="#ooda" data-route="ooda">ooda</a><a href="#std" data-route="std">std</a><a href="#opm" data-route="opm">opm</a><a href="#lsp" data-route="lsp">lsp</a><a href="#mcp" data-route="mcp">mcp</a><a href="#oodar" data-route="oodar">oodar</a><a href="#oodac" data-route="oodac">oodac</a></nav><div class="aside-footer"><div class="footer-powered"><span class="pulse-dot" aria-hidden="true"></span><span>powered by <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">openOODA</a></span></div></div></aside><div class="col"><main id="content" tabindex="-1"><h1 class="visually-hidden">openOODA — Sovereign Systems Language for the AI Era</h1><p class="intro" style="font-size:1.05rem;font-weight:600;margin:0 0 1.5rem;line-height:1.5;">Install:</p><div class="install"><span class="install-cmd">curl -fsSL <a href="https://openooda.org/install.sh">https://openooda.org/install.sh</a> | bash</span><button type="button" id="copy">copy</button></div><!-- ooda -->
-<details class="drop">
-<summary>ooda — one source, four native targets</summary>
-<div class="drop-body">
-<p>One <code>.oo</code> source. Four native output formats chosen at build time: bare-metal ELF (x86_64 / AArch64), WebAssembly, portable C99, or LLVM SSA IR. Same semantics, four execution surfaces. No toolchain lock-in.</p>
-<div class="sim-container" style="margin-top: 1rem; margin-bottom: 0.5rem;">
-<div class="sim-toolbar"><span class="sim-title">⚙ ooda — single source, four targets</span></div>
-<div class="sim-canvas-wrap">
-<svg viewBox="0 0 672 280" style="width:100%;height:auto;max-width:672px;display:block;background:var(--panel);border:1px solid var(--border);border-radius:4px;">
-<defs><marker id="arrow-o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/></marker></defs>
-<rect x="276" y="110" width="120" height="60" rx="4" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
-<text x="336" y="138" text-anchor="middle" font-family="monospace" font-size="13" fill="var(--fg)" font-weight="700">hello.oo</text>
-<text x="336" y="156" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--muted)">fn main() { ... }</text>
-<line x1="276" y1="140" x2="180" y2="60" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow-o)"/>
-<line x1="396" y1="140" x2="492" y2="60" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow-o)"/>
-<line x1="276" y1="140" x2="180" y2="220" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow-o)"/>
-<line x1="396" y1="140" x2="492" y2="220" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrow-o)"/>
-<rect x="40" y="20" width="140" height="50" rx="4" fill="var(--bg)" stroke="#3b82f6" stroke-width="1.5"/>
-<text x="110" y="42" text-anchor="middle" font-family="monospace" font-size="14" fill="#3b82f6" font-weight="700">ELF</text>
-<text x="110" y="58" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--muted)">x86_64 / AArch64</text>
-<rect x="492" y="20" width="140" height="50" rx="4" fill="var(--bg)" stroke="#a855f7" stroke-width="1.5"/>
-<text x="562" y="42" text-anchor="middle" font-family="monospace" font-size="14" fill="#a855f7" font-weight="700">WASM</text>
-<text x="562" y="58" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--muted)">WasmGC</text>
-<rect x="40" y="210" width="140" height="50" rx="4" fill="var(--bg)" stroke="#10b981" stroke-width="1.5"/>
-<text x="110" y="232" text-anchor="middle" font-family="monospace" font-size="14" fill="#10b981" font-weight="700">C99</text>
-<text x="110" y="248" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--muted)">portable, no libc</text>
-<rect x="492" y="210" width="140" height="50" rx="4" fill="var(--bg)" stroke="#f97316" stroke-width="1.5"/>
-<text x="562" y="232" text-anchor="middle" font-family="monospace" font-size="14" fill="#f97316" font-weight="700">LLVM</text>
-<text x="562" y="248" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--muted)">SSA IR</text>
-</svg>
-<div class="sim-caption">Same .oo source → four execution surfaces. Pick at build time.</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>openOODA</title>
+<meta name="description" content="openOODA is a capability-secure systems language. Every effect needs a cap token.">
+<meta name="theme-color" content="#0d1117">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<meta property="og:site_name" content="openOODA">
+<meta property="og:type" content="website">
+<meta property="og:title" content="openOODA">
+<meta property="og:description" content="openOODA is a capability-secure systems language. Every effect needs a cap token.">
+<meta property="og:url" content="https://openooda.org/">
+<meta property="og:image" content="https://openooda.org/assets/open-graph.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://collect.openooda.org; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action https://collect.openooda.org;">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<link rel="stylesheet" href="/styles/main.css">
+<link rel="canonical" href="https://openooda.org/">
+<script src="/src/theme/boot.js"></script>
+<script defer src="/src/theme/colors.js"></script>
+<script defer src="/src/life.js"></script>
+<script defer src="/src/route/markdown.js"></script>
+<script defer src="/src/route/render.js"></script>
+<script defer src="/src/dogfight/pools.js"></script>
+<script defer src="/src/dogfight/specs.js"></script>
+<script defer src="/src/dogfight/state.js"></script>
+<script defer src="/src/dogfight/alt.js"></script>
+<script defer src="/src/dogfight/ooda-obs.js"></script>
+<script defer src="/src/dogfight/ooda-engage.js"></script>
+<script defer src="/src/dogfight/ooda-decide.js"></script>
+<script defer src="/src/dogfight/vfx-spawn.js"></script>
+<script defer src="/src/dogfight/vfx-wreck.js"></script>
+<script defer src="/src/dogfight/vfx-part.js"></script>
+<script defer src="/src/dogfight/damage.js"></script>
+<script defer src="/src/dogfight/draw-health.js"></script>
+<script defer src="/src/dogfight/draw-jet.js"></script>
+<script defer src="/src/dogfight/draw-jet-low.js"></script>
+<script defer src="/src/dogfight/draw-jet-high.js"></script>
+<script defer src="/src/dogfight/jets-on.js"></script>
+<script defer src="/src/dogfight/create.js"></script>
+<script defer src="/src/dogfight/sync.js"></script>
+<script defer src="/src/dogfight/physics-turn.js"></script>
+<script defer src="/src/dogfight/physics-swarm.js"></script>
+<script defer src="/src/dogfight/physics-b.js"></script>
+<script defer src="/src/dogfight/physics-a.js"></script>
+<script defer src="/src/dogfight/cca.js"></script>
+<script defer src="/src/dogfight/tactics.js"></script>
+<script defer src="/src/dogfight/weapons-lo.js"></script>
+<script defer src="/src/dogfight/weapons-hi.js"></script>
+<script defer src="/src/dogfight/loop-sim.js"></script>
+<script defer src="/src/dogfight/loop-draw.js"></script>
+<script defer src="/src/dogfight/loop-bullets.js"></script>
+<script defer src="/src/dogfight/loop-missiles.js"></script>
+<script defer src="/src/dogfight/loop-fx.js"></script>
+<script defer src="/src/dogfight/loop-proj.js"></script>
+<script defer src="/src/dogfight/loop.js"></script>
+<script defer src="/src/dogfight/init.js"></script>
+<script defer src="/src/sky/starfield.js"></script>
+<script defer src="/src/theme/cycle.js"></script>
+<script defer src="/src/main.js"></script>
+</head>
+<body>
+<canvas id="dogfight-canvas"></canvas>
+<a id="skip" href="#content">skip to content</a>
+<header>
+<div class="brand-row">
+<a class="brand" href="#openOODA">openOODA</a>
+</div>
+<div class="header-actions">
+<form class="mail-header" id="mail" action="https://collect.openooda.org/v1/emails" method="post">
+<input type="email" name="email" placeholder="join the email list" autocomplete="email" required aria-label="Email address for updates">
+<input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button type="submit" id="join">join</button>
+</form>
+</div>
+</header>
+<div class="wrap">
+<aside>
+<nav class="local" aria-label="Repositories">
+<a href="#openOODA" data-route="openOODA">openOODA</a>
+<a href="#ooda" data-route="ooda">ooda</a>
+<a href="#std" data-route="std">std</a>
+<a href="#opm" data-route="opm">opm</a>
+<a href="#lsp" data-route="lsp">lsp</a>
+<a href="#mcp" data-route="mcp">mcp</a>
+<a href="#oodar" data-route="oodar">oodar</a>
+<a href="#oodac" data-route="oodac">oodac</a>
+</nav>
+<div class="aside-footer">
+<div class="footer-powered">
+<span class="pulse-dot" aria-hidden="true"></span>
+<span>powered by <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">openOODA</a></span>
 </div>
 </div>
+</aside>
+<div class="col">
+<main id="content" tabindex="-1">
+<noscript><p>Enable JavaScript to read the repo docs.</p></noscript>
+</main>
+<footer class="site-footer">
+<div class="gen-bar" id="gen-bar" aria-label="Toggle fighter generations">
+<span class="gen-title">GEN:</span>
+<button type="button" class="gen-btn" data-gen="1" title="Gen 1">1</button>
+<button type="button" class="gen-btn" data-gen="2" title="Gen 2">2</button>
+<button type="button" class="gen-btn" data-gen="3" title="Gen 3">3</button>
+<button type="button" class="gen-btn active" data-gen="4" title="Gen 4">4</button>
+<button type="button" class="gen-btn" data-gen="5" title="Gen 5">5</button>
+<button type="button" class="gen-btn" data-gen="6" title="Gen 6">6</button>
+<button type="button" class="gen-btn" data-gen="7" title="Gen 7">7</button>
 </div>
-</details>
-
-<!-- std -->
-<details class="drop">
-<summary>std — eight functional domains, zero ambient authority</summary>
-<div class="drop-body">
-<p>The library you import. Eight functional domains (app, core, fs, hw, meta, net, science, sec) covering collections, math, filesystem, network, hardware, security, and hard-science primitives. No ambient authority — every effect requires an explicit capability token.</p>
-<div class="sim-container" style="margin-top: 1rem; margin-bottom: 0.5rem;">
-<div class="sim-toolbar"><span class="sim-title">📚 std — 8 functional domains</span></div>
-<div class="sim-canvas-wrap">
-<svg viewBox="0 0 672 280" style="width:100%;height:auto;max-width:672px;display:block;background:var(--panel);border:1px solid var(--border);border-radius:4px;">
-<g transform="translate(336,140)">
-<circle r="100" fill="none" stroke="var(--border)" stroke-width="0.5"/>
-<circle r="70" fill="none" stroke="var(--border)" stroke-width="0.5"/>
-<circle r="40" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
-<text y="-2" text-anchor="middle" font-family="monospace" font-size="11" fill="var(--accent)" font-weight="700">173</text>
-<text y="10" text-anchor="middle" font-family="monospace" font-size="8" fill="var(--muted)">modules</text>
-</g>
-<path d="M 336 40 A 100 100 0 0 1 415 75" fill="none" stroke="#3b82f6" stroke-width="22"/>
-<path d="M 415 75 A 100 100 0 0 1 436 165" fill="none" stroke="#a855f7" stroke-width="22"/>
-<path d="M 436 165 A 100 100 0 0 1 376 235" fill="none" stroke="#10b981" stroke-width="22"/>
-<path d="M 376 235 A 100 100 0 0 1 296 235" fill="none" stroke="#f97316" stroke-width="22"/>
-<path d="M 296 235 A 100 100 0 0 1 236 165" fill="none" stroke="#ec4899" stroke-width="22"/>
-<path d="M 236 165 A 100 100 0 0 1 257 75" fill="none" stroke="#06b6d4" stroke-width="22"/>
-<path d="M 257 75 A 100 100 0 0 1 336 40" fill="none" stroke="#eab308" stroke-width="22"/>
-<path d="M 336 40 A 100 100 0 0 1 257 75" fill="none" stroke="#8b5cf6" stroke-width="22"/>
-<text x="442" y="65" font-family="monospace" font-size="11" fill="var(--fg)">app</text>
-<text x="468" y="135" font-family="monospace" font-size="11" fill="var(--fg)">core</text>
-<text x="460" y="200" font-family="monospace" font-size="11" fill="var(--fg)">fs</text>
-<text x="402" y="252" font-family="monospace" font-size="11" fill="var(--fg)">hw</text>
-<text x="270" y="252" font-family="monospace" font-size="11" fill="var(--fg)">meta</text>
-<text x="208" y="200" font-family="monospace" font-size="11" fill="var(--fg)">net</text>
-<text x="200" y="135" font-family="monospace" font-size="11" fill="var(--fg)">science</text>
-<text x="226" y="65" font-family="monospace" font-size="11" fill="var(--fg)">sec</text>
-</svg>
-<div class="sim-caption">173 modules across 8 domains. Zero ambient authority. Every effect needs an explicit cap token.</div>
+<a class="hud-license-badge" id="hud-license" href="https://github.com/openOODA/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>
+</footer>
 </div>
 </div>
-</div>
-</details>
-
-<!-- opm -->
-<details class="drop">
-<summary>opm — content-addressed, capability-declared packages</summary>
-<div class="drop-body">
-<p>The package manager. Every package is content-addressed by SHA-256 and declares its capability requirements up front. Install, search, publish, lock. No supply chain surprises, no ambient dependencies.</p>
-<div class="sim-container" style="margin-top: 1rem; margin-bottom: 0.5rem;">
-<div class="sim-toolbar"><span class="sim-title">📦 opm — cas-by-sha + capability tags</span></div>
-<div class="sim-canvas-wrap">
-<svg viewBox="0 0 672 280" style="width:100%;height:auto;max-width:672px;display:block;background:var(--panel);border:1px solid var(--border);border-radius:4px;">
-<rect x="200" y="60" width="272" height="160" rx="6" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
-<text x="336" y="88" text-anchor="middle" font-family="monospace" font-size="14" fill="var(--fg)" font-weight="700">openooda-std</text>
-<text x="336" y="106" text-anchor="middle" font-family="monospace" font-size="10" fill="var(--muted)">version 1.0.0 · MIT / Apache-2.0</text>
-<line x1="220" y1="118" x2="452" y2="118" stroke="var(--border)" stroke-width="0.5"/>
-<text x="220" y="134" font-family="monospace" font-size="9" fill="var(--muted)">sha256:</text>
-<text x="220" y="148" font-family="monospace" font-size="9" fill="var(--accent)">ba7816bf8f01cfea414140de</text>
-<text x="220" y="160" font-family="monospace" font-size="9" fill="var(--accent)">5dae2223b00361a396177a9c</text>
-<line x1="220" y1="172" x2="452" y2="172" stroke="var(--border)" stroke-width="0.5"/>
-<text x="220" y="190" font-family="monospace" font-size="9" fill="var(--muted)">capabilities:</text>
-<rect x="218" y="196" width="80" height="16" rx="3" fill="var(--bg)" stroke="var(--accent)" stroke-width="0.5"/>
-<text x="258" y="207" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--accent)">&amp;AllocCap</text>
-<rect x="304" y="196" width="80" height="16" rx="3" fill="var(--bg)" stroke="var(--accent)" stroke-width="0.5"/>
-<text x="344" y="207" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--accent)">&amp;FsReadCap</text>
-<rect x="390" y="196" width="62" height="16" rx="3" fill="var(--bg)" stroke="var(--accent)" stroke-width="0.5"/>
-<text x="421" y="207" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--accent)">&amp;NetCap</text>
-</svg>
-<div class="sim-caption">Every package: SHA-256 pinned, capability-declared, no ambient dependencies.</div>
-</div>
-</div>
-</div>
-</details>
-
-<!-- cli -->
-<details class="drop">
-<summary>cli — thirteen subcommands, parallel double-run invariant</summary>
-<div class="drop-body">
-<p>The <code>ooda</code> binary. Thirteen subcommands that compose like Unix: build, run, gen, test, install, bench, init, context, health, fix, digest, fmt, token. Tests run twice sequentially; if outputs diverge, the build fails.</p>
-<div class="sim-container" style="margin-top: 1rem; margin-bottom: 0.5rem;">
-<div class="sim-toolbar"><span class="sim-title">$ cli — composable, double-run invariant</span></div>
-<div class="sim-canvas-wrap">
-<div style="background:#0d1117;border:1px solid var(--border);border-radius:4px;padding:1rem;font-family:monospace;font-size:0.85rem;color:#c9d1d9;line-height:1.5;">
-<div style="color:#8b949e;">$ ooda build &amp;&amp; ooda test &amp;&amp; ooda ship</div>
-<div style="color:#7ee787;">✓ build: 12ms · 4 modules · 1 cap token</div>
-<div style="color:#7ee787;">✓ test: 4/4 pass · deterministic · 0.4ms</div>
-<div style="color:#7ee787;">✓ ship: artifact ready · 28 KB ELF</div>
-<div style="color:#8b949e;margin-top:0.5rem;">$ ooda test --double-run</div>
-<div style="color:#c9d1d9;">run #1 sha256: 3a7f...d8e2</div>
-<div style="color:#c9d1d9;">run #2 sha256: 3a7f...d8e2</div>
-<div style="color:#7ee787;">✓ deterministic — hashes match</div>
-</div>
-<div class="sim-caption">Composes like Unix. Verifies determinism on every test run.</div>
-</div>
-</div>
-</div>
-</details>
-
-<!-- lsp -->
-<details class="drop">
-<summary>lsp — your editor knows the capability tokens</summary>
-<div class="drop-body">
-<p>The Language Server. Brings completion, hover, definition, formatting, and capability-aware documentation to any LSP editor (VS Code, Neovim, Helix, Emacs, Vim). Sixteen methods, five editor integrations, one truth.</p>
-<div class="sim-container" style="margin-top: 1rem; margin-bottom: 0.5rem;">
-<div class="sim-toolbar"><span class="sim-title">⌨ lsp — completion + cap-token awareness</span></div>
-<div class="sim-canvas-wrap">
-<div style="background:#0d1117;border:1px solid var(--border);border-radius:4px;padding:1rem;font-family:monospace;font-size:0.82rem;color:#c9d1d9;line-height:1.5;position:relative;">
-<div style="color:#8b949e;">1</div>
-<div style="color:#8b949e;">2</div>
-<div style="color:#8b949e;">3</div>
-<div style="color:#8b949e;">4</div>
-<div style="position:absolute;left:2.5rem;top:1rem;color:#ff7b72;">pub fn</div>
-<div style="position:absolute;left:5.5rem;top:1rem;color:#d2a8ff;">read_user</div>
-<div style="position:absolute;left:9.5rem;top:1rem;color:#c9d1d9;">(</div>
-<div style="position:absolute;left:2.5rem;top:2.2rem;color:#c9d1d9;">  fs: <span style="color:#ffa657;">&amp;FsReadCap</span>,</div>
-<div style="position:absolute;left:2.5rem;top:3.4rem;color:#c9d1d9;">) -&gt; Result&lt;String, String&gt; {</div>
-<div style="position:absolute;left:6.5rem;top:4.6rem;background:#1f6feb;color:#fff;padding:0.1rem 0.5rem;border-radius:3px;">&amp;FsReadCap</div>
-</div>
-<div style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:0.3rem;font-family:monospace;font-size:0.7rem;">
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;FsReadCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;FsWriteCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;NetCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;AllocCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;ProcessCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;SysCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;ThreadCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;GpuCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;RandCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;TimeCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;TcpCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;UdpCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;BindCap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--accent);">&amp;UnsafeFFICap</span>
-<span style="background:var(--panel);border:1px solid var(--border);padding:0.15rem 0.4rem;border-radius:3px;color:var(--muted);text-decoration:line-through;opacity:0.5;">&amp;EnvCap (deprecated)</span>
-</div>
-<div class="sim-caption">14 capability tokens. The editor knows which one your function takes.</div>
-</div>
-</div>
-</div>
-</details>
-
-<!-- mcp -->
-<details class="drop">
-<summary>mcp — twenty-three tools for AI agents, five tiers</summary>
-<div class="drop-body">
-<p>The Model Context Protocol server. Twenty-three typed tools that AI agents (Claude, Cursor, custom) call to read code, run tests, inspect capability graphs, and audit. Tool calls are capability-scoped. The agent doesn't escape its authority.</p>
-<div class="sim-container" style="margin-top: 1rem; margin-bottom: 0.5rem;">
-<div class="sim-toolbar"><span class="sim-title">🤖 mcp — agent + 23 tools, 5 tiers</span></div>
-<div class="sim-canvas-wrap">
-<svg viewBox="0 0 672 300" style="width:100%;height:auto;max-width:672px;display:block;background:var(--panel);border:1px solid var(--border);border-radius:4px;">
-<g transform="translate(336,150)">
-<circle r="22" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
-<text y="3" text-anchor="middle" font-family="sans-serif" font-size="10" fill="var(--accent)" font-weight="700">agent</text>
-</g>
-<g transform="translate(336,150)" fill="none" stroke="var(--border)" stroke-width="0.5">
-<circle r="42"/>
-<circle r="72"/>
-<circle r="102"/>
-<circle r="132"/>
-</g>
-<g fill="#3b82f6">
-<circle cx="378" cy="150" r="4"/>
-<circle cx="294" cy="150" r="4"/>
-<circle cx="336" cy="108" r="4"/>
-<circle cx="336" cy="192" r="4"/>
-<circle cx="368" cy="113" r="4"/>
-</g>
-<g fill="#a855f7">
-<circle cx="408" cy="150" r="4"/>
-<circle cx="264" cy="150" r="4"/>
-<circle cx="400" cy="115" r="4"/>
-<circle cx="272" cy="185" r="4"/>
-<circle cx="365" cy="78" r="4"/>
-</g>
-<g fill="#10b981">
-<circle cx="438" cy="150" r="4"/>
-<circle cx="234" cy="150" r="4"/>
-<circle cx="430" cy="112" r="4"/>
-<circle cx="242" cy="188" r="4"/>
-</g>
-<g fill="#f97316">
-<circle cx="466" cy="150" r="4"/>
-<circle cx="206" cy="150" r="4"/>
-<circle cx="460" cy="118" r="4"/>
-<circle cx="212" cy="182" r="4"/>
-</g>
-<g fill="#ec4899">
-<circle cx="466" cy="105" r="4"/>
-<circle cx="466" cy="195" r="4"/>
-<circle cx="206" cy="105" r="4"/>
-<circle cx="206" cy="195" r="4"/>
-<circle cx="336" cy="18" r="4"/>
-<circle cx="468" cy="18" r="4"/>
-<circle cx="204" cy="18" r="4"/>
-</g>
-<text x="468" y="48" font-family="monospace" font-size="8" fill="#3b82f6">T0 core</text>
-<text x="468" y="78" font-family="monospace" font-size="8" fill="#a855f7">T1 tokens</text>
-<text x="468" y="108" font-family="monospace" font-size="8" fill="#10b981">T2 ooda</text>
-<text x="468" y="138" font-family="monospace" font-size="8" fill="#f97316">T3 fmt</text>
-<text x="468" y="168" font-family="monospace" font-size="8" fill="#ec4899">T4 ws</text>
-<text x="12" y="288" font-family="monospace" font-size="8" fill="var(--muted)">23 tools · 5 tiers · 14 cap tokens</text>
-<circle cx="50" cy="20" r="3" fill="#3b82f6"/>
-<text x="58" y="23" font-family="monospace" font-size="8" fill="var(--muted)">5</text>
-<circle cx="78" cy="20" r="3" fill="#a855f7"/>
-<text x="86" y="23" font-family="monospace" font-size="8" fill="var(--muted)">5</text>
-<circle cx="106" cy="20" r="3" fill="#10b981"/>
-<text x="114" y="23" font-family="monospace" font-size="8" fill="var(--muted)">4</text>
-<circle cx="134" cy="20" r="3" fill="#f97316"/>
-<text x="142" y="23" font-family="monospace" font-size="8" fill="var(--muted)">2</text>
-<circle cx="162" cy="20" r="3" fill="#ec4899"/>
-<text x="170" y="23" font-family="monospace" font-size="8" fill="var(--muted)">7</text>
-</svg>
-<div class="sim-caption">AI agents can introspect the whole system — but only through capability-scoped tools.</div>
-</div>
-</div>
-</div>
-</details>
-</main><footer class="site-footer"><div class="gen-bar" id="gen-bar" aria-label="Toggle Fighter Jet Generations"><span class="gen-title">GEN:</span><button type="button" class="gen-btn" data-gen="1" title="Gen 1: Subsonic Gunfighters (F-86 / MiG-15)">1</button><button type="button" class="gen-btn" data-gen="2" title="Gen 2: Supersonic Interceptors (F-104 / MiG-21)">2</button><button type="button" class="gen-btn" data-gen="3" title="Gen 3: Radar Phantoms (F-4 / MiG-23)">3</button><button type="button" class="gen-btn active" data-gen="4" title="Gen 4: F-16 Falcon Boyd 9G &amp; F-14 Tomcat Variable-Sweep (F-16 / F-14)">4</button><button type="button" class="gen-btn" data-gen="5" title="Gen 5: Stealth &amp; 3D Thrust Vectoring (F-22 / Su-57)">5</button><button type="button" class="gen-btn" data-gen="6" title="Gen 6: NGAD Mothership with Deployable CCA Loyal Wingmen &amp; Laser CIWS">6</button><button type="button" class="gen-btn" data-gen="7" title="Gen 7: Quantum Swarm Globes / Omni-Directional Spheres (Singularity Cannon)">7</button></div><a class="hud-license-badge" id="hud-license" href="https://github.com/openOODA/ooda/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" title="Dual licensed under MIT or Apache 2.0">MIT / Apache 2.0</a></footer></div></div><button type="button" id="theme" aria-label="Cycle theme colorway">paper</button></body></html>
+<button type="button" id="theme" aria-label="Cycle theme">paper</button>
+</body>
+</html>

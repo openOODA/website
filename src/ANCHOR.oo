@@ -1,29 +1,21 @@
-// # src/ — The Single-Page App
+// # src/ — Website scripts
 //
-// Logline: The JavaScript that turns index.html from a static shell
-//          into a router-driven SPA with theme, install box, gen
-//          bar, and the background dogfight animation.
+// Logline: Split SPA and dogfight. Each .js file is <= 256 lines.
+//          Browser residual: GitHub Pages still serves .js.
+//
+// Setup: index.html loads boot.js in <head>, then defer scripts
+//        in the order below. 404.html sets data-page="404" so
+//        main.js does not overwrite #content.
 //
 // Beats:
-//   1. main.js — the only file in this directory. Contains:
-//      a) the route table and renderRoute() dispatcher
-//      b) simpleMarkdown() for rendering the pulled/*.json content
-//      c) INSTALL_HTML constant (the install box, used top + bottom)
-//      d) theme palette + cycle
-//      e) gen bar (Gen 1-7 toggle)
-//      f) the dogfight engine: AIRCRAFT_SPECS, OODA state machine
-//         (Observe / Orient / Decide / Act), weapons, damage, jet
-//         silhouettes, initGlobalDogfight (the main rAF loop)
-//
-// Why one file (not many small ones): the dogfight is a single
-// concept — an OODA state machine coupled to 7 generations of
-// aircraft, 5+ weapon classes, particle systems, wreckage, and a
-// rAF loop. Splitting it across files would add import plumbing
-// without clarifying intent. The router, theme, and dogfight are
-// three separate concerns, but they share enough globals (theme
-// colors, canvas refs) that a single bundled file is the smallest
-// unit that still reads as one program.
-//
-// Future split candidates (if the file grows further): extract
-// dogfight into src/dogfight/ (state.js, render.js, weapons.js,
-// gen.js, init.js) and theme into src/theme.js.
+//   1. theme/ — boot, palettes, cycle. System monospace. No Google.
+//   2. route/ — parse pulled/*.oot into #content.
+//   3. dogfight/ — specs, OODA, physics, weapons, rAF loop.
+//   4. sky/ — starfield. Honors prefers-reduced-motion.
+//   5. life.js — tab-hidden rAF gate.
+//   6. main.js — boot: route, gen bar, initGlobalDogfight.
+
+import "theme/ANCHOR.oo";
+import "route/ANCHOR.oo";
+import "dogfight/ANCHOR.oo";
+import "sky/ANCHOR.oo";

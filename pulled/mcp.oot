@@ -1,0 +1,53 @@
+# mcp — MCP server
+File: website/pulled/mcp.oot
+
+Source: openOODA/mcp/docs/
+
+## What it is
+
+The Model Context Protocol server. Tag v0.6.10.
+Twenty-two tools. Results wrap as
+`{"content":[{"type":"text","text":"..."}]}`.
+requiresCap 0 uses the session default. requiresCap 1 is
+FsReadCap.
+
+## Install
+
+```
+curl -fsSL https://openooda.org/install.sh | bash
+```
+
+Then host `mcp` over stdio. See `mcp/docs/MCP_SETUP.oot`.
+
+## Surface
+
+Tools from `mcp/docs/TOOLS.oot`:
+
+| Name | Cap | Purpose |
+|------|-----|---------|
+| get_capability_graph | 0 | 14-token graph JSON |
+| get_orientation | 0 | Codex text |
+| read_board | 1 | One governance board |
+| get_audit_log | 0 | Last N audit entries |
+| get_board_index | 0 | Board list |
+| summarize_board | 1 | Truncated board |
+| compress_orient | 0 | Truncated codex |
+| get_context_budget | 0 | Session counters |
+| get_ooda_phase | 0 | idle/orient/decide/act |
+| get_decision_journal | 0 | Audit slice |
+| get_redteam_realtime | 0 | Live 8-gate fire |
+| get_session_diagnostics | 0 | Session snapshot |
+| get_format_constraints | 0 | RFC-0003 rules |
+| validate_codex_format | 0 | Header and 256-line check |
+| get_northstar | 1 | NORTHSTAR.oot |
+| get_rules | 1 | RULES.oot |
+| get_rfc | 1 | One RFC board |
+| get_practice | 1 | REDTEAM, WORKFLOW, RELEASE |
+| audit_compact | 0 | Drop old audit rows |
+| estimate_tokens | 0 | Token estimate |
+| token_status | 0 | Session token totals |
+| token_ingest | 0 | Ingest a JSONL transcript |
+
+Boards: ANCHOR, RULES, NORTHSTAR, RFC-0001..RFC-0006,
+REDTEAM, WORKFLOW, RELEASE.
+There is no `estimate_chars` tool.

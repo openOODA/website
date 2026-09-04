@@ -1,0 +1,47 @@
+# opm — package manager
+File: website/pulled/opm.oot
+
+Source: openOODA/opm/docs/
+
+## What it is
+
+The openOODA package manager. Tag v0.8.8. Packages are
+content-addressed. Each package declares the caps it needs.
+`add` refuses extra caps. That is the unique move.
+
+Entry is `opm <subcommand>`. `ooda opm` spawns this binary.
+
+## Install
+
+```
+curl -fsSL https://openooda.org/install.sh | bash
+```
+
+## Surface
+
+Live commands from `opm/docs/cli.oot`:
+
+| Command | Purpose |
+|---------|---------|
+| `add` | Resolve and install |
+| `audit` | Walk the lock |
+| `sbom` | CycloneDX-lite from the lock |
+| `bot` | Verify a registry folder |
+| `ingest` | Lock a file-backed recipe |
+| `init` | Write starter `ooda.pkg` |
+| `launch` | Re-verify a pinned payload |
+| `remove` | Drop a package from the lock |
+| `update` | Re-resolve the lock |
+| `outdated` | List newer compatible versions |
+| `why` | Why a package is in the lock |
+| `pack` | Offline pack from the lock |
+| `pkg` | Print the current lock |
+| `publish` | Write to a local registry tree |
+| `reg` | List or edit HTTPS stores |
+| `search` | Search added stores |
+| `tree` | Print a dep tree |
+| `vendor` | List the file vendor |
+| `clean` | Drop CAS dirs not in the lock |
+
+HTTPS fetch needs `OODA_CURL`. Git clone needs `OODA_GIT`.
+Compiler spawn needs `OODA_COMPILER`. Missing token is Err.

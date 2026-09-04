@@ -1,0 +1,16 @@
+// # theme/ — Palettes and theme boot
+//
+// Logline: Nine colorways. Cookie + localStorage. No webfonts.
+//
+// Setup: boot.js runs in <head> before paint. colors.js defines
+//        LUT and getAlphaColor. cycle.js binds the theme button
+//        and the mail form after DOM parse (defer).
+//
+// Beats:
+//   1. boot.js — read ooda-theme, set data-theme.
+//   2. colors.js — ThemeAlphaLUT, FACTION_COLORS, nine palettes.
+//   3. cycle.js — next theme, cookie, join form POST.
+
+import "boot.js";
+import "colors.js";
+import "cycle.js";
