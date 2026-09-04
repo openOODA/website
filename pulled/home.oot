@@ -29,6 +29,48 @@ The compiler is the substrate.
 The other repos are siblings, not a monorepo
 wearing a trench coat.
 
+## E-M, OODA, generations
+
+Col. John Boyd measured a fighter as
+E-M = ((T - D) / W) * V.
+Thrust minus drag, over weight, times
+speed. A later generation is not a
+paint job. It is a better ratio.
+
+The product uses the same formula.
+Observe the AST. Orient on the
+contracts. Decide only what the types
+allow. Act by emitting the binary.
+Then do it again, faster.
+That loop is OODA. The name is not
+decoration.
+
+Each generation tightens the loop:
+less latency, less drag, less
+signature, more thrust.
+Gen 1 is the silicon host. Gen 2 is
+the compiler. Gen 4 is types and caps.
+Gen 5 is agents. Gen 7 is not shipping.
+We still draw it. Ambition is allowed.
+Delusion is not.
+
+The jets behind this text are the
+proof you can click. The GEN bar at
+the bottom lights a generation.
+Turn on 1 and 5 in the same sky.
+The Sabre still flies. The Raptor
+finishes the loop before the Sabre
+finishes noticing.
+OODA latency goes 24, 18, 12, 6, 2,
+1, 0 frames. That is not a cutscene.
+
+We keep the old gens on the bar
+because improvement is a comparison,
+not a press release. If the new one
+cannot beat the old one in the same
+air, it is not a generation. It is a
+rename.
+
 ## Repos
 
 Ten product repos. Substratum first.
