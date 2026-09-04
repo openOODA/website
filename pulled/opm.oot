@@ -38,10 +38,12 @@ Live commands from `opm/docs/cli.oot`:
 | `pkg` | Print the current lock |
 | `publish` | Write to a local registry tree |
 | `reg` | List or edit HTTPS stores |
-| `search` | Search added stores |
+| `search` | Search seed, then vendor, then catalog.openooda.org |
 | `tree` | Print a dep tree |
 | `vendor` | List the file vendor |
 | `clean` | Drop CAS dirs not in the lock |
 
-HTTPS fetch needs `OODA_CURL`. Git clone needs `OODA_GIT`.
-Compiler spawn needs `OODA_COMPILER`. Missing token is Err.
+`opm search hello` reads `seed/catalog` first. The public
+HTTPS copy is `https://catalog.openooda.org`. HTTPS fetch
+needs `OODA_CURL`. Git clone needs `OODA_GIT`. Compiler
+spawn needs `OODA_COMPILER`. Missing token is Err.

@@ -1,0 +1,43 @@
+# catalog — public package list
+File: website/pulled/catalog.oot
+
+Source: openOODA/catalog/
+
+## What it is
+
+The public list of openOODA packages. It is a file tree, not a
+registry service. No accounts. No daemon.
+
+Host: `https://catalog.openooda.org`
+
+`opm search` reads the `catalog` file. `opm add` installs a
+child folder (manifest plus `.oo` payload).
+
+## Use
+
+```
+opm search hello
+opm add hello
+```
+
+The opm repo ships the same packages under `seed/`. Search
+reads seed first, so `opm search hello` works with no
+network. This catalog repo is the copy the world can fetch.
+HTTPS fetch needs `OODA_CURL`. HTTPS add also verifies
+`index.minisig` with the stock pubkey.
+
+## Surface
+
+Stock packages:
+
+| Name | Version | Caps |
+|------|---------|------|
+| hello | 0.1.0 | FsRead |
+| echo | 0.1.0 | FsRead |
+
+Index lines are `name|version|caps|deps|sha256`. Each child
+folder holds `manifest` plus the payload named in `payload=`.
+
+Add a package by committing a folder, rebuilding `catalog`
+with `opm bot`, and signing `index.minisig`. Git tags are
+the version (RFC-0006). There is no VERSION file.

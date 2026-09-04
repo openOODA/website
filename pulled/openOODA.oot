@@ -19,7 +19,7 @@ curl -fsSL https://openooda.org/install.sh | bash
 
 ## Surface
 
-Eleven repos. Git tags as of 2026-09-04.
+Twelve repos. Git tags as of 2026-09-04.
 
 | Repo | Role | Tag |
 |------|------|-----|
@@ -29,6 +29,7 @@ Eleven repos. Git tags as of 2026-09-04.
 | std | Standard library | v1.0.8 |
 | ooda | `ooda` driver | v0.2.7 |
 | opm | Package manager | v0.8.8 |
+| catalog | Public package list | — |
 | lsp | Language server | v0.6.12 |
 | mcp | MCP server | v0.6.10 |
 | website | openooda.org | v1.2.10 |
