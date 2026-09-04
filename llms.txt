@@ -40,7 +40,7 @@ To propose a change, copy `rfcs/0000-template.oot`.
 | std | Standard library, 8 domains | v1.0.8 |
 | ooda | Workflow driver (`ooda` binary) | v0.2.7 |
 | opm | Package manager | v0.8.8 |
-| catalog | Public package list for `opm search` | — |
+| catalog | Public package list for `opm search` | v0.0.1 |
 | lsp | Language server | v0.6.12 |
 | mcp | MCP server, 22 tools | v0.6.10 |
 | website | This site | v1.2.10 |
