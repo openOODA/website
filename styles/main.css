@@ -49,7 +49,7 @@ p{margin:0 0 1.25rem;line-height:1.6;}
 hr{border:0;border-top:1px solid var(--fg);margin:2rem 0;opacity:0.25;}
 .install{display:flex;align-items:stretch;margin:1.25rem 0 1.75rem;border:2px solid var(--fg);background:var(--panel);width:100%;max-width:42rem;box-sizing:border-box;contain:paint layout;}
 .install-cmd{padding:0.8rem 1rem;font-family:inherit;font-size:0.92rem;line-height:1.4;flex:1;text-align:center;overflow-x:auto;white-space:nowrap;min-width:0;}
-.copy{font:inherit;font-size:0.85rem;font-weight:700;background:var(--fg);color:var(--bg);border:0;border-left:2px solid var(--fg);padding:0 1rem;cursor:pointer;white-space:nowrap;min-width:9ch;width:9ch;text-align:center;display:flex;align-items:center;justify-content:center;transition:background-color 0.15s ease,color 0.15s ease;}
+.copy{font:inherit;font-size:0.85rem;font-weight:700;background:var(--fg);color:var(--bg);border:0;border-left:2px solid var(--fg);padding:0 1rem;cursor:pointer;white-space:nowrap;min-width:9ch;width:9ch;flex-shrink:0;text-align:center;display:flex;align-items:center;justify-content:center;transition:background-color 0.15s ease,color 0.15s ease;}
 .copy:hover{opacity:0.9;}
 .copy.is-on{background:var(--next-fg);color:var(--next-bg);}
 .drop{margin:0 0 0.85rem;max-width:42rem;width:100%;box-sizing:border-box;}

@@ -11,19 +11,48 @@ var VALID_ROUTES = {
 };
 var INSTALL_HTML = '<div class="install"><span class="install-cmd">curl -fsSL <a href="https://openooda.org/install.sh">https://openooda.org/install.sh</a> | bash</span><button type="button" class="copy" aria-label="Copy install command">copy</button></div>';
 
+function handleCopy(btn) {
+  var cmd = "curl -fsSL https://openooda.org/install.sh | bash";
+  function ok() {
+    btn.textContent = "copied";
+    btn.classList.add("is-on");
+    if (btn._timer) clearTimeout(btn._timer);
+    btn._timer = setTimeout(function () {
+      btn.textContent = "copy";
+      btn.classList.remove("is-on");
+      btn._timer = null;
+    }, 1400);
+  }
+  function fallback() {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = cmd;
+      ta.style.position = "fixed";
+      ta.style.top = "-9999px";
+      ta.style.left = "-9999px";
+      ta.setAttribute("readonly", "");
+      document.body.appendChild(ta);
+      ta.select();
+      var res = document.execCommand("copy");
+      document.body.removeChild(ta);
+      ok();
+    } catch (e) {
+      ok();
+    }
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(cmd).then(ok, fallback);
+  } else {
+    fallback();
+  }
+}
+
 function bindCopyButtons() {
   var copyBtns = document.querySelectorAll("main .copy");
   for (var i = 0; i < copyBtns.length; i++) {
     (function (btn) {
       btn.onclick = function () {
-        var cmd = "curl -fsSL https://openooda.org/install.sh | bash";
-        function ok() {
-          btn.classList.add("is-on");
-          setTimeout(function () { btn.classList.remove("is-on"); }, 1400);
-        }
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(cmd).then(ok, function () {});
-        }
+        handleCopy(btn);
       };
     })(copyBtns[i]);
   }
@@ -94,6 +123,7 @@ function getInitialRoute() {
 }
 
 if (typeof document !== "undefined") {
+  bindCopyButtons();
   window.addEventListener("hashchange", function () { renderRoute(location.hash); });
   document.addEventListener("click", function (e) {
     var a = e.target.closest("a");
