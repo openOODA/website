@@ -1,159 +1,1417 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<!-- asset v=20260904m -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>openOODA</title>
-<meta name="description" content="openOODA is a capability-secure systems language. Every effect needs a cap token.">
-<meta name="theme-color" content="#0d1117">
-<meta name="color-scheme" content="dark light">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<meta property="og:site_name" content="openOODA">
-<meta property="og:type" content="website">
-<meta property="og:title" content="openOODA">
-<meta property="og:description" content="openOODA is a capability-secure systems language. Every effect needs a cap token.">
-<meta property="og:url" content="https://openooda.org/">
-<meta property="og:image" content="https://openooda.org/assets/open-graph.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://collect.openooda.org; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action https://collect.openooda.org;">
-<meta http-equiv="X-Frame-Options" content="DENY">
-<link rel="stylesheet" href="/styles/main.css?v=20260904m">
-<link rel="canonical" href="https://openooda.org/">
-<script src="/src/theme/boot.js?v=20260904m"></script>
-<script defer src="/src/theme/colors.js?v=20260904m"></script>
-<script defer src="/src/life.js?v=20260904m"></script>
-<script defer src="/src/route/markdown.js?v=20260904m"></script>
-<script defer src="/src/route/render.js?v=20260905a"></script>
-<script defer src="/src/dogfight/pools.js?v=20260904m"></script>
-<script defer src="/src/dogfight/specs.js?v=20260904m"></script>
-<script defer src="/src/dogfight/state.js?v=20260904m"></script>
-<script defer src="/src/dogfight/alt.js?v=20260904m"></script>
-<script defer src="/src/dogfight/ooda-obs.js?v=20260904m"></script>
-<script defer src="/src/dogfight/ooda-engage.js?v=20260904m"></script>
-<script defer src="/src/dogfight/ooda-decide.js?v=20260904m"></script>
-<script defer src="/src/dogfight/vfx-spawn.js?v=20260904m"></script>
-<script defer src="/src/dogfight/vfx-wreck.js?v=20260904m"></script>
-<script defer src="/src/dogfight/vfx-part.js?v=20260904m"></script>
-<script defer src="/src/dogfight/damage.js?v=20260904m"></script>
-<script defer src="/src/dogfight/draw-health.js?v=20260904m"></script>
-<script defer src="/src/dogfight/draw-jet.js?v=20260904m"></script>
-<script defer src="/src/dogfight/draw-jet-low.js?v=20260904m"></script>
-<script defer src="/src/dogfight/draw-jet-high.js?v=20260904m"></script>
-<script defer src="/src/dogfight/jets-on.js?v=20260904m"></script>
-<script defer src="/src/dogfight/create.js?v=20260904m"></script>
-<script defer src="/src/dogfight/sync.js?v=20260904m"></script>
-<script defer src="/src/dogfight/physics-turn.js?v=20260904m"></script>
-<script defer src="/src/dogfight/physics-swarm.js?v=20260904m"></script>
-<script defer src="/src/dogfight/physics-b.js?v=20260904m"></script>
-<script defer src="/src/dogfight/physics-a.js?v=20260904m"></script>
-<script defer src="/src/dogfight/cca.js?v=20260904m"></script>
-<script defer src="/src/dogfight/tactics.js?v=20260904m"></script>
-<script defer src="/src/dogfight/weapons-lo.js?v=20260904m"></script>
-<script defer src="/src/dogfight/weapons-hi.js?v=20260904m"></script>
-<script defer src="/src/dogfight/loop-sim.js?v=20260904m"></script>
-<script defer src="/src/dogfight/loop-draw.js?v=20260904m"></script>
-<script defer src="/src/dogfight/loop-bullets.js?v=20260904m"></script>
-<script defer src="/src/dogfight/loop-missiles.js?v=20260904m"></script>
-<script defer src="/src/dogfight/loop-fx.js?v=20260904m"></script>
-<script defer src="/src/dogfight/loop-proj.js?v=20260904m"></script>
-<script defer src="/src/dogfight/loop.js?v=20260904m"></script>
-<script defer src="/src/dogfight/init.js?v=20260904m"></script>
-<script defer src="/src/sky/starfield.js?v=20260904m"></script>
-<script defer src="/src/theme/cycle.js?v=20260904m"></script>
-<script defer src="/src/main.js?v=20260904m"></script>
-</head>
-<body>
-<canvas id="dogfight-canvas"></canvas>
-<a id="skip" href="#content">skip to content</a>
-<header>
-<div class="brand-row">
-<a class="brand" href="#home">openOODA</a>
-<span class="tagline"> — Sovereign Systems Language for the AI Era</span>
-</div>
-<div class="header-actions">
-<form class="mail-header" id="mail" action="https://collect.openooda.org/v1/emails" method="post">
-<input type="email" name="email" placeholder="join the email list" autocomplete="email" required aria-label="Email address for updates">
-<input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-<button type="submit" id="join">join</button>
-</form>
-</div>
-</header>
-<div class="wrap">
-<aside>
-<nav class="local" aria-label="Repositories">
-<a href="#openOODA" data-route="openOODA">openOODA</a>
-<a href="#oodar" data-route="oodar">oodar</a>
-<a href="#oodac" data-route="oodac">oodac</a>
-<a href="#std" data-route="std">std</a>
-<a href="#ooda" data-route="ooda">ooda</a>
-<a href="#install" data-route="install">install</a>
-<a href="#opm" data-route="opm">opm</a>
-<a href="#catalog" data-route="catalog">catalog</a>
-<a href="#lsp" data-route="lsp">lsp</a>
-<a href="#mcp" data-route="mcp">mcp</a>
-<a href="#blackbox" data-route="blackbox">blackbox</a>
-</nav>
-<div class="aside-footer">
-<div class="footer-powered">
-<span class="pulse-dot" aria-hidden="true"></span>
-<span>powered by <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">openOODA</a></span>
-</div>
-</div>
-</aside>
-<div class="col">
-<main id="content" tabindex="-1">
-<h1 class="visually-hidden">openOODA</h1>
-<p class="canon">Source: openOODA/.github/docs/</p>
-<div class="install"><span class="install-cmd">curl -fsSL <a href="https://openooda.org/install.sh">https://openooda.org/install.sh</a> | bash</span><button type="button" class="copy" aria-label="Copy install command">copy</button></div>
-<p>Your process is born with no privileges.<br>That is not an accident. That is the type system.</p>
-<p>We assume the source is hostile, the tests are<br>optimistic, and the agent will try the network.<br>Then we make those attempts fail closed.</p>
-<h2>Caps</h2>
-<p>Fourteen tokens. Unforgeable. Not environment<br>variables. Not a terms-of-service clause.<br>A function that talks to the network takes<br><code>&amp;NetCap</code> or it does not compile. <code>E_CAP</code> is<br>not a warning.</p>
-<p>Filesystem, network, process, GPU, FFI.<br>If it is not on the list, it does not happen.</p>
-<h2>First principles</h2>
-<p>Hardware first. IEEE 754, not folklore.<br>Subtract until the drag is gone.<br>The compiler is the substrate.<br>The other repos are siblings, not a monorepo<br>wearing a trench coat.</p>
-<h2>E-M, OODA, generations</h2>
-<p>Col. John Boyd measured a fighter as<br>E-M = ((T - D) / W) * V.<br>Thrust minus drag, over weight, times<br>speed. A later generation is not a<br>paint job. It is a better ratio.</p>
-<p>The product uses the same formula.<br>Observe the AST. Orient on the<br>contracts. Decide only what the types<br>allow. Act by emitting the binary.<br>Then do it again, faster.<br>That loop is OODA. The name is not<br>decoration.</p>
-<p>Each generation tightens the loop:<br>less latency, less drag, less<br>signature, more thrust.<br>Gen 1 is the silicon host. Gen 2 is<br>the compiler. Gen 4 is types and caps.<br>Gen 5 is agents. Gen 7 is not shipping.<br>We still draw it. Ambition is allowed.<br>Delusion is not.</p>
-<p>The jets behind this text are the<br>proof you can click. The GEN bar at<br>the bottom lights a generation.<br>Turn on 1 and 5 in the same sky.<br>The Sabre still flies. The Raptor<br>finishes the loop before the Sabre<br>finishes noticing.<br>OODA latency goes 24, 18, 12, 6, 2,<br>1, 0 frames. That is not a cutscene.</p>
-<p>We keep the old gens on the bar<br>because improvement is a comparison,<br>not a press release. If the new one<br>cannot beat the old one in the same<br>air, it is not a generation. It is a<br>rename.</p>
-<h2>Repos</h2>
-<p>Eleven product repos. Substratum first.</p>
-<table>
-<tr><td>Repo</td><td>Role</td></tr>
-<tr><td><a href="#openOODA">openOODA</a></td><td>The laws. They do not change.</td></tr>
-<tr><td><a href="#oodar">oodar</a></td><td>Gen 1. Silicon, in C.</td></tr>
-<tr><td><a href="#oodac">oodac</a></td><td>The compiler. Everything else borrows it.</td></tr>
-<tr><td><a href="#std">std</a></td><td>The library. Still needs a token.</td></tr>
-<tr><td><a href="#ooda">ooda</a></td><td>The binary you type. Not the compiler.</td></tr>
-<tr><td><a href="#install">install</a></td><td>How bits land on a machine.</td></tr>
-<tr><td><a href="#opm">opm</a></td><td>Packages. Extra caps are a refusal.</td></tr>
-<tr><td><a href="#catalog">catalog</a></td><td>The public list. No accounts.</td></tr>
-<tr><td><a href="#lsp">lsp</a></td><td>The editor. Humans first.</td></tr>
-<tr><td><a href="#mcp">mcp</a></td><td>The agent. Same rules as the human.</td></tr>
-<tr><td><a href="#blackbox">blackbox</a></td><td>Operational Logistics: Agent-native execution flight recorder and crash autopsy engine.</td></tr>
-</table>
-<p>The install line is above. Piping curl to bash<br>is the one ambient authority we still admit.<br>We are not proud. We are practical.</p>
-</main>
-<footer class="site-footer">
-<div class="gen-bar" id="gen-bar" aria-label="Toggle fighter generations">
-<span class="gen-title">GEN:</span>
-<button type="button" class="gen-btn" data-gen="1" title="Gen 1">1</button>
-<button type="button" class="gen-btn" data-gen="2" title="Gen 2">2</button>
-<button type="button" class="gen-btn" data-gen="3" title="Gen 3">3</button>
-<button type="button" class="gen-btn active" data-gen="4" title="Gen 4">4</button>
-<button type="button" class="gen-btn" data-gen="5" title="Gen 5">5</button>
-<button type="button" class="gen-btn" data-gen="6" title="Gen 6">6</button>
-<button type="button" class="gen-btn" data-gen="7" title="Gen 7">7</button>
-</div>
-<a class="hud-license-badge" id="hud-license" href="https://github.com/openOODA/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>
-</footer>
-</div>
-</div>
-<button type="button" id="theme" aria-label="Cycle theme">paper</button>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>openOODA // Capability-Secure Systems Language [EST. 1982]</title>
+    <meta
+      name="description"
+      content="openOODA is a capability-secure systems language where every effect requires an explicit, unforgeable capability token [EST. 1982]. Hardware first, zero ambient authority."
+    />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+
+    <style>
+      /* ==========================================================================
+         1982 TERMINAL DESIGN SYSTEM (PURE MONOSPACE // ZERO MAC/APPLE FLUFF)
+         ========================================================================== */
+      :root {
+        --bg-deep: #070a0f;
+        --bg-window: #0a0e17;
+        --bg-bar: #0d121c;
+        --bg-titlebar: #0f1726;
+        --bg-card: #0b1019;
+        --bg-btn: #101622;
+        --color-green: #34d399;
+        --color-green-dim: rgba(52, 211, 153, 0.12);
+        --color-amber: #f59e0b;
+        --color-cyan: #38bdf8;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --border-subtle: 1px solid #1e293b;
+        --border-accent: 1px solid #334155;
+        --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", Courier, monospace;
+      }
+
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        font-size: 15px;
+        scroll-behavior: smooth;
+        background: var(--bg-deep);
+        color: var(--text-primary);
+        font-family: var(--font-mono);
+      }
+
+      body.terminal-body {
+        background: var(--bg-deep);
+        color: var(--text-primary);
+        font-family: var(--font-mono);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      /* Accessible Skip Link */
+      .skip-link {
+        position: absolute;
+        top: -100px;
+        left: 16px;
+        background: #000;
+        color: var(--color-green);
+        padding: 8px 16px;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        z-index: 1000;
+        border: 1px solid var(--color-green);
+        border-radius: 0;
+        transition: top 0.1s ease;
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+      }
+
+      .skip-link:focus {
+        top: 16px;
+      }
+
+      .terminal-container {
+        width: 100%;
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 clamp(8px, 2.5vw, 24px);
+        box-sizing: border-box;
+      }
+
+      /* ==========================================================================
+         TERMINAL MASTHEAD STATUS BAR
+         ========================================================================== */
+      .terminal-masthead {
+        background: var(--bg-bar);
+        border-bottom: var(--border-subtle);
+        padding: 12px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .masthead-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .terminal-branding {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+      }
+
+      .prompt-sigil {
+        color: var(--color-green);
+        font-weight: 800;
+        user-select: none;
+      }
+
+      .brand-title {
+        color: var(--text-primary);
+        letter-spacing: 0.12em;
+        font-size: 1.05rem;
+        font-weight: 800;
+      }
+
+      .vintage-badge {
+        color: var(--color-amber);
+        font-size: 0.74rem;
+        font-weight: 600;
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid var(--color-amber);
+        border-radius: 0;
+        padding: 2px 8px;
+        letter-spacing: 0.08em;
+      }
+
+      .terminal-meta {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+        letter-spacing: 0.05em;
+        flex-wrap: wrap;
+      }
+
+      .meta-item {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      /* ==========================================================================
+         TERMINAL WINDOW & CHROME (CRISP SQUARE 90° - ZERO APPLE DOTS)
+         ========================================================================== */
+      .terminal-main {
+        flex: 1 0 auto;
+        padding: clamp(20px, 4vw, 40px) 0 48px;
+      }
+
+      .terminal-window {
+        background: var(--bg-window);
+        border: var(--border-subtle);
+        border-radius: 0;
+        box-shadow: none;
+        box-sizing: border-box;
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      .window-titlebar {
+        background: var(--bg-titlebar);
+        border-bottom: var(--border-subtle);
+        padding: 8px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        user-select: none;
+        font-family: var(--font-mono);
+        box-sizing: border-box;
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      .term-status-badge {
+        font-size: 0.74rem;
+        color: var(--color-green);
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+      }
+
+      .window-title {
+        font-size: 0.78rem;
+        color: #cbd5e1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        letter-spacing: 0.03em;
+        flex: 1 1 auto;
+      }
+
+      .term-status-online {
+        font-size: 0.72rem;
+        color: var(--color-amber);
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        white-space: nowrap;
+      }
+
+      .window-body {
+        padding: clamp(12px, 2.5vw, 36px);
+      }
+
+      /* ==========================================================================
+         HERO SECTION & ASCII BANNER
+         ========================================================================== */
+      .terminal-hero {
+        margin-bottom: 24px;
+      }
+
+      .ascii-banner {
+        font-family: var(--font-mono);
+        color: var(--color-green);
+        font-size: clamp(0.55rem, 1.25vw, 0.85rem);
+        line-height: 1.3;
+        margin: 0 0 20px;
+        overflow-x: auto;
+        white-space: pre;
+        border-left: 3px solid var(--color-green);
+        padding-left: 12px;
+        user-select: none;
+      }
+
+      .terminal-title {
+        font-family: var(--font-mono);
+        font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+        font-weight: 800;
+        color: var(--text-primary);
+        letter-spacing: -0.02em;
+        margin-bottom: 12px;
+      }
+
+      .terminal-intro {
+        font-size: clamp(0.92rem, 1.2vw, 1.05rem);
+        color: var(--text-secondary);
+        line-height: 1.6;
+        max-width: 960px;
+        margin-bottom: 24px;
+      }
+
+      /* Terminal Action Buttons */
+      .terminal-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 28px;
+      }
+
+      .term-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px 18px;
+        min-height: 42px;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        font-weight: 700;
+        text-decoration: none;
+        letter-spacing: 0.05em;
+        border-radius: 0;
+        border: var(--border-accent);
+        background: var(--bg-btn);
+        color: var(--color-green);
+        transition: all 0.12s ease;
+        cursor: pointer;
+      }
+
+      .term-btn:hover {
+        background: var(--color-green);
+        color: #04100c;
+        border-color: var(--color-green);
+      }
+
+      .term-btn-amber {
+        color: var(--color-amber);
+        border-color: #4a3410;
+      }
+
+      .term-btn-amber:hover {
+        background: var(--color-amber);
+        color: #070a0f;
+        border-color: var(--color-amber);
+      }
+
+      .term-btn-secondary {
+        color: #94a3b8;
+        border-color: #1e293b;
+      }
+
+      .term-btn-secondary:hover {
+        background: #1e293b;
+        color: #f8fafc;
+        border-color: #334155;
+      }
+
+      /* Terminal Quick Install Box */
+      .terminal-install-box {
+        background: #090e15;
+        border: var(--border-subtle);
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      .install-cmd-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        overflow-x: auto;
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: 100%;
+      }
+
+      .install-prompt {
+        color: var(--color-amber);
+        font-weight: 700;
+        user-select: none;
+        flex-shrink: 0;
+      }
+
+      .install-code {
+        color: #e2e8f0;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        user-select: all;
+      }
+
+      .copy-action-btn {
+        background: var(--bg-btn);
+        border: var(--border-accent);
+        color: var(--color-green);
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        font-weight: 700;
+        padding: 6px 12px;
+        min-height: 36px;
+        cursor: pointer;
+        border-radius: 0;
+        transition: all 0.1s ease;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .copy-action-btn:hover {
+        border-color: var(--color-green);
+        background: var(--color-green);
+        color: #04100c;
+      }
+
+      /* 4 Core Architectural Tenets */
+      .terminal-tenets-bar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+        gap: 16px;
+        margin-top: 8px;
+      }
+
+      .tenet-item {
+        display: flex;
+        gap: 14px;
+        background: #0e1422;
+        border: var(--border-subtle);
+        border-radius: 0;
+        padding: 16px;
+        transition: border-color 0.15s ease;
+        box-sizing: border-box;
+        min-width: 0;
+      }
+
+      .tenet-item:hover {
+        border-color: #334155;
+      }
+
+      .tenet-num {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--color-amber);
+        font-family: var(--font-mono);
+        user-select: none;
+      }
+
+      .tenet-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .tenet-text strong {
+        font-size: 0.88rem;
+        color: #f1f5f9;
+        font-weight: 700;
+      }
+
+      .tenet-text span {
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        line-height: 1.45;
+      }
+
+      /* Terminal Section Divider */
+      .terminal-divider {
+        text-align: center;
+        margin: 36px 0 28px;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .terminal-divider::before,
+      .terminal-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #1e293b;
+        margin: 0 16px;
+      }
+
+      /* ==========================================================================
+         TOPOLOGY ARCHITECTURE MAP (3-LAYER)
+         ========================================================================== */
+      .topology-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .topology-layer {
+        background: #090e18;
+        border: var(--border-subtle);
+        padding: 16px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .layer-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px dashed #1e293b;
+        padding-bottom: 6px;
+      }
+
+      .layer-name {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--color-cyan);
+        letter-spacing: 0.08em;
+      }
+
+      .layer-badge {
+        font-size: 0.68rem;
+        color: var(--text-muted);
+        border: 1px solid #1e293b;
+        padding: 1px 6px;
+      }
+
+      .layer-desc {
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        line-height: 1.45;
+      }
+
+      .layer-repos {
+        font-size: 0.75rem;
+        color: var(--color-amber);
+        font-weight: 600;
+      }
+
+      /* ==========================================================================
+         11 PRODUCT REPOSITORIES GRID & TERMINAL NODE CARDS
+         ========================================================================== */
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+        gap: 20px;
+      }
+
+      .term-card {
+        background: var(--bg-card);
+        border: var(--border-subtle);
+        border-radius: 0;
+        padding: clamp(12px, 2.5vw, 20px);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        transition: border-color 0.15s ease;
+        outline: none;
+        box-sizing: border-box;
+        min-width: 0;
+        max-width: 100%;
+      }
+
+      .term-card:hover,
+      .term-card:focus-visible {
+        border-color: var(--color-green);
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: var(--border-subtle);
+        padding-bottom: 10px;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .card-node-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        letter-spacing: 0.05em;
+      }
+
+      .term-prompt {
+        color: var(--color-green);
+        font-weight: 700;
+        user-select: none;
+      }
+
+      .card-id {
+        font-weight: 600;
+        letter-spacing: 0.08em;
+      }
+
+      .term-badge {
+        font-size: 0.72rem;
+        padding: 2px 8px;
+        border-radius: 0;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: var(--color-green);
+        background: var(--color-green-dim);
+        border: 1px solid var(--color-green);
+      }
+
+      .term-badge-amber {
+        color: var(--color-amber);
+        background: rgba(245, 158, 11, 0.1);
+        border-color: var(--color-amber);
+      }
+
+      .term-badge-cyan {
+        color: var(--color-cyan);
+        background: rgba(56, 189, 248, 0.1);
+        border-color: var(--color-cyan);
+      }
+
+      .card-body {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        flex: 1 0 auto;
+      }
+
+      .title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .card-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+      }
+
+      .card-role-tag {
+        font-size: 0.74rem;
+        color: var(--color-amber);
+        letter-spacing: 0.04em;
+      }
+
+      .card-desc {
+        font-size: 0.84rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        margin: 0;
+      }
+
+      /* Terminal CLI Snippet */
+      .saver-cmd-snippet {
+        background: #080c14;
+        border: 1px solid #1e293b;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 0.78rem;
+        color: #cbd5e1;
+        cursor: pointer;
+        user-select: all;
+        transition: border-color 0.1s ease;
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+
+      .saver-cmd-snippet:hover {
+        border-color: var(--color-green);
+      }
+
+      .cmd-text {
+        font-family: var(--font-mono);
+        color: var(--color-amber);
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+      }
+
+      .cmd-copy-hint {
+        color: var(--text-muted);
+        font-size: 0.68rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        flex-shrink: 0;
+      }
+
+      .card-metrics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        font-size: 0.74rem;
+        border-top: 1px dashed #1e293b;
+        padding-top: 8px;
+      }
+
+      .term-metric {
+        display: inline-flex;
+        gap: 4px;
+      }
+
+      .metric-key {
+        color: var(--text-muted);
+      }
+
+      .metric-val {
+        color: var(--color-green);
+        font-weight: 600;
+      }
+
+      .card-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: auto;
+        padding-top: 6px;
+      }
+
+      .card-actions .term-btn {
+        flex: 1;
+        font-size: 0.78rem;
+        padding: 8px 10px;
+        text-align: center;
+      }
+
+      /* ==========================================================================
+         TERMINAL FOOTER
+         ========================================================================== */
+      .terminal-footer {
+        background: var(--bg-bar);
+        border-top: var(--border-subtle);
+        padding: 24px 0;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+
+      .footer-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .footer-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color 0.1s ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--color-green);
+      }
+
+      /* Accessible Focus */
+      :focus-visible {
+        outline: 2px solid var(--color-green) !important;
+        outline-offset: 2px !important;
+      }
+
+      /* ==========================================================================
+         RESPONSIVENESS & ZERO OVERFLOW
+         ========================================================================== */
+      @media (max-width: 768px) {
+        .terminal-meta {
+          font-size: 0.68rem;
+          gap: 6px 10px;
+        }
+
+        .window-titlebar {
+          flex-wrap: wrap;
+          gap: 6px;
+        }
+
+        .terminal-actions {
+          flex-direction: column;
+        }
+
+        .terminal-actions .term-btn {
+          width: 100%;
+        }
+
+        .terminal-install-box {
+          flex-direction: column;
+          align-items: stretch;
+          padding: 12px;
+        }
+
+        .install-cmd-wrap {
+          min-width: 0;
+          max-width: 100%;
+          overflow-x: auto;
+        }
+
+        .install-code {
+          white-space: normal;
+          word-break: break-all;
+          font-size: 0.8rem;
+        }
+
+        .copy-action-btn {
+          width: 100%;
+        }
+
+        .gallery-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-inner {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .ascii-banner {
+          font-size: 0.52rem;
+        }
+
+        .terminal-title {
+          font-size: 1.6rem;
+        }
+
+        .card-actions {
+          flex-direction: column;
+        }
+
+        .card-actions .term-btn {
+          width: 100%;
+        }
+
+        .saver-cmd-snippet {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="terminal-body">
+    <!-- Accessible Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to Content</a>
+
+    <!-- Masthead Status Bar -->
+    <header class="terminal-masthead">
+      <div class="terminal-container masthead-inner">
+        <div class="terminal-branding">
+          <span class="prompt-sigil">&gt;&gt;</span>
+          <span class="brand-title">OPENOODA</span>
+          <span class="vintage-badge">[CAPABILITY SUBSTRATE]</span>
+        </div>
+        <div class="terminal-meta">
+          <span class="meta-item">TYPE-SYSTEM: FAIL-CLOSED</span>
+          <span class="meta-item">KERNEL: BARE-METAL</span>
+          <span class="meta-item">STATUS: ACTIVE [1982]</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Terminal Window Workstation -->
+    <main id="main-content" class="terminal-main" tabindex="-1">
+      <div class="terminal-container">
+        <div class="terminal-window">
+          <!-- Terminal Title Bar -->
+          <div class="window-titlebar">
+            <span class="term-status-badge">[TERM: tty1]</span>
+            <span class="window-title">sys@openooda:~# cat /etc/openooda/manifest [release 1982-2026]</span>
+            <span class="term-status-online">[SYS_OK]</span>
+          </div>
+
+          <!-- Terminal Content Body -->
+          <div class="window-body">
+            <!-- Hero Header -->
+            <section class="terminal-hero">
+              <pre class="ascii-banner" aria-hidden="true">
+========================================================================
+ OPENOODA // CAPABILITY-SECURE SYSTEMS LANGUAGE SUBSTRATE
+========================================================================</pre>
+
+              <h1 class="terminal-title">Fail-Closed by Design</h1>
+              <p class="terminal-intro">
+                openOODA is a capability-secure systems language where every effect requires an explicit, unforgeable capability token. Your process is born with no privileges. That is not an accident. That is the type system. A function that communicates over the network takes <code>&amp;NetCap</code> or it does not compile. <code>E_CAP</code> is not a warning. Hardware first, IEEE 754 precision, zero ambient authority.
+              </p>
+
+              <!-- Action Links -->
+              <div class="terminal-actions">
+                <a
+                  href="https://github.com/openOODA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="term-btn"
+                >
+                  [ GITHUB: @OPENOODA &#8599; ]
+                </a>
+                <a
+                  href="https://UberMetroid.github.io"
+                  class="term-btn term-btn-amber"
+                >
+                  [ ECOSYSTEM: UBERMETROID &#8599; ]
+                </a>
+                <a
+                  href="https://idlescreen.github.io"
+                  class="term-btn term-btn-secondary"
+                >
+                  [ IDLESCREEN &#8599; ]
+                </a>
+                <a
+                  href="https://github.com/openOODA/openOODA/tree/main/rfcs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="term-btn term-btn-secondary"
+                >
+                  [ RFC ARCHIVE &#8599; ]
+                </a>
+              </div>
+
+              <!-- Terminal Quick Install Shell Box -->
+              <div class="terminal-install-box">
+                <div class="install-cmd-wrap">
+                  <span class="install-prompt">sys@openooda:~#</span>
+                  <code class="install-code" id="install-cmd">curl -fsSL https://openooda.org/install.sh | bash</code>
+                </div>
+                <button class="copy-action-btn" onclick="copySnippet('install-cmd', this)">[ COPY INSTALL ]</button>
+              </div>
+
+              <!-- 4 Architectural Principles -->
+              <div class="terminal-tenets-bar">
+                <div class="tenet-item">
+                  <span class="tenet-num">01</span>
+                  <div class="tenet-text">
+                    <strong>Capability Tokens</strong>
+                    <span>14 unforgeable tokens (&amp;NetCap, &amp;FsCap, &amp;ProcCap). Not env vars or ToS clauses. E_CAP is fatal.</span>
+                  </div>
+                </div>
+                <div class="tenet-item">
+                  <span class="tenet-num">02</span>
+                  <div class="tenet-text">
+                    <strong>First Principles</strong>
+                    <span>Hardware first. IEEE 754, not folklore. Subtract drag. Compiler is substrate; repos are siblings.</span>
+                  </div>
+                </div>
+                <div class="tenet-item">
+                  <span class="tenet-num">03</span>
+                  <div class="tenet-text">
+                    <strong>Boyd E-M Loop</strong>
+                    <span>E-M = ((T - D) / W) * V. Observe AST &rarr; Orient contracts &rarr; Decide types &rarr; Act binary. Faster.</span>
+                  </div>
+                </div>
+                <div class="tenet-item">
+                  <span class="tenet-num">04</span>
+                  <div class="tenet-text">
+                    <strong>Zero Ambient Authority</strong>
+                    <span>Filesystem, network, process, GPU, FFI. If it is not on the capability token list, it does not happen.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3-Layer Topology Architecture Section -->
+            <div class="terminal-divider">-- ARCHITECTURE: 3-LAYER TOPOLOGY --</div>
+            <div class="topology-grid">
+              <div class="topology-layer">
+                <div class="layer-header">
+                  <span class="layer-name">STRATEGIC GOVERNANCE</span>
+                  <span class="layer-badge">LAYER 01</span>
+                </div>
+                <p class="layer-desc">The immutable constitution, RFC pipeline, process boards, and the 23 foundational laws. Never polluted with compiler backend code.</p>
+                <div class="layer-repos">&gt; openOODA</div>
+              </div>
+
+              <div class="topology-layer">
+                <div class="layer-header">
+                  <span class="layer-name">TACTICAL CODE PHYSICS</span>
+                  <span class="layer-badge">LAYER 02</span>
+                </div>
+                <p class="layer-desc">Bare-metal execution substrates, silicon C runtime, optimizing compiler backend passes, and capability-bounded standard library.</p>
+                <div class="layer-repos">&gt; oodar, oodac, std</div>
+              </div>
+
+              <div class="topology-layer">
+                <div class="layer-header">
+                  <span class="layer-name">OPERATIONAL LOGISTICS</span>
+                  <span class="layer-badge">LAYER 03</span>
+                </div>
+                <p class="layer-desc">CLI developer driver, universal machine packaging, zero-privilege package management, catalog, LSP, MCP, and flight recorder telemetry.</p>
+                <div class="layer-repos">&gt; ooda, install, opm, catalog, lsp, mcp, blackbox</div>
+              </div>
+            </div>
+
+            <!-- Repository Showcase Grid -->
+            <div class="terminal-divider">-- 11 REGISTERED PRODUCT REPOSITORIES --</div>
+
+            <div class="gallery-grid">
+              <!-- REPO 01: openOODA -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_01 // OPENOODA</span>
+                  </div>
+                  <span class="term-badge">GOVERNANCE // v1.0.20</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">openOODA</h2>
+                    <span class="card-role-tag">The Laws &amp; RFCs</span>
+                  </div>
+                  <p class="card-desc">
+                    The governance substrate. Contains process boards, RFCs, and the 23 immutable laws. Agent front door is ANCHOR.oo. Governance edits never rebuild the compiler.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('cat /etc/openooda/laws', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">cat /etc/openooda/laws</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">STRATEGIC</span></div>
+                    <div class="term-metric"><span class="metric-key">CAPS:</span> <span class="metric-val">NONE</span></div>
+                    <div class="term-metric"><span class="metric-key">DELTA_PATH:</span> <span class="metric-val">0</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/openOODA" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 02: oodar -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_02 // OODAR</span>
+                  </div>
+                  <span class="term-badge term-badge-amber">TACTICAL // v4.0.0</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">oodar</h2>
+                    <span class="card-role-tag">Gen 1 Silicon Host</span>
+                  </div>
+                  <p class="card-desc">
+                    Silicon runtime host written in pure C. Handles process boots, raw capability token verification, and zero-heap signal trapping on an alternate execution stack.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('oodar --version', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">oodar --version</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">PHYSICS</span></div>
+                    <div class="term-metric"><span class="metric-key">GEN:</span> <span class="metric-val">1 (SILICON)</span></div>
+                    <div class="term-metric"><span class="metric-key">LANG:</span> <span class="metric-val">PURE C</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/oodar" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 03: oodac -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_03 // OODAC</span>
+                  </div>
+                  <span class="term-badge term-badge-amber">TACTICAL // v0.2.2</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">oodac</h2>
+                    <span class="card-role-tag">Compiler Backend</span>
+                  </div>
+                  <p class="card-desc">
+                    The optimizing compiler. Everything else borrows it. Implements lex, ast, check, and emit passes. Enforces that effectful functions take token references or fail compilation.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('oodac check main.oo', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">oodac check main.oo</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">PHYSICS</span></div>
+                    <div class="term-metric"><span class="metric-key">GEN:</span> <span class="metric-val">2 (COMPILER)</span></div>
+                    <div class="term-metric"><span class="metric-key">PASSES:</span> <span class="metric-val">4 LOCKED</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/oodac" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 04: std -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_04 // STD</span>
+                  </div>
+                  <span class="term-badge term-badge-amber">TACTICAL // v1.0.8</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">std</h2>
+                    <span class="card-role-tag">Capability Standard Library</span>
+                  </div>
+                  <p class="card-desc">
+                    The standard library. Zero ambient authority. Every routine interacting with filesystem, network, or OS requires an explicit capability token passed from caller.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('ooda test std/test', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">ooda test std/test</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">PHYSICS</span></div>
+                    <div class="term-metric"><span class="metric-key">TOKENS:</span> <span class="metric-val">14 ENFORCED</span></div>
+                    <div class="term-metric"><span class="metric-key">E_CAP:</span> <span class="metric-val">FATAL</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/std" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 05: ooda -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_05 // OODA</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.2.7</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">ooda</h2>
+                    <span class="card-role-tag">Workflow CLI Driver</span>
+                  </div>
+                  <p class="card-desc">
+                    The binary you type. Compiles, runs, benchmarks, and formats .oo files. Spawns opm, lsp, and mcp as modular subsystems. Does not contain the compiler backend.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('ooda build', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">ooda build</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
+                    <div class="term-metric"><span class="metric-key">COMMANDS:</span> <span class="metric-val">13 IN-PROCESS</span></div>
+                    <div class="term-metric"><span class="metric-key">HEALTH:</span> <span class="metric-val">OK</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/ooda" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 06: install -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_06 // INSTALL</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.1.6</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">install</h2>
+                    <span class="card-role-tag">Packaging &amp; Bootstrap</span>
+                  </div>
+                  <p class="card-desc">
+                    How bits land on a machine. Automated packaging and installation pipelines for apt (Debian/Ubuntu), dnf (Fedora/RHEL), and pacman (Arch). Practical bootstrap.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('curl -fsSL https://openooda.org/install.sh | bash', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">curl -fsSL https://openooda.org/install.sh | bash</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
+                    <div class="term-metric"><span class="metric-key">TARGETS:</span> <span class="metric-val">APT/DNF/PACMAN</span></div>
+                    <div class="term-metric"><span class="metric-key">PIPELINE:</span> <span class="metric-val">NATIVE SH</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/install" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 07: opm -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_07 // OPM</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.8.8</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">opm</h2>
+                    <span class="card-role-tag">Package Manager</span>
+                  </div>
+                  <p class="card-desc">
+                    Package manager with zero-privilege defaults. Dependencies declare required capabilities explicitly in their manifest; requesting unneeded tokens results in instant install refusal.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('opm install <pkg>', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">opm install &lt;pkg&gt;</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
+                    <div class="term-metric"><span class="metric-key">POLICY:</span> <span class="metric-val">EXTRA CAPS = REFUSAL</span></div>
+                    <div class="term-metric"><span class="metric-key">LOCKFILE:</span> <span class="metric-val">CRYPTOGRAPHIC</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/opm" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 08: catalog -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_08 // CATALOG</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.0.1</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">catalog</h2>
+                    <span class="card-role-tag">Public Package Index</span>
+                  </div>
+                  <p class="card-desc">
+                    The decentralized public package registry. No corporate accounts, no telemetry tracking. Git-native verified signatures and deterministic package hashing.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('opm search <term>', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">opm search &lt;term&gt;</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
+                    <div class="term-metric"><span class="metric-key">AUTH:</span> <span class="metric-val">ZERO ACCOUNTS</span></div>
+                    <div class="term-metric"><span class="metric-key">INTEGRITY:</span> <span class="metric-val">SHA-256 LEDGER</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/catalog" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 09: lsp -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_09 // LSP</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.6.12</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">lsp</h2>
+                    <span class="card-role-tag">Language Server</span>
+                  </div>
+                  <p class="card-desc">
+                    High-throughput Language Server Protocol implementation. Delivers instant completion, diagnostics, formatting, definition jumps, and token inspection to IDEs and editors.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('ooda lsp', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">ooda lsp</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
+                    <div class="term-metric"><span class="metric-key">CLIENTS:</span> <span class="metric-val">VS CODE / NVIM</span></div>
+                    <div class="term-metric"><span class="metric-key">LATENCY:</span> <span class="metric-val">&lt;5MS</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/lsp" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 10: mcp -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_10 // MCP</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.6.10</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">mcp</h2>
+                    <span class="card-role-tag">Model Context Protocol Bridge</span>
+                  </div>
+                  <p class="card-desc">
+                    AI agent integration bridge. Exposes openOODA capability boundaries and tool definitions over the standard Model Context Protocol. Same rules for agents as humans.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('ooda mcp', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">ooda mcp</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
+                    <div class="term-metric"><span class="metric-key">PROTOCOL:</span> <span class="metric-val">JSON-RPC / MCP</span></div>
+                    <div class="term-metric"><span class="metric-key">SECURITY:</span> <span class="metric-val">SANDBOXED</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/mcp" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 11: blackbox -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_11 // BLACKBOX</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.1.0</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">blackbox</h2>
+                    <span class="card-role-tag">Execution Flight Recorder</span>
+                  </div>
+                  <p class="card-desc">
+                    Agent-native execution telemetry recorder and crash autopsy engine. Captures signal traps (SIGSEGV/SIGABRT) and diffs AST intermediate passes for 1-turn agent repair.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('blackbox autopsy', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">blackbox autopsy</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
+                    <div class="term-metric"><span class="metric-key">TURNAROUND:</span> <span class="metric-val">1-TURN REPAIR</span></div>
+                    <div class="term-metric"><span class="metric-key">TRAPS:</span> <span class="metric-val">FAIL-CLOSED</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/blackbox" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Terminal Footer -->
+    <footer class="terminal-footer">
+      <div class="terminal-container footer-inner">
+        <div>
+          <span>OPENOODA &copy; 1982-2026 // CAPABILITY-SECURE SYSTEMS ARCHITECTURE</span>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">[ GITHUB ]</a>
+          <a href="https://UberMetroid.github.io">[ UBERMETROID ]</a>
+          <a href="https://idlescreen.github.io">[ IDLESCREEN ]</a>
+          <a href="https://openooda.org/install.sh">[ INSTALL SCRIPT ]</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Interactive Copy Feedback Script -->
+    <script>
+      function copySnippet(elementId, btn) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        const text = el.innerText || el.textContent;
+        navigator.clipboard.writeText(text.trim()).then(() => {
+          const original = btn.innerText;
+          btn.innerText = "[ COPIED! ]";
+          btn.style.borderColor = "var(--color-green)";
+          setTimeout(() => {
+            btn.innerText = original;
+            btn.style.borderColor = "";
+          }, 1800);
+        });
+      }
+
+      function copyText(text, btn) {
+        navigator.clipboard.writeText(text.trim()).then(() => {
+          const hint = btn.querySelector(".cmd-copy-hint");
+          if (hint) {
+            const orig = hint.innerText;
+            hint.innerText = "[ COPIED! ]";
+            hint.style.color = "var(--color-green)";
+            setTimeout(() => {
+              hint.innerText = orig;
+              hint.style.color = "";
+            }, 1800);
+          }
+        });
+      }
+
+      console.log(
+        "%c[OPENOODA // 1982 TERMINAL ACTIVE]\n%cCapability-Secure Systems Substrate | 11 Product Nodes Mounted",
+        "color: #34d399; font-weight: bold;",
+        "color: #94a3b8;"
+      );
+    </script>
+  </body>
 </html>
