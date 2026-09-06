@@ -412,9 +412,9 @@
          TOPOLOGY ARCHITECTURE MAP (3-LAYER)
          ========================================================================== */
       .topology-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-        gap: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
         margin-bottom: 32px;
       }
 
@@ -425,6 +425,23 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
+        transition: border-color 0.15s ease;
+      }
+
+      .topology-layer:hover {
+        border-color: var(--color-green);
+      }
+
+      .topology-layer.layer-strategic {
+        border-left: 3px solid var(--color-cyan);
+      }
+
+      .topology-layer.layer-operational {
+        border-left: 3px solid var(--color-amber);
+      }
+
+      .topology-layer.layer-tactical {
+        border-left: 3px solid var(--color-green);
       }
 
       .layer-header {
@@ -446,7 +463,8 @@
         font-size: 0.68rem;
         color: var(--text-muted);
         border: 1px solid #1e293b;
-        padding: 1px 6px;
+        padding: 2px 8px;
+        letter-spacing: 0.08em;
       }
 
       .layer-desc {
@@ -503,10 +521,11 @@
       .card-node-info {
         display: flex;
         align-items: center;
-        gap: 8px;
-        font-size: 0.75rem;
+        gap: 6px;
+        font-size: 0.70rem;
         color: var(--text-secondary);
         letter-spacing: 0.05em;
+        white-space: nowrap;
       }
 
       .term-prompt {
@@ -517,14 +536,16 @@
 
       .card-id {
         font-weight: 600;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.06em;
       }
 
       .term-badge {
-        font-size: 0.72rem;
-        padding: 2px 8px;
+        font-size: 0.66rem;
+        padding: 1px 6px;
         border-radius: 0;
         font-weight: 700;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
         letter-spacing: 0.06em;
         color: var(--color-green);
         background: var(--color-green-dim);
@@ -874,31 +895,34 @@
             <!-- 3-Layer Topology Architecture Section -->
             <div class="terminal-divider">-- ARCHITECTURE: 3-LAYER TOPOLOGY --</div>
             <div class="topology-grid">
-              <div class="topology-layer">
+              <!-- TOP LAYER: STRATEGIC -->
+              <div class="topology-layer layer-strategic">
                 <div class="layer-header">
                   <span class="layer-name">STRATEGIC GOVERNANCE</span>
-                  <span class="layer-badge">LAYER 01</span>
+                  <span class="layer-badge">[ TOP ]</span>
                 </div>
                 <p class="layer-desc">The immutable constitution, RFC pipeline, process boards, and the 23 foundational laws. Never polluted with compiler backend code.</p>
                 <div class="layer-repos">&gt; openOODA</div>
               </div>
 
-              <div class="topology-layer">
-                <div class="layer-header">
-                  <span class="layer-name">TACTICAL CODE PHYSICS</span>
-                  <span class="layer-badge">LAYER 02</span>
-                </div>
-                <p class="layer-desc">Bare-metal execution substrates, silicon C runtime, optimizing compiler backend passes, and capability-bounded standard library.</p>
-                <div class="layer-repos">&gt; oodar, oodac, std</div>
-              </div>
-
-              <div class="topology-layer">
+              <!-- MIDDLE LAYER: OPERATIONAL -->
+              <div class="topology-layer layer-operational">
                 <div class="layer-header">
                   <span class="layer-name">OPERATIONAL LOGISTICS</span>
-                  <span class="layer-badge">LAYER 03</span>
+                  <span class="layer-badge">[ MIDDLE ]</span>
                 </div>
                 <p class="layer-desc">CLI developer driver, universal machine packaging, zero-privilege package management, catalog, LSP, MCP, and flight recorder telemetry.</p>
                 <div class="layer-repos">&gt; ooda, install, opm, catalog, lsp, mcp, blackbox</div>
+              </div>
+
+              <!-- BOTTOM LAYER: TACTICAL -->
+              <div class="topology-layer layer-tactical">
+                <div class="layer-header">
+                  <span class="layer-name">TACTICAL CODE PHYSICS</span>
+                  <span class="layer-badge">[ BOTTOM ]</span>
+                </div>
+                <p class="layer-desc">Bare-metal execution substrates, silicon C runtime, optimizing compiler backend passes, and capability-bounded standard library.</p>
+                <div class="layer-repos">&gt; oodar, oodac, std</div>
               </div>
             </div>
 
@@ -906,14 +930,14 @@
             <div class="terminal-divider">-- 11 REGISTERED PRODUCT REPOSITORIES --</div>
 
             <div class="gallery-grid">
-              <!-- REPO 01: openOODA -->
+              <!-- REPO 01: openOODA (Strategic) -->
               <article class="term-card">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_01 // OPENOODA</span>
                   </div>
-                  <span class="term-badge">GOVERNANCE // v2.10.3</span>
+                  <span class="term-badge">STRATEGIC // v2.10.3</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
@@ -940,46 +964,250 @@
                 </div>
               </article>
 
-              <!-- REPO 02: oodar -->
+              <!-- REPO 02: ooda (Operational) -->
               <article class="term-card">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
-                    <span class="card-id">REPO_02 // OODAR</span>
+                    <span class="card-id">REPO_02 // OODA</span>
                   </div>
-                  <span class="term-badge term-badge-amber">TACTICAL // v4.0.5</span>
+                  <span class="term-badge term-badge-cyan">OPERATIONAL // v0.2.16</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
-                    <h2 class="card-title">oodar</h2>
-                    <span class="card-role-tag">Gen 1 Silicon Host</span>
+                    <h2 class="card-title">ooda</h2>
+                    <span class="card-role-tag">Workflow CLI Driver</span>
                   </div>
                   <p class="card-desc">
-                    Gen 1 C host runtime substrate. ABI = set of oo_* symbols. Handles process boots, raw capability token verification, and zero-heap signal trapping on an alternate execution stack.
+                    The binary you type. Compiles, runs, benchmarks, and formats .oo files. Spawns opm, lsp, and mcp as modular subsystems. Does not contain the compiler backend.
                   </p>
-                  <div class="saver-cmd-snippet" onclick="copyText('git clone https://github.com/openOODA/oodar.git', this)" title="Click to copy clone command">
-                    <span class="cmd-text">git clone https://github.com/openOODA/oodar.git</span>
+                  <div class="saver-cmd-snippet" onclick="copyText('ooda build', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">ooda build</span>
                     <span class="cmd-copy-hint">[COPY]</span>
                   </div>
                   <div class="card-metrics">
-                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">PHYSICS</span></div>
-                    <div class="term-metric"><span class="metric-key">GEN:</span> <span class="metric-val">1 (SILICON)</span></div>
-                    <div class="term-metric"><span class="metric-key">ABI:</span> <span class="metric-val">oo_* SYMBOLS</span></div>
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">OPERATIONAL</span></div>
+                    <div class="term-metric"><span class="metric-key">COMMANDS:</span> <span class="metric-val">13 IN-PROCESS</span></div>
+                    <div class="term-metric"><span class="metric-key">HEALTH:</span> <span class="metric-val">OK</span></div>
                   </div>
                   <div class="card-actions">
-                    <a href="https://github.com/openOODA/oodar" target="_blank" rel="noopener noreferrer" class="term-btn">
+                    <a href="https://github.com/openOODA/ooda" target="_blank" rel="noopener noreferrer" class="term-btn">
                       [ REPO &#8599; ]
                     </a>
                   </div>
                 </div>
               </article>
 
-              <!-- REPO 03: oodac -->
+              <!-- REPO 03: install (Operational) -->
               <article class="term-card">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
-                    <span class="card-id">REPO_03 // OODAC</span>
+                    <span class="card-id">REPO_03 // INSTALL</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">OPERATIONAL // v0.1.26</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">install</h2>
+                    <span class="card-role-tag">Toolchain Packaging</span>
+                  </div>
+                  <p class="card-desc">
+                    How the toolchain lands on a machine: install.sh, apt, dnf, pacman. Auto-detects installed LLM harnesses and wires ooda-mcp, ooda-lsp, and blackbox mcp.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('curl -fsSL https://openooda.org/install.sh | bash', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">curl -fsSL https://openooda.org/install.sh | bash</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">OPERATIONAL</span></div>
+                    <div class="term-metric"><span class="metric-key">TARGETS:</span> <span class="metric-val">APT/DNF/PACMAN</span></div>
+                    <div class="term-metric"><span class="metric-key">WIRING:</span> <span class="metric-val">IDEMPOTENT MCP</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/install" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 04: opm (Operational) -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_04 // OPM</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">OPERATIONAL // v0.8.15</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">opm</h2>
+                    <span class="card-role-tag">Package Manager</span>
+                  </div>
+                  <p class="card-desc">
+                    Package manager with zero-privilege defaults. Dependencies declare required capabilities explicitly in their manifest; requesting unneeded tokens results in instant install refusal.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('opm install <pkg>', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">opm install &lt;pkg&gt;</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">OPERATIONAL</span></div>
+                    <div class="term-metric"><span class="metric-key">POLICY:</span> <span class="metric-val">EXTRA CAPS = REFUSAL</span></div>
+                    <div class="term-metric"><span class="metric-key">LOCKFILE:</span> <span class="metric-val">CRYPTOGRAPHIC</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/opm" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 05: catalog (Operational) -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_05 // CATALOG</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">OPERATIONAL // v0.0.6</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">catalog</h2>
+                    <span class="card-role-tag">Public Package Catalog</span>
+                  </div>
+                  <p class="card-desc">
+                    The decentralized public package registry. No corporate accounts, no telemetry tracking. Git-native verified signatures and deterministic package hashing.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('opm search <term>', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">opm search &lt;term&gt;</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">OPERATIONAL</span></div>
+                    <div class="term-metric"><span class="metric-key">AUTH:</span> <span class="metric-val">ZERO ACCOUNTS</span></div>
+                    <div class="term-metric"><span class="metric-key">INTEGRITY:</span> <span class="metric-val">SHA-256 LEDGER</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/catalog" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 06: lsp (Operational) -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_06 // LSP</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">OPERATIONAL // v0.6.21</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">lsp</h2>
+                    <span class="card-role-tag">Language Server</span>
+                  </div>
+                  <p class="card-desc">
+                    High-throughput Language Server Protocol implementation. Delivers instant completion, diagnostics, formatting, definition jumps, and token inspection to IDEs and editors.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('ooda lsp', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">ooda lsp</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">OPERATIONAL</span></div>
+                    <div class="term-metric"><span class="metric-key">CLIENTS:</span> <span class="metric-val">VS CODE / NVIM / ZED</span></div>
+                    <div class="term-metric"><span class="metric-key">LATENCY:</span> <span class="metric-val">&lt;5MS</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/lsp" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 07: mcp (Operational) -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_07 // MCP</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">OPERATIONAL // v0.6.22</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">mcp</h2>
+                    <span class="card-role-tag">Model Context Protocol Bridge</span>
+                  </div>
+                  <p class="card-desc">
+                    AI agent integration bridge. Exposes openOODA capability boundaries and tool definitions over the standard Model Context Protocol. Same rules for agents as humans.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('ooda mcp', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">ooda mcp</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">OPERATIONAL</span></div>
+                    <div class="term-metric"><span class="metric-key">PROTOCOL:</span> <span class="metric-val">JSON-RPC / MCP</span></div>
+                    <div class="term-metric"><span class="metric-key">HARNESSES:</span> <span class="metric-val">AGY, CLAUDE, CURSOR</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/mcp" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 08: blackbox (Operational) -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_08 // BLACKBOX</span>
+                  </div>
+                  <span class="term-badge term-badge-cyan">OPERATIONAL // v0.0.3</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">blackbox</h2>
+                    <span class="card-role-tag">Execution Flight Recorder</span>
+                  </div>
+                  <p class="card-desc">
+                    Agent-native execution telemetry recorder and crash autopsy engine. Captures signal traps (SIGSEGV/SIGABRT) and diffs AST intermediate passes for 1-turn agent repair.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('blackbox autopsy', this)" title="Click to copy CLI command">
+                    <span class="cmd-text">blackbox autopsy</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">OPERATIONAL</span></div>
+                    <div class="term-metric"><span class="metric-key">TURNAROUND:</span> <span class="metric-val">1-TURN REPAIR</span></div>
+                    <div class="term-metric"><span class="metric-key">TRAPS:</span> <span class="metric-val">FAIL-CLOSED</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/blackbox" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 09: oodac (Tactical) -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_09 // OODAC</span>
                   </div>
                   <span class="term-badge term-badge-amber">TACTICAL // v0.2.8</span>
                 </div>
@@ -996,7 +1224,7 @@
                     <span class="cmd-copy-hint">[COPY]</span>
                   </div>
                   <div class="card-metrics">
-                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">PHYSICS</span></div>
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">TACTICAL</span></div>
                     <div class="term-metric"><span class="metric-key">GEN:</span> <span class="metric-val">2 (COMPILER)</span></div>
                     <div class="term-metric"><span class="metric-key">SURFACES:</span> <span class="metric-val">6 SURFACES</span></div>
                   </div>
@@ -1008,12 +1236,46 @@
                 </div>
               </article>
 
-              <!-- REPO 04: std -->
+              <!-- REPO 10: oodar (Tactical) -->
               <article class="term-card">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
-                    <span class="card-id">REPO_04 // STD</span>
+                    <span class="card-id">REPO_10 // OODAR</span>
+                  </div>
+                  <span class="term-badge term-badge-amber">TACTICAL // v4.0.5</span>
+                </div>
+                <div class="card-body">
+                  <div class="title-row">
+                    <h2 class="card-title">oodar</h2>
+                    <span class="card-role-tag">Gen 1 Silicon Host</span>
+                  </div>
+                  <p class="card-desc">
+                    Gen 1 C host runtime substrate. ABI = set of oo_* symbols. Handles process boots, raw capability token verification, and zero-heap signal trapping on an alternate execution stack.
+                  </p>
+                  <div class="saver-cmd-snippet" onclick="copyText('git clone https://github.com/openOODA/oodar.git', this)" title="Click to copy clone command">
+                    <span class="cmd-text">git clone https://github.com/openOODA/oodar.git</span>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="card-metrics">
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">TACTICAL</span></div>
+                    <div class="term-metric"><span class="metric-key">GEN:</span> <span class="metric-val">1 (SILICON)</span></div>
+                    <div class="term-metric"><span class="metric-key">ABI:</span> <span class="metric-val">oo_* SYMBOLS</span></div>
+                  </div>
+                  <div class="card-actions">
+                    <a href="https://github.com/openOODA/oodar" target="_blank" rel="noopener noreferrer" class="term-btn">
+                      [ REPO &#8599; ]
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- REPO 11: std (Tactical) -->
+              <article class="term-card">
+                <div class="card-header">
+                  <div class="card-node-info">
+                    <span class="term-prompt">&gt;</span>
+                    <span class="card-id">REPO_11 // STD</span>
                   </div>
                   <span class="term-badge term-badge-amber">TACTICAL // v1.0.11</span>
                 </div>
@@ -1030,250 +1292,12 @@
                     <span class="cmd-copy-hint">[COPY]</span>
                   </div>
                   <div class="card-metrics">
-                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">PHYSICS</span></div>
+                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">TACTICAL</span></div>
                     <div class="term-metric"><span class="metric-key">DOMAINS:</span> <span class="metric-val">8 CORE DOMAINS</span></div>
                     <div class="term-metric"><span class="metric-key">E_CAP:</span> <span class="metric-val">FATAL</span></div>
                   </div>
                   <div class="card-actions">
                     <a href="https://github.com/openOODA/std" target="_blank" rel="noopener noreferrer" class="term-btn">
-                      [ REPO &#8599; ]
-                    </a>
-                  </div>
-                </div>
-              </article>
-
-              <!-- REPO 05: ooda -->
-              <article class="term-card">
-                <div class="card-header">
-                  <div class="card-node-info">
-                    <span class="term-prompt">&gt;</span>
-                    <span class="card-id">REPO_05 // OODA</span>
-                  </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.2.16</span>
-                </div>
-                <div class="card-body">
-                  <div class="title-row">
-                    <h2 class="card-title">ooda</h2>
-                    <span class="card-role-tag">Workflow CLI Driver</span>
-                  </div>
-                  <p class="card-desc">
-                    The binary you type. Compiles, runs, benchmarks, and formats .oo files. Spawns opm, lsp, and mcp as modular subsystems. Does not contain the compiler backend.
-                  </p>
-                  <div class="saver-cmd-snippet" onclick="copyText('ooda build', this)" title="Click to copy CLI command">
-                    <span class="cmd-text">ooda build</span>
-                    <span class="cmd-copy-hint">[COPY]</span>
-                  </div>
-                  <div class="card-metrics">
-                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
-                    <div class="term-metric"><span class="metric-key">COMMANDS:</span> <span class="metric-val">13 IN-PROCESS</span></div>
-                    <div class="term-metric"><span class="metric-key">HEALTH:</span> <span class="metric-val">OK</span></div>
-                  </div>
-                  <div class="card-actions">
-                    <a href="https://github.com/openOODA/ooda" target="_blank" rel="noopener noreferrer" class="term-btn">
-                      [ REPO &#8599; ]
-                    </a>
-                  </div>
-                </div>
-              </article>
-
-              <!-- REPO 06: install -->
-              <article class="term-card">
-                <div class="card-header">
-                  <div class="card-node-info">
-                    <span class="term-prompt">&gt;</span>
-                    <span class="card-id">REPO_06 // INSTALL</span>
-                  </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.1.26</span>
-                </div>
-                <div class="card-body">
-                  <div class="title-row">
-                    <h2 class="card-title">install</h2>
-                    <span class="card-role-tag">Toolchain Packaging</span>
-                  </div>
-                  <p class="card-desc">
-                    How the toolchain lands on a machine: install.sh, apt, dnf, pacman. Auto-detects installed LLM harnesses and wires ooda-mcp, ooda-lsp, and blackbox mcp.
-                  </p>
-                  <div class="saver-cmd-snippet" onclick="copyText('curl -fsSL https://openooda.org/install.sh | bash', this)" title="Click to copy CLI command">
-                    <span class="cmd-text">curl -fsSL https://openooda.org/install.sh | bash</span>
-                    <span class="cmd-copy-hint">[COPY]</span>
-                  </div>
-                  <div class="card-metrics">
-                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
-                    <div class="term-metric"><span class="metric-key">TARGETS:</span> <span class="metric-val">APT/DNF/PACMAN</span></div>
-                    <div class="term-metric"><span class="metric-key">WIRING:</span> <span class="metric-val">IDEMPOTENT MCP</span></div>
-                  </div>
-                  <div class="card-actions">
-                    <a href="https://github.com/openOODA/install" target="_blank" rel="noopener noreferrer" class="term-btn">
-                      [ REPO &#8599; ]
-                    </a>
-                  </div>
-                </div>
-              </article>
-
-              <!-- REPO 07: opm -->
-              <article class="term-card">
-                <div class="card-header">
-                  <div class="card-node-info">
-                    <span class="term-prompt">&gt;</span>
-                    <span class="card-id">REPO_07 // OPM</span>
-                  </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.8.15</span>
-                </div>
-                <div class="card-body">
-                  <div class="title-row">
-                    <h2 class="card-title">opm</h2>
-                    <span class="card-role-tag">Package Manager</span>
-                  </div>
-                  <p class="card-desc">
-                    Package manager with zero-privilege defaults. Dependencies declare required capabilities explicitly in their manifest; requesting unneeded tokens results in instant install refusal.
-                  </p>
-                  <div class="saver-cmd-snippet" onclick="copyText('opm install <pkg>', this)" title="Click to copy CLI command">
-                    <span class="cmd-text">opm install &lt;pkg&gt;</span>
-                    <span class="cmd-copy-hint">[COPY]</span>
-                  </div>
-                  <div class="card-metrics">
-                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
-                    <div class="term-metric"><span class="metric-key">POLICY:</span> <span class="metric-val">EXTRA CAPS = REFUSAL</span></div>
-                    <div class="term-metric"><span class="metric-key">LOCKFILE:</span> <span class="metric-val">CRYPTOGRAPHIC</span></div>
-                  </div>
-                  <div class="card-actions">
-                    <a href="https://github.com/openOODA/opm" target="_blank" rel="noopener noreferrer" class="term-btn">
-                      [ REPO &#8599; ]
-                    </a>
-                  </div>
-                </div>
-              </article>
-
-              <!-- REPO 08: catalog -->
-              <article class="term-card">
-                <div class="card-header">
-                  <div class="card-node-info">
-                    <span class="term-prompt">&gt;</span>
-                    <span class="card-id">REPO_08 // CATALOG</span>
-                  </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.0.6</span>
-                </div>
-                <div class="card-body">
-                  <div class="title-row">
-                    <h2 class="card-title">catalog</h2>
-                    <span class="card-role-tag">Public Package Catalog</span>
-                  </div>
-                  <p class="card-desc">
-                    The decentralized public package registry. No corporate accounts, no telemetry tracking. Git-native verified signatures and deterministic package hashing.
-                  </p>
-                  <div class="saver-cmd-snippet" onclick="copyText('opm search <term>', this)" title="Click to copy CLI command">
-                    <span class="cmd-text">opm search &lt;term&gt;</span>
-                    <span class="cmd-copy-hint">[COPY]</span>
-                  </div>
-                  <div class="card-metrics">
-                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
-                    <div class="term-metric"><span class="metric-key">AUTH:</span> <span class="metric-val">ZERO ACCOUNTS</span></div>
-                    <div class="term-metric"><span class="metric-key">INTEGRITY:</span> <span class="metric-val">SHA-256 LEDGER</span></div>
-                  </div>
-                  <div class="card-actions">
-                    <a href="https://github.com/openOODA/catalog" target="_blank" rel="noopener noreferrer" class="term-btn">
-                      [ REPO &#8599; ]
-                    </a>
-                  </div>
-                </div>
-              </article>
-
-              <!-- REPO 09: lsp -->
-              <article class="term-card">
-                <div class="card-header">
-                  <div class="card-node-info">
-                    <span class="term-prompt">&gt;</span>
-                    <span class="card-id">REPO_09 // LSP</span>
-                  </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.6.21</span>
-                </div>
-                <div class="card-body">
-                  <div class="title-row">
-                    <h2 class="card-title">lsp</h2>
-                    <span class="card-role-tag">Language Server</span>
-                  </div>
-                  <p class="card-desc">
-                    High-throughput Language Server Protocol implementation. Delivers instant completion, diagnostics, formatting, definition jumps, and token inspection to IDEs and editors.
-                  </p>
-                  <div class="saver-cmd-snippet" onclick="copyText('ooda lsp', this)" title="Click to copy CLI command">
-                    <span class="cmd-text">ooda lsp</span>
-                    <span class="cmd-copy-hint">[COPY]</span>
-                  </div>
-                  <div class="card-metrics">
-                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
-                    <div class="term-metric"><span class="metric-key">CLIENTS:</span> <span class="metric-val">VS CODE / NVIM / ZED</span></div>
-                    <div class="term-metric"><span class="metric-key">LATENCY:</span> <span class="metric-val">&lt;5MS</span></div>
-                  </div>
-                  <div class="card-actions">
-                    <a href="https://github.com/openOODA/lsp" target="_blank" rel="noopener noreferrer" class="term-btn">
-                      [ REPO &#8599; ]
-                    </a>
-                  </div>
-                </div>
-              </article>
-
-              <!-- REPO 10: mcp -->
-              <article class="term-card">
-                <div class="card-header">
-                  <div class="card-node-info">
-                    <span class="term-prompt">&gt;</span>
-                    <span class="card-id">REPO_10 // MCP</span>
-                  </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.6.22</span>
-                </div>
-                <div class="card-body">
-                  <div class="title-row">
-                    <h2 class="card-title">mcp</h2>
-                    <span class="card-role-tag">Model Context Protocol Bridge</span>
-                  </div>
-                  <p class="card-desc">
-                    AI agent integration bridge. Exposes openOODA capability boundaries and tool definitions over the standard Model Context Protocol. Same rules for agents as humans.
-                  </p>
-                  <div class="saver-cmd-snippet" onclick="copyText('ooda mcp', this)" title="Click to copy CLI command">
-                    <span class="cmd-text">ooda mcp</span>
-                    <span class="cmd-copy-hint">[COPY]</span>
-                  </div>
-                  <div class="card-metrics">
-                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
-                    <div class="term-metric"><span class="metric-key">PROTOCOL:</span> <span class="metric-val">JSON-RPC / MCP</span></div>
-                    <div class="term-metric"><span class="metric-key">HARNESSES:</span> <span class="metric-val">AGY, CLAUDE, CURSOR</span></div>
-                  </div>
-                  <div class="card-actions">
-                    <a href="https://github.com/openOODA/mcp" target="_blank" rel="noopener noreferrer" class="term-btn">
-                      [ REPO &#8599; ]
-                    </a>
-                  </div>
-                </div>
-              </article>
-
-              <!-- REPO 11: blackbox -->
-              <article class="term-card">
-                <div class="card-header">
-                  <div class="card-node-info">
-                    <span class="term-prompt">&gt;</span>
-                    <span class="card-id">REPO_11 // BLACKBOX</span>
-                  </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.0.3</span>
-                </div>
-                <div class="card-body">
-                  <div class="title-row">
-                    <h2 class="card-title">blackbox</h2>
-                    <span class="card-role-tag">Execution Flight Recorder</span>
-                  </div>
-                  <p class="card-desc">
-                    Agent-native execution telemetry recorder and crash autopsy engine. Captures signal traps (SIGSEGV/SIGABRT) and diffs AST intermediate passes for 1-turn agent repair.
-                  </p>
-                  <div class="saver-cmd-snippet" onclick="copyText('blackbox autopsy', this)" title="Click to copy CLI command">
-                    <span class="cmd-text">blackbox autopsy</span>
-                    <span class="cmd-copy-hint">[COPY]</span>
-                  </div>
-                  <div class="card-metrics">
-                    <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
-                    <div class="term-metric"><span class="metric-key">TURNAROUND:</span> <span class="metric-val">1-TURN REPAIR</span></div>
-                    <div class="term-metric"><span class="metric-key">TRAPS:</span> <span class="metric-val">FAIL-CLOSED</span></div>
-                  </div>
-                  <div class="card-actions">
-                    <a href="https://github.com/openOODA/blackbox" target="_blank" rel="noopener noreferrer" class="term-btn">
                       [ REPO &#8599; ]
                     </a>
                   </div>
