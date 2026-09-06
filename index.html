@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>openOODA // Capability-Secure Systems Language [EST. 1982]</title>
+    <title>openOODA // Sovereign Systems Language for the AI Era</title>
     <meta
       name="description"
-      content="openOODA is a capability-secure systems language where every effect requires an explicit, unforgeable capability token [EST. 1982]. Hardware first, zero ambient authority."
+      content="openOODA is a capability-secure systems language where every effect requires an explicit, unforgeable capability token. Hardware first, zero ambient authority."
     />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
 
     <style>
       /* ==========================================================================
-         1982 TERMINAL DESIGN SYSTEM (PURE MONOSPACE // ZERO MAC/APPLE FLUFF)
+         1982 TERMINAL WORKSTATION DESIGN (PURE MONOSPACE // ZERO MAC/APPLE FLUFF)
          ========================================================================== */
       :root {
         --bg-deep: #070a0f;
@@ -378,7 +378,7 @@
         color: #04100c;
       }
 
-      /* 4 Core Architectural Tenets */
+      /* 4 Core Architectural Principles */
       .terminal-tenets-bar {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
@@ -842,7 +842,7 @@
         <div class="terminal-meta">
           <span class="meta-item">TYPE-SYSTEM: FAIL-CLOSED</span>
           <span class="meta-item">KERNEL: BARE-METAL</span>
-          <span class="meta-item">STATUS: ACTIVE [1982]</span>
+          <span class="meta-item">STATUS: ACTIVE [v2.10.3]</span>
         </div>
       </div>
     </header>
@@ -854,7 +854,7 @@
           <!-- Terminal Title Bar -->
           <div class="window-titlebar">
             <span class="term-status-badge">[TERM: tty1]</span>
-            <span class="window-title">sys@openooda:~# cat /etc/openooda/manifest [release 1982-2026]</span>
+            <span class="window-title">sys@openooda:~# ooda context openOODA</span>
             <span class="term-status-online">[SYS_OK]</span>
           </div>
 
@@ -864,7 +864,7 @@
             <section class="terminal-hero">
               <pre class="ascii-banner" aria-hidden="true">
 ========================================================================
- OPENOODA // CAPABILITY-SECURE SYSTEMS LANGUAGE SUBSTRATE
+ OPENOODA // SOVEREIGN SYSTEMS LANGUAGE FOR THE AI ERA
 ========================================================================</pre>
 
               <h1 class="terminal-title">Fail-Closed by Design</h1>
@@ -918,15 +918,15 @@
                 <div class="tenet-item">
                   <span class="tenet-num">01</span>
                   <div class="tenet-text">
-                    <strong>Capability Tokens</strong>
-                    <span>14 unforgeable tokens (&amp;NetCap, &amp;FsCap, &amp;ProcCap). Not env vars or ToS clauses. E_CAP is fatal.</span>
+                    <strong>Capability Security</strong>
+                    <span>14 language tokens (&amp;NetCap, &amp;FsReadCap, &amp;ProcessCap, etc.) + 26 substrate capabilities. E_CAP is fatal.</span>
                   </div>
                 </div>
                 <div class="tenet-item">
                   <span class="tenet-num">02</span>
                   <div class="tenet-text">
                     <strong>First Principles</strong>
-                    <span>Hardware first. IEEE 754, not folklore. Subtract drag. Compiler is substrate; repos are siblings.</span>
+                    <span>Hardware first. IEEE 754, not folklore. Subtract drag. Compiler is substrate; repos are siblings, not a monorepo.</span>
                   </div>
                 </div>
                 <div class="tenet-item">
@@ -988,7 +988,7 @@
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_01 // OPENOODA</span>
                   </div>
-                  <span class="term-badge">GOVERNANCE // v1.0.20</span>
+                  <span class="term-badge">GOVERNANCE // v2.10.3</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
@@ -998,8 +998,8 @@
                   <p class="card-desc">
                     The governance substrate. Contains process boards, RFCs, and the 23 immutable laws. Agent front door is ANCHOR.oo. Governance edits never rebuild the compiler.
                   </p>
-                  <div class="saver-cmd-snippet" onclick="copyText('cat /etc/openooda/laws', this)" title="Click to copy CLI command">
-                    <span class="cmd-text">cat /etc/openooda/laws</span>
+                  <div class="saver-cmd-snippet" onclick="copyText('git clone https://github.com/openOODA/openOODA.git', this)" title="Click to copy clone command">
+                    <span class="cmd-text">git clone https://github.com/openOODA/openOODA.git</span>
                     <span class="cmd-copy-hint">[COPY]</span>
                   </div>
                   <div class="card-metrics">
@@ -1022,7 +1022,7 @@
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_02 // OODAR</span>
                   </div>
-                  <span class="term-badge term-badge-amber">TACTICAL // v4.0.0</span>
+                  <span class="term-badge term-badge-amber">TACTICAL // v4.0.5</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
@@ -1030,16 +1030,16 @@
                     <span class="card-role-tag">Gen 1 Silicon Host</span>
                   </div>
                   <p class="card-desc">
-                    Silicon runtime host written in pure C. Handles process boots, raw capability token verification, and zero-heap signal trapping on an alternate execution stack.
+                    Gen 1 C host runtime substrate. ABI = set of oo_* symbols. Handles process boots, raw capability token verification, and zero-heap signal trapping on an alternate execution stack.
                   </p>
-                  <div class="saver-cmd-snippet" onclick="copyText('oodar --version', this)" title="Click to copy CLI command">
-                    <span class="cmd-text">oodar --version</span>
+                  <div class="saver-cmd-snippet" onclick="copyText('git clone https://github.com/openOODA/oodar.git', this)" title="Click to copy clone command">
+                    <span class="cmd-text">git clone https://github.com/openOODA/oodar.git</span>
                     <span class="cmd-copy-hint">[COPY]</span>
                   </div>
                   <div class="card-metrics">
                     <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">PHYSICS</span></div>
                     <div class="term-metric"><span class="metric-key">GEN:</span> <span class="metric-val">1 (SILICON)</span></div>
-                    <div class="term-metric"><span class="metric-key">LANG:</span> <span class="metric-val">PURE C</span></div>
+                    <div class="term-metric"><span class="metric-key">ABI:</span> <span class="metric-val">oo_* SYMBOLS</span></div>
                   </div>
                   <div class="card-actions">
                     <a href="https://github.com/openOODA/oodar" target="_blank" rel="noopener noreferrer" class="term-btn">
@@ -1056,15 +1056,15 @@
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_03 // OODAC</span>
                   </div>
-                  <span class="term-badge term-badge-amber">TACTICAL // v0.2.2</span>
+                  <span class="term-badge term-badge-amber">TACTICAL // v0.2.8</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
                     <h2 class="card-title">oodac</h2>
-                    <span class="card-role-tag">Compiler Backend</span>
+                    <span class="card-role-tag">Self-Hosting Compiler</span>
                   </div>
                   <p class="card-desc">
-                    The optimizing compiler. Everything else borrows it. Implements lex, ast, check, and emit passes. Enforces that effectful functions take token references or fail compilation.
+                    Sovereign self-hosting compiler. Root ANCHOR.oo re-exports six surfaces: lex, ast, check, types, emit/c, and cli. Enforces capability proof on all effectful routines.
                   </p>
                   <div class="saver-cmd-snippet" onclick="copyText('oodac check main.oo', this)" title="Click to copy CLI command">
                     <span class="cmd-text">oodac check main.oo</span>
@@ -1073,7 +1073,7 @@
                   <div class="card-metrics">
                     <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">PHYSICS</span></div>
                     <div class="term-metric"><span class="metric-key">GEN:</span> <span class="metric-val">2 (COMPILER)</span></div>
-                    <div class="term-metric"><span class="metric-key">PASSES:</span> <span class="metric-val">4 LOCKED</span></div>
+                    <div class="term-metric"><span class="metric-key">SURFACES:</span> <span class="metric-val">6 SURFACES</span></div>
                   </div>
                   <div class="card-actions">
                     <a href="https://github.com/openOODA/oodac" target="_blank" rel="noopener noreferrer" class="term-btn">
@@ -1090,15 +1090,15 @@
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_04 // STD</span>
                   </div>
-                  <span class="term-badge term-badge-amber">TACTICAL // v1.0.8</span>
+                  <span class="term-badge term-badge-amber">TACTICAL // v1.0.11</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
                     <h2 class="card-title">std</h2>
-                    <span class="card-role-tag">Capability Standard Library</span>
+                    <span class="card-role-tag">Standard Library (8 Domains)</span>
                   </div>
                   <p class="card-desc">
-                    The standard library. Zero ambient authority. Every routine interacting with filesystem, network, or OS requires an explicit capability token passed from caller.
+                    Standard library across 8 domains (math, science, AI, encoding, ...). Zero ambient authority. Every routine interacting with filesystem or network requires an explicit token.
                   </p>
                   <div class="saver-cmd-snippet" onclick="copyText('ooda test std/test', this)" title="Click to copy CLI command">
                     <span class="cmd-text">ooda test std/test</span>
@@ -1106,7 +1106,7 @@
                   </div>
                   <div class="card-metrics">
                     <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">PHYSICS</span></div>
-                    <div class="term-metric"><span class="metric-key">TOKENS:</span> <span class="metric-val">14 ENFORCED</span></div>
+                    <div class="term-metric"><span class="metric-key">DOMAINS:</span> <span class="metric-val">8 CORE DOMAINS</span></div>
                     <div class="term-metric"><span class="metric-key">E_CAP:</span> <span class="metric-val">FATAL</span></div>
                   </div>
                   <div class="card-actions">
@@ -1124,7 +1124,7 @@
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_05 // OODA</span>
                   </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.2.7</span>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.2.16</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
@@ -1158,15 +1158,15 @@
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_06 // INSTALL</span>
                   </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.1.6</span>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.1.26</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
                     <h2 class="card-title">install</h2>
-                    <span class="card-role-tag">Packaging &amp; Bootstrap</span>
+                    <span class="card-role-tag">Toolchain Packaging</span>
                   </div>
                   <p class="card-desc">
-                    How bits land on a machine. Automated packaging and installation pipelines for apt (Debian/Ubuntu), dnf (Fedora/RHEL), and pacman (Arch). Practical bootstrap.
+                    How the toolchain lands on a machine: install.sh, apt, dnf, pacman. Auto-detects installed LLM harnesses and wires ooda-mcp, ooda-lsp, and blackbox mcp.
                   </p>
                   <div class="saver-cmd-snippet" onclick="copyText('curl -fsSL https://openooda.org/install.sh | bash', this)" title="Click to copy CLI command">
                     <span class="cmd-text">curl -fsSL https://openooda.org/install.sh | bash</span>
@@ -1175,7 +1175,7 @@
                   <div class="card-metrics">
                     <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
                     <div class="term-metric"><span class="metric-key">TARGETS:</span> <span class="metric-val">APT/DNF/PACMAN</span></div>
-                    <div class="term-metric"><span class="metric-key">PIPELINE:</span> <span class="metric-val">NATIVE SH</span></div>
+                    <div class="term-metric"><span class="metric-key">WIRING:</span> <span class="metric-val">IDEMPOTENT MCP</span></div>
                   </div>
                   <div class="card-actions">
                     <a href="https://github.com/openOODA/install" target="_blank" rel="noopener noreferrer" class="term-btn">
@@ -1192,7 +1192,7 @@
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_07 // OPM</span>
                   </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.8.8</span>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.8.15</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
@@ -1226,12 +1226,12 @@
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_08 // CATALOG</span>
                   </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.0.1</span>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.0.6</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
                     <h2 class="card-title">catalog</h2>
-                    <span class="card-role-tag">Public Package Index</span>
+                    <span class="card-role-tag">Public Package Catalog</span>
                   </div>
                   <p class="card-desc">
                     The decentralized public package registry. No corporate accounts, no telemetry tracking. Git-native verified signatures and deterministic package hashing.
@@ -1260,7 +1260,7 @@
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_09 // LSP</span>
                   </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.6.12</span>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.6.21</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
@@ -1276,7 +1276,7 @@
                   </div>
                   <div class="card-metrics">
                     <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
-                    <div class="term-metric"><span class="metric-key">CLIENTS:</span> <span class="metric-val">VS CODE / NVIM</span></div>
+                    <div class="term-metric"><span class="metric-key">CLIENTS:</span> <span class="metric-val">VS CODE / NVIM / ZED</span></div>
                     <div class="term-metric"><span class="metric-key">LATENCY:</span> <span class="metric-val">&lt;5MS</span></div>
                   </div>
                   <div class="card-actions">
@@ -1294,7 +1294,7 @@
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_10 // MCP</span>
                   </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.6.10</span>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.6.22</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
@@ -1311,7 +1311,7 @@
                   <div class="card-metrics">
                     <div class="term-metric"><span class="metric-key">LAYER:</span> <span class="metric-val">LOGISTICS</span></div>
                     <div class="term-metric"><span class="metric-key">PROTOCOL:</span> <span class="metric-val">JSON-RPC / MCP</span></div>
-                    <div class="term-metric"><span class="metric-key">SECURITY:</span> <span class="metric-val">SANDBOXED</span></div>
+                    <div class="term-metric"><span class="metric-key">HARNESSES:</span> <span class="metric-val">AGY, CLAUDE, CURSOR</span></div>
                   </div>
                   <div class="card-actions">
                     <a href="https://github.com/openOODA/mcp" target="_blank" rel="noopener noreferrer" class="term-btn">
@@ -1328,7 +1328,7 @@
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_11 // BLACKBOX</span>
                   </div>
-                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.1.0</span>
+                  <span class="term-badge term-badge-cyan">LOGISTICS // v0.0.3</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
@@ -1364,7 +1364,7 @@
     <footer class="terminal-footer">
       <div class="terminal-container footer-inner">
         <div>
-          <span>OPENOODA &copy; 1982-2026 // CAPABILITY-SECURE SYSTEMS ARCHITECTURE</span>
+          <span>OPENOODA &copy; 2026 // CAPABILITY-SECURE SYSTEMS ARCHITECTURE</span>
         </div>
         <div class="footer-links">
           <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">[ GITHUB ]</a>
@@ -1408,7 +1408,8 @@
       }
 
       console.log(
-        "%c[OPENOODA // 1982 TERMINAL ACTIVE]\n%cCapability-Secure Systems Substrate | 11 Product Nodes Mounted",
+        "%c[OPENOODA // TERMINAL ACTIVE]
+%cCapability-Secure Systems Substrate | 11 Product Nodes Mounted",
         "color: #34d399; font-weight: bold;",
         "color: #94a3b8;"
       );
