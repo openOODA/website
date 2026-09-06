@@ -1384,7 +1384,7 @@
         if (callback) callback();
       }
 
-      // Rotating headline sequence (30-second cycle)
+      // Rotating headline sequence (5-second random cycle)
       const HEADLINES = [
         "Fail-Closed by Design",
         "Zero Ambient Authority",
@@ -1399,12 +1399,19 @@
 
       function rotateHeadline() {
         if (!titleEl) return;
-        const nextIdx = (currentHeadlineIdx + 1) % HEADLINES.length;
-        const targetText = HEADLINES[nextIdx];
+
+        // Randomly select a different statement
+        let nextIdx;
+        do {
+          nextIdx = Math.floor(Math.random() * HEADLINES.length);
+        } while (nextIdx === currentHeadlineIdx && HEADLINES.length > 1);
+
         currentHeadlineIdx = nextIdx;
+        const targetText = HEADLINES[nextIdx];
 
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           titleEl.textContent = targetText;
+          setTimeout(rotateHeadline, 5000);
           return;
         }
 
@@ -1423,13 +1430,14 @@
                 charIdx++;
               } else {
                 clearInterval(typeInterval);
+                setTimeout(rotateHeadline, 5000);
               }
             }, 35);
           }
         }, 20);
       }
 
-      setInterval(rotateHeadline, 30000);
+      setTimeout(rotateHeadline, 5000);
 
       console.log(
         "%c[OPENOODA // TERMINAL ACTIVE]\\n%cCapability-Secure Systems Substrate | 11 Product Nodes Mounted",
