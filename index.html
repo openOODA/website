@@ -312,11 +312,19 @@
         font-family: var(--font-mono);
         font-size: 0.74rem;
         font-weight: 700;
-        padding: 6px 12px;
+        padding: 6px 14px;
         min-height: 36px;
+        height: 36px;
+        width: 156px;
+        min-width: 156px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        box-sizing: border-box;
         cursor: pointer;
         border-radius: 0;
-        transition: all 0.1s ease;
+        transition: border-color 0.1s ease, background 0.1s ease, color 0.1s ease;
         white-space: nowrap;
         flex-shrink: 0;
       }
@@ -609,6 +617,9 @@
         letter-spacing: 0.05em;
         text-transform: uppercase;
         flex-shrink: 0;
+        min-width: 75px;
+        text-align: right;
+        display: inline-block;
       }
 
       .card-metrics {
@@ -815,20 +826,6 @@
                   class="term-btn term-btn-amber"
                 >
                   [ ECOSYSTEM: UBERMETROID &#8599; ]
-                </a>
-                <a
-                  href="https://idlescreen.github.io"
-                  class="term-btn term-btn-secondary"
-                >
-                  [ IDLESCREEN &#8599; ]
-                </a>
-                <a
-                  href="https://github.com/openOODA/openOODA/tree/main/rfcs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="term-btn term-btn-secondary"
-                >
-                  [ RFC ARCHIVE &#8599; ]
                 </a>
               </div>
 
@@ -1297,7 +1294,6 @@
         <div class="footer-links">
           <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">[ GITHUB ]</a>
           <a href="https://UberMetroid.github.io">[ UBERMETROID ]</a>
-          <a href="https://idlescreen.github.io">[ IDLESCREEN ]</a>
           <a href="https://openooda.org/install.sh">[ INSTALL SCRIPT ]</a>
         </div>
       </div>
@@ -1308,8 +1304,8 @@
       function copySnippet(elementId, btn) {
         const el = document.getElementById(elementId);
         if (!el) return;
-        const text = el.innerText || el.textContent;
-        navigator.clipboard.writeText(text.trim()).then(() => {
+        const text = (el.innerText || el.textContent || "").trim();
+        const showFeedback = () => {
           const original = btn.innerText;
           btn.innerText = "[ COPIED! ]";
           btn.style.borderColor = "var(--color-green)";
@@ -1317,11 +1313,18 @@
             btn.innerText = original;
             btn.style.borderColor = "";
           }, 1800);
-        });
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(showFeedback).catch(() => {
+            execCommandCopy(text, showFeedback);
+          });
+        } else {
+          execCommandCopy(text, showFeedback);
+        }
       }
 
       function copyText(text, btn) {
-        navigator.clipboard.writeText(text.trim()).then(() => {
+        const showFeedback = () => {
           const hint = btn.querySelector(".cmd-copy-hint");
           if (hint) {
             const orig = hint.innerText;
@@ -1332,7 +1335,29 @@
               hint.style.color = "";
             }, 1800);
           }
-        });
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text.trim()).then(showFeedback).catch(() => {
+            execCommandCopy(text.trim(), showFeedback);
+          });
+        } else {
+          execCommandCopy(text.trim(), showFeedback);
+        }
+      }
+
+      function execCommandCopy(str, callback) {
+        const ta = document.createElement("textarea");
+        ta.value = str;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try {
+          document.execCommand("copy");
+        } catch (e) {}
+        document.body.removeChild(ta);
+        if (callback) callback();
       }
 
       // Rotating headline sequence (30-second cycle)
