@@ -722,6 +722,266 @@
       }
 
       /* ==========================================================================
+         3-STEP QUICKSTART WORKFLOW
+         ========================================================================== */
+      .terminal-quickstart {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+        gap: 14px;
+        margin-bottom: 28px;
+      }
+
+      .quickstart-step {
+        background: #090e18;
+        border: var(--border-subtle);
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .step-badge {
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: var(--color-amber);
+        letter-spacing: 0.06em;
+      }
+
+      .step-cmd {
+        background: #040810;
+        border: 1px solid #1e293b;
+        padding: 8px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: 0.76rem;
+        color: var(--color-green);
+        transition: border-color 0.1s ease;
+      }
+
+      .step-cmd:hover {
+        border-color: var(--color-green);
+      }
+
+      .step-cmd code {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .step-desc {
+        font-size: 0.74rem;
+        color: var(--text-secondary);
+        line-height: 1.4;
+      }
+
+      .step-desc code {
+        color: var(--color-cyan);
+        background: rgba(34, 211, 238, 0.08);
+        padding: 1px 4px;
+      }
+
+      /* ==========================================================================
+         ANATOMY OF A CAPABILITY DEMO
+         ========================================================================== */
+      .capability-demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .demo-pane {
+        background: #080d16;
+        border: var(--border-subtle);
+        padding: 16px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        overflow: hidden;
+      }
+
+      .demo-pane-term {
+        background: #04070d;
+        border-color: #1e293b;
+      }
+
+      .demo-pane-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px dashed #1e293b;
+        padding-bottom: 8px;
+      }
+
+      .pane-title {
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: var(--color-cyan);
+        letter-spacing: 0.06em;
+      }
+
+      .pane-tag {
+        font-size: 0.66rem;
+        color: var(--text-muted);
+        border: 1px solid #1e293b;
+        padding: 1px 6px;
+      }
+
+      .pane-tag-fatal {
+        color: #f87171;
+        border-color: #7f1d1d;
+        background: rgba(239, 68, 68, 0.1);
+      }
+
+      .code-block, .diag-block {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        line-height: 1.55;
+        overflow-x: auto;
+        max-width: 100%;
+        color: #e2e8f0;
+      }
+
+      .code-comment { color: #64748b; font-style: italic; }
+      .code-kw { color: var(--color-amber); font-weight: 700; }
+      .code-fn { color: #93c5fd; }
+      .code-cap { color: var(--color-green); font-weight: 700; }
+      .code-type { color: var(--color-cyan); }
+      .code-str { color: #86efac; }
+      .code-err { color: #f87171; text-decoration: underline wavy #ef4444; }
+
+      .diag-err { color: #ef4444; font-weight: 700; }
+      .diag-loc { color: var(--color-cyan); }
+      .diag-dim { color: #475569; }
+      .diag-caret { color: #ef4444; font-weight: 700; }
+      .diag-info { color: #93c5fd; }
+      .diag-help { color: var(--color-green); font-weight: 700; }
+      .diag-code { color: var(--color-amber); font-weight: 600; }
+
+      /* ==========================================================================
+         14 CAPABILITY TOKENS REFERENCE MATRIX
+         ========================================================================== */
+      .caps-matrix-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .cap-group {
+        background: #090e18;
+        border: var(--border-subtle);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .cap-group-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px dashed #1e293b;
+        padding-bottom: 6px;
+      }
+
+      .cap-group-name {
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: var(--color-cyan);
+        letter-spacing: 0.06em;
+      }
+
+      .cap-group-count {
+        font-size: 0.66rem;
+        color: var(--color-amber);
+        font-weight: 600;
+      }
+
+      .cap-table {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .cap-row {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 6px 8px;
+        background: #05080f;
+        border: 1px solid #131d2e;
+      }
+
+      .cap-token {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--color-green);
+      }
+
+      .cap-scope {
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+        line-height: 1.35;
+      }
+
+      .cap-scope code {
+        color: #94a3b8;
+        background: rgba(148, 163, 184, 0.1);
+        padding: 0 3px;
+        font-size: 0.70rem;
+      }
+
+      /* ==========================================================================
+         REPOSITORY LAYER FILTER BAR
+         ========================================================================== */
+      .repo-filter-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .filter-label {
+        font-size: 0.74rem;
+        color: var(--text-muted);
+        letter-spacing: 0.06em;
+        font-weight: 700;
+      }
+
+      .filter-btn {
+        background: var(--bg-btn);
+        border: var(--border-accent);
+        color: var(--text-secondary);
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        font-weight: 600;
+        padding: 6px 12px;
+        cursor: pointer;
+        border-radius: 0;
+        transition: all 0.1s ease;
+      }
+
+      .filter-btn:hover {
+        color: var(--color-green);
+        border-color: var(--color-green);
+      }
+
+      .filter-btn.active {
+        color: #04100c;
+        background: var(--color-green);
+        border-color: var(--color-green);
+        font-weight: 700;
+      }
+
+      /* ==========================================================================
          RESPONSIVENESS & ZERO OVERFLOW
          ========================================================================== */
       @media (max-width: 768px) {
@@ -859,6 +1119,34 @@
                 <button class="copy-action-btn" onclick="copySnippet('install-cmd', this)">[ COPY INSTALL ]</button>
               </div>
 
+              <!-- 3-Step Quickstart Developer Workflow -->
+              <div class="terminal-quickstart">
+                <div class="quickstart-step">
+                  <div class="step-badge">[ STEP 01: INIT ]</div>
+                  <div class="step-cmd" onclick="copyText('ooda init sentinel', this)" title="Click to copy CLI command">
+                    <code>ooda init sentinel</code>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="step-desc">Scaffolds <code>ANCHOR.oo</code> and zero-privilege capability manifest.</div>
+                </div>
+                <div class="quickstart-step">
+                  <div class="step-badge">[ STEP 02: PROVE ]</div>
+                  <div class="step-cmd" onclick="copyText('oodac check main.oo', this)" title="Click to copy CLI command">
+                    <code>oodac check main.oo</code>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="step-desc">Verifies unforgeable capability tokens and AST contracts in &lt;3ms.</div>
+                </div>
+                <div class="quickstart-step">
+                  <div class="step-badge">[ STEP 03: EMIT ]</div>
+                  <div class="step-cmd" onclick="copyText('ooda build --release', this)" title="Click to copy CLI command">
+                    <code>ooda build --release</code>
+                    <span class="cmd-copy-hint">[COPY]</span>
+                  </div>
+                  <div class="step-desc">Emits bare-metal binary linked to <code>oodar</code> C host substrate.</div>
+                </div>
+              </div>
+
               <!-- 4 Architectural Principles -->
               <div class="terminal-tenets-bar">
                 <div class="tenet-item">
@@ -891,6 +1179,134 @@
                 </div>
               </div>
             </section>
+
+            <!-- Anatomy of a Capability Section -->
+            <div class="terminal-divider">-- ANATOMY OF A CAPABILITY: COMPILE-TIME ENFORCEMENT --</div>
+            <div class="capability-demo-grid">
+              <!-- Code Comparison Pane -->
+              <div class="demo-pane">
+                <div class="demo-pane-header">
+                  <span class="pane-title">SOURCE: src/network.oo</span>
+                  <span class="pane-tag">[ TYPE SYSTEM ]</span>
+                </div>
+                <pre class="code-block"><span class="code-comment">// ❌ UNPRIVILEGED: Ambient authority does NOT exist</span>
+<span class="code-kw">pub fn</span> <span class="code-fn">fetch_weights</span>() {
+    <span class="code-err">http_get</span>(<span class="code-str">"https://openooda.org/model.bin"</span>);
+}
+
+<span class="code-comment">//  VERIFIED: Sealed effect requires explicit token</span>
+<span class="code-kw">pub fn</span> <span class="code-fn">fetch_weights</span>(net: <span class="code-cap">&amp;NetCap</span>) -&gt; <span class="code-type">Result</span>[<span class="code-type">Bytes</span>, <span class="code-type">Error</span>] {
+    http_get(net, <span class="code-str">"https://openooda.org/model.bin"</span>)
+}</pre>
+              </div>
+
+              <!-- Compiler Diagnostic Pane -->
+              <div class="demo-pane demo-pane-term">
+                <div class="demo-pane-header">
+                  <span class="pane-title">COMPILER DIAGNOSTIC: oodac check</span>
+                  <span class="pane-tag pane-tag-fatal">[ E_CAP: FATAL ]</span>
+                </div>
+                <pre class="diag-block"><span class="diag-err">error[E_CAP]</span>: sealed operation requires capability token
+  <span class="diag-loc">--&gt;</span> src/network.oo:3:5
+   <span class="diag-dim">|</span>
+ 3 <span class="diag-dim">|</span>     http_get(<span class="code-str">"https://openooda.org/model.bin"</span>);
+   <span class="diag-dim">|</span>     <span class="diag-caret">^^^^^^^^</span> <span class="diag-err">unprivileged network effect</span>
+   <span class="diag-dim">|</span>
+   <span class="diag-dim">=</span> <span class="diag-info">note</span>: process was born with zero ambient authority
+   <span class="diag-dim">=</span> <span class="diag-help">help</span>: add '<span class="code-cap">&amp;NetCap</span>' parameter:
+          <span class="diag-code">pub fn fetch_weights(net: &amp;NetCap)</span></pre>
+              </div>
+            </div>
+
+            <!-- 14 Capability Tokens Reference Matrix -->
+            <div class="terminal-divider">-- SUBSTRATE: 14 UNFORGEABLE CAPABILITY TOKENS --</div>
+            <div class="caps-matrix-grid">
+              <!-- Category 1: I/O & Network -->
+              <div class="cap-group">
+                <div class="cap-group-header">
+                  <span class="cap-group-name">I/O &amp; NETWORK</span>
+                  <span class="cap-group-count">[ 5 TOKENS ]</span>
+                </div>
+                <div class="cap-table">
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;NetCap</code>
+                    <span class="cap-scope">Raw sockets (<code>sock_raw</code>) &amp; network frames</span>
+                  </div>
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;HttpCap</code>
+                    <span class="cap-scope">Outbound HTTP/HTTPS client requests &amp; connection pools</span>
+                  </div>
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;TcpCap</code>
+                    <span class="cap-scope">Bi-directional TCP socket streams &amp; TLS handshakes</span>
+                  </div>
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;UdpCap</code>
+                    <span class="cap-scope">Datagram send/receive (<code>udp_recv</code>, <code>udp_send</code>)</span>
+                  </div>
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;BindCap</code>
+                    <span class="cap-scope">Inbound port binding (<code>tcp_bind</code>, <code>bind_udp</code>)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Category 2: Storage & Host -->
+              <div class="cap-group">
+                <div class="cap-group-header">
+                  <span class="cap-group-name">STORAGE &amp; HOST</span>
+                  <span class="cap-group-count">[ 4 TOKENS ]</span>
+                </div>
+                <div class="cap-table">
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;FsReadCap</code>
+                    <span class="cap-scope">Filesystem reads, directory traversal, file metadata</span>
+                  </div>
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;FsWriteCap</code>
+                    <span class="cap-scope">Filesystem writes, appends, truncations, unlinks</span>
+                  </div>
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;ProcessCap</code>
+                    <span class="cap-scope">Process spawning, fork/exec, signal dispatch</span>
+                  </div>
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;EnvCap</code>
+                    <span class="cap-scope">Host environment variable access &amp; locale queries</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Category 3: Silicon & System -->
+              <div class="cap-group">
+                <div class="cap-group-header">
+                  <span class="cap-group-name">SILICON &amp; SYSTEM</span>
+                  <span class="cap-group-count">[ 5 TOKENS ]</span>
+                </div>
+                <div class="cap-table">
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;TimeCap</code>
+                    <span class="cap-scope">Monotonic clock reads, epoch time, timer sleep</span>
+                  </div>
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;RandCap</code>
+                    <span class="cap-scope">Hardware entropy generator (CSPRNG, urandom)</span>
+                  </div>
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;AllocCap</code>
+                    <span class="cap-scope">Dynamic heap memory allocation &amp; slab arenas</span>
+                  </div>
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;GpuCap</code>
+                    <span class="cap-scope">Direct GPU silicon compute dispatch (HIP / ROCm)</span>
+                  </div>
+                  <div class="cap-row">
+                    <code class="cap-token">&amp;UnsafeFFICap</code>
+                    <span class="cap-scope">Foreign Function Interface barrier to unverified C</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <!-- 3-Layer Topology Architecture Section -->
             <div class="terminal-divider">-- ARCHITECTURE: 3-LAYER TOPOLOGY --</div>
@@ -929,9 +1345,18 @@
             <!-- Repository Showcase Grid -->
             <div class="terminal-divider">-- 11 REGISTERED PRODUCT REPOSITORIES --</div>
 
+            <!-- Repository Layer Filter Bar -->
+            <div class="repo-filter-bar">
+              <span class="filter-label">FILTER TIER:</span>
+              <button class="filter-btn active" onclick="filterRepos('all', this)">[ ALL (11) ]</button>
+              <button class="filter-btn" onclick="filterRepos('strategic', this)">[ STRATEGIC (1) ]</button>
+              <button class="filter-btn" onclick="filterRepos('operational', this)">[ OPERATIONAL (7) ]</button>
+              <button class="filter-btn" onclick="filterRepos('tactical', this)">[ TACTICAL (3) ]</button>
+            </div>
+
             <div class="gallery-grid">
               <!-- REPO 01: openOODA (Strategic) -->
-              <article class="term-card">
+              <article class="term-card" data-layer="strategic">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
@@ -965,7 +1390,7 @@
               </article>
 
               <!-- REPO 02: ooda (Operational) -->
-              <article class="term-card">
+              <article class="term-card" data-layer="operational">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
@@ -999,7 +1424,7 @@
               </article>
 
               <!-- REPO 03: install (Operational) -->
-              <article class="term-card">
+              <article class="term-card" data-layer="operational">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
@@ -1033,7 +1458,7 @@
               </article>
 
               <!-- REPO 04: opm (Operational) -->
-              <article class="term-card">
+              <article class="term-card" data-layer="operational">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
@@ -1067,7 +1492,7 @@
               </article>
 
               <!-- REPO 05: catalog (Operational) -->
-              <article class="term-card">
+              <article class="term-card" data-layer="operational">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
@@ -1101,7 +1526,7 @@
               </article>
 
               <!-- REPO 06: lsp (Operational) -->
-              <article class="term-card">
+              <article class="term-card" data-layer="operational">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
@@ -1135,7 +1560,7 @@
               </article>
 
               <!-- REPO 07: mcp (Operational) -->
-              <article class="term-card">
+              <article class="term-card" data-layer="operational">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
@@ -1169,7 +1594,7 @@
               </article>
 
               <!-- REPO 08: blackbox (Operational) -->
-              <article class="term-card">
+              <article class="term-card" data-layer="operational">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
@@ -1203,7 +1628,7 @@
               </article>
 
               <!-- REPO 09: oodac (Tactical) -->
-              <article class="term-card">
+              <article class="term-card" data-layer="tactical">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
@@ -1237,7 +1662,7 @@
               </article>
 
               <!-- REPO 10: oodar (Tactical) -->
-              <article class="term-card">
+              <article class="term-card" data-layer="tactical">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
@@ -1271,7 +1696,7 @@
               </article>
 
               <!-- REPO 11: std (Tactical) -->
-              <article class="term-card">
+              <article class="term-card" data-layer="tactical">
                 <div class="card-header">
                   <div class="card-node-info">
                     <span class="term-prompt">&gt;</span>
@@ -1382,6 +1807,22 @@
         } catch (e) {}
         document.body.removeChild(ta);
         if (callback) callback();
+      }
+
+      // Tier Filtering for 11 Repository Cards
+      function filterRepos(tier, btn) {
+        const buttons = document.querySelectorAll(".filter-btn");
+        buttons.forEach(b => b.classList.remove("active"));
+        if (btn) btn.classList.add("active");
+
+        const cards = document.querySelectorAll(".term-card");
+        cards.forEach(card => {
+          if (tier === "all" || card.getAttribute("data-layer") === tier) {
+            card.style.display = "";
+          } else {
+            card.style.display = "none";
+          }
+        });
       }
 
       // Rotating headline sequence (5-second random cycle)
