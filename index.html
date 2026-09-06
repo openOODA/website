@@ -250,6 +250,21 @@
         color: var(--text-primary);
         letter-spacing: -0.02em;
         margin-bottom: 12px;
+        min-height: 1.25em;
+        display: inline-block;
+      }
+
+      .term-cursor {
+        display: inline-block;
+        color: var(--color-green);
+        font-weight: 400;
+        animation: termBlink 1s infinite steps(1);
+        margin-left: 3px;
+      }
+
+      @keyframes termBlink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
       }
 
       .terminal-intro {
@@ -867,7 +882,7 @@
  OPENOODA // SOVEREIGN SYSTEMS LANGUAGE FOR THE AI ERA
 ========================================================================</pre>
 
-              <h1 class="terminal-title">Fail-Closed by Design</h1>
+              <h1 class="terminal-title"><span id="hero-title">Fail-Closed by Design</span><span class="term-cursor" aria-hidden="true">_</span></h1>
               <p class="terminal-intro">
                 openOODA is a capability-secure systems language where every effect requires an explicit, unforgeable capability token. Your process is born with no privileges. That is not an accident. That is the type system. A function that communicates over the network takes <code>&amp;NetCap</code> or it does not compile. <code>E_CAP</code> is not a warning. Hardware first, IEEE 754 precision, zero ambient authority.
               </p>
@@ -1406,6 +1421,53 @@
           }
         });
       }
+
+      // Rotating headline sequence (30-second cycle)
+      const HEADLINES = [
+        "Fail-Closed by Design",
+        "Zero Ambient Authority",
+        "Every Effect Needs a Token",
+        "Subtract Until Drag is Gone",
+        "Born With No Privileges",
+        "A Comparison, Not a Rename"
+      ];
+
+      let currentHeadlineIdx = 0;
+      const titleEl = document.getElementById("hero-title");
+
+      function rotateHeadline() {
+        if (!titleEl) return;
+        const nextIdx = (currentHeadlineIdx + 1) % HEADLINES.length;
+        const targetText = HEADLINES[nextIdx];
+        currentHeadlineIdx = nextIdx;
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          titleEl.textContent = targetText;
+          return;
+        }
+
+        let currentText = titleEl.textContent;
+        const backspaceInterval = setInterval(() => {
+          if (currentText.length > 0) {
+            currentText = currentText.slice(0, -1);
+            titleEl.textContent = currentText;
+          } else {
+            clearInterval(backspaceInterval);
+            let charIdx = 0;
+            const typeInterval = setInterval(() => {
+              if (charIdx < targetText.length) {
+                currentText += targetText[charIdx];
+                titleEl.textContent = currentText;
+                charIdx++;
+              } else {
+                clearInterval(typeInterval);
+              }
+            }, 35);
+          }
+        }, 20);
+      }
+
+      setInterval(rotateHeadline, 30000);
 
       console.log(
         "%c[OPENOODA // TERMINAL ACTIVE]\\n%cCapability-Secure Systems Substrate | 11 Product Nodes Mounted",
