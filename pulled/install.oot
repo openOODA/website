@@ -3,7 +3,7 @@ File: website/pulled/install.oot
 
 Source: openOODA/install/docs/
 
-How the toolchain lands on a machine. Tag v0.1.6.
+How the toolchain lands on a machine. Tag v0.1.26.
 Ships `install.sh` plus apt, dnf, and pacman recipes.
 winget is deferred.
 

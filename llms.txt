@@ -31,31 +31,31 @@ Start at `openOODA/ANCHOR.oo`. Then:
 
 To propose a change, copy `rfcs/0000-template.oot`.
 
-## 3. 13-repo polyrepo (tags 2026-09-04)
+## 3. 13-repo polyrepo (tags 2026-09-07)
 
 | Repo | Role | Tag |
 |------|------|-----|
-| openOODA | Governance: laws, RFCs, practices | v1.0.20 |
-| oodar | Gen 1 C host (`oo_*`, `gcc oodar.c`) | v4.0.0 |
-| oodac | Compiler (lex, parse, check, emit) | v0.2.2 |
-| std | Standard library, 8 domains | v1.0.8 |
-| ooda | Workflow driver (`ooda` binary) | v0.2.7 |
-| install | apt, dnf, pacman, install.sh | v0.1.6 |
-| opm | Package manager | v0.8.8 |
-| catalog | Public package list for `opm search` | v0.0.1 |
-| lsp | Language server | v0.6.12 |
-| mcp | MCP server, 22 tools | v0.6.10 |
-| blackbox | Operational Logistics: Agent-native execution flight recorder and crash autopsy engine | v0.1.0 |
-| website | This site | v1.2.10 |
+| openOODA | Governance: laws, RFCs, practices | v2.10.5 |
+| oodar | Gen 1 C host (`oo_*`, `gcc oodar.c`) | v4.0.7 |
+| oodac | Compiler (lex, parse, check, emit) | v0.2.11 |
+| std | Standard library, 8 domains | v1.0.11 |
+| ooda | Workflow driver (`ooda` binary) | v0.2.16 |
+| install | apt, dnf, pacman, install.sh | v0.1.26 |
+| opm | Package manager | v0.8.15 |
+| catalog | Public package list for `opm search` | v0.0.6 |
+| lsp | Language server | v0.6.21 |
+| mcp | MCP server, 23 tools | v0.6.22 |
+| blackbox | Operational Logistics: Agent-native execution flight recorder and crash autopsy engine | v0.0.3 |
+| website | This site | v1.2.28 |
 | .github | Org profile and shared workflows | — |
 
 Do not prefix another `openOODA/` segment onto paths in ANCHOR.oo.
 
-## 4. 14 capability tokens (NORTHSTAR §4.2)
+## 4. 20 capability tokens (NORTHSTAR §4.2)
 
-`FsReadCap` `FsWriteCap` `NetCap` `TcpCap` `UdpCap` `SysCap`
-`ProcessCap` `EnvCap` `TimeCap` `RandCap` `AllocCap` `ThreadCap`
-`GpuCap` `FfiCap`.
+`FsReadCap` `FsWriteCap` `FsCap` `NetCap` `TcpCap` `UdpCap` `BindCap`
+`SysCap` `ProcessCap` `EnvCap` `TimeCap` `RandCap` `AllocCap` `ArenaCap`
+`ThreadCap` `GpuCap` `FfiCap` `SignCap` `MetricsCap` `CompilerReadCap`.
 
 Pass a borrowed token (`&FsReadCap`). Missing token fails compile
 (`E_CAP`) or exits `ERR\tcap\t...`. Zero ambient authority.

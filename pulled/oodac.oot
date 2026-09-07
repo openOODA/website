@@ -5,9 +5,8 @@ Source: openOODA/oodac/docs/
 
 ## What it is
 
-The sovereign compiler. Tag v0.2.2. `VERSION` declares
-`api_surface=12`. Lexer, parser, Merkle AST, typecheck,
-capability check, and emit.
+The sovereign compiler. Tag v0.2.11. Lexer, parser,
+typecheck, capability check, and emit-c / emit-llvm.
 
 Backends: ELF64 (x86_64 and AArch64), WebAssembly, C99
 (links oodar), LLVM IR, GPU (HIP/PTX/Metal/SPIR-V).

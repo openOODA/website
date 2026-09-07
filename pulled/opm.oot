@@ -5,7 +5,7 @@ Source: openOODA/opm/docs/
 
 ## What it is
 
-The openOODA package manager. Tag v0.8.8. Packages are
+The openOODA package manager. Tag v0.8.15. Packages are
 content-addressed. Each package declares the caps it needs.
 `add` refuses extra caps. That is the unique move.
 

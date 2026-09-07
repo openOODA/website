@@ -1,32 +1,31 @@
 # TRUTH DRIFT — Stale versions, deleted boards, wrong counts
 File: website/audit/truth-drift.oot
 
-Verdict: PASS on the public copy after the 2026-09-04 repair.
-Previous FAIL (deleted ALLCAPS boards, JSON pulls, `cli` card,
-stale tags) is closed.
+Verdict: PASS after the 2026-09-07 tag sync to local git
+describe. Previous FAIL (stale 2026-09-04 tags) is closed.
 
 ## 1. llms.txt
 
 Public LLM manual at `/llms.txt`. Read order matches
 `openOODA/ANCHOR.oo`. The 13-board ALLCAPS set is named only
-as deleted. 12-repo table uses substratum order and tags
-dated 2026-09-04.
+as deleted. 13-repo table uses substratum order and tags
+dated 2026-09-07.
 
-## 2. pulled/*.oot vs git tags (2026-09-04)
+## 2. pulled/*.oot vs git tags (2026-09-07)
 
 | Route | Tagline | Disk tag |
 |-------|---------|----------|
-| openOODA | v1.0.20, 13 repos | v1.0.20 |
-| oodar | v4.0.0 | v4.0.0 |
-| oodac | v0.2.2, 12 subdirs | v0.2.2 |
-| std | v1.0.8, 188 ANCHOR.oo | v1.0.8 |
-| ooda | v0.2.7, 13 commands | v0.2.7 |
-| install | v0.1.6 | v0.1.6 |
-| opm | v0.8.8 | v0.8.8 |
-| catalog | v0.0.1 | v0.0.1 |
-| lsp | v0.6.12 | v0.6.12 |
-| mcp | v0.6.10, 22 tools | v0.6.10 |
-| blackbox | v0.1.0, flight recorder | v0.1.0 |
+| openOODA | v2.10.5, 13 repos | v2.10.5 |
+| oodar | v4.0.7 | v4.0.7 |
+| oodac | v0.2.11 | v0.2.11 |
+| std | v1.0.11, 188 ANCHOR.oo | v1.0.11 |
+| ooda | v0.2.16, 13 commands | v0.2.16 |
+| install | v0.1.26 | v0.1.26 |
+| opm | v0.8.15 | v0.8.15 |
+| catalog | v0.0.6 | v0.0.6 |
+| lsp | v0.6.21 | v0.6.21 |
+| mcp | v0.6.22, 23 tools | v0.6.22 |
+| blackbox | v0.0.3, flight recorder | v0.0.3 |
 
 website and .github are not sidebar routes. Home lists the
 eleven product repos. Cache query is `?v=20260904l`.

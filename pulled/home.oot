@@ -12,7 +12,7 @@ Then we make those attempts fail closed.
 
 ## Caps
 
-Fourteen tokens. Unforgeable. Not environment
+Twenty tokens. Unforgeable. Not environment
 variables. Not a terms-of-service clause.
 A function that talks to the network takes
 `&NetCap` or it does not compile. `E_CAP` is
