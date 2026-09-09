@@ -75,6 +75,11 @@ Practices evolve. RULES and accepted RFCs do not.
 curl -fsSL https://openooda.org/install.sh | bash
 ```
 
+`install/VERSION` is the single exception to the no-VERSION-file
+rule (`RULES.oot §1.24`): the install tarball cannot reach git
+history at install time, so `install.sh:1093` reads the version
+from this file. The file matches the hand-pushed `v0.1.x` tag.
+
 ## 7. Cross references
 
 - Front door: `openOODA/ANCHOR.oo`
