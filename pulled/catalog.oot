@@ -34,6 +34,8 @@ Stock packages:
 |------|---------|------|
 | hello | 0.1.0 | FsRead |
 | echo | 0.1.0 | FsRead |
+| caps | 0.1.0 | FsRead |
+| sqlite | 0.1.0 | — |
 
 Index lines are `name|version|caps|deps|sha256`. Each child
 folder holds `manifest` plus the payload named in `payload=`.
