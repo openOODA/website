@@ -5,5 +5,53 @@ on:
     branches: [main]
 
 jobs:
+  blackbox-gate:
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout website
+        uses: actions/checkout@v4
+        with:
+          path: website
+      - name: install openOODA toolchain
+        run: |
+          set -euo pipefail
+          curl -fsSL https://openooda.org/install.sh | bash
+          echo "$HOME/.openooda/bin" >> "$GITHUB_PATH"
+      - name: blackbox double-run on pulled/*.oot (website)
+        working-directory: ${{ github.workspace }}/website
+        env:
+          OODA_FS_READDIR: ${{ github.workspace }}
+          OODA_FS_WRITEDIR: ${{ github.workspace }}
+          OODA_NO_JAIL: '1'
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          count=0
+          for f in pulled/*.oot; do
+            test -f "$f" || continue
+            count=$((count + 1))
+            base=$(basename "$f" .oot)
+            ~/.openooda/bin/blackbox trace "$f" > "/tmp/${base}.trace1" 2>&1 || {
+              echo "[blackbox-gate FAIL] trace non-zero exit on $f"
+              exit 1
+            }
+            ~/.openooda/bin/blackbox trace "$f" > "/tmp/${base}.trace2" 2>&1 || {
+              echo "[blackbox-gate FAIL] second trace non-zero exit on $f"
+              exit 1
+            }
+            if ! diff -q "/tmp/${base}.trace1" "/tmp/${base}.trace2" >/dev/null; then
+              echo "[blackbox-gate FAIL] non-deterministic trace on $f"
+              diff "/tmp/${base}.trace1" "/tmp/${base}.trace2" | head -20
+              exit 1
+            fi
+          done
+          if [ "$count" -eq 0 ]; then
+            echo "[blackbox-gate SKIP] no pulled/*.oot in this repo"
+            exit 0
+          fi
+          echo "[blackbox-gate OK] $count pulled pages deterministic across double-run"
+
   auto-release:
+    needs: [blackbox-gate]
     uses: openOODA/openOODA/.github/workflows/auto-release.yml@main
