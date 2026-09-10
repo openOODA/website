@@ -5,7 +5,7 @@ Source: openOODA/std/docs/
 
 ## What it is
 
-The library you import. Tag v1.0.11. Eight functional domains.
+The library you import. Tag v1.0.29. Eight functional domains.
 Each domain has its own `ANCHOR.oo`. Counted on 2026-09-09:
 187 `ANCHOR.oo` front doors, 5876 `.oo` files (5 `.oot` process
 boards). The count is per tag; the prior figures ("188 / 5813"

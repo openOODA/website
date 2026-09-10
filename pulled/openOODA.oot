@@ -13,24 +13,24 @@ practices/ANCHOR.oo.
 
 ## Surface
 
-Thirteen repos. Git tags as of 2026-09-07.
+Thirteen repos. Git tags as of 2026-09-10.
 Nav lists the eleven product repos in this order. website and
 .github are not nav routes.
 
 | Repo | Role | Tag |
 |------|------|-----|
-| openOODA | Laws, RFCs, practices | v2.10.5 |
-| oodar | Gen 1 C host | v4.0.7 |
-| oodac | Compiler | v0.2.11 |
-| std | Standard library | v1.0.11 |
-| ooda | `ooda` driver | v0.2.16 |
-| install | apt, dnf, pacman | v0.1.26 |
-| opm | Package manager | v0.8.15 |
-| catalog | Public package list | v0.0.6 |
-| lsp | Language server | v0.6.21 |
-| mcp | MCP server | v0.6.22 |
-| blackbox | Operational Logistics: Flight recorder & autopsy | v0.0.3 |
-| website | openooda.org | v1.2.28 |
+| openOODA | Laws, RFCs, practices | v2.10.27 |
+| oodar | Gen 1 C host | v4.0.24 |
+| oodac | Compiler | v0.2.44 |
+| std | Standard library | v1.0.29 |
+| ooda | `ooda` driver | v0.2.27 |
+| install | apt, dnf, pacman | v0.1.30 |
+| opm | Package manager | v0.8.17 |
+| catalog | Public package list | v0.0.13 |
+| lsp | Language server | v0.6.28 |
+| mcp | MCP server | v0.6.28 |
+| blackbox | Operational Logistics: Flight recorder & autopsy | v0.0.11 |
+| website | openooda.org | v1.2.36 |
 | .github | Org profile | — |
 
 ## Architecture: 3-Layer Topology

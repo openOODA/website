@@ -5,7 +5,7 @@ Source: openOODA/ooda/docs/
 
 ## What it is
 
-The `ooda` binary. Tag v0.2.16. It compiles, runs, tests, and
+The `ooda` binary. Tag v0.2.27. It compiles, runs, tests, and
 formats `.oo` files. It spawns `opm`, `lsp`, and `mcp` as
 separate packages. It does not contain the compiler.
 

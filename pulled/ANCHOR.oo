@@ -18,7 +18,7 @@
 //   8. opm.oot       — package manager live commands.
 //   9. catalog.oot   — public package list for opm search/add.
 //  10. lsp.oot       — advertised LSP methods.
-//  11. mcp.oot       — 23 tools from mcp/docs/TOOLS.oot.
+//  11. mcp.oot       — 26 tools from mcp/docs/TOOLS.oot.
 //  12. blackbox.oot  — telemetry and crash autopsy for agents.
 
 import "home.oot";
