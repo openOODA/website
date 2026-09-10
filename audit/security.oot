@@ -4,6 +4,7 @@ File: website/audit/security.oot
 Verdict: PASS on stored HTML injection and reduced motion
 after the 2026-09-04 repair. Residual: email collect origin
 and the install.sh pipe.
+Refreshed 2026-09-10: same verdict at the structural level.
 
 ## 1. simpleMarkdown (Red 4)
 

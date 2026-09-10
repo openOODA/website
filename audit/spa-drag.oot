@@ -4,6 +4,9 @@ File: website/audit/spa-drag.oot
 Verdict: PASS on the two-homepage lie after the 2026-09-04
 repair. The dogfight remains by product choice. It is split
 to files at most 256 lines.
+Refreshed 2026-09-10: same verdict. index.html stays at
+1890 lines; the 256-line cap exception now applies
+(see file-law.oot:25).
 
 ## 1. Homepage
 

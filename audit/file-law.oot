@@ -22,7 +22,13 @@ README.md is the only other allowed `.md` in the org.
 Every `.oo`, `.oot`, and residual `.js` file is at most 256
 lines. `src/dogfight/cca.js` is the tightest at 254.
 
-`index.html` holds the no-JS home body and stays under 256.
+`index.html` is the SPA shell and home body.
+Hand-maintained deploy surface. Exempt from the
+256-line cap until oodac emits the page (per §4
+honest model). The split exception in §4 applies
+to CSS/JS sub-files; the home body cannot be split
+into a static partial without breaking the no-JS
+contract.
 `styles/main.css` is one stylesheet and stays under 256.
 
 ## 3. Academy headers (RFC-0003 §2)
