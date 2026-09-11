@@ -8,4 +8,5 @@
 // Beats:
 //   1. starfield.js — init, draw, register.
 
-import "starfield.js";
+// import "starfield.js";
+

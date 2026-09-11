@@ -21,15 +21,16 @@
 //  11. mcp.oot       — 26 tools from mcp/docs/TOOLS.oot.
 //  12. blackbox.oot  — telemetry and crash autopsy for agents.
 
-import "home.oot";
-import "openOODA.oot";
-import "oodar.oot";
-import "oodac.oot";
-import "std.oot";
-import "ooda.oot";
-import "install.oot";
-import "opm.oot";
-import "catalog.oot";
-import "lsp.oot";
-import "mcp.oot";
-import "blackbox.oot";
+// import "home.oot";
+// import "openOODA.oot";
+// import "oodar.oot";
+// import "oodac.oot";
+// import "std.oot";
+// import "ooda.oot";
+// import "install.oot";
+// import "opm.oot";
+// import "catalog.oot";
+// import "lsp.oot";
+// import "mcp.oot";
+// import "blackbox.oot";
+

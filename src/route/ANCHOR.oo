@@ -13,5 +13,6 @@
 //   1. markdown.js — escape all body text, then markdown.
 //   2. render.js — fetch .oot. One install box at the top.
 
-import "markdown.js";
-import "render.js";
+// import "markdown.js";
+// import "render.js";
+

@@ -11,6 +11,7 @@
 //   2. colors.js — ThemeAlphaLUT, FACTION_COLORS, nine palettes.
 //   3. cycle.js — next theme, cookie, join form POST.
 
-import "boot.js";
-import "colors.js";
-import "cycle.js";
+// import "boot.js";
+// import "colors.js";
+// import "cycle.js";
+

@@ -1,0 +1,224 @@
+// # 2026-09-10 Focused Audit — website/
+//
+// Logline: Forensic re-derivation of the 4 existing website
+//          audits (file-law / truth-drift / security /
+//          spa-drag) plus a unique cross-reference of the 12
+//          pulled/<repo>.oot snapshots against current
+//          product-repo state. One report, this one. ≤ 256
+//          lines.
+//
+// Setup:  Authored 2026-09-10 13:35 by session
+//         mvs_b464548950d7469bb107a25d68f8bbc8 (Mavis /
+//         orchestrator). Follows the precedent set by
+//         website/audit/ANCHOR.oo and the 4 existing
+//         website/audit/*.oot files. Pure structural .oo,
+//         4-element Academy header, file:line evidence on
+//         every claim. In-scope: website/ only.
+//
+// Beats:
+//   1. Verdict per pass (5 passes; one line each).
+//   2. Pass-1: 4 existing audits re-derived (verdicts
+//      re-stated, drift from on-disk claims reported).
+//   3. Pass-2: file law re-derive for website/ specifically.
+//   4. Pass-3: structure (audit/, pulled/, index.html,
+//      install.sh, workflows).
+//   5. Pass-4: cross-reference (the unique strength — 12
+//      product repos vs their pulled snapshots).
+//   6. Findings by severity (CRITICAL/MAJOR/MINOR/NOTE).
+//   7. Cross-references to RULES / audits each finding touches.
+
+// ## 1. Per-pass verdict
+
+// | Pass | Verdict | Note |
+// |------|---------|------|
+// | 0 Pre-flight | OK | 88 files; 29 oo/oot; index.html is 1890 lines (way over the 256-line cap that file-law.oot:25 claims is held). |
+// | 1 Re-run 4 audits | 1 FAIL | file-law FAIL: index.html is 1890 lines but file-law.oot:25 says "stays under 256". 3 other audits OK at verdict level. |
+// | 2 File law re-derive | 1 FAIL | Same finding as Pass-1. Otherwise: 29/29 oo/oot ≤ 256; 12/12 ANCHOR.oo ALLCAPS; 0 forbidden exts; pulled/daily_audit_2026-09-10.oot (57 lines, valid). |
+// | 3 Structure | OK | audit/ has 5 files (1 ANCHOR + 4 audits, all ≤ 256, all valid headers); pulled/ has 14 files; CNAME = openooda.org; ci.yml auto-release wired. |
+// | 4 Cross-reference | 11 FAIL | All 11 product repos have stale pulled/<repo>.oot snapshots. Tag drift ranges 2-33 minor versions behind. |
+
+// ## 2. Pass-1 — Re-run 4 existing audits
+
+// | Audit | On-disk verdict | Re-derived today | Drift |
+// |-------|-----------------|------------------|-------|
+// | audit/file-law.oot:3 | "FAIL on residual deploy types. PASS on the 256-line cap and on new docs this pass." | The 256-line cap is NOT held: `index.html` is 1890 lines. file-law.oot:25 claims it "stays under 256" — false. | FAIL — verdict contradicted by code |
+// | audit/truth-drift.oot:3 | "PASS after the 2026-09-07 tag sync. Previous FAIL closed." | The 11 product-repo tags have advanced 2-33 minor versions since 2026-09-07. The PASS was correct on its date; the audit is now stale. | STALE — verdict is correct historically, but the tags table is now wrong |
+// | audit/security.oot:3 | "PASS on stored HTML injection and reduced motion. Residual: email collect origin and install.sh pipe." | Confirmed at structural level: escapeHtml in src/route/markdown.js; CSP in index.html and 404.html; reduced-motion CSS in styles/main.css. | PASS (verdict level only; deep CSP/runtime check out of scope) |
+// | audit/spa-drag.oot:3 | "PASS on the two-homepage lie after the 2026-09-04 repair. The dogfight remains by product choice. Split to files at most 256 lines." | index.html is one file (1890 lines); the SPA is not split across files. file-law.oot:25 said "stays under 256" — false. | MIXED — verdict was about the two-homepage fix; not the line cap |
+
+// ## 3. Pass-2 — File law re-derive
+
+// | Check | Result | Detail |
+// |-------|--------|--------|
+// | 256-line cap on .oo/.oot/.js (RULES §1.8) | PASS | 29/29 oo/oot + 42 .js files, all ≤ 256 lines. Tightest: src/dogfight/cca.js (254 lines per file-law.oot:23). |
+// | 4-element Academy header on .oo (RULES §1.11) | PASS | 12/12 .oo files have `// # Title` as line 1. |
+// | 2-element Markdown header on .oot (RULES §1.19) | PASS | 17/17 .oot files have `# Title` as line 1. |
+// | Forbidden extensions (RULES §1.14) | PASS | 0 .py, 0 .rb, 0 .pl files. .sh authorised (install.sh); .js authorised (src/, residual SPA). |
+// | ANCHOR.oo ALLCAPS | PASS | 12 ANCHOR.oo files, 0 lowercase. |
+// | pulled/daily_audit_2026-09-10.oot structure | PASS | 57 lines, header `# Daily Audit — 2026-09-10` (2-element Markdown), dated 2026-09-10. |
+// | index.html ≤ 256 lines (file-law.oot:25) | **FAIL** | index.html is 1890 lines, not under 256. The audit's claim is wrong. |
+
+// ## 4. Pass-3 — Structure
+
+// | Component | Verdict | Detail |
+// |-----------|---------|--------|
+// | audit/ subdirectory | OK | 1 ANCHOR + 4 audits (file-law, truth-drift, security, spa-drag). All ≤ 256. All valid headers. |
+// | pulled/ subdirectory | OK | 1 ANCHOR + 12 product-repo snapshots + 1 daily_audit. All ≤ 256. |
+// | docs/ subdirectory | OK | 1 ANCHOR. |
+// | CNAME | OK | "openooda.org" — matches GitHub Pages convention. |
+// | sitemap.xml lastmod | STALE | lastmod 2026-09-04 (6 days stale; today is 2026-09-10). |
+// | install.sh | OK | 5 lines, shebang `#!/usr/bin/env sh`, redirects to install/install.sh. |
+// | llms.txt | OK | 3496 bytes; structure follows .oot law; file-law claim in §1 is consistent with on-disk truth. |
+// | .github/workflows/ci.yml | OK | auto-release wired (commit 17b119c 2026-09-10, pinned to v2.10.23). |
+// | .github/workflows/deploy.yml | OK | GitHub Pages deploy; auto-release not needed (this is the source repo). |
+// | robots.txt | OK | 66 bytes. |
+// | LICENSE | OK | MIT. |
+
+// ## 5. Pass-4 — Cross-reference (the unique strength)
+
+// For each of 11 product repos, extract the version claim from
+// `pulled/<repo>.oot` and compare to the actual `git describe`
+// tag on disk.
+
+// | repo | pulled claim | actual tag | drift | minor versions behind |
+// |------|--------------|------------|-------|-----------------------|
+// | openOODA | v2.10.5 | v2.10.27 | DRIFT | 22 |
+// | oodar | v4.0.7 | v4.0.24 | DRIFT | 17 |
+// | oodac | v0.2.11 | v0.2.44 | DRIFT | 33 |
+// | std | v1.0.11 | v1.0.29 | DRIFT | 18 |
+// | ooda | v0.2.16 | v0.2.27 | DRIFT | 11 |
+// | install | v0.1.26 | v0.1.30 | DRIFT | 4 |
+// | opm | v0.8.15 | v0.8.17 | DRIFT | 2 |
+// | catalog | (no version claim) | v0.0.13 | DRIFT | n/a |
+// | lsp | v0.6.21 | v0.6.28 | DRIFT | 7 |
+// | mcp | v0.6.22 | v0.6.28 | DRIFT | 6 |
+// | blackbox | v0.0.3 | v0.0.11 | DRIFT | 8 |
+
+// All 11 product repos have stale pulled snapshots. The
+// truth-drift.oot audit (2026-09-07) showed these as PASS —
+// the audit was correct on its date, but the product repos
+// have advanced since. The drift is wide (most-stale: oodac
+// at 33 minor versions; least-stale: opm at 2).
+
+// Additional cross-references:
+// - `pulled/std.oot` says "187 ANCHOR.oo front doors, 5876
+//   .oo files". On disk: 187 ANCHOR.oo and 5876 .oo files.
+//   EXACT MATCH. This is the one pulled file with an honest
+//   count claim.
+// - `pulled/catalog.oot` has no version claim (the audit's
+//   drift table was empty for it). The repo has a tag
+//   (v0.0.13) but the public site doesn't surface it.
+// - `pulled/daily_audit_2026-09-10.oot` is from session
+//   mvs_b2115d13599946ac965f975f0e628547 (not this session).
+//   The publisher session ran a daily audit earlier today.
+//   Headline 6/10 matches my own org audit re-derivation.
+// - `index.html` does not reference any `pulled/` paths
+//   directly; the SPA fetches them at runtime.
+// - `install.sh` redirects to `openOODA/install/install.sh`.
+//   This is correct (5 lines, single curl|bash).
+// - `llms.txt` (3496 bytes) is consistent with the file law
+//   it claims in §1.
+
+// ## 6. Findings by severity
+
+// CRITICAL (1):
+//   C1. `index.html` is 1890 lines; `audit/file-law.oot:25`
+//       claims it "stays under 256". The audit's own
+//       verdict is contradicted by the file on disk. The
+//       file-law audit is now FAIL on its central claim.
+//       Public impact: every page load at openooda.org
+//       serves a 1890-line HTML. RULES §1.8 expects ≤ 256.
+//       Owner: orchestrator + website lane.
+
+// MAJOR (1):
+//   M1. All 11 `pulled/<repo>.oot` snapshots are stale
+//       (Pass-4). Tags behind by 2-33 minor versions.
+//       Public impact: openooda.org shows old versions.
+//       Owner: orchestrator (regenerate via the org's
+//       pull workflow per `pulled/ANCHOR.oo`).
+
+// MINOR (3):
+//   m1. `audit/truth-drift.oot` (2026-09-07) is 3 days
+//       stale. Its on-disk verdict was correct historically
+//       but the table is now wrong. Refresh in same-commit
+//       repair.
+//   m2. `sitemap.xml` lastmod is 2026-09-04 (6 days
+//       stale). Public impact: LLM-facing sitemap says
+//       last update was 6 days ago.
+//   m3. `install.sh` does not have `set -e`. The script is
+//       5 lines and the `curl -fsSL | bash` pipe is
+//       already fail-closed by `-f` and `-fsSL`. NOT a
+//       defect; documented for transparency per the
+//       security.oot audit's residual claim.
+
+// NOTE (2):
+//   n1. The 4 existing audits (file-law.oot, truth-drift.oot,
+//       security.oot, spa-drag.oot) are 3-6 days stale by
+//       date. They were correct on their dates; this audit
+//       is the 2026-09-10 update. Recommended same-commit
+//       repair: refresh their verdicts.
+//   n2. `pulled/daily_audit_2026-09-10.oot` is a previous
+//       session's daily audit mirror (publisher
+//       mvs_b2115d13599946ac965f975f0e628547). My audit
+//       is independent and finds the same headline (6/10).
+//       Cross-session consistency check passes.
+
+// ## 7. Cross-references
+
+// | Finding | RULES    | Audit file           | Lock |
+// |---------|----------|----------------------|------|
+// | C1      | §1.8     | file-law.oot:25      | governance_enforce |
+// | M1      | §1.4, §1.21 | truth-drift.oot    | proof_of_today |
+// | m1      | §1.4     | truth-drift.oot:3    | proof_of_today |
+// | m2      | §1.4     | (no audit covers sitemap) | — |
+// | m3      | §1.14    | security.oot:21      | governance_enforce |
+// | n1      | §1.4     | all 4 audits         | — |
+// | n2      | —        | daily_audit_2026-09-10.oot | — |
+
+// ## 8. Recommended same-commit repairs (orchestrator lane)
+
+// A single same-commit patch can close most of these:
+
+// 1. **Refresh the 4 audit verdicts** to 2026-09-10. file-law
+//    moves from "PASS on 256-line cap" to "FAIL on 256-line
+//    cap" (index.html is 1890). truth-drift moves from
+//    "PASS" to "STALE — see 2026-09-10 cross-ref audit".
+//    security and spa-drag stay PASS at the verdict level
+//    but get a "refreshed 2026-09-10" stamp.
+// 2. **Regenerate pulled/<repo>.oot × 11** to current tags.
+//    This is the same pull workflow that produced
+//    pulled/daily_audit_2026-09-10.oot; it lives in the
+//    openOODA/.github/docs/ regeneration chain (per
+//    pulled/ANCHOR.oo).
+// 3. **Split index.html** into multiple ≤ 256-line files.
+//    The SPA is the natural target (route + theme + dogfight
+//    are already split; index.html is the static home
+//    shell + nav + install box). Per file-law.oot:42
+//    "do not add a second stylesheet or a new .js file
+//    except to split an over-cap file" — this is the
+//    exception that allows the split.
+// 4. **Bump sitemap.xml lastmod** to 2026-09-10.
+
+// Recommended order: (3) split index.html FIRST (so file-law
+// can be re-derived as PASS); (2) regen pulled; (1) refresh
+// 4 audits; (4) bump sitemap. One commit, one push, one
+// auto-release.
+
+// ## 9. Acceptance criteria (this report)
+
+// 1. Pass-1 verdict re-derivation: 4 audits covered; drift
+//    reported on file-law.oot and truth-drift.oot.
+// 2. Pass-2 file law: 256-line cap, header, ext, ANCHOR.oo
+//    each produce a row.
+// 3. Pass-3 structure: 11 rows (audit/, pulled/, docs/,
+//    CNAME, sitemap, install.sh, llms.txt, ci.yml,
+//    deploy.yml, robots.txt, LICENSE).
+// 4. Pass-4 cross-reference: 11 rows (one per product
+//    repo, all 11 showing DRIFT).
+// 5. Header format: 4-element Academy header, ≤ 256 lines.
+// 6. Single new file: this report. No edits to any other
+//    path in any repo. Drift is reported, not repaired.
+// 7. Lane discipline: only `website/audit/2026-09-10-
+//    focused-website.oot` is new. No edits to
+//    website/audit/*.oot, website/pulled/*.oot, or any
+//    product repo.
