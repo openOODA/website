@@ -1,6 +1,6 @@
 // # sky/ — Starfield
 //
-// Logline: Theme-colored stars behind the dogfight.
+// Logline: Theme-colored starfield.
 //
 // Setup: Creates #sky canvas. CanvasLifecycleManager honors
 //        prefers-reduced-motion.

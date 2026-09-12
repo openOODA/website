@@ -1,7 +1,7 @@
 // # openOODA Website — Anchor for Agents
 //
 // Logline: Public site at openooda.org. Shell in HTML. Repo docs
-//          in pulled/*.oot fill #content. Dogfight is split JS.
+//          fill #content via route/.
 //
 // Setup: GitHub Pages, no build. New docs are .oo/.oot.
 //        Browser residual is .js under src/, each <= 256 lines.
@@ -9,14 +9,10 @@
 // Beats:
 //   1. index.html — shell, nav, static home body, script list.
 //   2. 404.html — static not-found. data-page=404 skips router.
-//   3. pulled/home.oot — default route. Source:
-//      openOODA/.github/docs/. Product pages cite
-//      openOODA/<repo>/docs/.
-//   4. docs/ANCHOR.oo — RFC-0005 package manual for this repo.
-//   5. src/ — theme, route, dogfight, sky.
-//   6. styles/, llms.txt, audit/ — chrome, LLM manual, audit.
+//   3. docs/ANCHOR.oo — RFC-0005 package manual for this repo.
+//   4. src/ — theme, route, sky.
+//   5. styles/, llms.txt, audit/ — chrome, LLM manual, audit.
 
 import "audit/ANCHOR.oo";
 import "docs/ANCHOR.oo";
 import "src/ANCHOR.oo";
-import "pulled/ANCHOR.oo";

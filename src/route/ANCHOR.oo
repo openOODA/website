@@ -1,12 +1,10 @@
 // # route/ — Hash router
 //
-// Logline: Fill #content from pulled/{repo}.oot. Repos own the copy.
+// Logline: Fill #content from each repo's docs/. Repos own the copy.
 //
-// Setup: Default route is home (Source: .github/docs/).
-//        Product routes, substratum first: openOODA, oodar,
-//        oodac, std, ooda, install, opm, catalog, lsp, mcp,
-//        blackbox.
-//        #packaging aliases to #install for one release.
+// Setup: Default route is home. Product routes, substratum first:
+//        openOODA, oodar, oodac, std, ooda, install, opm, catalog,
+//        lsp, mcp, blackbox. #packaging aliases to #install.
 //        404.html skips this via data-page="404".
 //
 // Beats:

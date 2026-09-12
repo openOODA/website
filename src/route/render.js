@@ -1,6 +1,6 @@
 // # Router
 //
-// Logline: Fill #content from pulled/{repo}.oot.
+// Logline: Fill #content from each repo docs/.
 //
 var DEFAULT_ROUTE = "home";
 var VALID_ROUTES = {
@@ -96,7 +96,7 @@ function renderRoute(route) {
   } else {
     bindCopyButtons();
   }
-  fetch("/pulled/" + raw + ".oot").then(function (r) {
+  fetch("/docs/" + raw + ".oot").then(function (r) {
     if (!r.ok) throw new Error("HTTP " + r.status);
     return r.text();
   }).then(function (text) {

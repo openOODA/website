@@ -11,10 +11,10 @@ html[data-theme="laser"]{--bg:#18122b;--fg:#ff45a8;--muted:#b39ddb;--panel:#251b
 html{background:var(--bg);color:var(--fg);height:100%;box-sizing:border-box;}
 *,*:before,*:after{box-sizing:inherit;}
 body{margin:0;min-height:100vh;display:flex;flex-direction:column;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:16px;line-height:1.55;}
-#sky,#dogfight-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:0;}
-#dogfight-canvas{display:block;opacity:0.75;image-rendering:pixelated;}
+#sky,#sky-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:0;}
+#sky-canvas{display:block;opacity:0.75;image-rendering:pixelated;}
 header,.wrap{position:relative;z-index:1;background:transparent;}.col,main,aside{background:transparent;}
-@media (prefers-reduced-motion:reduce){#sky,#dogfight-canvas{display:none;}}
+@media (prefers-reduced-motion:reduce){#sky,#sky-canvas{display:none;}}
 header{position:sticky;top:0;z-index:10;background:var(--bg);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0.75rem 1.25rem;padding:0.85rem 1.25rem;border-bottom:2px solid var(--fg);}
 .brand-row{display:flex;align-items:center;gap:0.65rem;}
 .brand{font-weight:600;letter-spacing:normal;color:var(--fg);background:transparent;padding:0;text-decoration:none;white-space:nowrap;font-size:1rem;}

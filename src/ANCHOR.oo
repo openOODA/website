@@ -1,6 +1,6 @@
 // # src/ — Website scripts
 //
-// Logline: Split SPA and dogfight. Each .js file is <= 256 lines.
+// Logline: Split SPA into theme, route, sky. Each .js file is <= 256 lines.
 //          Browser residual: GitHub Pages still serves .js.
 //
 // Setup: index.html loads boot.js in <head>, then defer scripts
@@ -9,13 +9,11 @@
 //
 // Beats:
 //   1. theme/ — boot, palettes, cycle. System monospace. No Google.
-//   2. route/ — parse pulled/*.oot into #content.
-//   3. dogfight/ — specs, OODA, physics, weapons, rAF loop.
-//   4. sky/ — starfield. Honors prefers-reduced-motion.
-//   5. life.js — tab-hidden rAF gate.
-//   6. main.js — boot: route, gen bar, initGlobalDogfight.
+//   2. route/ — fill #content from each repo's own docs/.
+//   3. sky/ — starfield. Honors prefers-reduced-motion.
+//   4. life.js — tab-hidden rAF gate.
+//   5. main.js — boot: route, gen bar.
 
 import "theme/ANCHOR.oo";
 import "route/ANCHOR.oo";
-import "dogfight/ANCHOR.oo";
 import "sky/ANCHOR.oo";

@@ -1,14 +1,13 @@
 // # website/docs — Package Manual
 //
-// Logline: RFC-0005 docs for the website repo. The public pages
-//          live in pulled/. Each page cites a sibling docs/.
+// Logline: RFC-0005 docs for the website repo. Each page cites a
+//          sibling docs/.
 //
-// Setup: No caps. Default route home cites
-//        openOODA/.github/docs/. Product routes cite
-//        openOODA/<repo>/docs/. Do not cite a repo root.
+// Setup: No caps. Default route home cites openOODA/.github/docs/.
+//        Product routes cite openOODA/<repo>/docs/. Do not cite a
+//        repo root.
 //
 // Beats:
-//   1. pulled/home.oot Source: openOODA/.github/docs/.
-//   2. Product pulled/*.oot Source: openOODA/<repo>/docs/.
-//   3. website and .github have no sidebar route. Brand is
-//      home.
+//   1. home cites openOODA/.github/docs/.
+//   2. Product pages cite openOODA/<repo>/docs/.
+//   3. website and .github have no sidebar route. Brand is home.

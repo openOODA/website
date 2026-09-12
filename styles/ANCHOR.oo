@@ -13,7 +13,7 @@
 //         tokyo, laser)
 //      b) layout (header, sidebar, main, footer)
 //      c) the install box (.install, .install-cmd, .copy)
-//      d) the gen bar (Gen 1-7 toggle buttons)
-//      e) the dogfight canvas + sky starfield
+//      d) the gen bar (Layer 1-4 toggle buttons)
+//      e) the sky canvas and starfield
 //      f) the license badge animation
 //      g) the responsive breakpoints (max-width 800px, 480px)
