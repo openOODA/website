@@ -31,22 +31,22 @@ Start at `openOODA/ANCHOR.oo`. Then:
 
 To propose a change, copy `rfcs/0000-template.oot`.
 
-## 3. 13-repo polyrepo (tags 2026-09-07)
+## 3. 13-repo polyrepo (tags 2026-09-12)
 
 | Repo | Role | Tag |
 |------|------|-----|
-| openOODA | Governance: laws, RFCs, practices | v2.10.5 |
-| oodar | Gen 1 C host (`oo_*`, `gcc oodar.c`) | v4.0.7 |
-| oodac | Compiler (lex, parse, check, emit) | v0.2.11 |
-| std | Standard library, 8 domains | v1.0.11 |
-| ooda | Workflow driver (`ooda` binary) | v0.2.16 |
-| install | apt, dnf, pacman, install.sh | v0.1.26 |
-| opm | Package manager | v0.8.15 |
-| catalog | Public package list for `opm search` | v0.0.6 |
-| lsp | Language server | v0.6.21 |
-| mcp | MCP server, 23 tools | v0.6.22 |
-| blackbox | Operational Logistics: Agent-native execution flight recorder and crash autopsy engine | v0.0.3 |
-| website | This site | v1.2.28 |
+| openOODA | Governance: laws, RFCs, practices | v2.10.35 |
+| oodar | C host substrate (`oo_*`, `gcc oodar.c`) | v4.0.29 |
+| oodac | Compiler (lex, parse, check, emit) | v0.2.53 |
+| std | Standard library, 8 domains | v1.0.41 |
+| ooda | Workflow driver (`ooda` binary) | v0.2.29 |
+| install | apt, dnf, pacman, install.sh | v0.1.30 |
+| opm | Package manager | v0.8.17 |
+| catalog | Public package list for `opm search` | v0.0.15 |
+| lsp | Language server | v0.6.32 |
+| mcp | MCP server, 23 tools | v0.6.30 |
+| blackbox | Operational Logistics: Agent-native execution flight recorder and crash autopsy engine | v0.0.14 |
+| website | This site | v1.2.39 |
 | .github | Org profile and shared workflows | — |
 
 Do not prefix another `openOODA/` segment onto paths in ANCHOR.oo.
