@@ -1139,8 +1139,8 @@
                 </div>
                 <div class="quickstart-step">
                   <div class="step-badge">[ STEP 03: EMIT ]</div>
-                  <div class="step-cmd" onclick="copyText('ooda build --release', this)" title="Click to copy CLI command">
-                    <code>ooda build --release</code>
+                  <div class="step-cmd" onclick="copyText('ooda build', this)" title="Click to copy CLI command">
+                    <code>ooda build</code>
                     <span class="cmd-copy-hint">[COPY]</span>
                   </div>
                   <div class="step-desc">Emits bare-metal binary linked to <code>oodar</code> C host substrate.</div>
@@ -1195,7 +1195,8 @@
 }
 
 <span class="code-comment">//  VERIFIED: Sealed effect requires explicit token</span>
-<span class="code-kw">pub fn</span> <span class="code-fn">fetch_weights</span>(net: <span class="code-cap">&amp;NetCap</span>) -&gt; <span class="code-type">Result</span>[<span class="code-type">Bytes</span>, <span class="code-type">Error</span>] {
+<span class="code-kw">import</span> <span class="code-str">"std/net/http.oo"</span>;
+<span class="code-kw">pub fn</span> <span class="code-fn">fetch_weights</span>(net: <span class="code-cap">&amp;TcpCap</span>) -&gt; <span class="code-type">Result</span>[<span class="code-type">String</span>, <span class="code-type">Error</span>] {
     http_get(net, <span class="code-str">"https://openooda.org/model.bin"</span>)
 }</pre>
               </div>
@@ -1206,15 +1207,18 @@
                   <span class="pane-title">COMPILER DIAGNOSTIC: oodac check</span>
                   <span class="pane-tag pane-tag-fatal">[ E_CAP: FATAL ]</span>
                 </div>
-                <pre class="diag-block"><span class="diag-err">error[E_CAP]</span>: sealed operation requires capability token
+                <pre class="diag-block"><span class="diag-err">error[E_NAME]</span>: undefined identifier <span class="diag-code">http_get</span> — import <span class="diag-code">std/net/http.oo</span>
   <span class="diag-loc">--&gt;</span> src/network.oo:3:5
    <span class="diag-dim">|</span>
  3 <span class="diag-dim">|</span>     http_get(<span class="code-str">"https://openooda.org/model.bin"</span>);
-   <span class="diag-dim">|</span>     <span class="diag-caret">^^^^^^^^</span> <span class="diag-err">unprivileged network effect</span>
+   <span class="diag-dim">|</span>     <span class="diag-caret">^^^^^^^^</span> <span class="diag-err">did you forget `import "std/net/http.oo";`?</span>
    <span class="diag-dim">|</span>
-   <span class="diag-dim">=</span> <span class="diag-info">note</span>: process was born with zero ambient authority
-   <span class="diag-dim">=</span> <span class="diag-help">help</span>: add '<span class="code-cap">&amp;NetCap</span>' parameter:
-          <span class="diag-code">pub fn fetch_weights(net: &amp;NetCap)</span></pre>
+   <span class="diag-dim">=</span> <span class="diag-info">note</span>: sealed network ops live in the standard library, not the
+        language; the symbol itself must be imported first, then the
+        call still requires a cap token (E_CAP below).
+   <span class="diag-dim">=</span> <span class="diag-help">help</span>: import std and pass <span class="code-cap">&amp;TcpCap</span>:
+          <span class="diag-code">import "std/net/http.oo";
+   pub fn fetch_weights(net: &amp;TcpCap)</span></pre>
               </div>
             </div>
 
@@ -1230,7 +1234,7 @@
                 <div class="cap-table">
                   <div class="cap-row">
                     <code class="cap-token">&amp;NetCap</code>
-                    <span class="cap-scope">Raw sockets (<code>sock_raw</code>) &amp; network frames</span>
+                    <span class="cap-scope">Raw sockets (<code>sock_raw</code>) &amp; network frames. Broader than <code>&amp;TcpCap</code>; satisfies TCP-oriented caps via subtyping.</span>
                   </div>
                   <div class="cap-row">
                     <code class="cap-token">&amp;HttpCap</code>
@@ -1620,7 +1624,7 @@
                     <div class="term-metric"><span class="metric-key">TRAPS:</span> <span class="metric-val">FAIL-CLOSED</span></div>
                   </div>
                   <div class="card-actions">
-                    <a href="https://github.com/openOODA/blackbox" target="_blank" rel="noopener noreferrer" class="term-btn">
+                    <a href="https://github.com/openOODA/bb" target="_blank" rel="noopener noreferrer" class="term-btn">
                       [ REPO &#8599; ]
                     </a>
                   </div>
@@ -1634,7 +1638,7 @@
                     <span class="term-prompt">&gt;</span>
                     <span class="card-id">REPO_09 // OODAC</span>
                   </div>
-                  <span class="term-badge term-badge-amber">TACTICAL // v0.2.53</span>
+                  <span class="term-badge term-badge-amber">TACTICAL // v0.2.54</span>
                 </div>
                 <div class="card-body">
                   <div class="title-row">
@@ -1642,7 +1646,7 @@
                     <span class="card-role-tag">Self-Hosting Compiler</span>
                   </div>
                   <p class="card-desc">
-                    Sovereign self-hosting compiler. Root ANCHOR.oo re-exports six surfaces: lex, ast, check, types, emit/c, and cli. Enforces capability proof on all effectful routines.
+                    Sovereign self-hosting compiler with native LLVM backend. Root anchor.oo re-exports six surfaces: lex, ast, check, types, emit, and cli. Enforces capability proof on all effectful routines.
                   </p>
                   <div class="saver-cmd-snippet" onclick="copyText('oodac check main.oo', this)" title="Click to copy CLI command">
                     <span class="cmd-text">oodac check main.oo</span>

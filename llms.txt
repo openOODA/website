@@ -37,7 +37,7 @@ To propose a change, copy `rfcs/0000-template.oot`.
 |------|------|-----|
 | openOODA | Governance: laws, RFCs, practices | v2.10.35 |
 | oodar | C host substrate (`oo_*`, `gcc oodar.c`) | v4.0.29 |
-| oodac | Compiler (lex, parse, check, emit) | v0.2.53 |
+| oodac | Compiler (lex, parse, check, emit) | v0.2.54 |
 | std | Standard library, 8 domains | v1.0.41 |
 | ooda | Workflow driver (`ooda` binary) | v0.2.29 |
 | install | apt, dnf, pacman, install.sh | v0.1.30 |

@@ -9,10 +9,10 @@
 // Beats:
 //   1. index.html — shell, nav, static home body, script list.
 //   2. 404.html — static not-found. data-page=404 skips router.
-//   3. docs/ANCHOR.oo — RFC-0005 package manual for this repo.
+//   3. docs/anchor.oo — RFC-0005 package manual for this repo.
 //   4. src/ — theme, route, sky.
 //   5. styles/, llms.txt, audit/ — chrome, LLM manual, audit.
 
-import "audit/ANCHOR.oo";
-import "docs/ANCHOR.oo";
-import "src/ANCHOR.oo";
+import "audit/anchor.oo";
+import "docs/anchor.oo";
+import "src/anchor.oo";

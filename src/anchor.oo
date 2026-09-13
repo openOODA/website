@@ -14,6 +14,6 @@
 //   4. life.js — tab-hidden rAF gate.
 //   5. main.js — boot: route, gen bar.
 
-import "theme/ANCHOR.oo";
-import "route/ANCHOR.oo";
-import "sky/ANCHOR.oo";
+import "theme/anchor.oo";
+import "route/anchor.oo";
+import "sky/anchor.oo";

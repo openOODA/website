@@ -10,7 +10,7 @@
 // Setup:  Authored 2026-09-10 13:35 by session
 //         mvs_b464548950d7469bb107a25d68f8bbc8 (Mavis /
 //         orchestrator). Follows the precedent set by
-//         website/audit/ANCHOR.oo and the 4 existing
+//         website/audit/anchor.oo and the 4 existing
 //         website/audit/*.oot files. Pure structural .oo,
 //         4-element Academy header, file:line evidence on
 //         every claim. In-scope: website/ only.
@@ -33,7 +33,7 @@
 // |------|---------|------|
 // | 0 Pre-flight | OK | 88 files; 29 oo/oot; index.html is 1890 lines (way over the 256-line cap that file-law.oot:25 claims is held). |
 // | 1 Re-run 4 audits | 1 FAIL | file-law FAIL: index.html is 1890 lines but file-law.oot:25 says "stays under 256". 3 other audits OK at verdict level. |
-// | 2 File law re-derive | 1 FAIL | Same finding as Pass-1. Otherwise: 29/29 oo/oot ≤ 256; 12/12 ANCHOR.oo ALLCAPS; 0 forbidden exts; pulled/daily_audit_2026-09-10.oot (57 lines, valid). |
+// | 2 File law re-derive | 1 FAIL | Same finding as Pass-1. Otherwise: 29/29 oo/oot ≤ 256; 12/12 anchor.oo ALLCAPS; 0 forbidden exts; pulled/daily_audit_2026-09-10.oot (57 lines, valid). |
 // | 3 Structure | OK | audit/ has 5 files (1 ANCHOR + 4 audits, all ≤ 256, all valid headers); pulled/ has 14 files; CNAME = openooda.org; ci.yml auto-release wired. |
 // | 4 Cross-reference | 11 FAIL | All 11 product repos have stale pulled/<repo>.oot snapshots. Tag drift ranges 2-33 minor versions behind. |
 
@@ -54,7 +54,7 @@
 // | 4-element Academy header on .oo (RULES §1.11) | PASS | 12/12 .oo files have `// # Title` as line 1. |
 // | 2-element Markdown header on .oot (RULES §1.19) | PASS | 17/17 .oot files have `# Title` as line 1. |
 // | Forbidden extensions (RULES §1.14) | PASS | 0 .py, 0 .rb, 0 .pl files. .sh authorised (install.sh); .js authorised (src/, residual SPA). |
-// | ANCHOR.oo ALLCAPS | PASS | 12 ANCHOR.oo files, 0 lowercase. |
+// | anchor.oo ALLCAPS | PASS | 12 anchor.oo files, 0 lowercase. |
 // | pulled/daily_audit_2026-09-10.oot structure | PASS | 57 lines, header `# Daily Audit — 2026-09-10` (2-element Markdown), dated 2026-09-10. |
 // | index.html ≤ 256 lines (file-law.oot:25) | **FAIL** | index.html is 1890 lines, not under 256. The audit's claim is wrong. |
 
@@ -101,8 +101,8 @@
 // at 33 minor versions; least-stale: opm at 2).
 
 // Additional cross-references:
-// - `pulled/std.oot` says "187 ANCHOR.oo front doors, 5876
-//   .oo files". On disk: 187 ANCHOR.oo and 5876 .oo files.
+// - `pulled/std.oot` says "187 anchor.oo front doors, 5876
+//   .oo files". On disk: 187 anchor.oo and 5876 .oo files.
 //   EXACT MATCH. This is the one pulled file with an honest
 //   count claim.
 // - `pulled/catalog.oot` has no version claim (the audit's
@@ -135,7 +135,7 @@
 //       (Pass-4). Tags behind by 2-33 minor versions.
 //       Public impact: openooda.org shows old versions.
 //       Owner: orchestrator (regenerate via the org's
-//       pull workflow per `pulled/ANCHOR.oo`).
+//       pull workflow per `pulled/anchor.oo`).
 
 // MINOR (3):
 //   m1. `audit/truth-drift.oot` (2026-09-07) is 3 days
@@ -189,7 +189,7 @@
 //    This is the same pull workflow that produced
 //    pulled/daily_audit_2026-09-10.oot; it lives in the
 //    openOODA/.github/docs/ regeneration chain (per
-//    pulled/ANCHOR.oo).
+//    pulled/anchor.oo).
 // 3. **Split index.html** into multiple ≤ 256-line files.
 //    The SPA is the natural target (route + theme + dogfight
 //    are already split; index.html is the static home
@@ -208,7 +208,7 @@
 
 // 1. Pass-1 verdict re-derivation: 4 audits covered; drift
 //    reported on file-law.oot and truth-drift.oot.
-// 2. Pass-2 file law: 256-line cap, header, ext, ANCHOR.oo
+// 2. Pass-2 file law: 256-line cap, header, ext, anchor.oo
 //    each produce a row.
 // 3. Pass-3 structure: 11 rows (audit/, pulled/, docs/,
 //    CNAME, sitemap, install.sh, llms.txt, ci.yml,

@@ -10,7 +10,7 @@ the auto-pull workflow.
 ## 1. llms.txt
 
 Public LLM manual at `/llms.txt`. Read order matches
-`openOODA/ANCHOR.oo`. The 13-board ALLCAPS set is named only
+`openOODA/anchor.oo`. The 13-board ALLCAPS set is named only
 as deleted. 13-repo table uses substratum order and tags
 dated 2026-09-07.
 
@@ -21,7 +21,7 @@ dated 2026-09-07.
 | openOODA | v2.10.5, 13 repos | v2.10.5 |
 | oodar | v4.0.7 | v4.0.7 |
 | oodac | v0.2.11 | v0.2.11 |
-| std | v1.0.11, 188 ANCHOR.oo | v1.0.11 |
+| std | v1.0.11, 188 anchor.oo | v1.0.11 |
 | ooda | v0.2.16, 13 commands | v0.2.16 |
 | install | v0.1.26 | v0.1.26 |
 | opm | v0.8.15 | v0.8.15 |
@@ -32,9 +32,9 @@ dated 2026-09-07.
 
 website and .github are not sidebar routes. Home lists the
 eleven product repos. Cache query is `?v=20260904l`.
-Default route is `home` from `.github/docs/HOME.oot`.
+Default route is `home` from `.github/docs/home.oot`.
 Product pulled `Source:` lines are `openOODA/<repo>/docs/`.
-That directory has `docs/ANCHOR.oo` in the cited repo.
+That directory has `docs/anchor.oo` in the cited repo.
 
 ## 3. License
 

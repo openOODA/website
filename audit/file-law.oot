@@ -11,7 +11,7 @@ GitHub Pages must serve HTML, CSS, and JS. That residual is
 the deploy surface. New product docs in this repo are `.oot`.
 Do not add more `.js`, `.json`, or `.md`.
 
-`install.sh` is a third host script (RULES.oot §1.14 allows
+`install.sh` is a third host script (rules.oot §1.14 allows
 two). Keep the `/install.sh` URL. Do not grow the file.
 
 `README.md` is this repo's GitHub front door. Governance
@@ -34,8 +34,8 @@ contract.
 ## 3. Academy headers (RFC-0003 §2)
 
 Product `.oo` files use Title, Logline, Setup, Beats.
-Setup was restored on `assets/ANCHOR.oo`, `styles/ANCHOR.oo`,
-and `.github/workflows/ANCHOR.oo`. Residual `.js` files keep
+Setup was restored on `assets/anchor.oo`, `styles/anchor.oo`,
+and `.github/workflows/anchor.oo`. Residual `.js` files keep
 a short Title and Logline.
 
 ## 4. Honest model
