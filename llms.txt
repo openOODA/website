@@ -74,7 +74,12 @@ Practices evolve. RULES and accepted RFCs do not.
 
 ```
 curl -fsSL https://openooda.org/install.sh | bash
+ooda update
 ```
+
+`ooda update` compares sha256 of each installed binary to GitHub latest
+and downloads only stale assets. `--check` is read-only. `--bootstrap`
+re-runs install.sh. Do not treat `--version` strings as freshness.
 
 `install/VERSION` is the single exception to the no-VERSION-file
 rule (`RULES.oot §1.24`): the install tarball cannot reach git
