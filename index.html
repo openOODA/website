@@ -1408,7 +1408,7 @@
                     <span class="card-role-tag">Workflow CLI Driver</span>
                   </div>
                   <p class="card-desc">
-                    The binary you type. Bare `ooda` opens ooda-tui. Language verbs forward to `cli`. `ooda update` refreshes stale toolchain binaries by SHA-256 against GitHub latest — it does not re-run the installer.
+                    The binary you type. Bare `ooda` opens ooda-tui. Language verbs forward to `cli`. `ooda update` fetches only what drifted. SHA-256 vs GitHub latest. Not the installer.
                   </p>
                   <div class="saver-cmd-snippet" onclick="copyText('ooda build', this)" title="Click to copy CLI command">
                     <span class="cmd-text">ooda build</span>
@@ -1476,7 +1476,7 @@
                     <span class="card-role-tag">Toolchain Packaging</span>
                   </div>
                   <p class="card-desc">
-                    How the toolchain lands on a machine: install.sh, apt, dnf, pacman. First install via curl|bash. After that, `ooda update` fetches only stale GitHub assets (SHA-256). Auto-detects LLM harnesses and wires ooda-mcp, ooda-lsp, and blackbox mcp.
+                    How the toolchain lands on a machine: install.sh, apt, dnf, pacman. First install via curl|bash. After that, `ooda update` — only what drifted, SHA-256. Auto-detects LLM harnesses and wires ooda-mcp, ooda-lsp, and blackbox mcp.
                   </p>
                   <div class="saver-cmd-snippet" onclick="copyText('curl -fsSL https://openooda.org/install.sh | bash', this)" title="Click to copy CLI command">
                     <span class="cmd-text">curl -fsSL https://openooda.org/install.sh | bash</span>

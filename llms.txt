@@ -40,7 +40,7 @@ To propose a change, copy `rfcs/0000-template.oot`.
 | oodac | Compiler (lex, parse, check, emit-llvm + clang; C residual) | v0.2.74 |
 | std | Standard library, 8 domains | v1.0.41 |
 | ooda | Workflow driver (`ooda` binary) | v0.2.29 |
-| cli | Language CLI driver (`ooda update` hash-refresh, build, fmt) | v0.1.6 |
+| cli | Language CLI driver (`ooda update` hash-refresh, build, fmt) | v0.1.7 |
 | install | apt, dnf, pacman, install.sh | v0.1.37 |
 | opm | Package manager | v0.8.17 |
 | catalog | Public package list for `opm search` | v0.0.15 |
@@ -48,7 +48,7 @@ To propose a change, copy `rfcs/0000-template.oot`.
 | mcp | MCP server, 23 tools | v0.6.30 |
 | ooda-tui | Terminal harness (line-mode chrome, slash, LLM round-trip; v0.2.0 = full-screen once oodar shim lands) | v0.1.3 |
 | blackbox | Operational Logistics: Agent-native execution flight recorder and crash autopsy engine | v0.0.14 |
-| website | This site | v1.2.48 |
+| website | This site | v1.2.49 |
 | .github | Org profile and shared workflows | — |
 
 Do not prefix another `openOODA/` segment onto paths in ANCHOR.oo.
