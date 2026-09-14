@@ -45,6 +45,7 @@ To propose a change, copy `rfcs/0000-template.oot`.
 | catalog | Public package list for `opm search` | v0.0.15 |
 | lsp | Language server | v0.6.32 |
 | mcp | MCP server, 23 tools | v0.6.30 |
+| ooda-tui | Terminal harness (line-mode minimax Code-style chrome; v0.2.0 = full-screen once oodar shim lands) | v0.1.1 |
 | blackbox | Operational Logistics: Agent-native execution flight recorder and crash autopsy engine | v0.0.14 |
 | website | This site | v1.2.39 |
 | .github | Org profile and shared workflows | — |
