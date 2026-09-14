@@ -40,7 +40,7 @@ To propose a change, copy `rfcs/0000-template.oot`.
 | oodac | Compiler (lex, parse, check, emit-llvm + clang; C residual) | v0.2.74 |
 | std | Standard library, 8 domains | v1.0.41 |
 | ooda | Workflow driver (`ooda` binary) | v0.2.29 |
-| install | apt, dnf, pacman, install.sh | v0.1.32 |
+| install | apt, dnf, pacman, install.sh | v0.1.33 |
 | opm | Package manager | v0.8.17 |
 | catalog | Public package list for `opm search` | v0.0.15 |
 | lsp | Language server | v0.6.32 |
