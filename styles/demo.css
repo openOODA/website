@@ -1,0 +1,98 @@
+/* demo.css — the capability anatomy panes + syntax colors */
+.capability-demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 860px) {
+  .capability-demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.demo-pane {
+  background: var(--bg-card);
+  border: var(--border-subtle);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.demo-pane-term {
+  border-color: rgba(248, 113, 113, 0.4);
+}
+
+.demo-pane-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-bar);
+  border-bottom: var(--border-subtle);
+  font-size: 11px;
+}
+.pane-title {
+  color: var(--text-secondary);
+}
+.pane-tag {
+  color: var(--color-green);
+  white-space: nowrap;
+}
+.pane-tag-fatal {
+  color: var(--color-red);
+}
+
+.code-block,
+.diag-block {
+  padding: 16px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  overflow-x: auto;
+  color: var(--text-secondary);
+}
+
+.code-kw {
+  color: var(--color-amber);
+}
+.code-fn {
+  color: var(--color-cyan);
+}
+.code-str {
+  color: var(--color-green);
+}
+.code-cap {
+  color: var(--color-green);
+  font-weight: 700;
+}
+.code-type {
+  color: #c084fc;
+}
+.code-err {
+  color: var(--color-red);
+  text-decoration: underline wavy rgba(248, 113, 113, 0.6);
+}
+.code-comment {
+  color: var(--text-muted);
+}
+
+.diag-err {
+  color: var(--color-red);
+}
+.diag-code {
+  color: var(--color-cyan);
+}
+.diag-loc {
+  color: var(--color-amber);
+}
+.diag-dim {
+  color: var(--text-muted);
+}
+.diag-caret {
+  color: var(--color-red);
+  font-weight: 700;
+}
+.diag-info {
+  color: var(--color-cyan);
+}
+.diag-help {
+  color: var(--color-green);
+}

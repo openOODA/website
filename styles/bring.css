@@ -1,0 +1,52 @@
+/* bring.css — "what it brings" numbered capability rows */
+.bring-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bring-row {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  background: var(--bg-card);
+  border: var(--border-subtle);
+  border-radius: 6px;
+  transition: border-color 0.15s ease;
+}
+.bring-row:hover {
+  border-color: var(--color-green);
+}
+
+.bring-num {
+  color: var(--color-green);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  padding-top: 2px;
+  min-width: 32px;
+}
+
+.bring-text strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.bring-text p {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+@media (max-width: 560px) {
+  .bring-row {
+    gap: 14px;
+    padding: 16px;
+  }
+  .bring-num {
+    font-size: 18px;
+    min-width: 26px;
+  }
+}

@@ -1,0 +1,66 @@
+/* repos.css — the constellation: compact linked repo index */
+.repo-list {
+  display: flex;
+  flex-direction: column;
+  border: var(--border-subtle);
+  border-radius: 6px;
+}
+.repo-row:first-child {
+  border-radius: 6px 6px 0 0;
+}
+.repo-row:last-child {
+  border-radius: 0 0 6px 6px;
+}
+
+.repo-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border-bottom: var(--border-subtle);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.repo-row:last-child {
+  border-bottom: none;
+}
+.repo-row:hover {
+  background: var(--color-green-dim);
+}
+
+.repo-name {
+  color: var(--color-green);
+  font-size: 13px;
+  font-weight: 700;
+  min-width: 96px;
+}
+.repo-role {
+  color: var(--text-secondary);
+  font-size: 12.5px;
+  flex: 1;
+}
+.repo-arrow {
+  color: var(--text-muted);
+  font-size: 13px;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+.repo-row:hover .repo-arrow {
+  color: var(--color-green);
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 560px) {
+  .repo-row {
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    padding: 12px;
+  }
+  .repo-name {
+    min-width: 0;
+  }
+  .repo-role {
+    flex-basis: 100%;
+    order: 3;
+  }
+}

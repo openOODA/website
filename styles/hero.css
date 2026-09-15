@@ -1,0 +1,111 @@
+/* hero.css — title, intro, actions, install box */
+.terminal-hero {
+  padding: 8px 0;
+}
+
+.hero-eyebrow {
+  color: var(--color-green);
+  font-size: 12px;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.terminal-title {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  margin-bottom: 16px;
+  min-height: 1.3em;
+}
+.term-cursor {
+  color: var(--color-green);
+  animation: cursor-blink 1.1s step-end infinite;
+}
+@keyframes cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.terminal-intro {
+  color: var(--text-secondary);
+  font-size: 15px;
+  max-width: 720px;
+  margin-bottom: 24px;
+}
+
+.terminal-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.term-btn {
+  display: inline-block;
+  padding: 10px 16px;
+  background: var(--bg-btn);
+  border: 1px solid var(--color-green);
+  border-radius: 4px;
+  color: var(--color-green);
+  font-size: 13px;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.term-btn:hover {
+  background: var(--color-green-dim);
+  transform: translateY(-1px);
+}
+.term-btn-amber {
+  border-color: var(--color-amber);
+  color: var(--color-amber);
+}
+.term-btn-amber:hover {
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.terminal-install-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: var(--bg-card);
+  border: var(--border-accent);
+  border-left: 3px solid var(--color-green);
+  border-radius: 4px;
+  padding: 14px 16px;
+}
+.install-cmd-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.install-prompt {
+  color: var(--color-green);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.install-code {
+  color: var(--text-primary);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.copy-action-btn {
+  background: var(--bg-btn);
+  border: var(--border-accent);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.copy-action-btn:hover {
+  color: var(--color-green);
+  border-color: var(--color-green);
+}
