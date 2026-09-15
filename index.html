@@ -14,117 +14,120 @@
     <meta property="og:url" content="https://openooda.org" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/styles/base.css" />
+    <link rel="stylesheet" href="/styles/panels.css" />
     <link rel="stylesheet" href="/styles/hero.css" />
     <link rel="stylesheet" href="/styles/bring.css" />
     <link rel="stylesheet" href="/styles/demo.css" />
     <link rel="stylesheet" href="/styles/repos.css" />
   </head>
   <body class="terminal-body">
-    <a href="#main-content" class="skip-link">Skip to Content</a>
+    <a href="#overview" class="skip-link">Skip to Content</a>
 
-    <main id="main-content" class="terminal-main" tabindex="-1">
-      <div class="terminal-container">
-        <div class="terminal-window">
-          <div class="window-titlebar">
-            <span class="term-status-badge">[TERM: tty1]</span>
-            <span class="window-title">sys@openooda:~# ooda context openOODA</span>
-            <span class="term-status-online">[SYS_OK]</span>
+    <div class="terminal-window">
+      <header class="window-titlebar">
+        <span class="term-status-badge">[TERM: tty1]</span>
+        <span class="window-title">sys@openooda:~# ooda context openOODA</span>
+        <span class="term-status-online">[SYS_OK]</span>
+      </header>
+
+      <main id="main-content" class="scroll-port" tabindex="-1">
+
+        <!-- Panel 1: overview -->
+        <section class="panel" id="overview">
+          <p class="hero-eyebrow">SOVEREIGN SYSTEMS LANGUAGE // TECHNOLOGY PREVIEW</p>
+          <h1 class="terminal-title"><span id="hero-title">Fail-Closed by Design</span><span class="term-cursor" aria-hidden="true">_</span></h1>
+          <p class="terminal-intro">
+            openOODA is a
+            <span class="t" tabindex="0" data-tip="authority handed to code as a value, never inherited. a function that doesn't receive the token cannot produce the effect.">capability-secure</span>
+            systems language where every effect requires an explicit,
+            <span class="t" tabindex="0" data-tip="created by the runtime, impossible to fake or guess. the type system verifies it before your code ever runs — it is not a string you could copy.">unforgeable capability token</span>.
+            Your process is born with
+            <span class="t" tabindex="0" data-tip="zero ambient authority: nothing happens just because the program is running. files, sockets, processes — all denied until a token grants them.">no privileges</span>.
+            That is not an accident. That is the type system. A function that
+            touches the network takes <code>&amp;NetCap</code> or it does not
+            compile — <span class="t" tabindex="0" data-tip="the compiler error raised when code attempts an effect without holding its capability token. fatal by design: the build stops, it does not warn."><code>E_CAP</code></span>
+            is not a warning.
+          </p>
+          <p class="hero-why">
+            <span class="why-prompt">&gt;</span> Agents are writing production code now.
+            Ambient authority means anything they emit can touch everything.
+            openOODA makes authority explicit — checked by the compiler, not
+            the prompt.
+          </p>
+
+          <div class="terminal-actions">
+            <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer" class="term-btn">[ GITHUB: @OPENOODA &#8599; ]</a>
+            <a href="https://openooda.org/llms.txt" class="term-btn term-btn-amber">[ LLMS.TXT ]</a>
           </div>
 
-          <div class="window-body">
-            <!-- Hero -->
-            <section class="terminal-hero">
-              <p class="hero-eyebrow">SOVEREIGN SYSTEMS LANGUAGE // TECHNOLOGY PREVIEW</p>
-              <h1 class="terminal-title"><span id="hero-title">Fail-Closed by Design</span><span class="term-cursor" aria-hidden="true">_</span></h1>
-              <p class="terminal-intro">
-                openOODA is a
-                <span class="t" tabindex="0" data-tip="authority handed to code as a value, never inherited. a function that doesn't receive the token cannot produce the effect.">capability-secure</span>
-                systems language where every effect requires an explicit,
-                <span class="t" tabindex="0" data-tip="created by the runtime, impossible to fake or guess. the type system verifies it before your code ever runs — it is not a string you could copy.">unforgeable capability token</span>.
-                Your process is born with
-                <span class="t" tabindex="0" data-tip="zero ambient authority: nothing happens just because the program is running. files, sockets, processes — all denied until a token grants them.">no privileges</span>.
-                That is not an accident. That is the type system. A function that
-                touches the network takes <code>&amp;NetCap</code> or it does not
-                compile — <span class="t" tabindex="0" data-tip="the compiler error raised when code attempts an effect without holding its capability token. fatal by design: the build stops, it does not warn."><code>E_CAP</code></span>
-                is not a warning.
-              </p>
-              <p class="hero-why">
-                <span class="why-prompt">&gt;</span> Agents are writing production code now.
-                Ambient authority means anything they emit can touch everything.
-                openOODA makes authority explicit — checked by the compiler, not
-                the prompt.
-              </p>
+          <div class="terminal-install-box">
+            <div class="install-cmd-wrap">
+              <span class="install-prompt">sys@openooda:~#</span>
+              <code class="install-code" id="install-cmd">curl -fsSL https://openooda.org/install.sh | bash</code>
+            </div>
+            <button class="copy-action-btn" onclick="copySnippet('install-cmd', this)">[ COPY INSTALL ]</button>
+          </div>
+        </section>
 
-              <div class="terminal-actions">
-                <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer" class="term-btn">[ GITHUB: @OPENOODA &#8599; ]</a>
-                <a href="https://openooda.org/llms.txt" class="term-btn term-btn-amber">[ LLMS.TXT ]</a>
+        <!-- Panel 2: what it brings -->
+        <section class="panel" id="brings">
+          <p class="panel-label">-- WHAT IT BRINGS --</p>
+          <div class="bring-list">
+            <div class="bring-row">
+              <span class="bring-num">01</span>
+              <div class="bring-text">
+                <strong>OCAPS // Capability Security</strong>
+                <p>
+                  Every effect — network, disk, process, GPU — requires a
+                  <span class="t" tabindex="0" data-tip="object-capability security: authority is a first-class value you pass to a function, like a key handed to a worker. no key, no effect.">capability token</span>
+                  held by the code that performs it. Missing a cap isn't a
+                  warning — the build refuses. 14 language tokens, 26 substrate
+                  capabilities, enforced at compile time.
+                </p>
               </div>
+            </div>
+            <div class="bring-row">
+              <span class="bring-num">02</span>
+              <div class="bring-text">
+                <strong>LLVM IR // Self-Hosting Compiler</strong>
+                <p>
+                  <code>oodac</code> compiles <code>.oo</code> source to
+                  <span class="t" tabindex="0" data-tip="LLVM's intermediate representation — the portable low-level form every native backend understands. oodac emits it; clang emits your binary.">LLVM IR</span>
+                  and lets <code>clang</code> emit the native binary. The
+                  compiler is written in openOODA and
+                  <span class="t" tabindex="0" data-tip="the compiler compiles its own source — the language is not hostage to an external toolchain.">compiles itself</span>.
+                  Type-checks run in &lt;3ms via
+                  <span class="t" tabindex="0" data-tip="each syntax tree is hashed into a Merkle tree — unchanged subtrees are proven identical by hash and never recompiled.">Merkle-AST caching</span>.
+                </p>
+              </div>
+            </div>
+            <div class="bring-row">
+              <span class="bring-num">03</span>
+              <div class="bring-text">
+                <strong>AGENT-NATIVE // Built for AI</strong>
+                <p>
+                  The toolchain ships an
+                  <span class="t" tabindex="0" data-tip="Model Context Protocol — the open standard that lets AI agents call tools. openOODA's MCP server exposes 26 capability-aware tools: check, emit, build, run, blackbox.">MCP server</span>,
+                  an
+                  <span class="t" tabindex="0" data-tip="Language Server Protocol — powers editor diagnostics, rename, and go-to-definition for .oo files.">LSP</span>,
+                  and an <code>llms.txt</code> map — so agents read, check, and
+                  build openOODA the way it was designed to be used.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-              <div class="terminal-install-box">
-                <div class="install-cmd-wrap">
-                  <span class="install-prompt">sys@openooda:~#</span>
-                  <code class="install-code" id="install-cmd">curl -fsSL https://openooda.org/install.sh | bash</code>
-                </div>
-                <button class="copy-action-btn" onclick="copySnippet('install-cmd', this)">[ COPY INSTALL ]</button>
+        <!-- Panel 3: anatomy of a capability -->
+        <section class="panel" id="anatomy">
+          <p class="panel-label">-- ANATOMY OF A CAPABILITY: COMPILE-TIME ENFORCEMENT --</p>
+          <div class="capability-demo-grid">
+            <div class="demo-pane">
+              <div class="demo-pane-header">
+                <span class="pane-title">SOURCE: src/network.oo</span>
+                <span class="pane-tag">[ TYPE SYSTEM ]</span>
               </div>
-            </section>
-
-            <!-- What it brings -->
-            <div class="terminal-divider">-- WHAT IT BRINGS --</div>
-            <section class="bring-list">
-              <div class="bring-row">
-                <span class="bring-num">01</span>
-                <div class="bring-text">
-                  <strong>OCAPS // Capability Security</strong>
-                  <p>
-                    Every effect — network, disk, process, GPU — requires a
-                    <span class="t" tabindex="0" data-tip="object-capability security: authority is a first-class value you pass to a function, like a key handed to a worker. no key, no effect.">capability token</span>
-                    held by the code that performs it. Missing a cap isn't a
-                    warning — the build refuses. 14 language tokens, 26 substrate
-                    capabilities, enforced at compile time.
-                  </p>
-                </div>
-              </div>
-              <div class="bring-row">
-                <span class="bring-num">02</span>
-                <div class="bring-text">
-                  <strong>LLVM IR // Self-Hosting Compiler</strong>
-                  <p>
-                    <code>oodac</code> compiles <code>.oo</code> source to
-                    <span class="t" tabindex="0" data-tip="LLVM's intermediate representation — the portable low-level form every native backend understands. oodac emits it; clang emits your binary.">LLVM IR</span>
-                    and lets <code>clang</code> emit the native binary. The
-                    compiler is written in openOODA and
-                    <span class="t" tabindex="0" data-tip="the compiler compiles its own source — the language is not hostage to an external toolchain.">compiles itself</span>.
-                    Type-checks run in &lt;3ms via
-                    <span class="t" tabindex="0" data-tip="each syntax tree is hashed into a Merkle tree — unchanged subtrees are proven identical by hash and never recompiled.">Merkle-AST caching</span>.
-                  </p>
-                </div>
-              </div>
-              <div class="bring-row">
-                <span class="bring-num">03</span>
-                <div class="bring-text">
-                  <strong>AGENT-NATIVE // Built for AI</strong>
-                  <p>
-                    The toolchain ships an
-                    <span class="t" tabindex="0" data-tip="Model Context Protocol — the open standard that lets AI agents call tools. openOODA's MCP server exposes 26 capability-aware tools: check, emit, build, run, blackbox.">MCP server</span>,
-                    an
-                    <span class="t" tabindex="0" data-tip="Language Server Protocol — powers editor diagnostics, rename, and go-to-definition for .oo files.">LSP</span>,
-                    and an <code>llms.txt</code> map — so agents read, check, and
-                    build openOODA the way it was designed to be used.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            <!-- Proof: the diagnostic -->
-            <div class="terminal-divider">-- ANATOMY OF A CAPABILITY: COMPILE-TIME ENFORCEMENT --</div>
-            <div class="capability-demo-grid">
-              <div class="demo-pane">
-                <div class="demo-pane-header">
-                  <span class="pane-title">SOURCE: src/network.oo</span>
-                  <span class="pane-tag">[ TYPE SYSTEM ]</span>
-                </div>
-                <pre class="code-block"><span class="code-comment">// ❌ UNPRIVILEGED: Ambient authority does NOT exist</span>
+              <pre class="code-block"><span class="code-comment">// ❌ UNPRIVILEGED: Ambient authority does NOT exist</span>
 <span class="code-kw">pub fn</span> <span class="code-fn">fetch_weights</span>() {
     <span class="code-err">http_get</span>(<span class="code-str">"https://openooda.org/model.bin"</span>);
 }
@@ -134,14 +137,14 @@
 <span class="code-kw">pub fn</span> <span class="code-fn">fetch_weights</span>(net: <span class="code-cap">&amp;TcpCap</span>) -&gt; <span class="code-type">Result</span>[<span class="code-type">String</span>, <span class="code-type">Error</span>] {
     http_get(net, <span class="code-str">"https://openooda.org/model.bin"</span>)
 }</pre>
-              </div>
+            </div>
 
-              <div class="demo-pane demo-pane-term">
-                <div class="demo-pane-header">
-                  <span class="pane-title">COMPILER DIAGNOSTIC: oodac check</span>
-                  <span class="pane-tag pane-tag-fatal">[ E_CAP: FATAL ]</span>
-                </div>
-                <pre class="diag-block"><span class="diag-err">error[E_NAME]</span>: undefined identifier <span class="diag-code">http_get</span> — import <span class="diag-code">std/net/http.oo</span>
+            <div class="demo-pane demo-pane-term">
+              <div class="demo-pane-header">
+                <span class="pane-title">COMPILER DIAGNOSTIC: oodac check</span>
+                <span class="pane-tag pane-tag-fatal">[ E_CAP: FATAL ]</span>
+              </div>
+              <pre class="diag-block"><span class="diag-err">error[E_NAME]</span>: undefined identifier <span class="diag-code">http_get</span> — import <span class="diag-code">std/net/http.oo</span>
   <span class="diag-loc">--&gt;</span> src/network.oo:3:5
    <span class="diag-dim">|</span>
  3 <span class="diag-dim">|</span>     http_get(<span class="code-str">"https://openooda.org/model.bin"</span>);
@@ -153,42 +156,53 @@
    <span class="diag-dim">=</span> <span class="diag-help">help</span>: import std and pass <span class="code-cap">&amp;TcpCap</span>:
           <span class="diag-code">import "std/net/http.oo";
    pub fn fetch_weights(net: &amp;TcpCap)</span></pre>
-              </div>
             </div>
-
-            <!-- Constellation -->
-            <div class="terminal-divider">-- THE CONSTELLATION: 11 REPOSITORIES, ONE SYSTEM --</div>
-            <section class="repo-list">
-              <a class="repo-row" href="https://github.com/openOODA/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA</code><span class="repo-role">the constitution — 24 laws, RFCs, governance</span><span class="repo-arrow">&#8599;</span></a>
-              <a class="repo-row" href="https://github.com/openOODA/oodac" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodac</code><span class="repo-role">the self-hosting compiler — .oo &#8594; LLVM IR &#8594; native</span><span class="repo-arrow">&#8599;</span></a>
-              <a class="repo-row" href="https://github.com/openOODA/oodar" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodar</code><span class="repo-role">capability-secure C substrate — <span class="t" tabindex="0" data-tip="post-quantum cryptography: ML-KEM-768 key exchange + ML-DSA-65 signatures — safe against quantum attacks that don't exist yet.">PQC</span>, <span class="t" tabindex="0" data-tip="a Linux kernel sandbox — the runtime restricts what the OS itself lets a process touch.">Landlock</span>, ROCm GPU</span><span class="repo-arrow">&#8599;</span></a>
-              <a class="repo-row" href="https://github.com/openOODA/std" target="_blank" rel="noopener noreferrer"><code class="repo-name">std</code><span class="repo-role">the standard library — 188 modules across 8 domains</span><span class="repo-arrow">&#8599;</span></a>
-              <a class="repo-row" href="https://github.com/openOODA/ooda" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooda</code><span class="repo-role">the workflow driver — build, run, test, fix</span><span class="repo-arrow">&#8599;</span></a>
-              <a class="repo-row" href="https://github.com/openOODA/install" target="_blank" rel="noopener noreferrer"><code class="repo-name">install</code><span class="repo-role">the one-line toolchain bootstrap</span><span class="repo-arrow">&#8599;</span></a>
-              <a class="repo-row" href="https://github.com/openOODA/opm" target="_blank" rel="noopener noreferrer"><code class="repo-name">opm</code><span class="repo-role">the package manager — capability-aware, signed, deterministic</span><span class="repo-arrow">&#8599;</span></a>
-              <a class="repo-row" href="https://github.com/openOODA/catalog" target="_blank" rel="noopener noreferrer"><code class="repo-name">catalog</code><span class="repo-role">the public package registry</span><span class="repo-arrow">&#8599;</span></a>
-              <a class="repo-row" href="https://github.com/openOODA/lsp" target="_blank" rel="noopener noreferrer"><code class="repo-name">lsp</code><span class="repo-role">the language server — diagnostics, rename, go-to-def</span><span class="repo-arrow">&#8599;</span></a>
-              <a class="repo-row" href="https://github.com/openOODA/mcp" target="_blank" rel="noopener noreferrer"><code class="repo-name">mcp</code><span class="repo-role">the MCP server — 26 capability-aware tools for agents</span><span class="repo-arrow">&#8599;</span></a>
-              <a class="repo-row" href="https://github.com/openOODA/bb" target="_blank" rel="noopener noreferrer"><code class="repo-name">bb</code><span class="repo-role">the flight recorder — agent-native crash autopsy</span><span class="repo-arrow">&#8599;</span></a>
-            </section>
           </div>
-        </div>
-      </div>
-    </main>
+        </section>
 
-    <footer class="terminal-footer">
-      <div class="terminal-container footer-inner">
-        <div><span>OPENOODA &copy; 2026 // CAPABILITY-SECURE SYSTEMS ARCHITECTURE</span></div>
-        <div class="footer-links">
+        <!-- Panel 4: the constellation -->
+        <section class="panel" id="constellation">
+          <p class="panel-label">-- THE CONSTELLATION: 11 REPOSITORIES, ONE SYSTEM --</p>
+          <div class="repo-list">
+            <a class="repo-row" href="https://github.com/openOODA/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA</code><span class="repo-role">the constitution — 24 laws, RFCs, governance</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA/oodac" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodac</code><span class="repo-role">the self-hosting compiler — .oo &#8594; LLVM IR &#8594; native</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA/oodar" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodar</code><span class="repo-role">capability-secure C substrate — <span class="t" tabindex="0" data-tip="post-quantum cryptography: ML-KEM-768 key exchange + ML-DSA-65 signatures — safe against quantum attacks that don't exist yet.">PQC</span>, <span class="t" tabindex="0" data-tip="a Linux kernel sandbox — the runtime restricts what the OS itself lets a process touch.">Landlock</span>, ROCm GPU</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA/std" target="_blank" rel="noopener noreferrer"><code class="repo-name">std</code><span class="repo-role">the standard library — 188 modules across 8 domains</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA/ooda" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooda</code><span class="repo-role">the workflow driver — build, run, test, fix</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA/install" target="_blank" rel="noopener noreferrer"><code class="repo-name">install</code><span class="repo-role">the one-line toolchain bootstrap</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA/opm" target="_blank" rel="noopener noreferrer"><code class="repo-name">opm</code><span class="repo-role">the package manager — capability-aware, signed, deterministic</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA/catalog" target="_blank" rel="noopener noreferrer"><code class="repo-name">catalog</code><span class="repo-role">the public package registry</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA/lsp" target="_blank" rel="noopener noreferrer"><code class="repo-name">lsp</code><span class="repo-role">the language server — diagnostics, rename, go-to-def</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA/mcp" target="_blank" rel="noopener noreferrer"><code class="repo-name">mcp</code><span class="repo-role">the MCP server — 26 capability-aware tools for agents</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA/bb" target="_blank" rel="noopener noreferrer"><code class="repo-name">bb</code><span class="repo-role">the flight recorder — agent-native crash autopsy</span><span class="repo-arrow">&#8599;</span></a>
+          </div>
+        </section>
+      </main>
+
+      <nav class="panel-nav" aria-label="Section navigation">
+        <button class="nav-arrow nav-up" id="nav-up" aria-label="Previous section">&#9650;</button>
+        <button class="nav-arrow nav-down" id="nav-down" aria-label="Next section">&#9660;</button>
+      </nav>
+
+      <footer class="window-statusbar">
+        <span>OPENOODA &copy; 2026 // CAPABILITY-SECURE SYSTEMS ARCHITECTURE</span>
+        <span class="footer-links">
           <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">[ GITHUB ]</a>
           <a href="https://studio2201.com" target="_blank" rel="noopener noreferrer">[ STUDIO2201 ]</a>
           <a href="https://openooda.org/install.sh">[ INSTALL SCRIPT ]</a>
-        </div>
-      </div>
-    </footer>
+        </span>
+      </footer>
+    </div>
 
+    <noscript>
+      <style>
+        .panel { opacity: 1; transform: none; }
+        .panel-nav { display: none; }
+      </style>
+    </noscript>
     <script src="/js/copy.js"></script>
     <script src="/js/rotate.js"></script>
+    <script src="/js/panels.js"></script>
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "95b217ba8915427f81915ba48d64daf7"}'></script>
   </body>
 </html>

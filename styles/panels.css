@@ -1,0 +1,90 @@
+/* panels.css — fullport sections, labels, edge fades, nav arrows */
+.panel {
+  min-height: 100%;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 72px 56px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.panel.vis {
+  opacity: 1;
+  transform: none;
+}
+
+.panel-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 24px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Section arrows — visible only when scrolling that way is possible */
+.panel-nav {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 40;
+}
+.nav-arrow {
+  width: 34px;
+  height: 34px;
+  background: var(--bg-btn);
+  border: var(--border-accent);
+  border-radius: 4px;
+  color: var(--color-green);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, border-color 0.15s ease, opacity 0.2s ease;
+}
+.nav-arrow:hover {
+  border-color: var(--color-green);
+  background: var(--color-green-dim);
+}
+.nav-arrow.off {
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.terminal-window {
+  position: relative;
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 64px 20px;
+    justify-content: flex-start;
+  }
+  .panel-nav {
+    right: 8px;
+  }
+  .nav-arrow {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

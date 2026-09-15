@@ -1,4 +1,4 @@
-/* base.css — tokens, reset, terminal chrome, footer, tooltips */
+/* base.css — tokens, reset, terminal frame, fixed bars, tooltips */
 :root {
   --bg-deep: #070a0f;
   --bg-window: #0a0e17;
@@ -26,8 +26,9 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
+html,
+body {
+  height: 100%;
 }
 
 body.terminal-body {
@@ -35,7 +36,7 @@ body.terminal-body {
   color: var(--text-primary);
   font-family: var(--font-mono);
   line-height: 1.6;
-  min-height: 100vh;
+  overflow: hidden;
 }
 
 .skip-link {
@@ -53,21 +54,13 @@ body.terminal-body {
   top: 8px;
 }
 
-.terminal-main {
-  padding: 24px 16px;
-  display: flex;
-  justify-content: center;
-}
-.terminal-container {
-  width: 100%;
-  max-width: 980px;
-}
+/* The page IS the terminal: titlebar + statusbar fixed, port scrolls */
 .terminal-window {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
   background: var(--bg-window);
-  border: var(--border-accent);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 60px rgba(52, 211, 153, 0.07);
 }
 
 .window-titlebar {
@@ -79,6 +72,7 @@ body.terminal-body {
   border-bottom: var(--border-subtle);
   font-size: 13px;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 .term-status-badge {
   color: var(--color-green);
@@ -86,6 +80,9 @@ body.terminal-body {
 .window-title {
   color: var(--text-secondary);
   flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .term-status-online {
   color: var(--color-green);
@@ -97,37 +94,42 @@ body.terminal-body {
   }
 }
 
-.window-body {
-  padding: 32px 24px;
+.scroll-port {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y proximity;
+  scrollbar-width: thin;
+  scrollbar-color: #334155 var(--bg-deep);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 56px,
+    black calc(100% - 56px),
+    transparent
+  );
+}
+.scroll-port::-webkit-scrollbar {
+  width: 8px;
+}
+.scroll-port::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+.scroll-port::-webkit-scrollbar-track {
+  background: var(--bg-deep);
 }
 
-.terminal-divider {
-  color: var(--text-muted);
-  font-size: 12px;
-  letter-spacing: 1px;
-  margin: 48px 0 24px;
-  text-align: center;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-code {
-  color: var(--color-cyan);
-  font-family: var(--font-mono);
-}
-
-.terminal-footer {
-  border-top: var(--border-subtle);
-  padding: 20px 16px;
-}
-.footer-inner {
+.window-statusbar {
   display: flex;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+  padding: 10px 16px;
+  background: var(--bg-titlebar);
+  border-top: var(--border-subtle);
   font-size: 12px;
   color: var(--text-muted);
+  flex-shrink: 0;
 }
 .footer-links {
   display: flex;
@@ -140,6 +142,11 @@ code {
 }
 .footer-links a:hover {
   text-decoration: underline;
+}
+
+code {
+  color: var(--color-cyan);
+  font-family: var(--font-mono);
 }
 
 /* Tooltips — man-page glosses on openOODA jargon.
@@ -167,8 +174,6 @@ code {
   font-size: 12px;
   font-weight: normal;
   line-height: 1.5;
-  text-transform: none;
-  letter-spacing: normal;
   white-space: normal;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
   opacity: 0;
@@ -197,11 +202,8 @@ code {
   opacity: 1;
 }
 
-@media (max-width: 640px) {
-  .window-body {
-    padding: 24px 16px;
-  }
-  .terminal-divider {
-    margin: 36px 0 20px;
+@media (prefers-reduced-motion: reduce) {
+  .scroll-port {
+    scroll-snap-type: none;
   }
 }
