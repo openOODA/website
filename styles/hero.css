@@ -32,7 +32,20 @@
   color: var(--text-secondary);
   font-size: 15px;
   max-width: 720px;
+  margin-bottom: 12px;
+}
+
+.hero-why {
+  color: var(--text-primary);
+  font-size: 14px;
+  max-width: 720px;
   margin-bottom: 24px;
+  padding-left: 14px;
+  border-left: 2px solid var(--color-amber);
+}
+.why-prompt {
+  color: var(--color-amber);
+  font-weight: 700;
 }
 
 .terminal-actions {
