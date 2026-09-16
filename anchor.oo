@@ -1,18 +1,18 @@
 // # openOODA Website — Anchor for Agents
 //
-// Logline: Public site at openooda.org. Shell in HTML. Repo docs
-//          fill #content via route/.
+// Logline: Public site at openooda.org. Static index.html is the home.
 //
 // Setup: GitHub Pages, no build. New docs are .oo/.oot.
-//        Browser residual is .js under src/, each <= 256 lines.
+//        No hash router. Do not load src/ as the homepage.
 //
 // Beats:
-//   1. index.html — shell, nav, static home body, script list.
-//   2. 404.html — static not-found. data-page=404 skips router.
+//   1. index.html — live home: install, panels, constellation (incl. cli).
+//   2. 404.html — static not-found. No router.
 //   3. docs/anchor.oo — RFC-0005 package manual for this repo.
-//   4. src/ — theme, route, sky.
-//   5. styles/, llms.txt, audit/ — chrome, LLM manual, audit.
+//   4. src/ — retired SPA; not the homepage path.
+//   5. js/, styles/, llms.txt, audit/ — copy/rotate/panels, chrome, LLM, audit.
 
 import "audit/anchor.oo";
 import "docs/anchor.oo";
+import "js/anchor.oo";
 import "src/anchor.oo";

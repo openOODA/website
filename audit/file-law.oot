@@ -3,7 +3,7 @@ File: website/audit/file-law.oot
 
 Verdict: FAIL on residual deploy types. PASS on the 256-line
 cap and on new docs this pass. Written 2026-09-04 after the
-split, .oot pulls, and header repair.
+split. Refreshed 2026-09-15: live home is static index.html.
 
 ## 1. Observed file types
 
@@ -20,35 +20,31 @@ README.md is the only other allowed `.md` in the org.
 ## 2. Line cap (RULES 1.8, RFC-0003)
 
 Every `.oo`, `.oot`, and residual `.js` file is at most 256
-lines. `src/dogfight/cca.js` is the tightest at 254.
+lines. Live home is `index.html`; `src/` no longer ships JS.
 
-`index.html` is the SPA shell and home body.
+`index.html` is the static home body.
 Hand-maintained deploy surface. Exempt from the
 256-line cap until oodac emits the page (per §4
 honest model). The split exception in §4 applies
 to CSS/JS sub-files; the home body cannot be split
 into a static partial without breaking the no-JS
 contract.
-`styles/main.css` is one stylesheet and stays under 256.
 
 ## 3. Academy headers (RFC-0003 §2)
 
 Product `.oo` files use Title, Logline, Setup, Beats.
-Setup was restored on `assets/anchor.oo`, `styles/anchor.oo`,
-and `.github/workflows/anchor.oo`. Residual `.js` files keep
-a short Title and Logline.
+Residual `.js` files keep a short Title and Logline.
 
 ## 4. Honest model
 
 1. Source of truth: `.oot` copy and `.oo` indexes.
-2. Deploy residual: `index.html`, `404.html`, `styles/main.css`,
-   `src/**/*.js`. No generator yet.
+2. Deploy residual: `index.html`, `404.html`, `styles/*.css`,
+   `js/*.js`. No generator. `src/` ships no JS.
 3. Do not mark those files GENERATED. They are hand-maintained.
 
-Until oodac emits the page, do not add a second stylesheet or
+Until oodac emits the page, do not add a second homepage or
 a new `.js` file except to split an over-cap file.
 
 ## 5. Next repair
 
-None in this repo for file law. Do not convert the dogfight
-to `.oo` until a JS emitter exists.
+None in this repo for file law. Do not add a new SPA.

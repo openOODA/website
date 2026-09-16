@@ -1,39 +1,28 @@
 # SECURITY — XSS, CSP, third-party network
 File: website/audit/security.oot
 
-Verdict: PASS on stored HTML injection and reduced motion
-after the 2026-09-04 repair. Residual: email collect origin
-and the install.sh pipe.
-Refreshed 2026-09-10: same verdict at the structural level.
+Verdict: PASS. Live home is static HTML. The SPA markdown
+renderer is gone, so pulled `.oot` cannot inject HTML.
+Refreshed 2026-09-15: no `src/*.js`, no collect form.
 
-## 1. simpleMarkdown (Red 4)
+## 1. HTML injection
 
-`src/route/markdown.js` escapes the whole body with
-`escapeHtml` before markdown replacements. There is no
-RAWHTML preserve. Title, source, and error text use
-`escapeHtml`. Table rule-rows (`|---|`) emit nothing.
-
-A `<script>` tag in a pulled `.oot` file becomes text.
+There is no markdown renderer and no `#content` fetch.
+Home copy is hand-written HTML in `index.html`.
+`404.html` is static. Residual JS is `js/copy.js`,
+`js/rotate.js`, `js/panels.js`. Copy uses known strings;
+it does not interpolate the URL hash into HTML.
 
 ## 2. Content-Security-Policy
 
-`index.html` and `404.html` set:
-
-  default-src 'self'
-  script-src 'self'
-  style-src 'self'
-  connect-src 'self' https://collect.openooda.org
-  form-action https://collect.openooda.org
-
-Theme boot lives in `src/theme/boot.js`. No `unsafe-inline`.
-No Google Fonts. System monospace stack in `styles/main.css`.
+Neither `index.html` nor `404.html` sets a CSP meta tag.
+Home links `styles/*.css` and `js/*.js` from this origin.
+A Cloudflare insights beacon is a third-party script.
 
 ## 3. Email collect
 
-The join form POSTs to https://collect.openooda.org/v1/emails.
-Honeypot field `website` is present. `credentials: omit`.
-This origin is a product choice. Do not delete it in this
-repo without an owner decision.
+The collect.openooda.org join form is gone from home.
+Do not restore it in this pass.
 
 ## 4. install.sh pipe to bash
 
@@ -42,13 +31,10 @@ to bash. Keep the URL. Do not add more shell.
 
 ## 5. Reduced motion
 
-`CanvasLifecycleManager` gates rAF. Sky and dogfight both
-register `respectReducedMotion: true`. CSS hides `#sky` and
-`#dogfight-canvas` under `prefers-reduced-motion: reduce`.
-`initGlobalDogfight` does not set an inline `display` and
-does not force `start()` after register.
+`js/rotate.js` skips the typewriter under
+`prefers-reduced-motion: reduce`. No sky canvas. No dogfight.
 
 ## 6. Next repair
 
-Document the collect.openooda.org data retained, or delete
-the form, as an owner decision. Not this pass.
+Optional: CSP for the Cloudflare beacon and local scripts.
+Not this pass.

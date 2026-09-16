@@ -51,7 +51,7 @@ function rotateHeadline() {
 setTimeout(rotateHeadline, 5000);
 
 console.log(
-  "%c[OPENOODA // TERMINAL ACTIVE]\n%cCapability-Secure Systems Substrate | 11 Product Nodes Mounted",
+  "%c[OPENOODA // TERMINAL ACTIVE]\n%cCapability-Secure Systems Substrate | 13 Product Nodes Mounted",
   "color: #34d399; font-weight: bold;",
   "color: #94a3b8;"
 );

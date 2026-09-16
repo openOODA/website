@@ -1,19 +1,11 @@
-// # src/ — Website scripts
+// # src/ — Not the homepage
 //
-// Logline: Split SPA into theme, route, sky. Each .js file is <= 256 lines.
-//          Browser residual: GitHub Pages still serves .js.
+// Logline: Static index.html is the live home. No hash router.
 //
-// Setup: index.html loads boot.js in <head>, then defer scripts
-//        in the order below. 404.html sets data-page="404" so
-//        main.js does not overwrite #content.
+// Setup: GitHub Pages, no build. The old theme/route/sky SPA is gone
+//        so it cannot overwrite the home body. Do not invent a new SPA.
 //
 // Beats:
-//   1. theme/ — boot, palettes, cycle. System monospace. No Google.
-//   2. route/ — fill #content from each repo's own docs/.
-//   3. sky/ — starfield. Honors prefers-reduced-motion.
-//   4. life.js — tab-hidden rAF gate.
-//   5. main.js — boot: route, gen bar.
-
-import "theme/anchor.oo";
-import "route/anchor.oo";
-import "sky/anchor.oo";
+//   1. Public home is index.html (install box + constellation, including cli).
+//   2. 404.html is static. There is no data-page router.
+//   3. Do not fetch /docs/*.oot into #content. That path is dead.

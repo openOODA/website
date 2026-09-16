@@ -1,0 +1,11 @@
+// # js/ — Home enhancement, not a router
+//
+// Logline: Copy, headline rotate, panel arrows. Home body is HTML.
+//
+// Setup: index.html loads these after the static panels. No-JS sees
+//        the same install box and constellation via <noscript>.
+//
+// Beats:
+//   1. copy.js — clipboard + execCommand fallback.
+//   2. rotate.js — hero typewriter; honors reduced motion.
+//   3. panels.js — scroll-port arrows. Not a hash router.

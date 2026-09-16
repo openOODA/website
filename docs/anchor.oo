@@ -1,13 +1,11 @@
 // # website/docs — Package Manual
 //
-// Logline: RFC-0005 docs for the website repo. Each page cites a
-//          sibling docs/.
+// Logline: RFC-0005 docs for the website repo. Live home is index.html.
 //
-// Setup: No caps. Default route home cites openOODA/.github/docs/.
-//        Product routes cite openOODA/<repo>/docs/. Do not cite a
-//        repo root.
+// Setup: No caps. GitHub Pages serves index.html as the public home.
+//        There is no hash route and no /docs/*.oot fetch.
 //
 // Beats:
-//   1. home cites openOODA/.github/docs/.
-//   2. Product pages cite openOODA/<repo>/docs/.
-//   3. website and .github have no sidebar route. Brand is home.
+//   1. Home is static index.html. Constellation includes cli.
+//   2. Sibling repos own their own docs/. This site does not mirror them.
+//   3. website and .github are table-only. Brand is home.

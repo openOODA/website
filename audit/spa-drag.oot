@@ -1,59 +1,39 @@
-# SPA DRAG — dogfight mass, homepage, nav
+# SPA DRAG — homepage is static index.html
 File: website/audit/spa-drag.oot
 
-Verdict: PASS on the two-homepage lie after the 2026-09-04
-repair. The dogfight remains by product choice. It is split
-to files at most 256 lines.
-Refreshed 2026-09-10: same verdict. index.html stays at
-1890 lines; the 256-line cap exception now applies
-(see file-law.oot:25).
+Verdict: PASS. Live home is static `index.html`. The hash-router
+SPA under `src/` is gone so it cannot overwrite the home body.
+Refreshed 2026-09-15: constellation names `cli`. No new SPA.
 
 ## 1. Homepage
 
-`index.html` `#content` holds one install box and the
-`pulled/home.oot` body as real HTML. No-JS and crawlers
-see that body. JS fetch replaces it from the `.oot` file.
-If the fetch fails and `.install` is already in the DOM, the
-static body stays. Copy buttons bind on the static body.
+`index.html` is the public home. Install box and product
+constellation (including `cli`) are real HTML. No-JS and
+crawlers see that body. There is no `#content` fetch and no
+`/docs/*.oot` route table.
 
-There is no second card set. There is no `cli` route.
+`404.html` is a static miss page. It does not load `src/`.
 
-## 2. Dogfight mass
+## 2. Retired SPA
 
-The product path is route + markdown + theme + install.
-The dogfight is the rest of `src/dogfight/`. It stays. Do
-not delete it unless the owner asks.
+`src/anchor.oo` is a tombstone. Do not add `theme/`, `route/`,
+`sky/`, or a dogfight. Do not invent a new SPA framework.
 
-`404.html` still loads the dogfight scripts so the 404 page
-matches home visually. That is extra bytes on a miss.
+Live enhancement is `js/copy.js`, `js/rotate.js`, `js/panels.js`.
+Those are not a router.
 
 ## 3. WASM residue
 
 No WASM module loads from this repo. `window.wasmActive` is
-not read. Dead WASM route wrappers are gone.
+not read.
 
-## 4. Nav order (substratum first)
+## 4. Product constellation (home)
 
-Law of Substratum Integrity (rules.oot §1.20) and RFC-0004
-3-layer order:
-
-1. openOODA — strategic law
-2. oodar — Gen 1 host
-3. oodac — Gen 2 compiler
-4. std — library
-5. ooda — operational driver
-6. install — how bits land on a machine
-7. opm — package manager
-8. catalog — what opm search reads
-9. lsp — editor protocol
-10. mcp — agent protocol
-11. blackbox — Operational Logistics: flight recorder & crash autopsy
-
-website and .github are table-only. They are not product
-nav routes.
+Strategic: openOODA.
+Operational: ooda, cli, tui, install, opm, catalog, lsp, mcp, bb.
+Tactical: oodac, oodar, std.
+website and .github are table-only.
 
 ## 5. Next repair
 
-Optional: drop dogfight scripts from `404.html`. Optional:
-pre-render the other nine routes as static HTML. Do not do
-either unless asked.
+None for the homepage path. Do not restore the hash router.

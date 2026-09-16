@@ -3,18 +3,16 @@
 // Logline: Zero-trust audit of website/ against the .oo/.oot file
 //          law, polyrepo truth, and fail-closed security.
 //
-// Setup: Rewritten 2026-09-04 after the split, .oot pulls,
-//        XSS escape, reduced-motion, static home, and nav
-//        reorder. Scope is this repo only.
+// Setup: Rewritten 2026-09-15 after SPA JS deletion and cli
+//        named on the static home. Scope is this repo only.
 //
 // Beats:
 //   1. file-law.oot — Pages residual types. 256-line cap PASS.
-//   2. truth-drift.oot — tags, MIT license, sitemap lastmod.
-//   3. security.oot — markdown escape PASS. collect residual.
-//   4. spa-drag.oot — static home PASS. dogfight kept. nav order.
+//   2. truth-drift.oot — tags, MIT license, sitemap lastmod, cli named.
+//   3. security.oot — no SPA markdown; install.sh pipe residual.
+//   4. spa-drag.oot — static home PASS. SPA retired. cli on home.
 
 // import "file-law.oot";
 // import "truth-drift.oot";
 // import "security.oot";
 // import "spa-drag.oot";
-
