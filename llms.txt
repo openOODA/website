@@ -25,9 +25,10 @@ Public home: https://openooda.org (static index.html; constellation names cli).
 Start at `openOODA/ANCHOR.oo`. Then:
 
 1. `RULES.oot` — 23 laws. They do not change.
-2. `NORTHSTAR.oot` — architecture, grammar, AST, type system.
-3. `rfcs/ANCHOR.oo` — 7 accepted RFCs, numeric order.
-4. `practices/ANCHOR.oo` — 8D red team, OODA workflow, release.
+2. `spec.oot` — Tier A high-density language specification sheet.
+3. `NORTHSTAR.oot` — architecture, grammar, AST, type system.
+4. `rfcs/ANCHOR.oo` — 7 accepted RFCs, numeric order.
+5. `practices/ANCHOR.oo` — 8D red team, OODA workflow, release.
 
 To propose a change, copy `rfcs/0000-template.oot`.
 
