@@ -5,6 +5,18 @@ on:
     branches: [main]
 
 jobs:
+  static-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout website
+        uses: actions/checkout@v4
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: run copy test
+        run: node tests/test_copy.js
+
   blackbox-gate:
     if: always()
     runs-on: ubuntu-latest
