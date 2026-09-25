@@ -5,5 +5,5 @@
 set -e
 TMP=$(mktemp) || exit 1
 trap 'rm -f "$TMP"' EXIT
-curl -fsSL "https://raw.githubusercontent.com/openOODA/install/main/install.sh" -o "$TMP"
+curl -fsSL "https://raw.githubusercontent.com/openOODA/install/master/install.sh" -o "$TMP"
 bash "$TMP" "$@"
