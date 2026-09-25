@@ -1,0 +1,57 @@
+# Daily Audit — 2026-09-20
+
+File: website/pulled/daily_audit_2026-09-20.oot
+
+Source: openOODA/openOODA/docs/audit-history/
+
+Publisher: Mavis, session mvs_b2115d13599946ac965f975f0e628547
+
+## Headline
+
+Verdict: PASS — 10/10 (>= 5/10 threshold; rules.oot sec 1.17).
+
+## proof_of_today (double-run, rules.oot sec 1.10)
+
+Run1 sha256: f6ef8ab67de7e095599b5695e078cea6bbf55718fdf5769262d9cb9e65f3ad0b
+Run2 sha256: f6ef8ab67de7e095599b5695e078cea6bbf55718fdf5769262d9cb9e65f3ad0b
+Divergent: yes
+
+## Target scorecard (proof_of_today.oo)
+
+```
+1. No trust without proof          10/10  (daily audit evidence verified: 10)
+2. Capabilities replace trusted... 10/10  (cap_table.json present: 1)
+3. Contracts replace trusted...    10/10  (contract verifier state: 2/2)
+4. Reproducible builds...          10/10  (wired: 9/9  pinned: 9/9)
+5. Even evidence is verified       10/10  (repos with 8D Red Team in CI: 9/9)
+6. Self-hosting replaces...        10/10  (3-stage bit-identical self-host: 2/2)
+7. Multi-target replaces...        10/10  (Track 1 LLVM lowering certified: 1)
+8. Per-target 10/10 scores         10/10  (scorecard + driver present: 1)
+Headline: 10/10 (80/80)
+```
+
+## Drift
+
+Tag-drift count (12 product repos vs openOODA/docs/index.oot): 12
+
+index.oot snapshot is stale. Re-run drift-refresh.
+
+## Deferred to other mcode (compiler / host lane)
+
+- oodac/check/smt/ missing (RFC-0002 evidence gap, CRITICAL).
+- 3 files exceed 256-line cap (oodac CI, oodac fixture, oodar CHANGES).
+- 2 .oo files missing 4-element Academy header (ooda/fix/text.oo, oodac/qa/scratch_lineno.oo).
+- oodac build fails at LLVM emit on print call; 3 oodac_* MCP tools broken.
+- oodac/check/diag_json.oo:100 fix_hint references deleted openOODA/SHIPPED.oot.
+
+## Uncommitted artifacts (flagged, not shipped)
+
+- install/audit/2026-09-10-mcp-lsp-blackbox-usability.oot (install/ lane).
+
+## Cross-references
+
+- openOODA/docs/index.oot — tag snapshot (drift SSoT).
+- openOODA/scripts/target_scorecard.oot — target scorecard mirror.
+- openOODA/scripts/proof_of_today.oo — scorecard driver.
+- rules.oot sec 1.10 — double-run law.
+- rules.oot sec 1.17 — 80/20 leverage; 5/10 release block.
