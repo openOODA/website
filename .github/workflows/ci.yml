@@ -16,6 +16,8 @@ jobs:
           node-version: '22'
       - name: run copy test
         run: node tests/test_copy.js
+      - name: run layout test
+        run: node tests/test_layout.js
 
   blackbox-gate:
     if: always()

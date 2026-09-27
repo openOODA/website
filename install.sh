@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # openooda.org/install.sh — fetch the canonical installer, then run it.
-# Source of truth: openOODA/install/install.sh on GitHub (branch: main)
+# Source of truth: openOODA/install/install.sh on GitHub (branch: master)
 # Failed download must not exec an empty script (no curl | bash).
 set -e
 TMP=$(mktemp) || exit 1

@@ -1,0 +1,38 @@
+# Website guide: what lives where, how to preview
+
+File: website/docs/preview.oot
+
+The home page is plain files. No build step. What you see in this
+folder is what the world gets.
+
+## What lives where
+
+- `index.html` — the home page. `404.html` — the not-found page.
+- `styles/` — the look, one file per page part. `js/` — small
+  behaviors: copy button, rotating words, folding panels.
+- `assets/` — the small icon and the share picture.
+- `llms.txt`, `robots.txt`, `sitemap.xml` — notes for machines.
+- `install.sh` — the setup script the home page offers.
+- `tests/` — small checks. Run each with `node tests/<file>`.
+- `audit/` — past review notes. Read before big changes.
+
+## Preview before you publish
+
+1. Serve this folder on your machine (any plain file server).
+2. Open the home page and the not-found page. Both must load
+   with no missing pictures or broken looks.
+3. Click every link. Inside links must open. Outside links must
+   answer. The layout check below covers the inside ones.
+4. Narrow the window to a phone width. Text must stay readable
+   with no sideways scroll. Every style file carries small-screen
+   rules or fluid sizes for this.
+5. Run the checks: `node tests/test_copy.js` then
+   `node tests/test_layout.js`. Both must print PASS.
+
+## Rules for edits
+
+- Keep the home page plain. No app-style scripts on it.
+- Every new picture, style, or script file must be linked from
+  a page that exists, and every link must point at a file that
+  exists. The layout check refuses dead links.
+- Match the current voice: short lines, plain words, no hype.
