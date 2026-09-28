@@ -18,6 +18,8 @@ jobs:
         run: node tests/test_copy.js
       - name: run layout test
         run: node tests/test_layout.js
+      - name: run link test
+        run: node tests/test_links.js
 
   blackbox-gate:
     if: always()
