@@ -20,6 +20,8 @@ jobs:
         run: node tests/test_layout.js
       - name: run link test
         run: node tests/test_links.js
+      - name: run shim test
+        run: node tests/test_shim.js
 
   blackbox-gate:
     if: always()
