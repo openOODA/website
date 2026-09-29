@@ -52,7 +52,7 @@ All design, RFCs, practices, and onboarding live in [openOODA/openOODA](https://
 
 ## License
 
-Licensed under MIT. See [LICENSE](LICENSE).
+Apache-2.0. See [LICENSE](LICENSE) for full text.
 
 ---
 
