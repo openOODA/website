@@ -1,11 +1,18 @@
-// # assets/ — Static Binary Assets
+// # assets/ — Static Binary Assets Anchor
 //
-// Logline: Browser-loadable binary files referenced from the HTML
-//          shell and from social card scrapers.
+// Logline: Browser-loadable binary files referenced from HTML shell.
 //
-// Setup: No build step. Hand-maintained. Replace by overwrite.
+// Setup: Sovereign asset anchor exporting paths to static resources.
 //
 // Beats:
-//   1. favicon.svg   — the browser tab icon (24-line SVG, 281 bytes).
-//   2. open-graph.png — the 1200x630 social card used by OpenGraph
-//      and Twitter crawlers when a link is shared.
+//   1. Expose favicon path.
+//   2. Expose open-graph social card path.
+//   3. Retain asset identifiers for website compiler.
+
+pub fn asset_favicon_path() -> String {
+    return "assets/favicon.svg";
+}
+
+pub fn asset_open_graph_path() -> String {
+    return "assets/open-graph.png";
+}
