@@ -95,3 +95,10 @@ from this file. The file matches the hand-pushed `v0.1.x` tag.
 - Do not read deleted boards: START, MOONSHOTS, ROADMAP, SHIPPED,
   FORMAT, SECURITY, WORKFLOW, QUICKREF, CONSTRAINTS, STRUCTURE_EM,
   REDTEAM as ALLCAPS roots. Those files are gone.
+
+## 8. Userland tools (openOODA-tools)
+
+Standalone core utilities written in openOODA with agent MCP surfaces:
+- `oosh` (shell), `oogrep` (grep), `oodiff` (diff), `oofind` (find), `oojq` (jq).
+- Hub: https://openooda-tools.github.io • Repo: github.com/openOODA-tools
+
