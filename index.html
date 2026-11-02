@@ -192,13 +192,13 @@
         <!-- Panel 4: 5-Organization Ecosystem & 12 Functional Categories -->
         <section class="panel" id="ecosystem">
           <p class="panel-label">-- THE 5-ORGANIZATION ARCHITECTURE &amp; 12 FUNCTIONAL CATEGORIES --</p>
-          <p class="org-subtitle">5 Trust Layers (320+ Repositories) &times; 12 Functional Categories via <code>ooda.pkg</code></p>
+          <p class="org-subtitle">5 Trust Layers (318+ Repositories) &times; 12 Functional Categories via <code>ooda.pkg</code></p>
           <div class="repo-list">
             <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA</code><span class="repo-cat">L0</span><span class="repo-role">Layer 0 Toolchain &amp; Stdlib (14 repos) — <code>oodac</code>, <code>oodar</code>, <code>std</code>, <code>cli</code>, <code>opm</code>, <code>lsp</code>, <code>mcp</code>, <code>tui</code></span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA-kernel" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA-kernel</code><span class="repo-cat">L1</span><span class="repo-role">Layer 1 Ring-0 Microkernel &amp; Ring-3 Drivers (16 repos) — NT <code>Ob</code> + seL4 <code>CSpace</code>, UEFI, HALs, VirtIO/NVMe/GOP</span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://github.com/openOODA-OS" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA-OS</code><span class="repo-cat">L2</span><span class="repo-role">Layer 2 Zero-Root System Daemons &amp; Image Builder (16 repos) — <code>ooinit</code>, <code>oovfs</code>, <code>oonetd</code>, <code>oosysbus</code>, <code>ooimage</code></span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA-OS</code><span class="repo-cat">L2</span><span class="repo-role">Layer 2 Zero-Root System Daemons &amp; Image Builder (18 repos) — <code>ooinit</code>, <code>oovfs</code>, <code>oonetd</code>, <code>oosysbus</code>, <code>ooimage</code>, <code>ooaid</code>, <code>oorealm</code></span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA-tools" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA-tools</code><span class="repo-cat">L3</span><span class="repo-role">Layer 3 Userland CLI / TUI / MCP Suite (256 repos) — <code>oosh</code>, <code>oogrep</code>, <code>oofind</code>, <code>oojq</code>, <code>ootar</code>, <code>ootop</code></span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://github.com/openOODA-DE" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA-DE</code><span class="repo-cat">L4</span><span class="repo-role">Layer 4 Capability Wayland Desktop Environment (18 repos) — <code>oocomp</code>, <code>oowm</code>, <code>oopanel</code>, <code>ooportal</code>, <code>ooterm</code>, <code>ooagent-hud</code></span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA-DE</code><span class="repo-cat">L4</span><span class="repo-role">Layer 4 Capability Wayland Desktop Environment (20 repos) — <code>oocomp</code>, <code>oowm</code>, <code>oopanel</code>, <code>ooportal</code>, <code>oobazaar</code>, <code>oocockpit</code>, <code>ooagent-hud</code></span><span class="repo-arrow">&#8599;</span></a>
           </div>
           <div class="cat-grid">
             <div class="cat-card"><span class="cat-code">[01 SH]</span><span class="cat-title">Shell &amp; Terminal</span><p class="cat-desc">oosh, ooterm, oofzf, ootmux</p></div>
@@ -209,10 +209,10 @@
             <div class="cat-card"><span class="cat-code">[06 AR]</span><span class="cat-title">Archives &amp; OS Images</span><p class="cat-desc">ooimage, ootar, oogzip, oozstd</p></div>
             <div class="cat-card"><span class="cat-code">[07 NT]</span><span class="cat-title">Networking &amp; DNS</span><p class="cat-desc">oonetd, oodnsd, oodrv-net, oocurl</p></div>
             <div class="cat-card"><span class="cat-code">[08 SC]</span><span class="cat-title">Security, Crypto &amp; Caps</span><p class="cat-desc">ookernel-ob, oopolicyd, ooportal, oocap</p></div>
-            <div class="cat-card"><span class="cat-code">[09 PR]</span><span class="cat-title">Process, Sched &amp; IPC</span><p class="cat-desc">ookernel-sched, ookernel-ipc, ooinit, oosvc-mgr</p></div>
+            <div class="cat-card"><span class="cat-code">[09 PR]</span><span class="cat-title">Process, Sched &amp; IPC</span><p class="cat-desc">ookernel-sched, ookernel-ipc, ooinit, oorealm</p></div>
             <div class="cat-card"><span class="cat-code">[10 HW]</span><span class="cat-title">Hardware, HAL &amp; Power</span><p class="cat-desc">ookernel-boot, ookernel-mm, oodevd, oopowerd</p></div>
-            <div class="cat-card"><span class="cat-code">[11 UI]</span><span class="cat-title">Desktop, Wayland &amp; UI</span><p class="cat-desc">oocomp, oowm, oopanel, oowall, oote</p></div>
-            <div class="cat-card"><span class="cat-code">[12 AI]</span><span class="cat-title">AI Agents, MCP &amp; HUD</span><p class="cat-desc">oosysbus, oohealthd, ooagent-hud, oomcp</p></div>
+            <div class="cat-card"><span class="cat-code">[11 UI]</span><span class="cat-title">Desktop, Wayland &amp; UI</span><p class="cat-desc">oocomp, oowm, oobazaar, oocockpit, oote</p></div>
+            <div class="cat-card"><span class="cat-code">[12 AI]</span><span class="cat-title">AI Agents, MCP &amp; HUD</span><p class="cat-desc">ooaid, oosysbus, oohealthd, ooagent-hud</p></div>
           </div>
         </section>
 
@@ -261,7 +261,7 @@
 
         <!-- Panel 7: Layer 2 openOODA-OS -->
         <section class="panel" id="os">
-          <p class="panel-label">-- LAYER 2: @OPENOODA-OS ZERO-ROOT SYSTEM DAEMONS (16 REPOSITORIES) --</p>
+          <p class="panel-label">-- LAYER 2: @OPENOODA-OS ZERO-ROOT SYSTEM DAEMONS (18 REPOSITORIES) --</p>
           <div class="repo-list">
             <a class="repo-row" href="https://github.com/openOODA-OS/ooinit" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooinit</code><span class="repo-cat">PR</span><span class="repo-role">PID 1 capability root task — parses service manifests, derives narrowed CSpaces</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA-OS/oosvc-mgr" target="_blank" rel="noopener noreferrer"><code class="repo-name">oosvc-mgr</code><span class="repo-cat">PR</span><span class="repo-role">dependency-ordered service supervisor and health watchdog daemon</span><span class="repo-arrow">&#8599;</span></a>
@@ -279,12 +279,14 @@
             <a class="repo-row" href="https://github.com/openOODA-OS/oosysbus" target="_blank" rel="noopener noreferrer"><code class="repo-name">oosysbus</code><span class="repo-cat">AI</span><span class="repo-role">system-wide MCP-over-IPC broker connecting OS daemons, CLI tools, DE, and AI agents</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA-OS/oohealthd" target="_blank" rel="noopener noreferrer"><code class="repo-name">oohealthd</code><span class="repo-cat">AI</span><span class="repo-role">autonomous self-healing watchdog monitoring crash/quota anomalies and rollback</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA-OS/ooimage" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooimage</code><span class="repo-cat">AR</span><span class="repo-role">deterministic OS image builder for Level 1 Linux+OODA ISO and Level 2 ookernel images</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/ooaid" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooaid</code><span class="repo-cat">AI</span><span class="repo-role">OS Local/Cloud Inference &amp; KV-Cache Daemon managing zero-copy NVMe-to-VRAM weight pools, oocage GPU cells, and privacy-tainted routing</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oorealm" target="_blank" rel="noopener noreferrer"><code class="repo-name">oorealm</code><span class="repo-cat">PR</span><span class="repo-role">Foreign ABI &amp; 3-Tier Compatibility Realm Manager for Flathub OSTree realms, Podman OCI containers, and Steam/WinRealm IOMMU gaming realms</span><span class="repo-arrow">&#8599;</span></a>
           </div>
         </section>
 
         <!-- Panel 8: Layer 4 openOODA-DE -->
         <section class="panel" id="de">
-          <p class="panel-label">-- LAYER 4: @OPENOODA-DE WAYLAND DESKTOP ENVIRONMENT (18 REPOSITORIES) --</p>
+          <p class="panel-label">-- LAYER 4: @OPENOODA-DE WAYLAND DESKTOP ENVIRONMENT (20 REPOSITORIES) --</p>
           <div class="repo-list">
             <a class="repo-row" href="https://github.com/openOODA-DE/oocomp" target="_blank" rel="noopener noreferrer"><code class="repo-name">oocomp</code><span class="repo-cat">UI</span><span class="repo-role">capability-enforced Wayland tiling and floating compositor with live capability border badges</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA-DE/oowm" target="_blank" rel="noopener noreferrer"><code class="repo-name">oowm</code><span class="repo-cat">UI</span><span class="repo-role">spatial workspace grid, overview zoom, and multi-monitor tiling window manager</span><span class="repo-arrow">&#8599;</span></a>
@@ -304,6 +306,19 @@
             <a class="repo-row" href="https://github.com/openOODA-DE/ooagent-hud" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooagent-hud</code><span class="repo-cat">AI</span><span class="repo-role">Human Category Bucketer and AI Fleet HUD across all 5 organizations</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA-DE/ooedit" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooedit</code><span class="repo-cat">TX</span><span class="repo-role">native modal code and .oot editor with built-in oodac LSP diagnostics and oote themes</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA-DE/ooview" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooview</code><span class="repo-cat">UI</span><span class="repo-role">zero-network sandboxed PDF, image, SVG, and Markdown/.oot viewer (FsReadCap only)</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/oobazaar" target="_blank" rel="noopener noreferrer"><code class="repo-name">oobazaar</code><span class="repo-cat">UI</span><span class="repo-role">Unified Graphical Software Store &amp; Capability Blast-Radius Inspector for opm, Flathub Flatpaks, Podman OCI containers, and Steam/WinRealm games</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/oocockpit" target="_blank" rel="noopener noreferrer"><code class="repo-name">oocockpit</code><span class="repo-cat">OBS</span><span class="repo-role">Adaptive OODA Command Deck (Observe &#8594; Orient &#8594; Decide &#8594; Act) with Chameleon Device Morphing, AI Root-Cause Action Cards, IOMMU Capability X-Ray, and Time-Travel Flight Recorder</span><span class="repo-arrow">&#8599;</span></a>
+          </div>
+        </section>
+
+        <!-- Panel 9: 3-Tier Universal App Compatibility & Store Architecture -->
+        <section class="panel" id="compatibility">
+          <p class="panel-label">-- 3-TIER UNIVERSAL APP COMPATIBILITY &amp; STORE ARCHITECTURE --</p>
+          <p class="org-subtitle">Run Flathub Desktop Apps, Rootless OCI Server Containers, and Steam/Proton + IOMMU Anti-Cheat Games inside Mathematically Bounded Capability Realms</p>
+          <div class="repo-list">
+            <a class="repo-row" href="https://github.com/openOODA-DE/oobazaar" target="_blank" rel="noopener noreferrer"><code class="repo-name">Tier 1: Flathub &amp; oobazaar</code><span class="repo-cat">DE/OS</span><span class="repo-role"><code>oobazaar</code> + <code>ooimage</code> ingest Flathub OSTree Merkle commits; <code>oopolicyd</code> translates Flatpak metadata 1-to-1 into attenuated <code>WindowCap</code>, <code>FrameCap</code>, <code>AudioCap</code>, <code>NetConnectCap</code> &amp; scoped <code>FsReadCap</code> mediated by <code>ooportal</code></span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oorealm" target="_blank" rel="noopener noreferrer"><code class="repo-name">Tier 2: Rootless OCI</code><span class="repo-cat">OS/TL</span><span class="repo-role"><code>oorealm</code> + <code>oocage</code> + <code>ooimage</code> + <code>oosvc-mgr</code> run daemonless rootless OCI containers (Bazarr, Sonarr, Plex, Postgres) in isolated <code>CSpace</code>s over read-only Merkle layers with explicit <code>FsReadCap</code>/<code>FsWriteCap</code>/<code>BindCap</code></span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/oocockpit" target="_blank" rel="noopener noreferrer"><code class="repo-name">Tier 3: WinRealm &amp; oocockpit</code><span class="repo-cat">KR/DE</span><span class="repo-role">Linux Steam/Proton in a GPU capability cell, plus IOMMU-fenced Windows NT Gaming Realm (<code>WinRealm</code> via <code>oorealm</code> + <code>ookernel-iommu</code>) streaming 144Hz/240Hz IVSHMEM <code>FrameCap</code> into <code>oocomp</code> and monitored live by <code>oocockpit</code></span><span class="repo-arrow">&#8599;</span></a>
           </div>
         </section>
       </main>

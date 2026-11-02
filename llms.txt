@@ -41,9 +41,9 @@ via `ooda.pkg` `layer=` and `category=` fields):
 
 1. `github.com/openOODA` (Layer 0: Toolchain & Stdlib — 14 repos)
 2. `github.com/openOODA-kernel` (Layer 1: Ring-0 Microkernel & Drivers — 16 repos)
-3. `github.com/openOODA-OS` (Layer 2: Zero-Root System Daemons & Image Builder — 16 repos)
+3. `github.com/openOODA-OS` (Layer 2: Zero-Root System Daemons & Image Builder — 18 repos)
 4. `github.com/openOODA-tools` (Layer 3: Userland CLI / TUI / MCP Suite — 256 repos)
-5. `github.com/openOODA-DE` (Layer 4: Capability Wayland Desktop Environment — 18 repos)
+5. `github.com/openOODA-DE` (Layer 4: Capability Wayland Desktop Environment — 20 repos)
 
 12 Functional Category Codes (`category=` in `ooda.pkg`):
 `SH` (Shell & Terminal), `FS` (Filesystem & Disk), `DF` (Search, Diff & Patch),
@@ -78,12 +78,12 @@ NT Executive Object Manager (`Ob`) + seL4 `CSpaceTable` and `CdtTree` in `.oo`:
 `ookernel-unikernel`, `oodrv-pci`, `oodrv-virtio`, `oodrv-nvme`, `oodrv-net`,
 `oodrv-usb-hid`, `oodrv-display-gop`.
 
-## 6. Layer 2: openOODA-OS (16 repos)
+## 6. Layer 2: openOODA-OS (18 repos)
 
 Zero-root capability operating system daemons and MCP-over-IPC system bus:
 `ooinit`, `oosvc-mgr`, `oovfs`, `oofs-ext4`, `oofs-tmp`, `oonetd`, `oodnsd`,
 `oodevd`, `oosession`, `oopolicyd`, `ooaudiod`, `oopowerd`, `oologd`,
-`oosysbus`, `oohealthd`, `ooimage`.
+`oosysbus`, `oohealthd`, `ooimage`, `ooaid`, `oorealm`.
 
 ## 7. Layer 3: openOODA-tools (256 repos)
 
@@ -91,12 +91,12 @@ Standalone CLI / TUI / MCP utilities across all 12 categories:
 - `oosh` (shell), `oogrep` (grep), `oodiff` (diff), `oofind` (find), `oojq` (jq), `ootar` (tar), `ootop` (top), `oote` (theme engine).
 - Hub: https://openooda-tools.github.io • Org: github.com/openOODA-tools
 
-## 8. Layer 4: openOODA-DE (18 repos)
+## 8. Layer 4: openOODA-DE (20 repos)
 
 Capability-enforced Wayland desktop environment in pure `.oo`:
 `oocomp`, `oowm`, `oopanel`, `oolaunch`, `ooportal`, `oowall`, `ooshelf`,
 `ootoast`, `oolock`, `ooterm`, `oofiles`, `ootaskmgr`, `oosettings`,
-`ooclip`, `ooshot`, `ooagent-hud`, `ooedit`, `ooview`.
+`ooclip`, `ooshot`, `ooagent-hud`, `ooedit`, `ooview`, `oobazaar`, `oocockpit`.
 
 ## 9. 26 Capability Tokens
 
@@ -108,9 +108,22 @@ Capability-enforced Wayland desktop environment in pure `.oo`:
 Pass a borrowed token (`&FsReadCap`). Missing token fails compile
 (`E_CAP`) or exits `ERR\tcap\t...`. Zero ambient authority.
 
-## 10. Install
+## 10. 3-Tier Universal App Compatibility & Store Architecture
+
+1. Tier 1 — Flathub / Bazaar Desktop Store Bridge (`ooportal` + `ooimage` + `oopolicyd`):
+   - `ooimage` ingests Flathub OSTree Merkle commits into the immutable content-addressed store.
+   - `oopolicyd` translates Flatpak metadata permissions (`sockets=wayland;pulseaudio;network`, `filesystems=...`) 1-to-1 into attenuated capability tokens (`WindowCap`, `FrameCap`, `AudioCap`, `NetConnectCap`, scoped `FsReadCap`).
+   - `ooportal` mediates file/URI/screen access via intent-driven capability handles.
+2. Tier 2 — Podman-Style Rootless Server Containers (`oocage` + `ooimage` + `oosvc-mgr`):
+   - Daemonless, rootless OCI container execution (Bazarr, Sonarr, Plex, Postgres) where each container runs in an isolated `CSpace` over read-only `ooimage` Merkle layers and explicit volume/port capabilities (`FsReadCap`/`FsWriteCap`/`NetBindCap`).
+3. Tier 3 — Steam/Proton Gaming Cell + IOMMU-Isolated Windows Anti-Cheat Realm (`WinRealm`):
+   - Linux Steam + Proton (`DXVK`/`VKD3D`) runs inside a GPU capability cell (`GpuCap` + `FrameCap` + `AudioCap` + `HidCap`) with zero access to personal files or keys.
+   - For kernel anti-cheat Windows games (Destiny 2 / BattlEye `BEDaisy.sys`), `ookernel-iommu` + `oodrv-pci` binds the GPU/NVMe partition to an IOMMU-fenced Windows NT Gaming Realm (`WinRealm` via `ookernel-unikernel`) with vTPM/SMBIOS passthrough from `ookernel-boot`, streaming frames at 144Hz/240Hz via zero-copy shared-memory `FrameCap` (LookingGlass/IVSHMEM ring) directly into a native `oocomp` window while mixing audio via `ooaudiod` and forwarding raw input via `oodrv-usb-hid`.
+
+## 11. Install
 
 ```
 curl -fsSL https://openooda.org/install.sh | bash
 ooda update
 ```
+
