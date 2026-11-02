@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>openOODA // Sovereign Systems Language for the AI Era</title>
+    <title>openOODA // Capability-Secure Systems Language &amp; 5-Org Ecosystem</title>
     <meta
       name="description"
-      content="openOODA is a capability-secure systems language where every effect requires an explicit, unforgeable capability token. Hardware first, zero ambient authority."
+      content="openOODA is a capability-secure systems language and 5-organization ecosystem spanning Toolchain, Microkernel, Zero-Root OS, 256 CLI/MCP Tools, and Wayland Desktop Environment."
     />
-    <meta property="og:title" content="openOODA // Sovereign Systems Language for the AI Era" />
-    <meta property="og:description" content="Every effect requires an unforgeable capability token. E_CAP is not a warning. It does not compile." />
+    <meta property="og:title" content="openOODA // Capability-Secure Systems Language &amp; 5-Org Ecosystem" />
+    <meta property="og:description" content="Every effect requires an unforgeable capability token across 5 layers: Toolchain, Kernel, OS, Tools, and Desktop Environment." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://openooda.org" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
@@ -34,13 +34,13 @@
 
         <!-- Panel 1: overview -->
         <section class="panel" id="overview">
-          <p class="hero-eyebrow">SOVEREIGN SYSTEMS LANGUAGE // TECHNOLOGY PREVIEW</p>
+          <p class="hero-eyebrow">CAPABILITY-SECURE SYSTEMS ARCHITECTURE // 5-ORG ECOSYSTEM</p>
           <h1 class="terminal-title"><span id="hero-title">Fail-Closed by Design</span><span class="term-cursor" aria-hidden="true">_</span></h1>
           <p class="terminal-intro">
             openOODA is a
             <span class="t" tabindex="0" data-tip="authority handed to code as a value, never inherited. a function that doesn't receive the token cannot produce the effect.">capability-secure</span>
-            systems language where every effect requires an explicit,
-            <span class="t" tabindex="0" data-tip="created by the runtime, impossible to fake or guess. the type system verifies it before your code ever runs — it is not a string you could copy.">unforgeable capability token</span>.
+            systems language and full-stack operating ecosystem where every effect requires an explicit,
+            <span class="t" tabindex="0" data-tip="created by the runtime or kernel, impossible to fake or guess. the type system verifies it before your code ever runs.">unforgeable capability token</span>.
             Your process is born with
             <span class="t" tabindex="0" data-tip="zero ambient authority: nothing happens just because the program is running. files, sockets, processes — all denied until a token grants them.">no privileges</span>.
             That is not an accident. That is the type system. A function that
@@ -51,13 +51,16 @@
           <p class="hero-why">
             <span class="why-prompt">&gt;</span> Agents are writing production code now.
             Ambient authority means anything they emit can touch everything.
-            openOODA makes authority explicit — checked by the compiler, not
-            the prompt.
+            openOODA makes authority explicit across all 5 layers: Toolchain,
+            Ring-0 Microkernel, Zero-Root OS, Userland CLI/MCP Tools, and Wayland Desktop.
           </p>
 
           <div class="terminal-actions">
-            <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer" class="term-btn">[ GITHUB: @OPENOODA &#8599; ]</a>
-            <a href="https://openooda-tools.github.io" target="_blank" rel="noopener noreferrer" class="term-btn">[ TOOLS: @OPENOODA-TOOLS &#8599; ]</a>
+            <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer" class="term-btn">[ L0: @OPENOODA &#8599; ]</a>
+            <a href="https://github.com/openOODA-kernel" target="_blank" rel="noopener noreferrer" class="term-btn">[ L1: @OPENOODA-KERNEL &#8599; ]</a>
+            <a href="https://github.com/openOODA-OS" target="_blank" rel="noopener noreferrer" class="term-btn">[ L2: @OPENOODA-OS &#8599; ]</a>
+            <a href="https://github.com/openOODA-tools" target="_blank" rel="noopener noreferrer" class="term-btn">[ L3: @OPENOODA-TOOLS &#8599; ]</a>
+            <a href="https://github.com/openOODA-DE" target="_blank" rel="noopener noreferrer" class="term-btn">[ L4: @OPENOODA-DE &#8599; ]</a>
             <a href="https://openooda.org/llms.txt" class="term-btn term-btn-amber">[ LLMS.TXT ]</a>
           </div>
 
@@ -79,11 +82,10 @@
               <div class="bring-text">
                 <strong>OCAPS // Capability Security</strong>
                 <p>
-                  Every effect — network, disk, process, GPU — requires a
+                  Every effect — network, disk, process, GPU, display scanout — requires a
                   <span class="t" tabindex="0" data-tip="object-capability security: authority is a first-class value you pass to a function, like a key handed to a worker. no key, no effect.">capability token</span>
                   held by the code that performs it. Missing a cap isn't a
-                  warning — the build refuses. 14 language tokens, 26 substrate
-                  capabilities, enforced at compile time.
+                  warning — the build refuses. 26 substrate capabilities enforced at compile time and runtime.
                 </p>
               </div>
             </div>
@@ -107,44 +109,38 @@
               <div class="bring-text">
                 <strong>AGENT-NATIVE // Built for AI</strong>
                 <p>
-                  The toolchain ships an
-                  <span class="t" tabindex="0" data-tip="Model Context Protocol — the open standard that lets AI agents call tools. openOODA's MCP server exposes 26 capability-aware tools: check, emit, build, run, crash_report.">MCP server</span>,
+                  The toolchain and OS ship native
+                  <span class="t" tabindex="0" data-tip="Model Context Protocol — the open standard that lets AI agents call tools. openOODA exposes MCP across compiler tools, CLI utilities, and oosysbus.">MCP servers</span>,
                   an
                   <span class="t" tabindex="0" data-tip="Language Server Protocol — powers editor diagnostics, rename, and go-to-definition for .oo files.">LSP</span>,
-                  and an <code>llms.txt</code> map — so agents read, check, and
-                  build openOODA the way it was designed to be used.
+                  and an <code>llms.txt</code> map — while keeping 1-binary-per-repo stationary topology (16–256 LOC per page) for autonomous agent verification.
                 </p>
               </div>
             </div>
             <div class="bring-row">
               <span class="bring-num">04</span>
               <div class="bring-text">
-                <strong>ASYMMETRIC PERFORMANCE // SMT Bounds Elision</strong>
+                <strong>NT + seL4 HYBRID KERNEL // Zero-Root OS</strong>
                 <p>
-                  Compile-time SMT verification (QF_LIA) proves indices safe,
-                  emitting unchecked raw pointer GEP loads in LLVM IR without runtime
-                  branch overhead while retaining fail-closed isolation.
+                  <code>openOODA-kernel</code> fuses Windows NT uniform executive object headers (`Ob`) with seL4 `CSpaceTable` slot capabilities and cascading `CdtTree` revocation, powering a zero-root `openOODA-OS` and Wayland `openOODA-DE`.
                 </p>
               </div>
             </div>
             <div class="bring-row">
               <span class="bring-num">05</span>
               <div class="bring-text">
-                <strong>ZERO-COPY GPU &amp; ACTORS // Hardware Symmetry</strong>
+                <strong>ASYMMETRIC PERFORMANCE // SMT &amp; Zero-Copy Arenas</strong>
                 <p>
-                  Direct capability-gated unified memory kernel dispatch with 64-byte
-                  aligned bump arenas and Erlang-grade lock-free actor channels
-                  operating without garbage collection pauses.
+                  Compile-time SMT verification (QF_LIA) elides bounds checks, while 64-byte aligned bump arenas and lock-free actor channels operate without garbage collection pauses.
                 </p>
               </div>
             </div>
             <div class="bring-row">
               <span class="bring-num">06</span>
               <div class="bring-text">
-                <strong>SELF-HEALING // Agent Diagnostics &amp; Parity</strong>
+                <strong>TWO-VIEW TAXONOMY // 5 Layers &times; 12 Categories</strong>
                 <p>
-                  Automated single-turn repair CLI with autopsy ingestion, rich LSP
-                  verification proofs, and 100% bit-identical double-run binary parity.
+                  AI agents operate on flat 1-binary-per-repo git repositories across 5 GitHub Organizations, while humans browse a 5-Layer &times; 12-Category faceted catalog compiled directly from each repo's <code>ooda.pkg</code> manifest.
                 </p>
               </div>
             </div>
@@ -193,16 +189,43 @@
           </div>
         </section>
 
-        <!-- Panel 4: the constellation -->
+        <!-- Panel 4: 5-Organization Ecosystem & 12 Functional Categories -->
+        <section class="panel" id="ecosystem">
+          <p class="panel-label">-- THE 5-ORGANIZATION ARCHITECTURE &amp; 12 FUNCTIONAL CATEGORIES --</p>
+          <p class="org-subtitle">5 Trust Layers (320+ Repositories) &times; 12 Functional Categories via <code>ooda.pkg</code></p>
+          <div class="repo-list">
+            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA</code><span class="repo-cat">L0</span><span class="repo-role">Layer 0 Toolchain &amp; Stdlib (14 repos) — <code>oodac</code>, <code>oodar</code>, <code>std</code>, <code>cli</code>, <code>opm</code>, <code>lsp</code>, <code>mcp</code>, <code>tui</code></span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA-kernel</code><span class="repo-cat">L1</span><span class="repo-role">Layer 1 Ring-0 Microkernel &amp; Ring-3 Drivers (16 repos) — NT <code>Ob</code> + seL4 <code>CSpace</code>, UEFI, HALs, VirtIO/NVMe/GOP</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA-OS</code><span class="repo-cat">L2</span><span class="repo-role">Layer 2 Zero-Root System Daemons &amp; Image Builder (16 repos) — <code>ooinit</code>, <code>oovfs</code>, <code>oonetd</code>, <code>oosysbus</code>, <code>ooimage</code></span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-tools" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA-tools</code><span class="repo-cat">L3</span><span class="repo-role">Layer 3 Userland CLI / TUI / MCP Suite (256 repos) — <code>oosh</code>, <code>oogrep</code>, <code>oofind</code>, <code>oojq</code>, <code>ootar</code>, <code>ootop</code></span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA-DE</code><span class="repo-cat">L4</span><span class="repo-role">Layer 4 Capability Wayland Desktop Environment (18 repos) — <code>oocomp</code>, <code>oowm</code>, <code>oopanel</code>, <code>ooportal</code>, <code>ooterm</code>, <code>ooagent-hud</code></span><span class="repo-arrow">&#8599;</span></a>
+          </div>
+          <div class="cat-grid">
+            <div class="cat-card"><span class="cat-code">[01 SH]</span><span class="cat-title">Shell &amp; Terminal</span><p class="cat-desc">oosh, ooterm, oofzf, ootmux</p></div>
+            <div class="cat-card"><span class="cat-code">[02 FS]</span><span class="cat-title">Filesystem &amp; Disk</span><p class="cat-desc">oovfs, oofs-ext4, oodrv-nvme, oofiles</p></div>
+            <div class="cat-card"><span class="cat-code">[03 DF]</span><span class="cat-title">Search, Diff &amp; Patch</span><p class="cat-desc">oogrep, oodiff, ooastdiff, oopatch</p></div>
+            <div class="cat-card"><span class="cat-code">[04 TX]</span><span class="cat-title">Text, Binary &amp; Stream</span><p class="cat-desc">oosed, ooawk, oocat, ooedit</p></div>
+            <div class="cat-card"><span class="cat-code">[05 DT]</span><span class="cat-title">Structured Data &amp; Query</span><p class="cat-desc">oojq, oocsv, oocbor, oosqllite</p></div>
+            <div class="cat-card"><span class="cat-code">[06 AR]</span><span class="cat-title">Archives &amp; OS Images</span><p class="cat-desc">ooimage, ootar, oogzip, oozstd</p></div>
+            <div class="cat-card"><span class="cat-code">[07 NT]</span><span class="cat-title">Networking &amp; DNS</span><p class="cat-desc">oonetd, oodnsd, oodrv-net, oocurl</p></div>
+            <div class="cat-card"><span class="cat-code">[08 SC]</span><span class="cat-title">Security, Crypto &amp; Caps</span><p class="cat-desc">ookernel-ob, oopolicyd, ooportal, oocap</p></div>
+            <div class="cat-card"><span class="cat-code">[09 PR]</span><span class="cat-title">Process, Sched &amp; IPC</span><p class="cat-desc">ookernel-sched, ookernel-ipc, ooinit, oosvc-mgr</p></div>
+            <div class="cat-card"><span class="cat-code">[10 HW]</span><span class="cat-title">Hardware, HAL &amp; Power</span><p class="cat-desc">ookernel-boot, ookernel-mm, oodevd, oopowerd</p></div>
+            <div class="cat-card"><span class="cat-code">[11 UI]</span><span class="cat-title">Desktop, Wayland &amp; UI</span><p class="cat-desc">oocomp, oowm, oopanel, oowall, oote</p></div>
+            <div class="cat-card"><span class="cat-code">[12 AI]</span><span class="cat-title">AI Agents, MCP &amp; HUD</span><p class="cat-desc">oosysbus, oohealthd, ooagent-hud, oomcp</p></div>
+          </div>
+        </section>
+
+        <!-- Panel 5: Layer 0 openOODA Toolchain -->
         <section class="panel" id="constellation">
-          <p class="panel-label">-- THE CONSTELLATION: 13 REPOSITORIES, ONE SYSTEM --</p>
+          <p class="panel-label">-- LAYER 0: @OPENOODA TOOLCHAIN &amp; STDLIB (13 REPOSITORIES) --</p>
           <div class="repo-list">
             <a class="repo-row" href="https://github.com/openOODA/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">openOODA</code><span class="repo-role">the constitution — 24 laws, RFCs, governance</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA/oodac" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodac</code><span class="repo-role">the self-hosting compiler — .oo &#8594; LLVM IR &#8594; native</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA/oodar" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodar</code><span class="repo-role">capability-secure C substrate — <span class="t" tabindex="0" data-tip="post-quantum cryptography: ML-KEM-768 key exchange + ML-DSA-65 signatures — safe against quantum attacks that don't exist yet.">PQC</span>, <span class="t" tabindex="0" data-tip="a Linux kernel sandbox — the runtime restricts what the OS itself lets a process touch.">Landlock</span>, ROCm GPU</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA/std" target="_blank" rel="noopener noreferrer"><code class="repo-name">std</code><span class="repo-role">the standard library — 188 modules across 8 domains</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA/ooda" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooda</code><span class="repo-role">the workflow driver — build, run, test, fix</span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://github.com/openOODA/cli" target="_blank" rel="noopener noreferrer"><code class="repo-name">cli</code><span class="repo-role">sovereign developer driver — build, run, fmt, qa</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA/cli" target="_blank" rel="noopener noreferrer"><code class="repo-name">cli</code><span class="repo-role">primary developer driver — build, run, fmt, qa</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA/tui" target="_blank" rel="noopener noreferrer"><code class="repo-name">tui</code><span class="repo-role">the line-mode coding harness — slash commands, LLM round-trip</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA/install" target="_blank" rel="noopener noreferrer"><code class="repo-name">install</code><span class="repo-role">the one-line toolchain bootstrap</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA/opm" target="_blank" rel="noopener noreferrer"><code class="repo-name">opm</code><span class="repo-role">the package manager — capability-aware, signed, deterministic</span><span class="repo-arrow">&#8599;</span></a>
@@ -210,6 +233,77 @@
             <a class="repo-row" href="https://github.com/openOODA/lsp" target="_blank" rel="noopener noreferrer"><code class="repo-name">lsp</code><span class="repo-role">the language server — diagnostics, rename, go-to-def</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA/mcp" target="_blank" rel="noopener noreferrer"><code class="repo-name">mcp</code><span class="repo-role">the MCP server — 26 capability-aware tools, flight recorder, crash autopsy</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" href="https://github.com/openOODA/website" target="_blank" rel="noopener noreferrer"><code class="repo-name">website</code><span class="repo-role">the website source — pure static HTML/CSS/JS</span><span class="repo-arrow">&#8599;</span></a>
+          </div>
+        </section>
+
+        <!-- Panel 6: Layer 1 openOODA-kernel -->
+        <section class="panel" id="kernel">
+          <p class="panel-label">-- LAYER 1: @OPENOODA-KERNEL MICROKERNEL &amp; DRIVERS (16 REPOSITORIES) --</p>
+          <div class="repo-list">
+            <a class="repo-row" href="https://github.com/openOODA-kernel/ookernel-ob" target="_blank" rel="noopener noreferrer"><code class="repo-name">ookernel-ob</code><span class="repo-cat">SC</span><span class="repo-role">NT/seL4 Hybrid Executive Object Manager — 62-bit CapDescriptor256, arena CSpaceTable, multi-node CdtTree</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/ookernel-boot" target="_blank" rel="noopener noreferrer"><code class="repo-name">ookernel-boot</code><span class="repo-cat">HW</span><span class="repo-role">UEFI GOP/ACPI/DTB bootloader and ELF loader</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/ookernel-hal-x86" target="_blank" rel="noopener noreferrer"><code class="repo-name">ookernel-hal-x86</code><span class="repo-cat">HW</span><span class="repo-role">x86_64 GDT/IDT, SYSCALL/SYSRET, LAPIC/IOAPIC, and SMP startup HAL</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/ookernel-hal-arm64" target="_blank" rel="noopener noreferrer"><code class="repo-name">ookernel-hal-arm64</code><span class="repo-cat">HW</span><span class="repo-role">ARM64 EL1 vectors, GICv3 interrupt controller, and PSCI SMP HAL</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/ookernel-hal-riscv" target="_blank" rel="noopener noreferrer"><code class="repo-name">ookernel-hal-riscv</code><span class="repo-cat">HW</span><span class="repo-role">RISC-V S-mode CSRs, PLIC/CLINT, Sv48 paging, and PMP HAL</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/ookernel-mm" target="_blank" rel="noopener noreferrer"><code class="repo-name">ookernel-mm</code><span class="repo-cat">HW</span><span class="repo-role">physical frame allocator, W^X 4-level page tables, and DMA bounce pools</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/ookernel-sched" target="_blank" rel="noopener noreferrer"><code class="repo-name">ookernel-sched</code><span class="repo-cat">PR</span><span class="repo-role">preemptive tickless EDF scheduler, TCB context switch, and CycleQuota</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/ookernel-ipc" target="_blank" rel="noopener noreferrer"><code class="repo-name">ookernel-ipc</code><span class="repo-cat">PR</span><span class="repo-role">zero-copy register IPC, BadgedEndpoint, and shared-memory IRP rings</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/ookernel-iommu" target="_blank" rel="noopener noreferrer"><code class="repo-name">ookernel-iommu</code><span class="repo-cat">SC</span><span class="repo-role">VT-d / AMD-Vi / SMMU DMA isolation enforcing FrameCap boundaries</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/ookernel-unikernel" target="_blank" rel="noopener noreferrer"><code class="repo-name">ookernel-unikernel</code><span class="repo-cat">HW</span><span class="repo-role">single-address-space Firecracker and QEMU microVM target</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/oodrv-pci" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodrv-pci</code><span class="repo-cat">HW</span><span class="repo-role">Ring-3 PCIe ECAM enumerator and MSI-X capability broker</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/oodrv-virtio" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodrv-virtio</code><span class="repo-cat">HW</span><span class="repo-role">Ring-3 VirtIO block/net/gpu/input split and packed virtqueue driver suite</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/oodrv-nvme" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodrv-nvme</code><span class="repo-cat">FS</span><span class="repo-role">Ring-3 NVMe submission and completion queue block driver</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/oodrv-net" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodrv-net</code><span class="repo-cat">NT</span><span class="repo-role">Ring-3 e1000e / RTL8125 / VirtIO-net packet ring driver</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/oodrv-usb-hid" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodrv-usb-hid</code><span class="repo-cat">HW</span><span class="repo-role">Ring-3 xHCI USB and HID input driver minting UsbCap and HidCap</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel/oodrv-display-gop" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodrv-display-gop</code><span class="repo-cat">UI</span><span class="repo-role">Ring-3 UEFI GOP / VirtIO-GPU / DRM scanout driver minting FrameCap</span><span class="repo-arrow">&#8599;</span></a>
+          </div>
+        </section>
+
+        <!-- Panel 7: Layer 2 openOODA-OS -->
+        <section class="panel" id="os">
+          <p class="panel-label">-- LAYER 2: @OPENOODA-OS ZERO-ROOT SYSTEM DAEMONS (16 REPOSITORIES) --</p>
+          <div class="repo-list">
+            <a class="repo-row" href="https://github.com/openOODA-OS/ooinit" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooinit</code><span class="repo-cat">PR</span><span class="repo-role">PID 1 capability root task — parses service manifests, derives narrowed CSpaces</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oosvc-mgr" target="_blank" rel="noopener noreferrer"><code class="repo-name">oosvc-mgr</code><span class="repo-cat">PR</span><span class="repo-role">dependency-ordered service supervisor and health watchdog daemon</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oovfs" target="_blank" rel="noopener noreferrer"><code class="repo-name">oovfs</code><span class="repo-cat">FS</span><span class="repo-role">Capability Virtual Filesystem resolving paths against directory capabilities (DirCap)</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oofs-ext4" target="_blank" rel="noopener noreferrer"><code class="repo-name">oofs-ext4</code><span class="repo-cat">FS</span><span class="repo-role">pure .oo extent filesystem driver and mkfs formatter with BLAKE3 block checksums</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oofs-tmp" target="_blank" rel="noopener noreferrer"><code class="repo-name">oofs-tmp</code><span class="repo-cat">FS</span><span class="repo-role">ephemeral arena RAM filesystem for /tmp, /run, and zero-copy IPC</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oonetd" target="_blank" rel="noopener noreferrer"><code class="repo-name">oonetd</code><span class="repo-cat">NT</span><span class="repo-role">user-space TCP/IP/UDP/DHCP/WireGuard stack minting BindCap and TcpCap</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oodnsd" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodnsd</code><span class="repo-cat">NT</span><span class="repo-role">capability-isolated caching DNS / DoH / mDNS resolver</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oodevd" target="_blank" rel="noopener noreferrer"><code class="repo-name">oodevd</code><span class="repo-cat">HW</span><span class="repo-role">hardware device broker delegating UsbCap, HidCap, FrameCap, and AudioCap to seat</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oosession" target="_blank" rel="noopener noreferrer"><code class="repo-name">oosession</code><span class="repo-cat">SC</span><span class="repo-role">seat and login manager with Ed25519/FIDO2 auth minting user session CSpace</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oopolicyd" target="_blank" rel="noopener noreferrer"><code class="repo-name">oopolicyd</code><span class="repo-cat">SC</span><span class="repo-role">dynamic capability broker evaluating .oot policy rules and grant prompts</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/ooaudiod" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooaudiod</code><span class="repo-cat">UI</span><span class="repo-role">low-latency lock-free ring-buffer audio server gated by AudioCap</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oopowerd" target="_blank" rel="noopener noreferrer"><code class="repo-name">oopowerd</code><span class="repo-cat">HW</span><span class="repo-role">ACPI thermal, battery, CPU governor, and suspend/resume daemon</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oologd" target="_blank" rel="noopener noreferrer"><code class="repo-name">oologd</code><span class="repo-cat">HW</span><span class="repo-role">tamper-evident BLAKE3 hash-chained structured log daemon</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oosysbus" target="_blank" rel="noopener noreferrer"><code class="repo-name">oosysbus</code><span class="repo-cat">AI</span><span class="repo-role">system-wide MCP-over-IPC broker connecting OS daemons, CLI tools, DE, and AI agents</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/oohealthd" target="_blank" rel="noopener noreferrer"><code class="repo-name">oohealthd</code><span class="repo-cat">AI</span><span class="repo-role">autonomous self-healing watchdog monitoring crash/quota anomalies and rollback</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS/ooimage" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooimage</code><span class="repo-cat">AR</span><span class="repo-role">deterministic OS image builder for Level 1 Linux+OODA ISO and Level 2 ookernel images</span><span class="repo-arrow">&#8599;</span></a>
+          </div>
+        </section>
+
+        <!-- Panel 8: Layer 4 openOODA-DE -->
+        <section class="panel" id="de">
+          <p class="panel-label">-- LAYER 4: @OPENOODA-DE WAYLAND DESKTOP ENVIRONMENT (18 REPOSITORIES) --</p>
+          <div class="repo-list">
+            <a class="repo-row" href="https://github.com/openOODA-DE/oocomp" target="_blank" rel="noopener noreferrer"><code class="repo-name">oocomp</code><span class="repo-cat">UI</span><span class="repo-role">capability-enforced Wayland tiling and floating compositor with live capability border badges</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/oowm" target="_blank" rel="noopener noreferrer"><code class="repo-name">oowm</code><span class="repo-cat">UI</span><span class="repo-role">spatial workspace grid, overview zoom, and multi-monitor tiling window manager</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/oopanel" target="_blank" rel="noopener noreferrer"><code class="repo-name">oopanel</code><span class="repo-cat">UI</span><span class="repo-role">top status panel, workspace pill strip, system tray, clock, and capability indicator bar</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/oolaunch" target="_blank" rel="noopener noreferrer"><code class="repo-name">oolaunch</code><span class="repo-cat">UI</span><span class="repo-role">keyboard-first command palette, app launcher, window switcher, and AI action bar</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/ooportal" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooportal</code><span class="repo-cat">SC</span><span class="repo-role">real-time Capability Portal and Privacy HUD for interactive mic/cam/screen/FS grants</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/oowall" target="_blank" rel="noopener noreferrer"><code class="repo-name">oowall</code><span class="repo-cat">UI</span><span class="repo-role">dynamic shader and image wallpaper backdrop daemon synchronized with oote palettes</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/ooshelf" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooshelf</code><span class="repo-cat">UI</span><span class="repo-role">quick-access scratchpad, pinned file shelf, and drag-and-drop dropzone overlay</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/ootoast" target="_blank" rel="noopener noreferrer"><code class="repo-name">ootoast</code><span class="repo-cat">UI</span><span class="repo-role">notification center, OSD toast daemon, and system alert HUD</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/oolock" target="_blank" rel="noopener noreferrer"><code class="repo-name">oolock</code><span class="repo-cat">UI</span><span class="repo-role">GPU-accelerated lockscreen and procedural idle saver with capability-isolated unlock</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/ooterm" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooterm</code><span class="repo-cat">SH</span><span class="repo-role">GPU-accelerated terminal emulator with native oosh structured-table integration</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/oofiles" target="_blank" rel="noopener noreferrer"><code class="repo-name">oofiles</code><span class="repo-cat">FS</span><span class="repo-role">dual-pane spatial/Miller-column file manager with per-directory capability badges</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/ootaskmgr" target="_blank" rel="noopener noreferrer"><code class="repo-name">ootaskmgr</code><span class="repo-cat">HW</span><span class="repo-role">graphical system, process, GPU, and live CSpaceTable capability tree inspector</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/oosettings" target="_blank" rel="noopener noreferrer"><code class="repo-name">oosettings</code><span class="repo-cat">UI</span><span class="repo-role">unified control center for display layout, oote themes, audio, network, and policies</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/ooclip" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooclip</code><span class="repo-cat">SC</span><span class="repo-role">capability-gated clipboard and drag-and-drop broker blocking background snooping</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/ooshot" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooshot</code><span class="repo-cat">UI</span><span class="repo-role">region/window screenshot and recording utility gated by ooportal FrameCap lease</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/ooagent-hud" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooagent-hud</code><span class="repo-cat">AI</span><span class="repo-role">Human Category Bucketer and AI Fleet HUD across all 5 organizations</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/ooedit" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooedit</code><span class="repo-cat">TX</span><span class="repo-role">native modal code and .oot editor with built-in oodac LSP diagnostics and oote themes</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE/ooview" target="_blank" rel="noopener noreferrer"><code class="repo-name">ooview</code><span class="repo-cat">UI</span><span class="repo-role">zero-network sandboxed PDF, image, SVG, and Markdown/.oot viewer (FsReadCap only)</span><span class="repo-arrow">&#8599;</span></a>
           </div>
         </section>
       </main>
@@ -220,11 +314,13 @@
       </nav>
 
       <footer class="window-statusbar">
-        <span>OPENOODA &copy; 2026 // CAPABILITY-SECURE SYSTEMS ARCHITECTURE</span>
+        <span>OPENOODA &copy; 2026 // CAPABILITY-SECURE 5-ORG ARCHITECTURE</span>
         <span class="footer-links">
-          <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">[ GITHUB ]</a>
-          <a href="https://openooda-tools.github.io" target="_blank" rel="noopener noreferrer">[ TOOLS ]</a>
-          <a href="https://studio2201.com" target="_blank" rel="noopener noreferrer">[ STUDIO2201 ]</a>
+          <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">[ @OPENOODA ]</a>
+          <a href="https://github.com/openOODA-kernel" target="_blank" rel="noopener noreferrer">[ @KERNEL ]</a>
+          <a href="https://github.com/openOODA-OS" target="_blank" rel="noopener noreferrer">[ @OS ]</a>
+          <a href="https://github.com/openOODA-tools" target="_blank" rel="noopener noreferrer">[ @TOOLS ]</a>
+          <a href="https://github.com/openOODA-DE" target="_blank" rel="noopener noreferrer">[ @DE ]</a>
           <a href="https://openooda.org/install.sh">[ INSTALL SCRIPT ]</a>
         </span>
       </footer>

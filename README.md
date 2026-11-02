@@ -8,9 +8,9 @@
       /_/                   \___/ \___/|____/_/   \_\
 </pre>
 
-### openOODA — Primary Systems Language for the AI Era
+### openOODA — Primary Systems Language & 5-Organization Ecosystem for the AI Era
 
-[openooda.org](https://openooda.org)
+[openooda.org](https://openooda.org) • [openOODA](https://github.com/openOODA) • [openOODA-kernel](https://github.com/openOODA-kernel) • [openOODA-OS](https://github.com/openOODA-OS) • [openOODA-tools](https://github.com/openOODA-tools) • [openOODA-DE](https://github.com/openOODA-DE)
 
 </div>
 
@@ -26,28 +26,15 @@ Source for [openooda.org](https://openooda.org).
 curl -fsSL https://openooda.org/install.sh | bash
 ```
 
-## Docs
+## The 5-Organization Architecture
 
-All design, RFCs, practices, and onboarding live in [openOODA/openOODA](https://github.com/openOODA/openOODA) or at [openooda.org](https://openooda.org).
-
-## The Polyrepo
-
-| Repo | Purpose |
-|------|---------|
-| [openOODA/openOODA](https://github.com/openOODA/openOODA) | Governance, RFCs, laws |
-| [openOODA/oodar](https://github.com/openOODA/oodar) | Runtime substrate |
-| [openOODA/oodac](https://github.com/openOODA/oodac) | Compiler |
-| [openOODA/std](https://github.com/openOODA/std) | Standard library |
-| [openOODA/ooda](https://github.com/openOODA/ooda) | `ooda` workflow driver |
-| [openOODA/cli](https://github.com/openOODA/cli) | Sovereign developer driver (build, test, fmt, qa) |
-| [openOODA/tui](https://github.com/openOODA/tui) | Line-mode coding harness (`tui`) |
-| [openOODA/install](https://github.com/openOODA/install) | How the toolchain lands (install.sh, apt, dnf, pacman) |
-| [openOODA/opm](https://github.com/openOODA/opm) | Package manager |
-| [openOODA/catalog](https://github.com/openOODA/catalog) | Public package catalog |
-| [openOODA/lsp](https://github.com/openOODA/lsp) | Language server |
-| [openOODA/mcp](https://github.com/openOODA/mcp) | MCP server, flight recording, and telemetry engine |
-| [openOODA/website](https://github.com/openOODA/website) | Website source |
-| [openOODA/.github](https://github.com/openOODA/.github) | Org profile, shared community files, workflows |
+| Layer & Org | Repositories | Focus |
+| :--- | :---: | :--- |
+| **Layer 0: [openOODA](https://github.com/openOODA)** | 14 | Self-hosting compiler (`oodac`), runtime substrate (`oodar`), `std`, `cli`, `opm`, `lsp`, `mcp`, `tui`, governance |
+| **Layer 1: [openOODA-kernel](https://github.com/openOODA-kernel)** | 16 | Ring-0 NT/seL4 hybrid microkernel (`ookernel-ob`, `ookernel-mm`, `ookernel-sched`, `ookernel-ipc`) & Ring-3 drivers |
+| **Layer 2: [openOODA-OS](https://github.com/openOODA-OS)** | 16 | Zero-root system daemons (`ooinit`, `oovfs`, `oonetd`, `oosysbus`, `oohealthd`, `ooimage`) |
+| **Layer 3: [openOODA-tools](https://github.com/openOODA-tools)** | 256 | Userland CLI / TUI / MCP utilities across 12 functional categories (`oosh`, `oogrep`, `oofind`, `oojq`) |
+| **Layer 4: [openOODA-DE](https://github.com/openOODA-DE)** | 18 | Capability Wayland Desktop Environment (`oocomp`, `oowm`, `oopanel`, `ooportal`, `ooterm`, `ooagent-hud`) |
 
 ## License
 
