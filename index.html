@@ -67,7 +67,7 @@
           <p class="hero-why">
             <span class="why-prompt">&gt;</span> Legacy operating systems and languages were designed in an era of implicit human trust.
             In an era where autonomous systems author and execute software at machine speed, ambient authority turns every dependency into a systemic liability.
-            <strong>openOODA fuses the bare-metal systems lineage of Linux and Unix, the mathematical bearer authority and Merkle provenance of cryptography, and closed-loop autonomous AI into a single computing foundation</strong>—enforcing conservation of authority at compile-time and silicon speed without consensus latency.
+            <strong>openOODA fuses the bare-metal systems lineage of Linux and Unix, the mathematical bearer authority and Merkle provenance of cryptography, and closed-loop autonomous AI into a single computing foundation</strong>—making full use of every <strong>64-bit CPU clock cycle (<code>32 + 32 = 64</code>)</strong> to validate both <em>which</em> capabilities a process holds and <em>how</em> they may be used with zero consensus latency.
           </p>
 
           <div class="terminal-actions">
@@ -88,17 +88,17 @@
           <div class="tenets-marquee-wrap" aria-label="openOODA Architecture Tenets">
             <div class="tenets-track">
               <span class="tenet-chip">🛡️ ZERO AMBIENT AUTHORITY BY CONSTRUCTION</span>
+              <span class="tenet-chip">⚡ SINGLE-CYCLE 64-BIT CAPABILITY REGISTER (32 + 32 = 64)</span>
               <span class="tenet-chip">🔐 CRYPTOGRAPHIC BEARER CAPABILITIES &amp; MERKLE PROVENANCE</span>
-              <span class="tenet-chip">⚡ COMPILE-TIME CAPABILITY &amp; BOUNDS VERIFICATION</span>
-              <span class="tenet-chip">🧬 HARDWARE-ISOLATED MICROKERNEL &amp; ZERO-ROOT OS</span>
+              <span class="tenet-chip">🧬 32 EXPLICIT CAPABILITIES (13 HARDWARE + 19 SOFTWARE/OS)</span>
               <span class="tenet-chip">🔒 DETERMINISTIC ARENA MEMORY &amp; RESOURCE QUOTAS</span>
               <span class="tenet-chip">🤖 CLOSED-LOOP AUTONOMOUS OODA &amp; ADVERSARIAL FALSIFICATION</span>
               <span class="tenet-chip">🌐 UNIFIED L0–L7 FULL-STACK SUBSTRATE</span>
               <span class="tenet-chip">📡 STEALTH MODE — KEEP WATCH FOR PUBLIC LAUNCH</span>
               <span class="tenet-chip" aria-hidden="true">🛡️ ZERO AMBIENT AUTHORITY BY CONSTRUCTION</span>
+              <span class="tenet-chip" aria-hidden="true">⚡ SINGLE-CYCLE 64-BIT CAPABILITY REGISTER (32 + 32 = 64)</span>
               <span class="tenet-chip" aria-hidden="true">🔐 CRYPTOGRAPHIC BEARER CAPABILITIES &amp; MERKLE PROVENANCE</span>
-              <span class="tenet-chip" aria-hidden="true">⚡ COMPILE-TIME CAPABILITY &amp; BOUNDS VERIFICATION</span>
-              <span class="tenet-chip" aria-hidden="true">🧬 HARDWARE-ISOLATED MICROKERNEL &amp; ZERO-ROOT OS</span>
+              <span class="tenet-chip" aria-hidden="true">🧬 32 EXPLICIT CAPABILITIES (13 HARDWARE + 19 SOFTWARE/OS)</span>
               <span class="tenet-chip" aria-hidden="true">🔒 DETERMINISTIC ARENA MEMORY &amp; RESOURCE QUOTAS</span>
               <span class="tenet-chip" aria-hidden="true">🤖 CLOSED-LOOP AUTONOMOUS OODA &amp; ADVERSARIAL FALSIFICATION</span>
               <span class="tenet-chip" aria-hidden="true">🌐 UNIFIED L0–L7 FULL-STACK SUBSTRATE</span>
@@ -122,6 +122,15 @@
             <div class="bring-row">
               <span class="bring-num">02</span>
               <div class="bring-text">
+                <strong>FULL USE OF EVERY 64-BIT CPU CYCLE // 32 + 32 = 64 Architecture</strong>
+                <p>
+                  The lower 32 bits encode all 32 root capabilities (13 Hardware + 19 Software/OS)—fitting natively in a single 32-lane GPU warp mask and seccomp-BPF accumulator. The upper 32 bits pack a 16-bit OODA Epoch (instant revocation), 8-bit Rights Mask (R/W/X/Delegate/Revoke), and 8-bit Scope Badge, validating WHAT and HOW/WHEN in a single 64-bit CPU cycle.
+                </p>
+              </div>
+            </div>
+            <div class="bring-row">
+              <span class="bring-num">03</span>
+              <div class="bring-text">
                 <strong>CRYPTOGRAPHIC PROVENANCE // Proof at Silicon Speed</strong>
                 <p>
                   We bring the mathematical guarantees of cryptographic systems—bearer capabilities, Merkle-DAG AST and build provenance, post-quantum warrants, and strict resource quotas—directly into the compiler and kernel ABI at nanosecond speed, with zero blockchain consensus overhead.
@@ -129,20 +138,11 @@
               </div>
             </div>
             <div class="bring-row">
-              <span class="bring-num">03</span>
+              <span class="bring-num">04</span>
               <div class="bring-text">
                 <strong>DETERMINISTIC SUBSTRATE // Linux &amp; Unix Heritage Reimagined</strong>
                 <p>
                   From systems programming and Landlock/IOMMU hardware isolation up to a capability microkernel, zero-root OS, and graphical desktop, openOODA pairs Unix composability with deterministic linear arenas, bounded resource quotas, and zero garbage-collection pauses.
-                </p>
-              </div>
-            </div>
-            <div class="bring-row">
-              <span class="bring-num">04</span>
-              <div class="bring-text">
-                <strong>END-TO-END ISOLATION // Microkernel to Desktop</strong>
-                <p>
-                  Language-level capability guarantees are paired with hardware-enforced isolation. A capability microkernel, a zero-root operating system, and a capability-aware desktop environment ensure that every process, container, and application runs inside a strictly bounded realm.
                 </p>
               </div>
             </div>
@@ -168,7 +168,7 @@
         </section>
 
         <section class="panel" id="anatomy">
-          <p class="panel-label">-- THE SHIFT: AMBIENT TRUST VS. VERIFIABLE CAPABILITIES --</p>
+          <p class="panel-label">-- THE SHIFT: AMBIENT TRUST VS. 64-BIT SINGLE-CYCLE CAPABILITIES --</p>
           <div class="capability-demo-grid">
             <div class="demo-pane demo-pane-term">
               <div class="demo-pane-header">
@@ -184,14 +184,14 @@
 
             <div class="demo-pane">
               <div class="demo-pane-header">
-                <span class="pane-title">OPENOODA PARADIGM // EXPLICIT CAPABILITY PROOF</span>
-                <span class="pane-tag">[ FAIL-CLOSED ]</span>
+                <span class="pane-title">OPENOODA PARADIGM // 64-BIT CAPABILITY REGISTER (32 + 32)</span>
+                <span class="pane-tag">[ 1-CYCLE PROOF ]</span>
               </div>
-              <pre class="code-block"><span class="code-comment">// PRINCIPLE: Authority is an explicit capability</span>
-<span class="code-kw">01.</span> Processes start with zero privileges in the type system and OS.
-<span class="code-kw">02.</span> External effects (I/O, network, IPC, GPU) require explicit capabilities.
-<span class="code-kw">03.</span> Capabilities obey conservation of authority and monotonic attenuation.
-<span class="code-kw">04.</span> Merkle provenance, resource quotas, and hardware isolation hold at runtime.</pre>
+              <pre class="code-block"><span class="code-comment">// 64-BIT CAPABILITY REGISTER: [63:32] HOW &amp; WHEN | [31:0] WHAT</span>
+<span class="code-kw">01.</span> Lower 32 bits (WHAT): 32 Root Capabilities (13 Hardware + 19 OS/Software).
+<span class="code-kw">02.</span> Fits 1-for-1 in a 32-lane GPU warp mask and 32-bit seccomp-BPF register.
+<span class="code-kw">03.</span> Upper 32 bits (HOW &amp; WHEN): 16b OODA Epoch + 8b Rights + 8b Scope Badge.
+<span class="code-kw">04.</span> Checked in 1 CPU clock cycle: zero pointer chasing, zero consensus latency.</pre>
             </div>
           </div>
         </section>
@@ -211,7 +211,7 @@
             <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 7 // Agents</code><span class="repo-cat">L7</span><span class="repo-role">Bounded Autonomous OODA Loops (Observe, Orient, Decide, Act), Verification Engines, and Fleet Governance (Private Stealth)</span><span class="repo-arrow">&#8599;</span></a>
           </div>
           <div class="cat-grid">
-            <div class="cat-card"><span class="cat-code">[01]</span><span class="cat-title">Language &amp; Types</span><p class="cat-desc">Explicit bearer capabilities and compile-time safety</p></div>
+            <div class="cat-card"><span class="cat-code">[01]</span><span class="cat-title">64-Bit Cycle Register</span><p class="cat-desc">32 root capabilities (WHAT) + 32-bit epoch/rights/scope header (HOW) checked in 1 CPU cycle</p></div>
             <div class="cat-card"><span class="cat-code">[02]</span><span class="cat-title">Cryptographic Authority</span><p class="cat-desc">Merkle-DAG provenance, post-quantum warrants, and conservation of authority</p></div>
             <div class="cat-card"><span class="cat-code">[03]</span><span class="cat-title">Zero-Root OS &amp; Kernel</span><p class="cat-desc">Linux/Unix composability with microkernel and IOMMU isolation</p></div>
             <div class="cat-card"><span class="cat-code">[04]</span><span class="cat-title">Deterministic Quotas</span><p class="cat-desc">Linear arena memory and bounded resource budgets with zero GC pauses</p></div>

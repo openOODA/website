@@ -18,6 +18,7 @@ openOODA is an AI-native, capability-secured, fail-closed computing stack built 
 In conventional languages and operating systems, code runs with ambient authority: any imported library or generated routine inherits the privileges of the host process. openOODA eliminates ambient authority across the entire computing stack:
 
 - **Zero Ambient Authority**: Every process starts with no privileges. External effects (filesystem, network, IPC, devices, display) require an explicit capability.
+- **Single-Cycle 64-Bit Capability Architecture (`32 + 32 = 64`)**: Making full use of every 64-bit CPU cycle—the lower 32 bits (`WHAT`) encode all 32 Root Capabilities (`13` Hardware + `19` Software/OS, fitting a single 32-lane GPU warp mask and 32-bit seccomp-BPF accumulator), while the upper 32 bits (`HOW & WHEN`) encode a 16-bit OODA Epoch (instant revocation) + 8-bit Rights Mask (`R/W/X/Delegate/Revoke`) + 8-bit Scope Badge, validated together in 1 CPU clock cycle.
 - **Compile-Time & Hardware Verification**: Capability requirements and memory bounds are verified ahead of execution by the compiler and enforced at runtime by hardware and kernel isolation boundaries.
 - **Deterministic Execution**: Linear arena allocation and zero-copy message passing provide predictable latency without garbage-collection pauses.
 
