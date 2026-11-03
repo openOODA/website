@@ -26,15 +26,15 @@ Source for [openooda.org](https://openooda.org).
 curl -fsSL https://openooda.org/install.sh | bash
 ```
 
-## The 5-Organization Architecture
+## The 5-Organization Architecture (325 Repositories at v0.2.3)
 
 | Layer & Org | Repositories | Focus |
 | :--- | :---: | :--- |
-| **Layer 0: [openOODA](https://github.com/openOODA)** | 14 | Self-hosting compiler (`oodac`), runtime substrate (`oodar`), `std`, `cli`, `opm`, `lsp`, `mcp`, `tui`, governance |
+| **Layer 0: [openOODA](https://github.com/openOODA)** | 14 | Self-hosting compiler (`oodac`), runtime substrate (`oodar` with Landlock, `sys_spawn`/`sys_wait`, `OODA_LISTEN_FD`), `std`, `cli`, `opm`, `lsp`, `mcp`, `tui`, governance |
 | **Layer 1: [openOODA-kernel](https://github.com/openOODA-kernel)** | 16 | Ring-0 NT/seL4 hybrid microkernel (`ookernel-ob`, `ookernel-mm`, `ookernel-sched`, `ookernel-ipc`) & Ring-3 drivers |
-| **Layer 2: [openOODA-OS](https://github.com/openOODA-OS)** | 16 | Zero-root system daemons (`ooinit`, `oovfs`, `oonetd`, `oosysbus`, `oohealthd`, `ooimage`) |
-| **Layer 3: [openOODA-tools](https://github.com/openOODA-tools)** | 256 | Userland CLI / TUI / MCP utilities across 12 functional categories (`oosh`, `oogrep`, `oofind`, `oojq`) |
-| **Layer 4: [openOODA-DE](https://github.com/openOODA-DE)** | 18 | Capability Wayland Desktop Environment (`oocomp`, `oowm`, `oopanel`, `ooportal`, `ooterm`, `ooagent-hud`) |
+| **Layer 2: [openOODA-OS](https://github.com/openOODA-OS)** | 18 | Zero-root system daemons (`ooinit`, `oosvc-mgr`, `oovfs`, `oonetd`, `oosysbus`, `oohealthd`, `ooimage`, `ooaid --serve`, `oorealm`) |
+| **Layer 3: [openOODA-tools](https://github.com/openOODA-tools)** | 257 | Userland CLI / TUI / MCP utilities across 12 functional categories (`oosh`, `oogrep`, `oofind`, `oojq`, `oollama`) |
+| **Layer 4: [openOODA-DE](https://github.com/openOODA-DE)** | 20 | Capability Wayland Desktop Environment (`oocomp`, `oowm`, `oopanel`, `ooportal`, `oobazaar`, `oocockpit`, `ooagent-hud`) |
 
 ## License
 

@@ -42,7 +42,7 @@ via `ooda.pkg` `layer=` and `category=` fields):
 1. `github.com/openOODA` (Layer 0: Toolchain & Stdlib — 14 repos)
 2. `github.com/openOODA-kernel` (Layer 1: Ring-0 Microkernel & Drivers — 16 repos)
 3. `github.com/openOODA-OS` (Layer 2: Zero-Root System Daemons & Image Builder — 18 repos)
-4. `github.com/openOODA-tools` (Layer 3: Userland CLI / TUI / MCP Suite — 256 repos)
+4. `github.com/openOODA-tools` (Layer 3: Userland CLI / TUI / MCP Suite — 257 repos)
 5. `github.com/openOODA-DE` (Layer 4: Capability Wayland Desktop Environment — 20 repos)
 
 12 Functional Category Codes (`category=` in `ooda.pkg`):
@@ -56,7 +56,7 @@ via `ooda.pkg` `layer=` and `category=` fields):
 | Repo | Role |
 |------|------|
 | openOODA | Governance: laws, RFCs, practices, buildbox |
-| oodar | C host substrate (`oo_*`, Landlock sandbox, PQC, GPU) |
+| oodar | C host substrate (`oo_*`, Landlock sandbox, `sys_spawn`/`sys_wait`, `OODA_LISTEN_FD`, PQC, GPU) |
 | oodac | Self-hosting compiler (`.oo` -> LLVM IR -> native) |
 | std | Standard library, 8 domains |
 | ooda | Workflow driver (`ooda` binary) |
@@ -85,10 +85,10 @@ Zero-root capability operating system daemons and MCP-over-IPC system bus:
 `oodevd`, `oosession`, `oopolicyd`, `ooaudiod`, `oopowerd`, `oologd`,
 `oosysbus`, `oohealthd`, `ooimage`, `ooaid`, `oorealm`.
 
-## 7. Layer 3: openOODA-tools (256 repos)
+## 7. Layer 3: openOODA-tools (257 repos)
 
 Standalone CLI / TUI / MCP utilities across all 12 categories:
-- `oosh` (shell), `oogrep` (grep), `oodiff` (diff), `oofind` (find), `oojq` (jq), `ootar` (tar), `ootop` (top), `oote` (theme engine).
+- `oosh` (shell), `oogrep` (grep), `oodiff` (diff), `oofind` (find), `oojq` (jq), `ootar` (tar), `ootop` (top), `oote` (theme engine), `oollama` (multimodal inference CLI & MCP toolkit).
 - Hub: https://openooda-tools.github.io • Org: github.com/openOODA-tools
 
 ## 8. Layer 4: openOODA-DE (20 repos)
@@ -120,7 +120,18 @@ Pass a borrowed token (`&FsReadCap`). Missing token fails compile
    - Linux Steam + Proton (`DXVK`/`VKD3D`) runs inside a GPU capability cell (`GpuCap` + `FrameCap` + `AudioCap` + `HidCap`) with zero access to personal files or keys.
    - For kernel anti-cheat Windows games (Destiny 2 / BattlEye `BEDaisy.sys`), `ookernel-iommu` + `oodrv-pci` binds the GPU/NVMe partition to an IOMMU-fenced Windows NT Gaming Realm (`WinRealm` via `ookernel-unikernel`) with vTPM/SMBIOS passthrough from `ookernel-boot`, streaming frames at 144Hz/240Hz via zero-copy shared-memory `FrameCap` (LookingGlass/IVSHMEM ring) directly into a native `oocomp` window while mixing audio via `ooaudiod` and forwarding raw input via `oodrv-usb-hid`.
 
-## 11. Install
+## 11. 3-Tier Canonical OODA Containers, Multimodal Inference & Kernel Supervision
+
+1. Canonical OODA Containers (`openOODA-OS/ooimage` & `oorealm`):
+   - `localhost/ooda-core:latest`: Immutable OODA base runtime (`ooinit` PID 1, `oosvc-mgr`, `oologd`, `oohealthd`, `oopolicyd`, `ooaid`, `oorealm`, `ooimage` + `.oo` userland tools, zero `.py`/`.sh`, Ed25519 verified).
+   - `localhost/ooda-buildbox:latest`: 24/7 `.oo`-native compiler & fleet audit container (`oodac` seed + `ooda-loop` + `ooda-fanout`).
+   - `localhost/ooda-inference:latest` (`ooda-inference.container` Quadlet): Multimodal GPU inference container (`ooaid --serve` on `:11434` + `oollama` + CUDA `llama-server`).
+2. Multimodal Inference Toolkit (`ooaid --serve` + `oollama`) & 7 Inference Upgrades:
+   - Dual-GPU MTP speculative decoding (`draft_num_predict 3` on `qwen36-35b-uncensored-1m`), active-active routing across `spotlight` (`100.66.54.24`) and `ringmaster` (`100.88.249.93`) with `zebes` control plane, KV-cache prefix pinning (`cache_prompt: true`), `<think>` budget gating, `.ooda-cache/ai` semantic cache, GBNF grammar enforcement (`ooda-verdict` & `oo-page`), mandatory secret redaction, and 8 multimodal endpoints (Text/Chat, Vision `mmproj`, Embeddings `bge-m3`, Rerank `bge-reranker-v2-m3`, STT `whisper-large-v3`, TTS `kokoro-82m`, Image `invokeai`).
+3. Kernel Supervision Stack (`oodar` + `ooinit` + `oosvc-mgr` + `oorealm`):
+   - Real non-blocking `oo_sys_spawn`/`oo_sys_wait`/`oo_sys_kill`, zero-downtime `OODA_LISTEN_FD` + `SO_REUSEPORT` socket activation, and kernel `Landlock` + `PR_SET_NO_NEW_PRIVS` sandboxing.
+
+## 12. Install
 
 ```
 curl -fsSL https://openooda.org/install.sh | bash
