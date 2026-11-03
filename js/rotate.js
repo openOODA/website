@@ -2,12 +2,12 @@
 const HEADLINES = [
   "Fail-Closed by Design",
   "Zero Ambient Authority",
-  "Every Effect Needs a Token",
-  "Stealth Pre-Release R&D",
+  "Every Effect Needs a Capability",
+  "Systems + Crypto + AI Unified",
+  "Conservation of Authority",
   "Born With No Privileges",
   "Unified L0-L7 Architecture",
   "Verifiable Proof Over Trust",
-  "Built for the AI Era",
 ];
 
 const WORDMARK_ROWS = [

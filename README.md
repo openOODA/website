@@ -22,12 +22,14 @@
 
 ## About openOODA
 
-**openOODA** is an AI-native, capability-secured, fail-closed computing stack built from first principles across eight unified layers (`L0`–`L7`).
+**openOODA** is an AI-native, capability-secured, fail-closed computing stack built from first principles across eight unified layers (`L0`–`L7`). It fuses **Linux/Unix systems engineering**, **cryptographic bearer authority and Merkle provenance**, and **closed-loop autonomous AI** into a unified computing foundation.
 
 Legacy operating systems and programming languages were designed around implicit ambient authority—where any imported dependency or generated routine inherits the full privileges of the user running the process. As software creation and execution become increasingly autonomous, ambient trust turns every component into a systemic risk.
 
 openOODA replaces implicit trust with verifiable proof:
-- **Zero Ambient Authority**: Every process is born with zero privileges. Filesystem, network, device, and inter-process effects require explicit, unforgeable capability tokens.
+- **Zero Ambient Authority (Conservation of Authority)**: Every process is born with zero privileges. Filesystem, network, device, and inter-process effects require explicit capabilities that can only be delegated or monotonically narrowed, never forged or widened.
+- **Cryptographic Provenance at Silicon Speed**: Bearer capabilities, Merkle-DAG AST and artifact state, post-quantum warrants, and deterministic resource quotas are enforced at compile time and hardware/kernel boundaries without consensus latency.
+- **Closed-Loop Autonomous AI**: Observe–Orient–Decide–Act (OODA) loops and adversarial falsification gates verify code against formal contracts and capability budgets before execution.
 - **Compile-Time & Hardware Enforcement**: Missing capabilities and memory safety violations are rejected ahead of time by the compiler and enforced at runtime by hardware-isolated kernel boundaries.
 - **Unified L0–L7 Architecture**:
   - **L0 — Core**: Systems language, self-hosting native compiler, deterministic standard library, and developer toolchain.

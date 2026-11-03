@@ -10,11 +10,14 @@ openOODA is currently in **private pre-release development (Stealth Mode)** and 
 
 ## 2. What openOODA Is
 
-openOODA is an AI-native, capability-secured, fail-closed computing stack built from first principles across eight unified layers (`L0` through `L7`).
+openOODA is an AI-native, capability-secured, fail-closed computing stack built from first principles across eight unified layers (`L0` through `L7`). It fuses three foundational paradigms into a single architecture:
+1. **Systems & OS Architecture (Linux/Unix Heritage)**: Bare-metal microkernel isolation, Landlock/IOMMU hardware enforcement, zero-root system services, and composable userland tools.
+2. **Cryptographic Authority & Provenance (At Silicon Speed)**: Explicit bearer capabilities, conservation of authority (monotonic attenuation without privilege escalation), Merkle-DAG AST and build provenance, post-quantum warrants, and deterministic resource/memory quotas—enforced at compile time and nanosecond kernel speed without blockchain consensus latency.
+3. **Autonomous AI (Closed-Loop OODA & Adversarial Falsification)**: Bounded Observe–Orient–Decide–Act engines and formal verification loops where AI agents synthesize and verify software inside strict capability budgets.
 
 In conventional languages and operating systems, code runs with ambient authority: any imported library or generated routine inherits the privileges of the host process. openOODA eliminates ambient authority across the entire computing stack:
 
-- **Zero Ambient Authority**: Every process starts with no privileges. External effects (filesystem, network, IPC, devices, display) require an explicit, unforgeable capability token.
+- **Zero Ambient Authority**: Every process starts with no privileges. External effects (filesystem, network, IPC, devices, display) require an explicit capability.
 - **Compile-Time & Hardware Verification**: Capability requirements and memory bounds are verified ahead of execution by the compiler and enforced at runtime by hardware and kernel isolation boundaries.
 - **Deterministic Execution**: Linear arena allocation and zero-copy message passing provide predictable latency without garbage-collection pauses.
 
