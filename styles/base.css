@@ -1,21 +1,39 @@
-/* base.css — tokens, reset, terminal frame, fixed bars, tooltips */
+/* base.css — 8-Bit CRT Phosphor Tokens, Scanline Frame, Bayer Dither & Dock Chrome */
 :root {
-  --bg-deep: #070a0f;
-  --bg-window: #0a0e17;
-  --bg-bar: #0d121c;
-  --bg-titlebar: #0f1726;
-  --bg-card: #0b1019;
-  --bg-btn: #101622;
-  --color-green: #34d399;
-  --color-green-dim: rgba(52, 211, 153, 0.12);
-  --color-amber: #f59e0b;
-  --color-cyan: #38bdf8;
-  --color-red: #f87171;
-  --text-primary: #f8fafc;
+  --bg-deep: #06080b;
+  --bg-window: rgba(9, 12, 18, 0.84);
+  --bg-bar: #0c1018;
+  --bg-titlebar: rgba(11, 15, 23, 0.94);
+  --bg-card: rgba(12, 16, 24, 0.88);
+  --bg-btn: #121824;
+
+  /* Dynamic 8-Bit Rainbow Phosphor Tokens (Default: Emerald) */
+  --phosphor: #50fa7b;
+  --accent-rgb: 80, 250, 123;
+  --phosphor-dim: rgba(var(--accent-rgb, 80, 250, 123), 0.14);
+  --phosphor-glow: rgba(var(--accent-rgb, 80, 250, 123), 0.30);
+  --hot: #a2ffbc;
+  --hot-rgb: 162, 255, 188;
+
+  /* Compatibility Aliases for Existing Modules */
+  --color-green: var(--phosphor);
+  --color-green-dim: var(--phosphor-dim);
+  --color-amber: #ffb000;
+  --color-cyan: #00e5ff;
+  --color-red: #ff5555;
+  --text-primary: #f3f4f6;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
-  --border-subtle: 1px solid #1e293b;
-  --border-accent: 1px solid #334155;
+  --text-dim: #475569;
+  --border-subtle: 1px solid #1e2636;
+  --border-accent: 1px solid rgba(var(--accent-rgb, 80, 250, 123), 0.42);
+  --border-accent-color: rgba(var(--accent-rgb, 80, 250, 123), 0.42);
+
+  /* Card Spotlight Custom Properties */
+  --spotlight-border: rgba(var(--accent-rgb, 80, 250, 123), 0.48);
+  --spotlight-glow: rgba(var(--hot-rgb, 162, 255, 188), 0.92);
+  --spotlight-inner: rgba(var(--accent-rgb, 80, 250, 123), 0.045);
+
   --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas,
     "Liberation Mono", Courier, monospace;
 }
@@ -37,16 +55,29 @@ body.terminal-body {
   font-family: var(--font-mono);
   line-height: 1.6;
   overflow: hidden;
+  position: relative;
+}
+
+/* Full-Viewport Bayer 8x8 Ordered-Dither & Pixel Canvas */
+.spotlight-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
 }
 
 .skip-link {
   position: absolute;
   left: -9999px;
   top: 0;
-  background: var(--color-green);
-  color: #000;
+  background: var(--phosphor);
+  color: #05070a;
   padding: 8px 16px;
-  z-index: 100;
+  z-index: 200;
+  font-weight: 700;
   text-decoration: none;
 }
 .skip-link:focus {
@@ -54,44 +85,92 @@ body.terminal-body {
   top: 8px;
 }
 
-/* The page IS the terminal: titlebar + statusbar fixed, port scrolls */
+/* The page IS the 8-bit CRT terminal: scanline header + bottom dock fixed, port scrolls */
 .terminal-window {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   height: 100vh;
   height: 100dvh;
-  background: var(--bg-window);
+  background: transparent;
 }
 
+/* Top Scanline Header Bar with 8-Bit Crest + Wordmark + Badges */
 .window-titlebar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
-  padding: 10px 16px;
+  min-height: 52px;
+  padding: 8px 20px;
   background: var(--bg-titlebar);
-  border-bottom: var(--border-subtle);
-  font-size: 13px;
+  background-image: linear-gradient(rgba(18, 22, 28, 0) 50%, rgba(0, 0, 0, 0.42) 50%);
+  background-size: 100% 4px;
+  border-bottom: 2px solid var(--border-accent-color);
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.85), 0 8px 24px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 12px;
   flex-wrap: wrap;
   flex-shrink: 0;
+  z-index: 95;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+.crest-emblem {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  border: 1.5px solid var(--phosphor);
+  box-shadow: 2px 2px 0 0 #000, 0 0 10px var(--phosphor-dim);
+  background: #080b10;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+.header-wordmark {
+  display: block;
+  width: min(172px, 38vw);
+  height: auto;
+  image-rendering: pixelated;
 }
 .term-status-badge {
-  color: var(--color-green);
+  color: var(--hot);
+  background: var(--phosphor-dim);
+  border: 1px solid var(--border-accent-color);
+  box-shadow: 2px 2px 0 0 #000;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 .window-title {
   color: var(--text-secondary);
   flex: 1;
+  text-align: center;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .term-status-online {
-  color: var(--color-green);
-  animation: blink-soft 3s ease-in-out infinite;
+  color: var(--phosphor);
+  font-weight: 700;
+  animation: blink-soft 2.6s steps(2) infinite;
 }
 @keyframes blink-soft {
-  50% {
-    opacity: 0.35;
-  }
+  50% { opacity: 0.35; }
 }
 
 .scroll-port {
@@ -100,48 +179,16 @@ body.terminal-body {
   overflow-x: hidden;
   scroll-snap-type: y proximity;
   scrollbar-width: thin;
-  scrollbar-color: #334155 var(--bg-deep);
-  mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    black 56px,
-    black calc(100% - 56px),
-    transparent
-  );
+  scrollbar-color: var(--phosphor) var(--bg-deep);
 }
 .scroll-port::-webkit-scrollbar {
   width: 8px;
 }
 .scroll-port::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: var(--border-accent-color);
 }
 .scroll-port::-webkit-scrollbar-track {
   background: var(--bg-deep);
-}
-
-.window-statusbar {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 10px 16px;
-  background: var(--bg-titlebar);
-  border-top: var(--border-subtle);
-  font-size: 12px;
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
-.footer-links {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.footer-links a {
-  color: var(--color-green);
-  text-decoration: none;
-}
-.footer-links a:hover {
-  text-decoration: underline;
 }
 
 code {
@@ -149,11 +196,10 @@ code {
   font-family: var(--font-mono);
 }
 
-/* Tooltips — man-page glosses on openOODA jargon.
-   CSS-only: hover + focus (tabindex=0 covers touch/keyboard). */
+/* Tooltips — man-page glosses on openOODA jargon */
 .t {
-  color: var(--color-cyan);
-  border-bottom: 1px dotted var(--color-cyan);
+  color: var(--hot);
+  border-bottom: 1px dotted var(--phosphor);
   cursor: help;
   position: relative;
   outline-offset: 2px;
@@ -163,47 +209,33 @@ code {
   position: absolute;
   bottom: calc(100% + 8px);
   left: 0;
-  z-index: 50;
+  z-index: 60;
   width: max-content;
   max-width: min(300px, 78vw);
   padding: 10px 12px;
-  background: var(--bg-titlebar);
-  border: 1px solid var(--color-green);
-  border-radius: 4px;
-  color: var(--text-secondary);
+  background: #0a0e16;
+  border: 1.5px solid var(--phosphor);
+  box-shadow: 3px 3px 0 0 #000, 0 8px 24px rgba(0, 0, 0, 0.75);
+  color: var(--text-primary);
   font-size: 12px;
   font-weight: normal;
   line-height: 1.5;
   white-space: normal;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
   opacity: 0;
   pointer-events: none;
   transform: translateY(4px);
-  transition: opacity 0.15s ease, transform 0.15s ease;
-}
-.t::before {
-  content: "";
-  position: absolute;
-  bottom: calc(100% + 2px);
-  left: 12px;
-  z-index: 51;
-  border: 4px solid transparent;
-  border-top-color: var(--color-green);
-  opacity: 0;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.12s steps(2), transform 0.12s steps(2);
 }
 .t:hover::after,
 .t:focus::after {
   opacity: 1;
   transform: translateY(0);
 }
-.t:hover::before,
-.t:focus::before {
-  opacity: 1;
-}
 
+@media (max-width: 760px) {
+  .window-title { display: none; }
+  .window-titlebar { padding: 6px 12px; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .scroll-port {
-    scroll-snap-type: none;
-  }
+  .scroll-port { scroll-snap-type: none; }
 }

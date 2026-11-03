@@ -1,45 +1,45 @@
-/* repos.css — the constellation: compact linked repo index */
+/* repos.css — 8-Bit Arcade Cards, Interactive Cursor Spotlight & Constellation Matrix */
 .repo-list {
   display: flex;
   flex-direction: column;
-  border: var(--border-subtle);
-  border-radius: 6px;
-}
-.repo-row:first-child {
-  border-radius: 6px 6px 0 0;
-}
-.repo-row:last-child {
-  border-radius: 0 0 6px 6px;
+  border: 1.5px solid #1e2636;
+  box-shadow: 3px 3px 0 0 #000;
+  background: var(--bg-card);
 }
 
 .repo-row {
+  position: relative;
   display: flex;
   align-items: baseline;
-  gap: 16px;
-  padding: 12px 16px;
+  gap: 14px;
+  padding: 10px 15px;
   background: var(--bg-card);
-  border-bottom: var(--border-subtle);
+  border-bottom: 1px solid #19202e;
   text-decoration: none;
-  transition: background 0.15s ease;
+  transition: background 0.12s steps(2), border-color 0.12s steps(2);
 }
 .repo-row:last-child {
   border-bottom: none;
 }
 .repo-row:hover {
-  background: var(--color-green-dim);
+  background: var(--phosphor-dim);
 }
 
 .repo-name {
-  color: var(--color-green);
+  color: var(--phosphor);
   font-size: 13px;
   font-weight: 700;
-  min-width: 140px;
+  min-width: 150px;
 }
 .repo-cat {
   color: var(--color-amber);
-  font-size: 11px;
+  background: rgba(255, 176, 0, 0.1);
+  border: 1px solid rgba(255, 176, 0, 0.35);
+  padding: 1px 6px;
+  font-size: 10.5px;
   font-weight: 700;
-  min-width: 38px;
+  min-width: 40px;
+  text-align: center;
 }
 .repo-role {
   color: var(--text-secondary);
@@ -49,19 +49,19 @@
 .repo-arrow {
   color: var(--text-muted);
   font-size: 13px;
-  transition: color 0.15s ease, transform 0.15s ease;
+  transition: color 0.12s steps(2), transform 0.12s steps(2);
 }
 .repo-row:hover .repo-arrow {
-  color: var(--color-green);
+  color: var(--hot);
   transform: translate(2px, -2px);
 }
 
 .org-subtitle {
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 12.5px;
   text-align: center;
   margin-top: -12px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .cat-grid {
@@ -71,11 +71,17 @@
   margin-top: 16px;
 }
 .cat-card {
+  position: relative;
   background: var(--bg-card);
-  border: var(--border-subtle);
-  border-radius: 4px;
+  border: 1.5px solid #1e2636;
+  box-shadow: 2px 2px 0 0 #000;
   padding: 10px 12px;
   font-size: 12px;
+  transition: border-color 0.12s steps(2), transform 0.12s steps(2);
+}
+.cat-card:hover {
+  border-color: var(--phosphor);
+  transform: translateY(-1px);
 }
 .cat-code {
   color: var(--color-amber);
@@ -92,26 +98,32 @@
   margin-top: 4px;
 }
 
-@media (max-width: 720px) {
-  .cat-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* Interactive Card Spotlight Glow (IdleScreen Style) */
+.spotlight-card,
+.bring-row,
+.demo-pane,
+.cat-card,
+.terminal-install-box,
+.repo-list {
+  --mouse-x: -999px;
+  --mouse-y: -999px;
+  position: relative;
+}
+.spotlight-active {
+  border-color: var(--border-accent-color) !important;
+  background-image: radial-gradient(
+    280px circle at var(--mouse-x) var(--mouse-y),
+    var(--spotlight-inner) 0%,
+    transparent 70%
+  );
 }
 
+@media (max-width: 720px) {
+  .cat-grid { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 560px) {
-  .repo-row {
-    flex-wrap: wrap;
-    gap: 4px 12px;
-    padding: 12px;
-  }
-  .repo-name {
-    min-width: 0;
-  }
-  .repo-role {
-    flex-basis: 100%;
-    order: 3;
-  }
-  .cat-grid {
-    grid-template-columns: 1fr;
-  }
+  .repo-row { flex-wrap: wrap; gap: 4px 10px; padding: 10px 12px; }
+  .repo-name { min-width: 0; }
+  .repo-role { flex-basis: 100%; order: 3; }
+  .cat-grid { grid-template-columns: 1fr; }
 }

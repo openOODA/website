@@ -21,16 +21,36 @@
     <link rel="stylesheet" href="/styles/repos.css" />
   </head>
   <body class="terminal-body">
+    <canvas id="spotlight-canvas" class="spotlight-canvas" aria-hidden="true"></canvas>
     <a href="#overview" class="skip-link">Skip to Content</a>
 
     <div class="terminal-window">
       <header class="window-titlebar">
-        <span class="term-status-badge">[TERM: tty1]</span>
-        <span class="window-title">sys@openooda:~# ooda context openOODA</span>
-        <span class="term-status-online">[SYS_OK]</span>
+        <a href="#intro" class="header-brand" aria-label="openOODA 8-Bit Stage">
+          <img class="crest-emblem" src="/assets/favicon.svg" alt="" width="30" height="30" />
+          <canvas id="header-wordmark" class="header-wordmark" width="258" height="42" aria-label="openOODA"></canvas>
+        </a>
+        <span class="window-title">sys@openooda:~# ooda context openOODA // 325 REPOS AT v0.2.3</span>
+        <div class="header-right">
+          <span class="term-status-badge">[CORE: v0.2.3]</span>
+          <span class="term-status-online">[SYS_OK]</span>
+        </div>
       </header>
 
       <main id="main-content" class="scroll-port" tabindex="-1">
+
+        <!-- Panel 0: 8-Bit Interactive Bayer Dither & Wordmark Stage -->
+        <section class="panel spotlight-stage" id="intro" aria-label="openOODA 8-Bit Spotlight Stage">
+          <div class="spotlight-badge">
+            <span class="spotlight-badge-dot" aria-hidden="true"></span>
+            <span>CAPABILITY-SECURE 5-ORG SUBSTRATE // 8-BIT PHOSPHOR EDITION</span>
+          </div>
+          <p class="spotlight-sub">325 REPOSITORIES • ZERO AMBIENT AUTHORITY • MOVE CURSOR OR PRESS [1]–[3] FOR 8-BIT RIPPLES</p>
+          <a href="#overview" class="spotlight-scroll-cue" aria-label="Scroll down to overview">
+            <span>SCROLL TO EXPLORE // FAIL-CLOSED BY DESIGN</span>
+            <span aria-hidden="true">&#9660;</span>
+          </a>
+        </section>
 
         <!-- Panel 1: overview -->
         <section class="panel" id="overview">
@@ -70,6 +90,23 @@
               <code class="install-code" id="install-cmd">curl -fsSL https://openooda.org/install.sh | bash</code>
             </div>
             <button class="copy-action-btn" onclick="copySnippet('install-cmd', this)">[ COPY INSTALL ]</button>
+          </div>
+
+          <div class="tenets-marquee-wrap" aria-label="openOODA Architecture Tenets">
+            <div class="tenets-track">
+              <span class="tenet-chip">🛡️ ZERO AMBIENT AUTHORITY • 26 SUBSTRATE CAPS</span>
+              <span class="tenet-chip">⚡ SELF-HOSTING .OO &#8594; LLVM IR COMPILER (&lt;3MS MERKLE-AST)</span>
+              <span class="tenet-chip">🧬 NT OB + SEL4 CSPACE HYBRID MICROKERNEL</span>
+              <span class="tenet-chip">🔒 PID 1 OOINIT • LANDLOCK + PR_SET_NO_NEW_PRIVS • OODA_LISTEN_FD</span>
+              <span class="tenet-chip">🤖 OOAID + OOLLAMA • 96 TOK/S MTP SPECULATIVE DECODING (DUAL 4060 TI)</span>
+              <span class="tenet-chip">📦 325 REPOS ACROSS 5 ORGS (100% V0.2.3 GREEN)</span>
+              <span class="tenet-chip" aria-hidden="true">🛡️ ZERO AMBIENT AUTHORITY • 26 SUBSTRATE CAPS</span>
+              <span class="tenet-chip" aria-hidden="true">⚡ SELF-HOSTING .OO &#8594; LLVM IR COMPILER (&lt;3MS MERKLE-AST)</span>
+              <span class="tenet-chip" aria-hidden="true">🧬 NT OB + SEL4 CSPACE HYBRID MICROKERNEL</span>
+              <span class="tenet-chip" aria-hidden="true">🔒 PID 1 OOINIT • LANDLOCK + PR_SET_NO_NEW_PRIVS • OODA_LISTEN_FD</span>
+              <span class="tenet-chip" aria-hidden="true">🤖 OOAID + OOLLAMA • 96 TOK/S MTP SPECULATIVE DECODING (DUAL 4060 TI)</span>
+              <span class="tenet-chip" aria-hidden="true">📦 325 REPOS ACROSS 5 ORGS (100% V0.2.3 GREEN)</span>
+            </div>
           </div>
         </section>
 
@@ -335,21 +372,39 @@
         </section>
       </main>
 
-      <nav class="panel-nav" aria-label="Section navigation">
-        <button class="nav-arrow nav-up" id="nav-up" aria-label="Previous section">&#9650;</button>
-        <button class="nav-arrow nav-down" id="nav-down" aria-label="Next section">&#9660;</button>
-      </nav>
+      <footer class="window-statusbar" id="footer-dock">
+        <div class="dock-side">
+          <button type="button" class="nav-arrow nav-up" id="nav-up" aria-label="Previous section" title="Previous section (Up Arrow)">[&#9650; UP]</button>
+          <span class="footer-links">
+            <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">[@OPENOODA]</a>
+            <a href="https://github.com/openOODA-kernel" target="_blank" rel="noopener noreferrer">[@KERNEL]</a>
+            <a href="https://github.com/openOODA-OS" target="_blank" rel="noopener noreferrer">[@OS]</a>
+            <a href="https://github.com/openOODA-tools" target="_blank" rel="noopener noreferrer">[@TOOLS]</a>
+            <a href="https://github.com/openOODA-DE" target="_blank" rel="noopener noreferrer">[@DE]</a>
+            <a href="https://openooda.org/install.sh">[INSTALL]</a>
+          </span>
+        </div>
 
-      <footer class="window-statusbar">
-        <span>OPENOODA &copy; 2026 // CAPABILITY-SECURE 5-ORG ARCHITECTURE</span>
-        <span class="footer-links">
-          <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">[ @OPENOODA ]</a>
-          <a href="https://github.com/openOODA-kernel" target="_blank" rel="noopener noreferrer">[ @KERNEL ]</a>
-          <a href="https://github.com/openOODA-OS" target="_blank" rel="noopener noreferrer">[ @OS ]</a>
-          <a href="https://github.com/openOODA-tools" target="_blank" rel="noopener noreferrer">[ @TOOLS ]</a>
-          <a href="https://github.com/openOODA-DE" target="_blank" rel="noopener noreferrer">[ @DE ]</a>
-          <a href="https://openooda.org/install.sh">[ INSTALL SCRIPT ]</a>
-        </span>
+        <div class="dock-center">
+          <button type="button" class="arcade-btn" id="act-pulse" title="Fire 8-Bit Capability Ripple (Key: 1)">[1] PULSE</button>
+          <button type="button" class="arcade-btn" id="act-theme" title="Cycle 8-Bit Phosphor Theme (Key: 2)">[2] THEME</button>
+          <button type="button" class="arcade-btn" id="act-storm" title="Fire 8-Bit Dither Storm (Key: 3)">[3] STORM</button>
+          <span class="dock-swatch-label" id="dock-swatch-name">EMERALD</span>
+          <div class="footer-accent-picker" id="footer-accent-picker" role="radiogroup" aria-label="8-Bit Rainbow Palette">
+            <button type="button" class="dock-accent-dot" data-accent-name="Coral" style="--swatch:#ff5555;background-color:#ff5555;" role="radio" aria-checked="false" tabindex="-1" aria-label="Coral" title="Coral"></button>
+            <button type="button" class="dock-accent-dot" data-accent-name="Orange" style="--swatch:#ff7700;background-color:#ff7700;" role="radio" aria-checked="false" tabindex="-1" aria-label="Orange" title="Orange"></button>
+            <button type="button" class="dock-accent-dot" data-accent-name="Amber" style="--swatch:#ffb000;background-color:#ffb000;" role="radio" aria-checked="false" tabindex="-1" aria-label="Amber" title="Amber"></button>
+            <button type="button" class="dock-accent-dot" data-accent-name="Yellow" style="--swatch:#f1fa8c;background-color:#f1fa8c;" role="radio" aria-checked="false" tabindex="-1" aria-label="Yellow" title="Yellow"></button>
+            <button type="button" class="dock-accent-dot active" data-accent-name="Emerald" style="--swatch:#50fa7b;background-color:#50fa7b;" role="radio" aria-checked="true" tabindex="0" aria-label="Emerald" title="Emerald"></button>
+            <button type="button" class="dock-accent-dot" data-accent-name="Cyan" style="--swatch:#00e5ff;background-color:#00e5ff;" role="radio" aria-checked="false" tabindex="-1" aria-label="Cyan" title="Cyan"></button>
+            <button type="button" class="dock-accent-dot" data-accent-name="Blue" style="--swatch:#3b82f6;background-color:#3b82f6;" role="radio" aria-checked="false" tabindex="-1" aria-label="Blue" title="Blue"></button>
+            <button type="button" class="dock-accent-dot" data-accent-name="Violet" style="--swatch:#bd93f9;background-color:#bd93f9;" role="radio" aria-checked="false" tabindex="-1" aria-label="Violet" title="Violet"></button>
+          </div>
+        </div>
+
+        <div class="dock-side">
+          <button type="button" class="nav-arrow nav-down" id="nav-down" aria-label="Next section" title="Next section (Down Arrow)">[DOWN &#9660;]</button>
+        </div>
       </footer>
     </div>
 
