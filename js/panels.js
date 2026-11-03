@@ -1,4 +1,4 @@
-// panels.js — 8-Bit Panel Reveal, Section Navigation, Rainbow Palette & Card Spotlight
+// panels.js — Panel Reveal, Section Navigation, Accent Palette & Card Spotlight
 const port = document.querySelector(".scroll-port");
 const panels = Array.from(document.querySelectorAll(".panel"));
 const navUp = document.getElementById("nav-up");
@@ -53,7 +53,6 @@ function cycleRandomAccent() {
 }
 window.oodaCycleRandomAccent = cycleRandomAccent;
 
-// Fade panels in as they enter the scroll port & cycle 8-bit phosphor accent
 let lastSectionId = null;
 const observer = new IntersectionObserver(
   (entries) => {
@@ -104,8 +103,7 @@ if (port && navUp && navDown) {
   updateArrows();
 }
 
-// Mount 8-Bit Rainbow Swatches, Arcade Triggers [1]-[3], and Card Spotlight
-(function init8BitControls() {
+(function initControls() {
   let saved = null;
   try {
     const k = localStorage.getItem("openooda_accent");

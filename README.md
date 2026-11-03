@@ -8,35 +8,40 @@
       /_/                   \___/ \___/|____/_/   \_\
 </pre>
 
-### openOODA — Primary Systems Language & 5-Organization Ecosystem for the AI Era
+### openOODA — Capability-Secure Computing Stack for the AI Era (Stealth Pre-Release)
 
-[openooda.org](https://openooda.org) • [openOODA](https://github.com/openOODA) • [openOODA-kernel](https://github.com/openOODA-kernel) • [openOODA-OS](https://github.com/openOODA-OS) • [openOODA-tools](https://github.com/openOODA-tools) • [openOODA-DE](https://github.com/openOODA-DE)
+[openooda.org](https://openooda.org) • [@openOODA](https://github.com/openOODA)
 
 </div>
 
 ---
 
-## This repo: website
+> **Status: Stealth Mode (Private Pre-Release Development)**
+>
+> `openOODA` is currently in private pre-release development and is not publicly released yet. Keep an eye on [openooda.org](https://openooda.org) and [@openOODA](https://github.com/openOODA) for our upcoming public launch.
 
-Source for [openooda.org](https://openooda.org).
+## About openOODA
 
-## Install
+**openOODA** is an AI-native, capability-secured, fail-closed computing stack built from first principles across eight unified layers (`L0`–`L7`).
 
-```sh
-curl -fsSL https://openooda.org/install.sh | bash
-```
+Legacy operating systems and programming languages were designed around implicit ambient authority—where any imported dependency or generated routine inherits the full privileges of the user running the process. As software creation and execution become increasingly autonomous, ambient trust turns every component into a systemic risk.
 
-## The 5-Organization Architecture (325 Repositories at v0.2.3)
+openOODA replaces implicit trust with verifiable proof:
+- **Zero Ambient Authority**: Every process is born with zero privileges. Filesystem, network, device, and inter-process effects require explicit, unforgeable capability tokens.
+- **Compile-Time & Hardware Enforcement**: Missing capabilities and memory safety violations are rejected ahead of time by the compiler and enforced at runtime by hardware-isolated kernel boundaries.
+- **Unified L0–L7 Architecture**:
+  - **L0 — Core**: Systems language, self-hosting native compiler, deterministic standard library, and developer toolchain.
+  - **L1 — Kernel**: Capability microkernel, hardware abstraction layers, and isolated user-space drivers.
+  - **L2 — OS**: Zero-root system services, capability filesystems, networking, and compatibility realms.
+  - **L3 — Tools**: Capability-scoped userland command-line utilities and structured data pipelines.
+  - **L4 — Desktop**: Capability compositor, spatial window manager, and interactive privacy portals.
+  - **L5 — Apps**: Native productivity, creative, and developer applications with zero ambient tracking.
+  - **L6 — Cloud**: Distributed compute grid, encrypted mesh networking, and cluster orchestration.
+  - **L7 — Agents**: Bounded autonomous OODA loops (Observe, Orient, Decide, Act) and verification engines.
 
-| Layer & Org | Repositories | Focus |
-| :--- | :---: | :--- |
-| **Layer 0: [openOODA](https://github.com/openOODA)** | 14 | Sublayers L0.1-L0.4: **L0.1 Host/Silicon ABI** (`oodar`: Landlock, `sys_spawn`/`sys_wait`, `OODA_LISTEN_FD`), **L0.2 Deterministic Runtime & Memory** (`std` linear arenas), **L0.3 Self-Hosted Compiler** (`oodac`), **L0.4 Language/Stdlib/Tools** (`cli`, `opm`, `lsp`, `mcp`, `tui`), governance |
-| **Layer 1: [openOODA-kernel](https://github.com/openOODA-kernel)** | 16 | Ring-0 NT/seL4 hybrid microkernel (`ookernel-ob`, `ookernel-mm`, `ookernel-sched`, `ookernel-ipc`) & Ring-3 drivers |
-| **Layer 2: [openOODA-OS](https://github.com/openOODA-OS)** | 18 | Zero-root system daemons (`ooinit`, `oosvc-mgr`, `oovfs`, `oonetd`, `oosysbus`, `oohealthd`, `ooimage`, `ooaid --serve`, `oorealm`) |
-| **Layer 3: [openOODA-tools](https://github.com/openOODA-tools)** | 257 | Userland CLI / TUI / MCP utilities across 12 functional categories (`oosh`, `oogrep`, `oofind`, `oojq`, `oollama`) |
-| **Layer 4: [openOODA-DE](https://github.com/openOODA-DE)** | 20 | Capability Wayland Desktop Environment (`oocomp`, `oowm`, `oopanel`, `ooportal`, `oobazaar`, `oocockpit`, `ooagent-hud`) |
+## This Repository (`website`)
 
-**Fleet verification at v0.2.3: 54/54 KVM microVM boot-verified** — `eco-vm-test` stages all 54 core subsystem binaries (16 kernel + 18 OS + 20 DE), sha256 Merkle-hashes and `--self-test` gates each, then boots the initramfs in a QEMU/KVM microVM on a Landlock-enforced kernel; the serial log reads `54/54 subsystems verified in hardware VM (fail=0)`.
+Static source for [openooda.org](https://openooda.org).
 
 ## License
 

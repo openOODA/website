@@ -1,140 +1,31 @@
-# LLMS — Public agent orientation for openOODA
+# LLMS — Public Overview for openOODA (Stealth Pre-Release)
 File: website/llms.txt
 
-This file is the public LLM manual at https://openooda.org/llms.txt.
-The name `.txt` is the llmstxt.org URL. The content follows `.oot` law.
-Canonical agent front door: github.com/openOODA/openOODA/anchor.oo.
+This file is the public overview at https://openooda.org/llms.txt.
+Public home: https://openooda.org • Organization: https://github.com/openOODA
 
-openOODA is a capability-secure systems language and 5-organization operating
-ecosystem. The compiler checks source ahead of time. Privileged work needs an
-unforgeable capability token.
-Public home: https://openooda.org (static index.html; constellation names cli).
+## 1. Status: Stealth Mode (Private Pre-Release)
 
-## 1. File law
+openOODA is currently in **private pre-release development (Stealth Mode)** and is not yet publicly released. Keep an eye on https://openooda.org and https://github.com/openOODA for the upcoming public launch.
 
-- Code: `.oo`. Documents: `.oot`.
-- Every `.oo` and `.oot` file is at most 256 lines (16-240 lines for tactical components).
-- Do not create `.py`, `.js`, `.ts`, `.rb`, or `.pl`.
-- Do not create `.sh` except the host scripts named in rules.oot.
-- Do not create `.md` except README.md and AGENTS.md.
-- Product `.oo` files use a 4-element Academy header: Title, Logline,
-  Setup, Beats.
-- `.oot` files use a 2-line header: `# Title` and `File:`.
+## 2. What openOODA Is
 
-## 2. Read order (governance repo)
+openOODA is an AI-native, capability-secured, fail-closed computing stack built from first principles across eight unified layers (`L0` through `L7`).
 
-Start at `openOODA/anchor.oo`. Then:
+In conventional languages and operating systems, code runs with ambient authority: any imported library or generated routine inherits the privileges of the host process. openOODA eliminates ambient authority across the entire computing stack:
 
-1. `rules.oot` — 24 laws. They do not change.
-2. `spec.oot` — Tier A high-density language specification sheet.
-3. `northstar.oot` — architecture, grammar, AST, type system.
-4. `rfcs/anchor.oo` — accepted RFCs, numeric order.
-5. `practices/anchor.oo` — 8D red team, OODA workflow, release.
+- **Zero Ambient Authority**: Every process starts with no privileges. External effects (filesystem, network, IPC, devices, display) require an explicit, unforgeable capability token.
+- **Compile-Time & Hardware Verification**: Capability requirements and memory bounds are verified ahead of execution by the compiler and enforced at runtime by hardware and kernel isolation boundaries.
+- **Deterministic Execution**: Linear arena allocation and zero-copy message passing provide predictable latency without garbage-collection pauses.
 
-To propose a change, copy `rfcs/0000-template.oot`.
+## 3. The 8-Layer Architecture (L0–L7)
 
-## 3. The 5-Organization Ecosystem & 12 Functional Categories
-
-openOODA separates AI Execution Topology (flat 1-binary-per-repo layout across
-5 GitHub Organizations) from Human Browsing Taxonomy (5 Layers x 12 Categories
-via `ooda.pkg` `layer=` and `category=` fields):
-
-1. `github.com/openOODA` (Layer 0: Toolchain & Stdlib — 14 repos)
-2. `github.com/openOODA-kernel` (Layer 1: Ring-0 Microkernel & Drivers — 16 repos)
-3. `github.com/openOODA-OS` (Layer 2: Zero-Root System Daemons & Image Builder — 18 repos)
-4. `github.com/openOODA-tools` (Layer 3: Userland CLI / TUI / MCP Suite — 257 repos)
-5. `github.com/openOODA-DE` (Layer 4: Capability Wayland Desktop Environment — 20 repos)
-
-12 Functional Category Codes (`category=` in `ooda.pkg`):
-`SH` (Shell & Terminal), `FS` (Filesystem & Disk), `DF` (Search, Diff & Patch),
-`TX` (Text, Binary & Stream), `DT` (Structured Data & Query), `AR` (Archives & Images),
-`NT` (Networking & DNS), `SC` (Security, Crypto & Caps), `PR` (Process, Sched & IPC),
-`HW` (Hardware, HAL & Power), `UI` (Desktop, Wayland & UI), `AI` (AI Agents, MCP & HUD).
-
-## 4. Layer 0: openOODA Toolchain (14 repos)
-
-| Repo | Role |
-|------|------|
-| openOODA | Governance: laws, RFCs, practices, buildbox |
-| oodar | C host substrate (`oo_*`, Landlock sandbox, `sys_spawn`/`sys_wait`, `OODA_LISTEN_FD`, PQC, GPU) |
-| oodac | Self-hosting compiler (`.oo` -> LLVM IR -> native) |
-| std | Standard library, 8 domains |
-| ooda | Workflow driver (`ooda` binary) |
-| cli | Language CLI driver (`ooda update`, build, fmt, qa) |
-| install | apt, dnf, pacman, install.sh |
-| opm | Capability-aware package manager |
-| catalog | Public package list for `opm search` |
-| lsp | Language server |
-| mcp | MCP server, 26 tools, flight recorder, crash autopsy |
-| tui | Terminal coding harness |
-| website | Source for https://openooda.org |
-| .github | Org profile and shared workflows |
-
-## 5. Layer 1: openOODA-kernel (16 repos)
-
-NT Executive Object Manager (`Ob`) + seL4 `CSpaceTable` and `CdtTree` in `.oo`:
-`ookernel-boot`, `ookernel-hal-x86`, `ookernel-hal-arm64`, `ookernel-hal-riscv`,
-`ookernel-ob`, `ookernel-mm`, `ookernel-sched`, `ookernel-ipc`, `ookernel-iommu`,
-`ookernel-unikernel`, `oodrv-pci`, `oodrv-virtio`, `oodrv-nvme`, `oodrv-net`,
-`oodrv-usb-hid`, `oodrv-display-gop`.
-
-## 6. Layer 2: openOODA-OS (18 repos)
-
-Zero-root capability operating system daemons and MCP-over-IPC system bus:
-`ooinit`, `oosvc-mgr`, `oovfs`, `oofs-ext4`, `oofs-tmp`, `oonetd`, `oodnsd`,
-`oodevd`, `oosession`, `oopolicyd`, `ooaudiod`, `oopowerd`, `oologd`,
-`oosysbus`, `oohealthd`, `ooimage`, `ooaid`, `oorealm`.
-
-## 7. Layer 3: openOODA-tools (257 repos)
-
-Standalone CLI / TUI / MCP utilities across all 12 categories:
-- `oosh` (shell), `oogrep` (grep), `oodiff` (diff), `oofind` (find), `oojq` (jq), `ootar` (tar), `ootop` (top), `oote` (theme engine), `oollama` (multimodal inference CLI & MCP toolkit).
-- Hub: https://openooda-tools.github.io • Org: github.com/openOODA-tools
-
-## 8. Layer 4: openOODA-DE (20 repos)
-
-Capability-enforced Wayland desktop environment in pure `.oo`:
-`oocomp`, `oowm`, `oopanel`, `oolaunch`, `ooportal`, `oowall`, `ooshelf`,
-`ootoast`, `oolock`, `ooterm`, `oofiles`, `ootaskmgr`, `oosettings`,
-`ooclip`, `ooshot`, `ooagent-hud`, `ooedit`, `ooview`, `oobazaar`, `oocockpit`.
-
-## 9. 26 Capability Tokens
-
-`FsReadCap` `FsWriteCap` `FsCap` `NetCap` `TcpCap` `UdpCap` `BindCap`
-`SysCap` `ProcessCap` `EnvCap` `TimeCap` `RandCap` `AllocCap` `ArenaCap`
-`ThreadCap` `GpuCap` `FfiCap` `SignCap` `MetricsCap` `CompilerReadCap`
-`AudioCap` `CameraCap` `UsbCap` `HidCap` `WindowCap` `FrameCap`.
-
-Pass a borrowed token (`&FsReadCap`). Missing token fails compile
-(`E_CAP`) or exits `ERR\tcap\t...`. Zero ambient authority.
-
-## 10. 3-Tier Universal App Compatibility & Store Architecture
-
-1. Tier 1 — Flathub / Bazaar Desktop Store Bridge (`ooportal` + `ooimage` + `oopolicyd`):
-   - `ooimage` ingests Flathub OSTree Merkle commits into the immutable content-addressed store.
-   - `oopolicyd` translates Flatpak metadata permissions (`sockets=wayland;pulseaudio;network`, `filesystems=...`) 1-to-1 into attenuated capability tokens (`WindowCap`, `FrameCap`, `AudioCap`, `NetConnectCap`, scoped `FsReadCap`).
-   - `ooportal` mediates file/URI/screen access via intent-driven capability handles.
-2. Tier 2 — Podman-Style Rootless Server Containers (`oocage` + `ooimage` + `oosvc-mgr`):
-   - Daemonless, rootless OCI container execution (Bazarr, Sonarr, Plex, Postgres) where each container runs in an isolated `CSpace` over read-only `ooimage` Merkle layers and explicit volume/port capabilities (`FsReadCap`/`FsWriteCap`/`NetBindCap`).
-3. Tier 3 — Steam/Proton Gaming Cell + IOMMU-Isolated Windows Anti-Cheat Realm (`WinRealm`):
-   - Linux Steam + Proton (`DXVK`/`VKD3D`) runs inside a GPU capability cell (`GpuCap` + `FrameCap` + `AudioCap` + `HidCap`) with zero access to personal files or keys.
-   - For kernel anti-cheat Windows games (Destiny 2 / BattlEye `BEDaisy.sys`), `ookernel-iommu` + `oodrv-pci` binds the GPU/NVMe partition to an IOMMU-fenced Windows NT Gaming Realm (`WinRealm` via `ookernel-unikernel`) with vTPM/SMBIOS passthrough from `ookernel-boot`, streaming frames at 144Hz/240Hz via zero-copy shared-memory `FrameCap` (LookingGlass/IVSHMEM ring) directly into a native `oocomp` window while mixing audio via `ooaudiod` and forwarding raw input via `oodrv-usb-hid`.
-
-## 11. 3-Tier Canonical OODA Containers, Multimodal Inference & Kernel Supervision
-
-1. Canonical OODA Containers (`openOODA-OS/ooimage` & `oorealm`):
-   - `localhost/ooda-core:latest`: Immutable OODA base runtime (`ooinit` PID 1, `oosvc-mgr`, `oologd`, `oohealthd`, `oopolicyd`, `ooaid`, `oorealm`, `ooimage` + `.oo` userland tools, zero `.py`/`.sh`, Ed25519 verified).
-   - `localhost/ooda-buildbox:latest`: 24/7 `.oo`-native compiler & fleet audit container (`oodac` seed + `ooda-loop` + `ooda-fanout`).
-   - `localhost/ooda-inference:latest` (`ooda-inference.container` Quadlet): Multimodal GPU inference container (`ooaid --serve` on `:11434` + `oollama` + CUDA `llama-server`).
-2. Multimodal Inference Toolkit (`ooaid --serve` + `oollama`) & 7 Inference Upgrades:
-   - Dual-GPU MTP speculative decoding (`draft_num_predict 3` on `qwen36-35b-uncensored-1m`), active-active routing across `spotlight` (`100.66.54.24`) and `ringmaster` (`100.88.249.93`) with `zebes` control plane, KV-cache prefix pinning (`cache_prompt: true`), `<think>` budget gating, `.ooda-cache/ai` semantic cache, GBNF grammar enforcement (`ooda-verdict` & `oo-page`), mandatory secret redaction, and 8 multimodal endpoints (Text/Chat, Vision `mmproj`, Embeddings `bge-m3`, Rerank `bge-reranker-v2-m3`, STT `whisper-large-v3`, TTS `kokoro-82m`, Image `invokeai`).
-3. Kernel Supervision Stack (`oodar` + `ooinit` + `oosvc-mgr` + `oorealm`):
-   - Real non-blocking `oo_sys_spawn`/`oo_sys_wait`/`oo_sys_kill`, zero-downtime `OODA_LISTEN_FD` + `SO_REUSEPORT` socket activation, and kernel `Landlock` + `PR_SET_NO_NEW_PRIVS` sandboxing.
-
-## 12. Install
-
-```
-curl -fsSL https://openooda.org/install.sh | bash
-ooda update
-```
-
+- **Root Umbrella (`@openOODA`)**: Public portal, architectural standards, and release announcements.
+- **Layer 0 (`L0` — Core)**: Capability-secure systems language, self-hosting native compiler, deterministic standard library, and developer toolchain (Private Stealth).
+- **Layer 1 (`L1` — Kernel)**: Capability microkernel, hardware abstraction layers, IOMMU isolation, and user-space device drivers (Private Stealth).
+- **Layer 2 (`L2` — OS)**: Zero-root operating system services, capability filesystems, networking, and isolated compatibility realms (Private Stealth).
+- **Layer 3 (`L3` — Tools)**: Capability-scoped userland command-line utilities and structured data pipelines (Private Stealth).
+- **Layer 4 (`L4` — Desktop)**: Capability compositor, spatial window management, interactive privacy portals, and command deck UI (Private Stealth).
+- **Layer 5 (`L5` — Apps)**: Native productivity, creative, communication, and developer applications (Private Stealth).
+- **Layer 6 (`L6` — Cloud)**: Distributed compute grid, content-addressed storage, encrypted mesh networking, and cluster scheduling (Private Stealth).
+- **Layer 7 (`L7` — Agents)**: Bounded autonomous OODA loops (Observe, Orient, Decide, Act), verification engines, and fleet governance (Private Stealth).

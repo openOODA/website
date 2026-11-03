@@ -1,13 +1,13 @@
-// rotate.js — 8-Bit Hero Typewriter, Bayer 8x8 Ordered-Dither Canvas & Wordmark Engine
+// rotate.js — Hero Typewriter, Canvas Backdrop & Wordmark Engine
 const HEADLINES = [
   "Fail-Closed by Design",
   "Zero Ambient Authority",
   "Every Effect Needs a Token",
-  "325 Repos Across 5 Orgs",
+  "Stealth Pre-Release R&D",
   "Born With No Privileges",
-  "Self-Hosting .oo -> LLVM IR",
-  "Dual-GPU 96 tok/s Local AI",
-  "NT Ob + seL4 CSpace Kernel",
+  "Unified L0-L7 Architecture",
+  "Verifiable Proof Over Trust",
+  "Built for the AI Era",
 ];
 
 const WORDMARK_ROWS = [
@@ -72,8 +72,7 @@ function rotateHeadline() {
 }
 setTimeout(rotateHeadline, 5000);
 
-// Render 8-Bit Header Wordmark + Bayer 8x8 Dither Spotlight Canvas
-(function init8BitStage() {
+(function initStage() {
   const hdrCanvas = document.getElementById("header-wordmark");
   function drawHeaderWordmark() {
     if (!hdrCanvas) return;

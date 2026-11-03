@@ -1,4 +1,4 @@
-/* hero.css — 8-Bit Hero Typography, Arcade Buttons, Install Box & Scrolling Marquee */
+/* hero.css — Hero Typography, Action Buttons, Install Box & Scrolling Marquee */
 .terminal-hero {
   padding: 8px 0;
 }
@@ -144,7 +144,7 @@
   color: #ffffff;
 }
 
-/* 8-Bit Tenets Scrolling Marquee Strip */
+/* Tenets Scrolling Marquee Strip */
 .tenets-marquee-wrap {
   width: 100%;
   overflow: hidden;
