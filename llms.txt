@@ -1,14 +1,10 @@
-# LLMS — Public Overview for openOODA (Stealth Pre-Release)
+# LLMS — Technical Overview for openOODA
 File: website/llms.txt
 
-This file is the public overview at https://openooda.org/llms.txt.
-Public home: https://openooda.org • Organization: https://github.com/openOODA
+This file is the technical overview at https://openooda.org/llms.txt.
+Home: https://openooda.org • Organization: https://github.com/openOODA
 
-## 1. Status: Stealth Mode (Private Pre-Release)
-
-openOODA is currently in **private pre-release development (Stealth Mode)** and is not yet publicly released. Keep an eye on https://openooda.org and https://github.com/openOODA for the upcoming public launch.
-
-## 2. What openOODA Is
+## 1. What openOODA Is
 
 openOODA is an AI-native, capability-secured, fail-closed computing stack built from first principles across eight unified layers (`L0` through `L7`). It fuses three foundational paradigms into a single architecture:
 1. **Systems & OS Architecture (Linux/Unix Heritage)**: Bare-metal microkernel isolation, Landlock/IOMMU hardware enforcement, zero-root system services, and composable userland tools.
@@ -22,14 +18,14 @@ In conventional languages and operating systems, code runs with ambient authorit
 - **Compile-Time & Hardware Verification**: Capability requirements and memory bounds are verified ahead of execution by the compiler and enforced at runtime by hardware and kernel isolation boundaries.
 - **Deterministic Execution**: Linear arena allocation and zero-copy message passing provide predictable latency without garbage-collection pauses.
 
-## 3. The 8-Layer Architecture (L0–L7)
+## 2. The 8-Layer Architecture (L0–L7)
 
-- **Root Umbrella (`@openOODA`)**: Public portal, architectural standards, and release announcements.
-- **Layer 0 (`L0` — Core)**: Capability-secure systems language, self-hosting native compiler, deterministic standard library, and developer toolchain (Private Stealth).
-- **Layer 1 (`L1` — Kernel)**: Capability microkernel, hardware abstraction layers, IOMMU isolation, and user-space device drivers (Private Stealth).
-- **Layer 2 (`L2` — OS)**: Zero-root operating system services, capability filesystems, networking, and isolated compatibility realms (Private Stealth).
-- **Layer 3 (`L3` — Tools)**: Capability-scoped userland command-line utilities and structured data pipelines (Private Stealth).
-- **Layer 4 (`L4` — Desktop)**: Capability compositor, spatial window management, interactive privacy portals, and command deck UI (Private Stealth).
-- **Layer 5 (`L5` — Apps)**: Native productivity, creative, communication, and developer applications (Private Stealth).
-- **Layer 6 (`L6` — Cloud)**: Distributed compute grid, content-addressed storage, encrypted mesh networking, and cluster scheduling (Private Stealth).
-- **Layer 7 (`L7` — Agents)**: Bounded autonomous OODA loops (Observe, Orient, Decide, Act), verification engines, and fleet governance (Private Stealth).
+- **Root Umbrella (`@openOODA`)**: Architectural standards, documentation portal, installer, and package catalog.
+- **Layer 0 (`L0` — Core)**: Capability-secure systems language, self-hosting native compiler, deterministic standard library, and developer toolchain.
+- **Layer 1 (`L1` — Kernel)**: Capability microkernel, hardware abstraction layers, IOMMU isolation, and user-space device drivers.
+- **Layer 2 (`L2` — OS)**: Zero-root operating system services, capability filesystems, networking, and isolated compatibility realms.
+- **Layer 3 (`L3` — Tools)**: Capability-scoped userland command-line utilities and structured data pipelines.
+- **Layer 4 (`L4` — Desktop)**: Capability compositor, spatial window management, interactive privacy portals, and command deck UI.
+- **Layer 5 (`L5` — Apps)**: Native productivity, creative, communication, and developer applications.
+- **Layer 6 (`L6` — Cloud)**: Distributed compute grid, content-addressed storage, encrypted mesh networking, and cluster scheduling.
+- **Layer 7 (`L7` — Agents)**: Bounded autonomous OODA loops (Observe, Orient, Decide, Act), verification engines, and fleet governance.
