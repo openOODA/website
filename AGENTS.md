@@ -1,7 +1,7 @@
 # website: Agent Engineering Standards (v1)
 
 This repository houses the official static documentation and web portal for openOODA (`openooda.org`).
-All work in this repository strictly defers to the organization standards in [`openOODA/AGENTS.md`](file:///home/ubermetroid/Projects/openOODA/openOODA/AGENTS.md).
+All work in this repository strictly defers to the organization standards in [`openOODA/AGENTS.md`](https://github.com/openOODA/openOODA/blob/master/AGENTS.md).
 
 ---
 

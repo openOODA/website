@@ -24,6 +24,8 @@ jobs:
         run: node tests/test_shim.js
       - name: run hooks test
         run: node tests/test_hooks.js
+      - name: run privacy test
+        run: node tests/test_privacy.js
 
   auto-release:
     needs: [static-test]
