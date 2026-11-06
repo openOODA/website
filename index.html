@@ -194,6 +194,35 @@
 <span class="code-kw">04.</span> Checked in 1 CPU clock cycle: zero pointer chasing, zero consensus latency.</pre>
             </div>
           </div>
+
+          <p class="panel-label" style="margin-top: 28px;">-- REAL-WORLD BENCHMARK CASE STUDY: IDLESCREEN v4.8.2 (RUST) VS. v5.0.0 (NATIVE OPENOODA .oo) --</p>
+          <div class="capability-demo-grid">
+            <div class="demo-pane demo-pane-term">
+              <div class="demo-pane-header">
+                <span class="pane-title">IDLESCREEN v4.8.2 // RUST BASELINE (main)</span>
+                <span class="pane-tag pane-tag-fatal">[ 4.28 MB ELF • CARGO DEPS ]</span>
+              </div>
+              <pre class="diag-block"><span class="diag-err">BASELINE:</span> 53-Scene Screensaver Suite in Rust (v4.8.2)
+  <span class="diag-loc">--&gt;</span> Linux ELF Binary : 4,281 KB (1,465 KB RPM / 1,359 KB DEB)
+  <span class="diag-loc">--&gt;</span> Windows PE32+    : N/A (coupled to Linux-only crates)
+  <span class="diag-loc">--&gt;</span> Supply Chain     : Multi-crate Cargo.lock dependency tree
+  <span class="diag-loc">--&gt;</span> Frame Memory     : Standard libc malloc/free heap churn
+  <span class="diag-loc">--&gt;</span> Authority Model  : Ambient POSIX process privileges</pre>
+            </div>
+
+            <div class="demo-pane">
+              <div class="demo-pane-header">
+                <span class="pane-title">IDLESCREEN v5.0.0 // NATIVE OPENOODA (ooda)</span>
+                <span class="pane-tag">[ 12.4× SMALLER • 2.62 MiB FLAT RSS ]</span>
+              </div>
+              <pre class="code-block"><span class="code-comment">// 1:1 REBUILD IN NATIVE OPENOODA (.oo) — 18/18 BIT-EXACT PARITY</span>
+<span class="code-kw">01.</span> Linux ELF Binary : 346 KB (133 KB RPM / 115 KB DEB — 12.4× smaller).
+<span class="code-kw">02.</span> Windows PE32+    : 1.51 MB native idlescreen.exe from same .oo source.
+<span class="code-kw">03.</span> Supply Chain     : 0 external dependencies (35 pages, 1..256 ladder).
+<span class="code-kw">04.</span> 1,000-Frame RSS  : 2.62 MiB flat (@oo_arena_mark / @oo_arena_reset_mark).
+<span class="code-kw">05.</span> Authority Model  : Default-deny CAP_FS_READ + CAP_STDIO, 0 unsafe.</pre>
+            </div>
+          </div>
         </section>
 
         <section class="panel" id="ecosystem">
