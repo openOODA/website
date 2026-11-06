@@ -65,6 +65,12 @@
           <div id="quota-panes-wrap"><p class="quota-note">loading&hellip;</p></div>
         </section>
 
+        <section class="panel" id="trend">
+          <p class="hero-eyebrow">TREND // LAST 7 DAILY SNAPSHOTS</p>
+          <h2 class="terminal-title" style="font-size:1.2rem;">7-Day View</h2>
+          <div id="quota-trend-wrap"><p class="quota-note">loading&hellip;</p></div>
+        </section>
+
         <section class="panel" id="refresh">
           <p class="hero-eyebrow">REFRESH PATH // REGENERATE THE DATA FILE</p>
           <h2 class="terminal-title" style="font-size:1.2rem;">How This Board Updates</h2>
@@ -76,10 +82,12 @@
 export OODA_NO_JAIL=1 OO_LIST_AMBIENT_QUOTA=8589934592
 $OODA_COMPILER build -o /tmp/quota-refresh src/quota_refresh.oo
 OODA_FLEET_HOME=$HOME OODA_FLEET_XDG=$XDG_RUNTIME_DIR \
-  /tmp/quota-refresh status/quota.json</pre>
+  /tmp/quota-refresh status/quota.json status/quota_history.jsonl</pre>
           <p class="quota-note">
-            The site is static — publishing a refresh means committing the
-            regenerated <code>status/quota.json</code> and pushing to GitHub.
+            Arg 2 is optional (defaults to <code>status/quota_history.jsonl</code>);
+            each run appends one compact line per day, and the 7-day view above
+            renders the last 7 entries. The site is static — publishing a
+            refresh means committing the regenerated files and pushing to GitHub.
           </p>
           <p class="quota-note">
             Sources: <code>mcode</code> — minimax sqlite

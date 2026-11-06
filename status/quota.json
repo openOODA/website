@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-06T19:07:59Z",
-  "generated_epoch": 1793992079,
+  "generated_at": "2026-11-06T19:23:51Z",
+  "generated_epoch": 1793993031,
   "agents": {
-    "mcode": {"source": "minimax sqlite local_runtime_token_usage", "ok":true,"in_5h":1213809,"out_5h":421344,"cost_usd_5h":0.0,"turns_5h":523,"latest_ms_5h":1793992041553,"in_24h":1213809,"out_24h":421344,"cost_usd_24h":0.0,"turns_24h":523,"latest_ms_24h":1793992041553},
+    "mcode": {"source": "minimax sqlite local_runtime_token_usage", "ok":true,"in_5h":1321952,"out_5h":416797,"cost_usd_5h":0.0,"turns_5h":534,"latest_ms_5h":1793993013559,"in_24h":1407788,"out_24h":432696,"cost_usd_24h":0.0,"turns_24h":554,"latest_ms_24h":1793993013559},
     "grok": {"source": "grok sessions list + grok usage", "ok":true,"sessions":20,"with_usage":2,"total_tokens":103966,"cost_usd_ticks":321966399,"latest_at":"2026-11-06T17:47:21.876223156+00:00"},
-    "devin": {"source": "herdr pane footers", "ok":true,"panes":9,"reporting":8,"max_ctx_pct":64,"detail":[{"pane":"wC:p1","ctx_pct":45},{"pane":"w3:p1","ctx_pct":43},{"pane":"w4:p2","ctx_pct":21},{"pane":"w5:p1","ctx_pct":54},{"pane":"w6:p1","ctx_pct":-1},{"pane":"w7:p1","ctx_pct":19},{"pane":"w8:p1","ctx_pct":48},{"pane":"w9:p1","ctx_pct":23},{"pane":"wA:p1","ctx_pct":64}]},
+    "devin": {"source": "herdr pane footers", "ok":true,"panes":9,"reporting":8,"max_ctx_pct":61,"detail":[{"pane":"wC:p1","ctx_pct":59},{"pane":"w3:p1","ctx_pct":47},{"pane":"w4:p2","ctx_pct":35},{"pane":"w5:p1","ctx_pct":61},{"pane":"w6:p1","ctx_pct":-1},{"pane":"w7:p1","ctx_pct":27},{"pane":"w8:p1","ctx_pct":56},{"pane":"w9:p1","ctx_pct":25},{"pane":"wA:p1","ctx_pct":27}]},
     "vibe": {"source": "vibe.log 402 budget events", "ok":true,"state":"EXHAUSTED","count_402":2,"last_402_at":"2026-11-06T18:02:09"}
   }
 }

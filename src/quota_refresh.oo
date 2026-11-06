@@ -5,9 +5,10 @@
 // Setup: &ProcessCap runs argv python3/grok/herdr/date — never a shell. &FsReadCap reads the vibe log; &FsWriteCap writes quota.json. OODA_FLEET_HOME supplies the home dir (EnvCap only exposes OODA_* vars). Sources: qsrc.oo probes for mcode/grok/vibe; devin panes via herdr agent list + pane read footers.
 //
 // Beats:
-//   1. qr_devin — every devin pane's (NNNc) context proxy plus pane count.
+//   1. qr_devin — every devin pane's (NN%) context proxy plus pane count.
 //   2. qr_json — assemble {generated_at, generated_epoch, agents:{…}}.
-//   3. main — probe all four, write the file, print QUOTA_BOARD verdict.
+//   3. qr_hist_line/qr_hist_append — day-grain append-only trend snapshots.
+//   4. main — probe all four, write the file + history, print verdicts.
 
 import "qsrc.oo";
 import "std/fs/os/fs.oo";
@@ -73,6 +74,42 @@ fn qr_now(p: &ProcessCap) -> String {
     return ep + "|" + is;
 }
 
+// Compact one-line history entry built from the agent fragments — the
+// per-day snapshot the 7-day trend view renders.
+fn qr_hist_line(m: String, g: String, d: String, v: String, is: String) -> String {
+    let vs: String = qs_str(v, "\"state\"");
+    return "{\"date\":\"" + qs_slice(is, 0, 10) + "\",\"at\":\"" + qs_slice(is, 11, 19)
+        + "\",\"m_in\":" + qs_num(m, "in_5h").to_string()
+        + ",\"m_out\":" + qs_num(m, "out_5h").to_string()
+        + ",\"m_turns\":" + qs_num(m, "turns_5h").to_string()
+        + ",\"g_tok\":" + qs_num(g, "total_tokens").to_string()
+        + ",\"g_ticks\":" + qs_num(g, "cost_usd_ticks").to_string()
+        + ",\"g_used\":" + qs_num(g, "with_usage").to_string()
+        + ",\"d_rep\":" + qs_num(d, "reporting").to_string()
+        + ",\"d_pan\":" + qs_num(d, "panes").to_string()
+        + ",\"d_max\":" + qs_num(d, "max_ctx_pct").to_string()
+        + ",\"v\":\"" + vs + "\"}";
+}
+
+// Append the daily snapshot: drop any earlier line for the same date
+// (day-grain append-only — the latest run of a day wins), write back.
+fn qr_hist_append(fr: &FsReadCap, fw: &FsWriteCap, path: String, line: String, day: String) -> String {
+    let rd: Result[String, String] = fs_read_file(fr, path);
+    let old: String = match rd { Ok(t) => t, Err(_) => "" };
+    let mut keep: String = "";
+    let mut rest: String = old;
+    while bytes_len(rest) > 0 {
+        let nl: Int = str_index_of(rest, "\n");
+        let l: String = if nl < 0 { rest } else { qs_slice(rest, 0, nl) };
+        if bytes_len(l) > 0 && str_index_of(l, "\"date\":\"" + day + "\"") < 0 { keep = keep + l + "\n"; }
+        rest = if nl < 0 { "" } else { qs_slice(rest, nl + 1, bytes_len(rest)) };
+    }
+    match fs_write_file(fw, path, keep + line + "\n") {
+        Ok(_) => { return "HISTORY +" + day; },
+        Err(e) => { return "HISTORY_ERR " + e; }
+    }
+}
+
 pub fn main(p: &ProcessCap, fr: &FsReadCap, fw: &FsWriteCap, env: &EnvCap, args: List[String]) -> Int {
     let home: String = match env_get(env, "OODA_FLEET_HOME") { Ok(h) => h, Err(_) => "" };
     if home == "" { println("ERR quota_refresh OODA_FLEET_HOME unset"); return 2; }
@@ -85,13 +122,16 @@ pub fn main(p: &ProcessCap, fr: &FsReadCap, fw: &FsWriteCap, env: &EnvCap, args:
     let n: String = qr_now(p);
     let body: String = qr_json(m, g, d, v, n);
     match fs_write_file(fw, out, body) {
-        Ok(_) => {
-            println("QUOTA_BOARD " + out);
-            return 0;
-        },
+        Ok(_) => { },
         Err(e) => {
             println("ERR quota_refresh " + e);
             return 1;
         }
     }
+    let bar: Int = str_index_of(n, "|");
+    let is: String = if bar < 0 { "" } else { qs_slice(n, bar + 1, bytes_len(n)) };
+    let hp: String = if list_len(args) > 1 { list_get(args, 1) } else { "status/quota_history.jsonl" };
+    println(qr_hist_append(fr, fw, hp, qr_hist_line(m, g, d, v, is), qs_slice(is, 0, 10)));
+    println("QUOTA_BOARD " + out);
+    return 0;
 }
