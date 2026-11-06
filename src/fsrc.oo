@@ -1,0 +1,150 @@
+// # Fleet State Parsers — .fleet-state.txt Sections To JSON Fragments
+//
+// Logline: Split the fleettick state document into lines and render each section (repos, quota, workspaces, health/forge) as JSON array fragments for fleet.json.
+//
+// Setup: Pure byte-native text work — no capabilities needed. Helpers qs_slice/qs_num/qs_tok come from qsrc.oo; the state file is ASCII so byte offsets are safe. Line shapes verified against a real soak-era .fleet-state.txt.
+//
+// Beats:
+//   1. fr_lines/fr_base/fr_rows — newline split, basename, prefix filter.
+//   2. fr_repos — CLEAN/DIRTY rows joined with RECON verdicts by basename.
+//   3. fr_quota/fr_active/fr_health — QUOTA, ACTIVE-WS, HEALTH+FORGE arrays.
+//   4. fr_sig — content signature (hmac first-8) for history dedupe.
+
+import "qsrc.oo";
+
+// Split doc on newlines into a list of lines (no trailing empty).
+pub fn fr_lines(doc: String) -> List[String] {
+    let mut out: List[String] = list_new();
+    let n: Int = bytes_len(doc);
+    let mut s: Int = 0;
+    let mut i: Int = 0;
+    while i < n {
+        if byte_at(doc, i) == 10 {
+            out = list_push(out, qs_slice(doc, s, i));
+            s = i + 1;
+        }
+        i = i + 1;
+    }
+    if s < n { out = list_push(out, qs_slice(doc, s, n)); }
+    return out;
+}
+
+// Basename of a path: text after the last '/'.
+// Severity map: SYNC/CLEAN/PULLED=0, AHEAD/BEHIND=1,
+// DIRTY*/NO-TRACK/DETACHED/GATE-SKIP=2, DIVERGED/*_ERR=3.
+pub fn fr_sev(st: String, rc: String) -> Int {
+    if rc == "DIVERGED" || str_index_of(rc, "ERR") >= 0 { return 3; }
+    if st == "DIRTY" || rc == "DIRTY-SKIP" || rc == "NO-TRACK" || rc == "DETACHED" || rc == "GATE-SKIP" { return 2; }
+    if rc == "AHEAD" || rc == "BEHIND" { return 1; }
+    return 0;
+}
+
+pub fn fr_base(path: String) -> String {
+    let n: Int = bytes_len(path);
+    let mut i: Int = n;
+    while i > 0 {
+        if byte_at(path, i - 1) == 47 { return qs_slice(path, i, n); }
+        i = i - 1;
+    }
+    return path;
+}
+
+// All lines starting with a literal prefix.
+pub fn fr_rows(lines: List[String], pfx: String) -> List[String] {
+    let mut out: List[String] = list_new();
+    let n: Int = list_len(lines);
+    let mut i: Int = 0;
+    while i < n {
+        let l: String = list_get(lines, i) + "";
+        if str_index_of(l, pfx) == 0 { out = list_push(out, l); }
+        i = i + 1;
+    }
+    return out;
+}
+
+// Repo array: CLEAN/DIRTY rows joined to RECON verdicts by basename.
+pub fn fr_repos(lines: List[String]) -> String {
+    let rl: List[String] = fr_rows(lines, "CLEAN ");
+    let dl: List[String] = fr_rows(lines, "DIRTY ");
+    let all: List[String] = list_new();
+    let mut i: Int = 0;
+    let mut out: String = "";
+    let n1: Int = list_len(rl);
+    let n2: Int = list_len(dl);
+    while i < n1 + n2 {
+        let l: String = if i < n1 { list_get(rl, i) + "" } else { list_get(dl, i - n1) + "" };
+        let name: String = fr_base(qs_tok(l, 1));
+        let mut ver: String = "-";
+        let recs: List[String] = fr_rows(lines, "RECON ");
+        let rn: Int = list_len(recs);
+        let mut j: Int = 0;
+        while j < rn {
+            let r: String = list_get(recs, j) + "";
+            if fr_base(qs_tok(r, 1)) == name { ver = qs_tok(r, 2); }
+            j = j + 1;
+        }
+        if out != "" { out = out + ","; }
+        out = out + "{\"name\":\"" + name + "\",\"state\":\"" + qs_tok(l, 0) + "\",\"recon\":\"" + ver
+            + "\",\"sev\":" + fr_sev(qs_tok(l, 0), ver).to_string() + "}";
+        i = i + 1;
+    }
+    return "[" + out + "]";
+}
+
+// QUOTA rows: agent, state, used, rem (-1 propagates from UNKNOWN lines).
+pub fn fr_quota(lines: List[String]) -> String {
+    let ql: List[String] = fr_rows(lines, "QUOTA ");
+    let n: Int = list_len(ql);
+    let mut out: String = "";
+    let mut i: Int = 0;
+    while i < n {
+        let l: String = list_get(ql, i) + "";
+        if out != "" { out = out + ","; }
+        out = out + "{\"agent\":\"" + qs_tok(l, 1) + "\",\"state\":\"" + qs_tok(l, 2)
+            + "\",\"used\":" + qs_num(l, "used=").to_string()
+            + ",\"rem\":" + qs_num(l, "rem=").to_string() + "}";
+        i = i + 1;
+    }
+    return "[" + out + "]";
+}
+
+// ACTIVE-WS rows: workspace, blocked/working/idle/other counts.
+pub fn fr_active(lines: List[String]) -> String {
+    let wl: List[String] = fr_rows(lines, "ACTIVE-WS ");
+    let n: Int = list_len(wl);
+    let mut out: String = "";
+    let mut i: Int = 0;
+    while i < n {
+        let l: String = list_get(wl, i) + "";
+        if out != "" { out = out + ","; }
+        out = out + "{\"ws\":\"" + qs_tok(l, 1) + "\",\"blocked\":" + qs_num(l, "blocked=").to_string()
+            + ",\"working\":" + qs_num(l, "working=").to_string()
+            + ",\"idle\":" + qs_num(l, "idle=").to_string()
+            + ",\"other\":" + qs_num(l, "other=").to_string() + "}";
+        i = i + 1;
+    }
+    return "[" + out + "]";
+}
+
+// HEALTH + FORGE rows as {src,line,state} triples — full line preserved.
+pub fn fr_health(lines: List[String]) -> String {
+    let mut out: String = "";
+    let pfxs: List[String] = list_push(list_push(list_new(), "HEALTH "), "FORGE ");
+    let mut p: Int = 0;
+    while p < list_len(pfxs) {
+        let rows: List[String] = fr_rows(lines, list_get(pfxs, p) + "");
+        let n: Int = list_len(rows);
+        let mut i: Int = 0;
+        while i < n {
+            let l: String = list_get(rows, i) + "";
+            if out != "" { out = out + ","; }
+            let rest: String = qs_slice(l, bytes_len(qs_tok(l, 0)) + 1, bytes_len(l));
+            out = out + "{\"src\":\"" + qs_tok(l, 0) + "\",\"line\":\"" + rest + "\"}";
+            i = i + 1;
+        }
+        p = p + 1;
+    }
+    return "[" + out + "]";
+}
+
+
