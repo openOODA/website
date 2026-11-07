@@ -1,0 +1,152 @@
+// # Owned Link And Local Reference Test - Website Links
+//
+// Logline: Assert that every owned link answers and every relative file reference exists.
+//
+// Setup: ProcessCap probes the owned links with curl argv; FsReadCap reads the
+// pages and probes the files; EnvCap names the site root.
+//
+// Beats:
+//   1. ln_refs lists the href and src targets of a page in markup order.
+//   2. ln_kind sorts a target into skip, owned, local, or third-party.
+//   3. ln_exists resolves a relative target against the site root.
+//   4. ln_alive asks an owned link for a status under the redirect chain.
+//   5. main checks the local references and the owned links, then prints the verdict line.
+
+import "std/core/primitives/str.oo";
+import "std/fs/os/fs.oo";
+import "std/fs/process/env.oo";
+
+fn ln_read(fr: &FsReadCap, path: String) -> String {
+    let r: Result[String, String] = fs_read_file(fr, path);
+    if r.is_err() { return ""; }
+    return r.val;
+}
+
+fn ln_fail(msg: String) -> Result[Int, String] {
+    println("FAIL " + msg);
+    return Err(msg);
+}
+
+// Every href and src target of the page, in markup order.
+fn ln_refs(html: String) -> List[String] {
+    let mut out: List[String] = list_new();
+    let mut rest: String = html;
+    while true {
+        let h: Int = index_of(rest, "href=\"");
+        let s: Int = index_of(rest, "src=\"");
+        let mut at: Int = -1;
+        let mut mlen: Int = 0;
+        if h >= 0 { at = h; mlen = 6; }
+        if s >= 0 && (at < 0 || s < at) { at = s; mlen = 5; }
+        if at < 0 { break; }
+        let tail: String = byte_slice(rest, at + mlen, bytes_len(rest));
+        let j: Int = index_of(tail, "\"");
+        if j >= 0 {
+            let v: String = byte_slice(tail, 0, j);
+            if str_len(v) > 0 { out = list_push(out, v); }
+        }
+        rest = tail;
+    }
+    return out;
+}
+
+// 0 skips the target, 1 is an owned absolute link, 2 is a local file, 3 is a third-party link.
+fn ln_kind(ref: String) -> Int {
+    if starts_with(ref, "#") { return 0; }
+    if starts_with(ref, "data:") { return 0; }
+    if ref == "/" { return 0; }
+    if starts_with(ref, "http://") || starts_with(ref, "https://") {
+        let mut host: String = ref;
+        if starts_with(host, "https://") { host = byte_slice(host, 8, bytes_len(host)); }
+        if starts_with(host, "http://") { host = byte_slice(host, 7, bytes_len(host)); }
+        let slash: Int = index_of(host, "/");
+        if slash >= 0 { host = byte_slice(host, 0, slash); }
+        let colon: Int = index_of(host, ":");
+        if colon >= 0 { host = byte_slice(host, 0, colon); }
+        host = to_lowercase(host);
+        if host == "github.com" || ends_with(host, ".github.com") { return 1; }
+        return 3;
+    }
+    return 2;
+}
+
+// True when the local file a relative target names exists under the site root.
+fn ln_exists(fr: &FsReadCap, root: String, ref: String) -> Bool {
+    let q: Int = index_of(ref, "?");
+    let h: Int = index_of(ref, "#");
+    let mut cut: Int = -1;
+    if q >= 0 { cut = q; }
+    if h >= 0 && (cut < 0 || h < cut) { cut = h; }
+    let mut target: String = if cut < 0 { ref } else { byte_slice(ref, 0, cut) };
+    if starts_with(target, "/") { target = byte_slice(target, 1, bytes_len(target)); }
+    return fs_path_exists(fr, root + "/" + target);
+}
+
+// True when the owned link answers with a status under the failure band.
+fn ln_alive(p: &ProcessCap, url: String) -> Bool {
+    let head: Result[String, String] = sys_exec(p, "curl", "-s", "-I", "-L", "--max-time", "15",
+        "-o", "/dev/null", "-w", "%{http_code}", url);
+    if head.is_ok() {
+        let code: Int = parse_int_digits(str_replace(head.val, "\n", ""));
+        if code > 0 && code < 400 { return true; }
+    }
+    let get: Result[String, String] = sys_exec(p, "curl", "-s", "-L", "--max-time", "15",
+        "-o", "/dev/null", "-w", "%{http_code}", url);
+    if get.is_ok() {
+        let code: Int = parse_int_digits(str_replace(get.val, "\n", ""));
+        if code > 0 && code < 400 { return true; }
+    }
+    return false;
+}
+
+// Probe every unique owned link; Ok carries the count of live owned links.
+fn ln_check_owned(p: &ProcessCap, external: List[String]) -> Result[Int, String] {
+    let mut uniq: List[String] = list_new();
+    let mut q: Int = 0;
+    while q < list_len(external) {
+        let url: String = list_get(external, q);
+        let mut seen: Bool = false;
+        let mut w: Int = 0;
+        while w < list_len(uniq) {
+            if list_get(uniq, w) == url { seen = true; }
+            w = w + 1;
+        }
+        if !seen {
+            uniq = list_push(uniq, url);
+            if !ln_alive(p, url) { return ln_fail("dead owned link " + url); }
+        }
+        q = q + 1;
+    }
+    return Ok(list_len(uniq));
+}
+
+pub fn main(p: &ProcessCap, fr: &FsReadCap, e: &EnvCap) -> Result[Int, String] {
+    let mut root: String = "/Projects/openOODA/website";
+    let er: Result[String, String] = env_get(e, "OODA_SITE_ROOT");
+    if er.is_ok() && str_len(er.val) > 0 { root = er.val; }
+    let pages: List[String] = str_split("index.html|404.html", "|");
+    let mut local_count: Int = 0;
+    let mut external: List[String] = list_new();
+    let mut i: Int = 0;
+    while i < list_len(pages) {
+        let page: String = list_get(pages, i);
+        let html: String = ln_read(fr, root + "/" + page);
+        let refs: List[String] = ln_refs(html);
+        let mut k: Int = 0;
+        while k < list_len(refs) {
+            let ref: String = list_get(refs, k);
+            let kind: Int = ln_kind(ref);
+            if kind == 1 { external = list_push(external, ref); }
+            if kind == 2 { local_count = local_count + 1; }
+            if kind == 2 && !ln_exists(fr, root, ref) { return ln_fail(page + " references missing file " + ref); }
+            k = k + 1;
+        }
+        i = i + 1;
+    }
+    let owned: Result[Int, String] = ln_check_owned(p, external);
+    if owned.is_err() { return owned; }
+    let head: String = "PASS website links: " + owned.val.to_string() + " owned URLs alive, ";
+    let tail: String = local_count.to_string() + " local refs exist";
+    println(head + tail);
+    return Ok(0);
+}

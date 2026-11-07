@@ -20,8 +20,17 @@ All work in this repository strictly defers to the organization standards in [`o
 
 ## 3. Local Verification Commands
 ```bash
-bash tests/test_links.sh
+# One .oo page per gate. Build and run each from the website root.
+# OODA_COMPILER must point at the compiler; no path is hardcoded here.
+: "${OODA_COMPILER:?set OODA_COMPILER to the oodac binary}"
+for page in copy hooks layout links privacy shim; do
+  "$OODA_COMPILER" build "tests/${page}_test.oo" -o "/tmp/${page}_test" || exit 1
+  "/tmp/${page}_test" || exit 1
+done
 ```
+Each page prints one `PASS ...` line and exits 0. A failed assertion prints
+`FAIL ...` and exits 1. The pages read the site from the repository root, so
+run them from the website directory.
 
 ---
 

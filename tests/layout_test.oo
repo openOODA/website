@@ -1,0 +1,129 @@
+// # Page Layout And Small Screen Test - Website Layout
+//
+// Logline: Assert that both pages carry a viewport, load no app script, link only live files, and ship small-screen rules.
+//
+// Setup: FsReadCap reads the pages and the style sheets from the site root;
+// EnvCap names the site root; ProcessCap is bound so every page of the suite
+// shares one main shape.
+//
+// Beats:
+//   1. ly_read returns the file text, or an empty body when the file is unreadable.
+//   2. ly_spa reports a page script that pulls from the retired app tree.
+//   3. ly_refs lists the root-relative href and src targets of a page.
+//   4. main checks the pages, the links, and the style sheets, then prints the verdict line.
+
+import "std/core/primitives/str.oo";
+import "std/fs/os/fs.oo";
+import "std/fs/process/env.oo";
+
+fn ly_read(fr: &FsReadCap, path: String) -> String {
+    let r: Result[String, String] = fs_read_file(fr, path);
+    if r.is_err() { return ""; }
+    return r.val;
+}
+
+fn ly_fail(msg: String) -> Result[Int, String] {
+    println("FAIL " + msg);
+    return Err(msg);
+}
+
+// The quoted value of one attribute, up to the next quote of either kind.
+fn ly_val(s: String, from: Int) -> String {
+    let mut out: String = "";
+    let mut i: Int = from;
+    while i < bytes_len(s) {
+        let c: String = byte_slice(s, i, i + 1);
+        if c == "\"" || c == "'" { break; }
+        out = out + c;
+        i = i + 1;
+    }
+    return out;
+}
+
+// True when any script tag of the page loads a source from the app tree.
+fn ly_spa(html: String) -> Bool {
+    let mut rest: String = html;
+    while true {
+        let i: Int = index_of(rest, "<script");
+        if i < 0 { return false; }
+        let tail: String = byte_slice(rest, i, bytes_len(rest));
+        let gt: Int = index_of(tail, ">");
+        let tag: String = if gt < 0 { tail } else { byte_slice(tail, 0, gt) };
+        let mut tr: String = tag;
+        while true {
+            let si: Int = index_of(tr, "src=");
+            if si < 0 { break; }
+            let q: Int = si + 4;
+            if q >= bytes_len(tr) { break; }
+            let qc: String = byte_slice(tr, q, q + 1);
+            if qc == "\"" || qc == "'" {
+                if str_contains(ly_val(tr, q + 1), "/src/") { return true; }
+            }
+            tr = byte_slice(tr, q, bytes_len(tr));
+        }
+        rest = byte_slice(rest, i + 1, bytes_len(rest));
+    }
+}
+
+// Every root-relative href and src target of the page, in markup order.
+fn ly_refs(html: String) -> List[String] {
+    let mut out: List[String] = list_new();
+    let mut rest: String = html;
+    while true {
+        let h: Int = index_of(rest, "href=\"");
+        let s: Int = index_of(rest, "src=\"");
+        let mut at: Int = -1;
+        let mut mlen: Int = 0;
+        if h >= 0 { at = h; mlen = 6; }
+        if s >= 0 && (at < 0 || s < at) { at = s; mlen = 5; }
+        if at < 0 { break; }
+        let tail: String = byte_slice(rest, at + mlen, bytes_len(rest));
+        let j: Int = index_of(tail, "\"");
+        if j >= 0 {
+            let v: String = byte_slice(tail, 0, j);
+            if starts_with(v, "/") { out = list_push(out, v); }
+        }
+        rest = tail;
+    }
+    return out;
+}
+
+pub fn main(p: &ProcessCap, fr: &FsReadCap, e: &EnvCap) -> Result[Int, String] {
+    let mut root: String = "/Projects/openOODA/website";
+    let er: Result[String, String] = env_get(e, "OODA_SITE_ROOT");
+    if er.is_ok() && str_len(er.val) > 0 { root = er.val; }
+    let pages: List[String] = str_split("index.html|404.html", "|");
+    let mut i: Int = 0;
+    while i < list_len(pages) {
+        let page: String = list_get(pages, i);
+        let html: String = ly_read(fr, root + "/" + page);
+        if !str_contains(html, "name=\"viewport\"") { return ly_fail(page + " has no viewport tag"); }
+        if ly_spa(html) { return ly_fail(page + " loads app script"); }
+        let refs: List[String] = ly_refs(html);
+        let mut k: Int = 0;
+        while k < list_len(refs) {
+            let ref: String = list_get(refs, k);
+            let target: String = if ref == "/" { "" } else { byte_slice(ref, 1, bytes_len(ref)) };
+            if target != "" && !fs_path_exists(fr, root + "/" + target) { return ly_fail(page + " dead link " + ref); }
+            k = k + 1;
+        }
+        i = i + 1;
+    }
+    let names: List[String] = fs_read_dir(fr, root + "/styles");
+    let mut styles: List[String] = list_new();
+    let mut n: Int = 0;
+    while n < list_len(names) {
+        let f: String = list_get(names, n);
+        if ends_with(f, ".css") { styles = list_push(styles, f); }
+        n = n + 1;
+    }
+    if list_len(styles) == 0 { return ly_fail("no styles found"); }
+    let mut s: Int = 0;
+    while s < list_len(styles) {
+        let css: String = ly_read(fr, root + "/styles/" + list_get(styles, s));
+        if !str_contains(css, "@media") && !str_contains(css, "clamp(") { return ly_fail("style without small-screen rules"); }
+        s = s + 1;
+    }
+    println("PASS website layout pages+links+small-screen");
+    return Ok(0);
+}

@@ -1,0 +1,205 @@
+// # Zero Trust Privacy Gate - Published Site
+//
+// Logline: Refuse every published file that names the internal fleet, a tailnet address, or a local path.
+//
+// Setup: FsReadCap walks the site tree and reads every file; EnvCap names the
+// site root; ProcessCap is bound so every page of the suite shares one main
+// shape. The token table joins each needle from two halves so this page never
+// holds the words it forbids.
+//
+// Beats:
+//   1. pv_walk lists every file the deploy uploads, minus the skipped trees.
+//   2. pv_scan finds the needle hits that the boundary rule admits.
+//   3. pv_find runs the token table over one file and names the line of each hit.
+//   4. main walks the tree, holds the gate closed on any violation, and prints the verdict line.
+
+import "std/core/primitives/str.oo";
+import "std/fs/os/fs.oo";
+import "std/fs/process/env.oo";
+
+// Byte class: 1 is a digit, 2 is a lowercase letter, 3 is a word character.
+fn pv_byte(b: Int, kind: Int) -> Bool {
+    if kind == 1 { return b >= 48 && b <= 57; }
+    if kind == 2 { return b >= 97 && b <= 122; }
+    if kind == 3 { return b == 95 || (b >= 48 && b <= 57) || (b >= 65 && b <= 90) || (b >= 97 && b <= 122); }
+    return false;
+}
+
+// True when the text carries a NUL byte, the mark of a binary asset.
+fn pv_binary(text: String) -> Bool {
+    let mut bi: Int = 0;
+    let mut hit: Bool = false;
+    while bi < bytes_len(text) {
+        if byte_at(text, bi) == 0 { hit = true; }
+        bi = bi + 1;
+    }
+    return hit;
+}
+
+// The needle hits the boundary rule admits. Mode 1 is a word boundary, 2 is a
+// lowercase follower, 3 is a digit follower, 4 is a name boundary, 5 is an address.
+fn pv_scan(text: String, needle: String, mode: Int) -> List[Int] {
+    let mut out: List[Int] = list_new();
+    let total: Int = bytes_len(text);
+    let nlen: Int = bytes_len(needle);
+    let mut base: Int = 0;
+    while base < total {
+        let rest: String = byte_slice(text, base, total);
+        let i: Int = index_of(rest, needle);
+        if i < 0 { break; }
+        let at: Int = base + i;
+        let prev: Int = if at > 0 { byte_at(text, at - 1) } else { 0 };
+        let next: Int = if at + nlen < total { byte_at(text, at + nlen) } else { 0 };
+        let mut ok: Bool = true;
+        if mode == 1 { ok = (at == 0 || !pv_byte(prev, 3)) && (at + nlen >= total || !pv_byte(next, 3)); }
+        if mode == 2 { ok = at + nlen < total && pv_byte(next, 2); }
+        if mode == 3 { ok = at + nlen < total && pv_byte(next, 1); }
+        if mode == 4 {
+            let lp: Bool = at == 0 || (!pv_byte(prev, 3) && prev != 45);
+            let rp: Bool = at + nlen >= total || (!pv_byte(next, 3) && next != 45);
+            ok = lp && rp;
+        }
+        if mode == 5 { ok = pv_ip(text, at); }
+        if ok { out = list_push(out, at); }
+        base = at + nlen;
+    }
+    return out;
+}
+
+// True when an address of the tailnet shape starts at the given offset.
+fn pv_ip(text: String, at: Int) -> Bool {
+    let total: Int = bytes_len(text);
+    let p1: Int = at + 4;
+    let mut d1: Int = 0;
+    while d1 < 3 && p1 + d1 < total && pv_byte(byte_at(text, p1 + d1), 1) { d1 = d1 + 1; }
+    if d1 == 0 { return false; }
+    if p1 + d1 >= total { return false; }
+    if byte_at(text, p1 + d1) != 46 { return false; }
+    let p2: Int = p1 + d1 + 1;
+    let mut d2: Int = 0;
+    while d2 < 3 && p2 + d2 < total && pv_byte(byte_at(text, p2 + d2), 1) { d2 = d2 + 1; }
+    if d2 == 0 { return false; }
+    if p2 + d2 >= total { return false; }
+    if byte_at(text, p2 + d2) != 46 { return false; }
+    let p3: Int = p2 + d2 + 1;
+    let mut d3: Int = 0;
+    while d3 < 3 && p3 + d3 < total && pv_byte(byte_at(text, p3 + d3), 1) { d3 = d3 + 1; }
+    return d3 > 0;
+}
+
+// Every file of the tree that the deploy uploads, as a path under the site root.
+fn pv_walk(fr: &FsReadCap, dir: String, rel: String) -> List[String] {
+    let mut out: List[String] = list_new();
+    let names: List[String] = fs_read_dir(fr, dir);
+    let mut i: Int = 0;
+    while i < list_len(names) {
+        let n: String = list_get(names, i);
+        let is_dir: Bool = fs_is_dir(fr, dir + "/" + n);
+        let skip: Bool = is_dir && str_contains("|.git|node_modules|.ooda-cache|dist|build|.agents|", "|" + n + "|");
+        let r: String = if rel == "" { n } else { rel + "/" + n };
+        if is_dir && !skip {
+            let sub: List[String] = pv_walk(fr, dir + "/" + n, r);
+            let mut j: Int = 0;
+            while j < list_len(sub) {
+                out = list_push(out, list_get(sub, j));
+                j = j + 1;
+            }
+        } else {
+            if !is_dir && !str_contains("|.DS_Store|Thumbs.db|", "|" + n + "|") && !ends_with(n, ".log") {
+                out = list_push(out, r);
+            }
+        }
+        i = i + 1;
+    }
+    return out;
+}
+
+// The violations of one file. The table holds head|tail|mode|scope|reason.
+fn pv_find(text: String, rel: String) -> List[String] {
+    let content: Bool = ends_with(rel, ".html") || ends_with(rel, ".txt") || ends_with(rel, ".md")
+        || ends_with(rel, ".xml") || ends_with(rel, ".oot") || ends_with(rel, ".oo")
+        || ends_with(rel, ".json") || ends_with(rel, ".yml") || ends_with(rel, ".yaml");
+    let mut out: List[String] = list_new();
+    let spec: String = "zeb|es|4|0|the name of a fleet node|ring|master|4|0|the name of a fleet node|"
+        + "spot|light|4|1|the name of a fleet node|100|.|5|0|a Tailscale address|"
+        + "114|35|1|0|the local inference port|/hom|e/|2|0|a local home path|"
+        + "04:|30|0|0|a local time zone|~04:|00|0|0|a local time zone|$||3|0|a dollar amount|"
+        + "star|jammer|1|0|the name of a node";
+    let f: List[String] = str_split(spec, "|");
+    let mut i: Int = 0;
+    while i + 4 < list_len(f) {
+        let needle: String = list_get(f, i) + list_get(f, i + 1);
+        let mode: Int = parse_int_digits(list_get(f, i + 2));
+        let scope: Int = parse_int_digits(list_get(f, i + 3));
+        let why: String = list_get(f, i + 4);
+        i = i + 5;
+        if scope == 1 && !content { continue; }
+        let hay: String = if mode == 4 { to_lowercase(text) } else { text };
+        let nd: String = if mode == 4 { to_lowercase(needle) } else { needle };
+        let hits: List[Int] = pv_scan(hay, nd, mode);
+        let mut h: Int = 0;
+        while h < list_len(hits) {
+            let idx: Int = list_get(hits, h);
+            let mut line: Int = list_len(str_split(byte_slice(text, 0, idx), "\n"));
+            if line == 0 { line = 1; }
+            out = list_push(out, rel + ":" + line.to_string() + " " + why);
+            h = h + 1;
+        }
+    }
+    return out;
+}
+
+// The violations of every file of the tree.
+fn pv_check(fr: &FsReadCap, root: String, files: List[String]) -> List[String] {
+    let mut out: List[String] = list_new();
+    let mut i: Int = 0;
+    while i < list_len(files) {
+        let rel: String = list_get(files, i);
+        let rd: Result[String, String] = fs_read_file(fr, root + "/" + rel);
+        if rd.is_ok() && !pv_binary(rd.val) {
+            let v: List[String] = pv_find(rd.val, rel);
+            let mut j: Int = 0;
+            while j < list_len(v) {
+                out = list_push(out, list_get(v, j));
+                j = j + 1;
+            }
+        }
+        i = i + 1;
+    }
+    return out;
+}
+
+pub fn main(p: &ProcessCap, fr: &FsReadCap, e: &EnvCap) -> Result[Int, String] {
+    let mut root: String = "/Projects/openOODA/website";
+    let er: Result[String, String] = env_get(e, "OODA_SITE_ROOT");
+    if er.is_ok() && str_len(er.val) > 0 { root = er.val; }
+    let files: List[String] = pv_walk(fr, root, "");
+    let n: Int = list_len(files);
+    if n < 20 {
+        println("FAIL privacy gate read only " + n.to_string() + " files, the walk is broken");
+        return Err("privacy gate");
+    }
+    let mut pages: Int = 0;
+    let mut q: Int = 0;
+    while q < n {
+        let rel: String = list_get(files, q);
+        if rel == "index.html" || rel == "llms.txt" { pages = pages + 1; }
+        q = q + 1;
+    }
+    if pages != 2 {
+        println("FAIL privacy gate did not read the published pages");
+        return Err("privacy gate");
+    }
+    let vio: List[String] = pv_check(fr, root, files);
+    if list_len(vio) > 0 {
+        let mut k: Int = 0;
+        while k < list_len(vio) {
+            println("FAIL privacy gate: " + list_get(vio, k));
+            k = k + 1;
+        }
+        println("Zero-Trust privacy gate violation: " + list_len(vio).to_string() + " match(es)");
+        return Err("privacy gate");
+    }
+    println("PASS zero-trust privacy gate (" + n.to_string() + " published files)");
+    return Ok(0);
+}
