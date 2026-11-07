@@ -9,18 +9,12 @@
 //   1. ln_refs lists the href and src targets of a page in markup order.
 //   2. ln_kind sorts a target into skip, owned, local, or third-party.
 //   3. ln_exists resolves a relative target against the site root.
-//   4. ln_alive asks an owned link for a status under the redirect chain.
+//   4. ln_pages walks every published .html page; ln_alive asks an owned link for a status.
 //   5. main checks the local references and the owned links, then prints the verdict line.
 
 import "std/core/primitives/str.oo";
 import "std/fs/os/fs.oo";
 import "std/fs/process/env.oo";
-
-fn ln_read(fr: &FsReadCap, path: String) -> String {
-    let r: Result[String, String] = fs_read_file(fr, path);
-    if r.is_err() { return ""; }
-    return r.val;
-}
 
 fn ln_fail(msg: String) -> Result[Int, String] {
     println("FAIL " + msg);
@@ -88,6 +82,34 @@ fn ln_exists(fr: &FsReadCap, root: String, ref: String) -> Bool {
     return fs_path_exists(fr, root + "/" + target);
 }
 
+// Every published .html page under the site root, recursed; dot entries
+// are skipped so .git and .github are never walked. Depth-capped.
+fn ln_pages(fr: &FsReadCap, root: String, rel: String, depth: Int) -> List[String] {
+    let mut out: List[String] = list_new();
+    if depth > 4 { return out; }
+    let dir: String = if rel == "" { root } else { root + "/" + rel };
+    let entries: List[String] = fs_read_dir(fr, dir);
+    let mut i: Int = 0;
+    while i < list_len(entries) {
+        let e: String = list_get(entries, i);
+        if str_len(e) > 0 && !starts_with(e, ".") {
+            let path: String = if rel == "" { e } else { rel + "/" + e };
+            if ends_with(e, ".html") {
+                out = list_push(out, path);
+            } else if fs_is_dir(fr, root + "/" + path) {
+                let sub: List[String] = ln_pages(fr, root, path, depth + 1);
+                let mut j: Int = 0;
+                while j < list_len(sub) {
+                    out = list_push(out, list_get(sub, j));
+                    j = j + 1;
+                }
+            }
+        }
+        i = i + 1;
+    }
+    return out;
+}
+
 // True when the owned link answers with a status under the failure band.
 fn ln_alive(p: &ProcessCap, url: String) -> Bool {
     let head: Result[String, String] = sys_exec(p, "curl", "-s", "-I", "-L", "--max-time", "15",
@@ -130,13 +152,16 @@ pub fn main(p: &ProcessCap, fr: &FsReadCap, e: &EnvCap) -> Result[Int, String] {
     let mut root: String = "/Projects/openOODA/website";
     let er: Result[String, String] = env_get(e, "OODA_SITE_ROOT");
     if er.is_ok() && str_len(er.val) > 0 { root = er.val; }
-    let pages: List[String] = str_split("index.html|404.html", "|");
+    let pages: List[String] = ln_pages(fr, root, "", 0);
+    if list_len(pages) == 0 { return ln_fail("route scan found no pages under " + root); }
     let mut local_count: Int = 0;
     let mut external: List[String] = list_new();
     let mut i: Int = 0;
     while i < list_len(pages) {
         let page: String = list_get(pages, i);
-        let html: String = ln_read(fr, root + "/" + page);
+        let hr: Result[String, String] = fs_read_file(fr, root + "/" + page);
+        if hr.is_err() { return ln_fail("unreadable page " + page); }
+        let html: String = hr.val;
         let refs: List[String] = ln_refs(html);
         let mut k: Int = 0;
         while k < list_len(refs) {
@@ -152,7 +177,8 @@ pub fn main(p: &ProcessCap, fr: &FsReadCap, e: &EnvCap) -> Result[Int, String] {
     let owned: Result[Int, String] = ln_check_owned(p, external);
     if owned.is_err() { return owned; }
     let head: String = "PASS website links: " + owned.val.to_string() + " owned URLs alive, ";
-    let tail: String = local_count.to_string() + " local refs exist";
+    let tail: String = local_count.to_string() + " local refs exist across " +
+        list_len(pages).to_string() + " pages";
     println(head + tail);
     return Ok(0);
 }
