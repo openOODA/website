@@ -89,10 +89,32 @@ pub fn main(fs_r: &FsReadCap, _args: List[String]) -> Result[Int, String] {
     if ct_expect(d_ok, "02 every fleet.js document key is emitted by fr_json") { p = p + 1; }
     let agy_ok: Bool = str_index_of(esm, "\"agy\"") < 0 && str_index_of(qjs, "agy") < 0;
     if ct_expect(agy_ok, "03 the agy agent stays off the public quota contract") { p = p + 1; }
-    if p == 3 {
-        println("contract tests: 3/3 passed");
+    let mut ih_ok: Bool = true;
+    let mut ih_n: Int = 0;
+    let mut ih_pass: Int = 0;
+    while ih_pass < 2 {
+        let mut irest: String = if ih_pass == 0 { qjs } else { fjs };
+        while bytes_len(irest) > 0 {
+            let ip: Int = str_index_of(irest, "innerHTML");
+            if ip < 0 { break; }
+            ih_n = ih_n + 1;
+            let win: String = byte_slice(irest, ip, bytes_len(irest));
+            let eol: Int = str_index_of(win, "\n");
+            let ln: String = if eol < 0 { win } else { byte_slice(win, 0, eol) };
+            if str_index_of(ln, "innerHTML = '") < 0 ||
+                str_index_of(ln, "${") >= 0 || str_index_of(ln, "' +") >= 0 {
+                ih_ok = false;
+            }
+            irest = byte_slice(irest, ip + 9, bytes_len(irest));
+        }
+        ih_pass = ih_pass + 1;
+    }
+    if ct_expect(ih_ok && ih_n >= 3,
+        "04 every innerHTML assignment stays a static literal without interpolation") { p = p + 1; }
+    if p == 4 {
+        println("contract tests: 4/4 passed");
         return Ok(0);
     }
-    println("contract tests: FAILED (" + to_string(p) + "/3)");
+    println("contract tests: FAILED (" + to_string(p) + "/4)");
     return Ok(1);
 }
