@@ -171,6 +171,18 @@ fn check_qsrc(p: Int, fr: &FsReadCap, proc: &ProcessCap) -> Int {
     if expect(qn, "36 qs_num refuses sign, accepts quoted and zero-padded digits") { p = p + 1; }
     let qt: String = qs_str("{\"k\":\"abc", "\"k\"");
     if expect(qt == "abc", "37 qs_str unterminated value returns tail") { p = p + 1; }
+    let qo: String = qr_json("m", "g", "d", "v", "now");
+    let om: Int = str_index_of(qo, "\"mcode\"");
+    let og: Int = str_index_of(qo, "\"grok\"");
+    let od: Int = str_index_of(qo, "\"devin\"");
+    let ov: Int = str_index_of(qo, "\"vibe\"");
+    let ord: Bool = om >= 0 && og > om && od > og && ov > od;
+    if expect(ord, "38 quota doc emits agent keys in canonical order") { p = p + 1; }
+    let pe2: String = qr_pane_entry("pane\\id\nx", 7);
+    let esc: Bool = str_index_of(pe2, "pane" + "\\\\" + "id") >= 0 &&
+        str_index_of(pe2, "\\n") >= 0 &&
+        str_index_of(pe2, "\n") < 0;
+    if expect(esc, "39 backslash and newline escape through pane emitter") { p = p + 1; }
     return p;
 }
 
@@ -186,10 +198,10 @@ pub fn main(
     n = check_fleet(n);
     n = check_quota(n);
     n = check_qsrc(n, fr, p);
-    if n == 37 {
-        println("website json tests: 37/37 passed");
+    if n == 39 {
+        println("website json tests: 39/39 passed");
         return Ok(0);
     }
-    println("website json tests: FAILED (" + to_string(n) + "/31)");
+    println("website json tests: FAILED (" + to_string(n) + "/39)");
     return Ok(1);
 }
