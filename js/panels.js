@@ -1,4 +1,4 @@
-// panels.js — Panel Reveal, Section Navigation, Accent Palette & Card Spotlight
+// panels.js — Panel Reveal, Section Navigation, Accent Palette & Card Review
 const port = document.querySelector(".scroll-port");
 const panels = Array.from(document.querySelectorAll(".panel"));
 const navUp = document.getElementById("nav-up");
@@ -31,7 +31,7 @@ function applyAccent(a) {
   root.style.setProperty("--border-accent-color", `rgba(${r}, ${g}, ${b}, 0.42)`);
   root.style.setProperty("--hot", a.hot);
   root.style.setProperty("--hot-rgb", `${hr}, ${hg}, ${hb}`);
-  root.style.setProperty("--spotlight-inner", `rgba(${r}, ${g}, ${b}, 0.055)`);
+  root.style.setProperty("--review-inner", `rgba(${r}, ${g}, ${b}, 0.055)`);
 
   const swatchLabel = document.getElementById("dock-swatch-name");
   if (swatchLabel) swatchLabel.textContent = a.name.toUpperCase();
@@ -141,11 +141,11 @@ if (port && navUp && navDown) {
     const card = e.target && e.target.closest
       ? e.target.closest(".bring-row, .demo-pane, .cat-card, .terminal-install-box, .repo-list")
       : null;
-    if (activeCard && activeCard !== card) activeCard.classList.remove("spotlight-active");
+    if (activeCard && activeCard !== card) activeCard.classList.remove("review-active");
     activeCard = card;
     if (card) {
       const r = card.getBoundingClientRect();
-      card.classList.add("spotlight-active");
+      card.classList.add("review-active");
       card.style.setProperty("--mouse-x", Math.round(e.clientX - r.left) + "px");
       card.style.setProperty("--mouse-y", Math.round(e.clientY - r.top) + "px");
     }

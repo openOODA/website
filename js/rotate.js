@@ -97,7 +97,7 @@ setTimeout(rotateHeadline, 5000);
   window.oodaDrawHeaderWordmark = drawHeaderWordmark;
   drawHeaderWordmark();
 
-  const canvas = document.getElementById("spotlight-canvas");
+  const canvas = document.getElementById("review-canvas");
   if (!canvas) return;
   const ctx = canvas.getContext("2d", { alpha: false });
   const port = document.querySelector(".scroll-port");

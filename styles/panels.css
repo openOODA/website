@@ -1,4 +1,4 @@
-/* panels.css — fullport sections, spotlight stage, and persistent bottom dock */
+/* panels.css — fullport sections, review stage, and persistent bottom dock */
 .panel {
   min-height: 100%;
   scroll-snap-align: start;
@@ -30,8 +30,8 @@
   text-overflow: ellipsis;
 }
 
-/* Interactive Spotlight Hero Stage */
-.spotlight-stage {
+/* Interactive Review Hero Stage */
+.review-stage {
   min-height: 100%;
   scroll-snap-align: start;
   display: flex;
@@ -43,7 +43,7 @@
   user-select: none;
   cursor: crosshair;
 }
-.spotlight-badge {
+.review-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -56,7 +56,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
 }
-.spotlight-badge-dot {
+.review-badge-dot {
   width: 7px;
   height: 7px;
   background: var(--phosphor);
@@ -66,7 +66,7 @@
 @keyframes pulse-dot {
   50% { opacity: 0.25; }
 }
-.spotlight-sub {
+.review-sub {
   margin-top: 220px;
   color: var(--text-secondary);
   font-size: 12px;
@@ -75,7 +75,7 @@
   border: 1px solid #1e2636;
   padding: 5px 12px;
 }
-.spotlight-scroll-cue {
+.review-scroll-cue {
   display: inline-flex;
   flex-direction: column;
   align-items: center;

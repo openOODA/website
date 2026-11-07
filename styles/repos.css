@@ -1,4 +1,4 @@
-/* repos.css — Architecture Layer Cards, Interactive Cursor Spotlight & Grid */
+/* repos.css — Architecture Layer Cards, Interactive Cursor Review & Grid */
 .repo-list {
   display: flex;
   flex-direction: column;
@@ -98,8 +98,8 @@
   margin-top: 4px;
 }
 
-/* Interactive Card Spotlight Glow (IdleScreen Style) */
-.spotlight-card,
+/* Interactive Card Review Glow (IdleScreen Style) */
+.review-card,
 .bring-row,
 .demo-pane,
 .cat-card,
@@ -109,11 +109,11 @@
   --mouse-y: -999px;
   position: relative;
 }
-.spotlight-active {
+.review-active {
   border-color: var(--border-accent-color) !important;
   background-image: radial-gradient(
     280px circle at var(--mouse-x) var(--mouse-y),
-    var(--spotlight-inner) 0%,
+    var(--review-inner) 0%,
     transparent 70%
   );
 }

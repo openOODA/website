@@ -29,10 +29,10 @@
   --border-accent: 1px solid rgba(var(--accent-rgb, 80, 250, 123), 0.42);
   --border-accent-color: rgba(var(--accent-rgb, 80, 250, 123), 0.42);
 
-  /* Card Spotlight Custom Properties */
-  --spotlight-border: rgba(var(--accent-rgb, 80, 250, 123), 0.48);
-  --spotlight-glow: rgba(var(--hot-rgb, 162, 255, 188), 0.92);
-  --spotlight-inner: rgba(var(--accent-rgb, 80, 250, 123), 0.045);
+  /* Card Review Custom Properties */
+  --review-border: rgba(var(--accent-rgb, 80, 250, 123), 0.48);
+  --review-glow: rgba(var(--hot-rgb, 162, 255, 188), 0.92);
+  --review-inner: rgba(var(--accent-rgb, 80, 250, 123), 0.045);
 
   --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas,
     "Liberation Mono", Courier, monospace;
@@ -59,7 +59,7 @@ body.terminal-body {
 }
 
 /* Full-Viewport Canvas Backdrop */
-.spotlight-canvas {
+.review-canvas {
   position: fixed;
   inset: 0;
   width: 100vw;
