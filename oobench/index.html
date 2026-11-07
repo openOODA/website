@@ -44,8 +44,8 @@
         </a>
         <span class="window-title">sys@openooda:~# oobench rank // OODA VALUE SCORE (OVS v0.5.0)</span>
         <div class="header-right">
-          <span class="term-status-badge">[145/145 ASSERTIONS]</span>
-          <span class="term-status-online">[8 AGENT PROFILES]</span>
+          <span class="term-status-badge">[146/146 ASSERTIONS]</span>
+          <span class="term-status-online">[12 AGENT PROFILES]</span>
         </div>
       </header>
 
@@ -84,10 +84,10 @@
               <div class="ovs-meta"><strong>3.5 Panes 24/7</strong> &middot; <a href="https://www.minimax.io/platform/coding-plan" target="_blank" rel="noopener" style="color:#00e5ff;">Annual M-Plan (~$13/pane)</a><br/>Quality: <strong>95%</strong> &middot; <strong>128 tok/s</strong> &middot; 140s</div>
             </div>
             <div class="ovs-card">
-              <span class="ovs-badge ovs-badge-amber">OWNED 3-SERVER GPUS (2.5x)</span>
-              <h3>oopi / local-gpus (5 GPUs)</h3>
-              <div class="ovs-score-big">13,165</div>
-              <div class="ovs-meta"><strong>2.5 Panes 24/7</strong> &middot; 3 Servers (2&times;2 4060Ti + 3060)<br/>Quality: <strong>68%</strong> &middot; <strong>$0 Sub</strong> (~$15/pane power)</div>
+              <span class="ovs-badge ovs-badge-amber">OWNED GPUS (5 LOADED LLMS)</span>
+              <h3>oopi / 2x4060ti &amp; 1x3060</h3>
+              <div class="ovs-score-big">23,470</div>
+              <div class="ovs-meta"><strong>2x 32GB Nodes + 1x 12GB Node</strong><br/>Top Local LLM: <code>qwen3-coder-30b-a3b</code> (Q=74, 78 tok/s, <strong>$0 Sub</strong>)</div>
             </div>
           </div>
 
@@ -194,15 +194,63 @@
                 </tr>
                 <tr>
                   <td><strong>#8</strong></td>
-                  <td><code>oopi/local-gpus (3-node)</code></td>
-                  <td><span class="ovs-badge ovs-badge-cyan">2.5x Panes</span></td>
-                  <td><a href="https://status.openooda.org" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Owned HW: ringmaster (2x4060Ti) + spotlight (2x4060Ti) + zebes (3060)</a></td>
+                  <td><code>oopi/2x4060ti (qwen3-coder-30b-a3b)</code></td>
+                  <td><span class="ovs-badge ovs-badge-cyan">2.0x Panes</span></td>
+                  <td><a href="https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Owned HW: 2&times; Nodes (2&times; RTX 4060 Ti 16GB = 32GB VRAM/node) &middot; MoE 30B-A3B Q4_K_M</a></td>
+                  <td><strong>$0 sub</strong> (~$15/pane power)</td>
+                  <td><strong style="color:#ffb000;">74 / 100</strong></td>
+                  <td>90%</td>
+                  <td>78 tok/s (210s)</td>
+                  <td>12</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:15%; background:#ffb000;"></div></div><strong style="color:#ffb000;">23,470</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>#9</strong></td>
+                  <td><code>oopi/2x4060ti (qwen36-35b-mtp)</code></td>
+                  <td><span class="ovs-badge ovs-badge-cyan">2.0x Panes</span></td>
+                  <td><a href="https://status.openooda.org" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Owned HW: 2&times; Nodes (2&times; RTX 4060 Ti 16GB = 32GB VRAM/node) &middot; Dense 35B MTP Q4_K_M</a></td>
                   <td><strong>$0 sub</strong> (~$15/pane power)</td>
                   <td><strong style="color:#ffb000;">68 / 100</strong></td>
                   <td>82%</td>
                   <td>42 tok/s (360s)</td>
                   <td>12</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:10%; background:#ffb000;"></div></div><strong style="color:#ffb000;">13,165</strong></td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:9%; background:#ffb000;"></div></div><strong style="color:#ffb000;">10,532</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>#10</strong></td>
+                  <td><code>oopi/2x4060ti (deepseek-r1-32b)</code></td>
+                  <td><span class="ovs-badge ovs-badge-cyan">2.0x Panes</span></td>
+                  <td><a href="https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-32B" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Owned HW: 2&times; Nodes (2&times; RTX 4060 Ti 16GB = 32GB VRAM/node) &middot; Reasoning 32B Q4_K_M</a></td>
+                  <td><strong>$0 sub</strong> (~$15/pane power)</td>
+                  <td><strong style="color:#ffb000;">72 / 100</strong></td>
+                  <td>85%</td>
+                  <td>38 tok/s (420s)</td>
+                  <td>12</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:9%; background:#ffb000;"></div></div><strong style="color:#ffb000;">10,490</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>#11</strong></td>
+                  <td><code>oopi/1x3060 (qwen2.5-coder-14b)</code></td>
+                  <td><span class="ovs-badge ovs-badge-amber">1.0x Pane</span></td>
+                  <td><a href="https://huggingface.co/Qwen/Qwen2.5-Coder-14B-Instruct" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Owned HW: 1&times; Node (1&times; RTX 3060 12GB = 12GB VRAM) &middot; Dense 14B Q4_K_M</a></td>
+                  <td><strong>$0 sub</strong> (~$8/pane power)</td>
+                  <td><strong style="color:#ffb000;">62 / 100</strong></td>
+                  <td>78%</td>
+                  <td>58 tok/s (310s)</td>
+                  <td>8</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:7%; background:#ffb000;"></div></div><strong style="color:#ffb000;">7,254</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>#12</strong></td>
+                  <td><code>oopi/1x3060 (qwen2.5-coder-7b)</code></td>
+                  <td><span class="ovs-badge ovs-badge-amber">1.0x Pane</span></td>
+                  <td><a href="https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Owned HW: 1&times; Node (1&times; RTX 3060 12GB = 12GB VRAM) &middot; Dense 7B Q8_0</a></td>
+                  <td><strong>$0 sub</strong> (~$8/pane power)</td>
+                  <td><strong style="color:#ffb000;">54 / 100</strong></td>
+                  <td>72%</td>
+                  <td>95 tok/s (240s)</td>
+                  <td>8</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:6%; background:#ffb000;"></div></div><strong style="color:#ffb000;">6,561</strong></td>
                 </tr>
               </tbody>
             </table>
@@ -222,8 +270,12 @@ formula: Fleet_OVS = (Quality^2 * Efficiency * Panes_24x7 * 60) / (Time_s * Cost
   #5 muse/spark-1.3-contributor [effort=medium panes=2.0x] Q=97 speed=112tok/s time=145s cost=25 -&gt; OVS=39868
   #6 vibe/glm-5-3 [effort=medium panes=1.0x] Q=95 speed=95tok/s time=165s cost=12 -&gt; OVS=31450
   #7 grok/grok-4.7-build-fast [effort=medium panes=1.0x] Q=96 speed=115tok/s time=150s cost=25 -&gt; OVS=18874
-  #8 oopi/local-gpus (3-node) [effort=medium panes=2.5x] Q=68 speed=42tok/s time=360s cost=12 -&gt; OVS=13165
-verdict=pass profiles=8</pre>
+  #8 oopi/2x4060ti (qwen3-coder-30b-a3b) [effort=medium panes=2.0x] Q=74 speed=78tok/s time=210s cost=12 -&gt; OVS=23470
+  #9 oopi/2x4060ti (qwen36-35b-mtp) [effort=medium panes=2.0x] Q=68 speed=42tok/s time=360s cost=12 -&gt; OVS=10532
+  #10 oopi/2x4060ti (deepseek-r1-32b) [effort=medium panes=2.0x] Q=72 speed=38tok/s time=420s cost=12 -&gt; OVS=10490
+  #11 oopi/1x3060 (qwen2.5-coder-14b) [effort=medium panes=1.0x] Q=62 speed=58tok/s time=310s cost=8 -&gt; OVS=7254
+  #12 oopi/1x3060 (qwen2.5-coder-7b) [effort=medium panes=1.0x] Q=54 speed=95tok/s time=240s cost=8 -&gt; OVS=6561
+verdict=pass profiles=12</pre>
         </section>
       </main>
 
