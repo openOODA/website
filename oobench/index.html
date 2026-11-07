@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>openOODA // oobench — OODA Value Score (OVS) Agent Leaderboard</title>
+    <meta
+      name="description"
+      content="Live OODA Value Score (OVS) benchmark leaderboard ranking autonomous coding agents across Quality, Efficiency, Speed (tok/s), Time, and Cost."
+    />
+    <meta property="og:title" content="openOODA // oobench — OODA Value Score (OVS) Agent Leaderboard" />
+    <meta property="og:description" content="OVS = (Quality^2 * Efficiency * 60) / (Time_s * Cost_norm) across the openOODA multi-agent fleet." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://openooda.org/oobench/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles/base.css" />
+    <link rel="stylesheet" href="/styles/panels.css" />
+    <style>
+      .ovs-formula-box { border: 1.5px solid rgba(80, 250, 123, 0.45); background: rgba(8, 12, 18, 0.9); padding: 1.1rem 1.3rem; margin: 1rem 0 1.4rem; border-radius: 6px; box-shadow: 3px 3px 0 0 #000; }
+      .ovs-formula-code { font-size: clamp(0.95rem, 2.2vw, 1.25rem); font-weight: 800; color: #50fa7b; display: block; margin-top: 0.35rem; }
+      .ovs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.9rem; margin: 1rem 0; }
+      .ovs-card { border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 0.9rem 1rem; background: rgba(255,255,255,0.02); }
+      .ovs-card-top { border-color: rgba(80, 250, 123, 0.55); background: rgba(80, 250, 123, 0.05); }
+      .ovs-card h3 { margin: 0 0 0.25rem; font-size: 0.92rem; color: #00e5ff; }
+      .ovs-score-big { font-size: 1.55rem; font-weight: 900; color: #50fa7b; margin: 0.2rem 0; }
+      .ovs-meta { font-size: 0.76rem; opacity: 0.8; line-height: 1.45; }
+      .ovs-table-wrap { overflow-x: auto; margin: 1rem 0; }
+      table.ovs-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+      table.ovs-table th, table.ovs-table td { text-align: left; padding: 0.55rem 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      table.ovs-table th { color: #ffb000; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid rgba(255,255,255,0.16); }
+      .ovs-bar-wrap { width: 120px; height: 10px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.14); display: inline-block; vertical-align: middle; margin-right: 6px; }
+      .ovs-bar-fill { height: 100%; background: #50fa7b; }
+      .ovs-badge { display: inline-block; padding: 0.1rem 0.45rem; font-size: 0.7rem; font-weight: 700; border-radius: 3px; border: 1px solid rgba(80,250,123,0.4); color: #50fa7b; background: rgba(80,250,123,0.1); }
+      .ovs-badge-cyan { border-color: rgba(0,229,255,0.4); color: #00e5ff; background: rgba(0,229,255,0.1); }
+      .ovs-badge-amber { border-color: rgba(255,176,0,0.4); color: #ffb000; background: rgba(255,176,0,0.1); }
+      pre.ovs-cli { font-size: 0.78rem; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.9rem; overflow-x: auto; color: #e2e8f0; line-height: 1.5; }
+    </style>
+  </head>
+  <body class="terminal-body">
+    <div class="terminal-window">
+      <header class="window-titlebar">
+        <a href="/" class="header-brand" aria-label="openOODA Home">
+          <img class="crest-emblem" src="/assets/favicon.svg" alt="" width="30" height="30" />
+        </a>
+        <span class="window-title">sys@openooda:~# oobench rank // OODA VALUE SCORE (OVS v0.5.0)</span>
+        <div class="header-right">
+          <span class="term-status-badge">[145/145 ASSERTIONS]</span>
+          <span class="term-status-online">[8 AGENT PROFILES]</span>
+        </div>
+      </header>
+
+      <main id="main-content" class="scroll-port" tabindex="-1">
+        <section class="panel" id="leaderboard">
+          <p class="hero-eyebrow">L7 AUTONOMOUS BENCHMARK HARNESS // OPENOODA-AGENTS/OOBENCH</p>
+          <h1 class="terminal-title">OODA Value Score (OVS)<span class="term-cursor" aria-hidden="true">_</span></h1>
+          <p class="terminal-intro">
+            <strong><code>oobench</code></strong> is the native <code>.oo</code> benchmark harness and agent evaluator for the openOODA ecosystem.
+            Rather than ranking models on raw pass-rate alone or raw tokens/sec alone, <code>oobench</code> computes the
+            <strong>OODA Value Score (OVS)</strong>—squaring verified gate quality while weighting token efficiency, wall-clock completion speed, and normalized cycle cost.
+          </p>
+
+          <div class="ovs-formula-box">
+            <span style="font-size:0.74rem; text-transform:uppercase; letter-spacing:0.08em; color:#ffb000; font-weight:700;">// Canonical OVS Equation (oobench/core/score.oo)</span>
+            <code class="ovs-formula-code">OVS = (Quality&sup2; &times; Efficiency_% &times; 60) / (Time_s &times; Cost_norm)</code>
+          </div>
+
+          <div class="ovs-grid">
+            <div class="ovs-card ovs-card-top">
+              <span class="ovs-badge">#1 OVERALL OVS</span>
+              <h3>devin / swe-2-flash-max</h3>
+              <div class="ovs-score-big">56,454</div>
+              <div class="ovs-meta">Effort: <code>max</code> &middot; Skill: <code>none</code><br/>Quality: <strong>97%</strong> &middot; Speed: <strong>145 tok/s</strong> &middot; 120s</div>
+            </div>
+            <div class="ovs-card ovs-card-top">
+              <span class="ovs-badge ovs-badge-cyan">#2 LOCAL 5-GPU CLUSTER</span>
+              <h3>oopi / local-5gpu</h3>
+              <div class="ovs-score-big">41,405</div>
+              <div class="ovs-meta">Effort: <code>medium</code> &middot; Skill: <code>native-oo</code><br/>Quality: <strong>91%</strong> &middot; Speed: <strong>110 tok/s</strong> &middot; 150s</div>
+            </div>
+            <div class="ovs-card">
+              <span class="ovs-badge">#3 DEEP ARCHITECT</span>
+              <h3>devin / swe-2-max</h3>
+              <div class="ovs-score-big">37,775</div>
+              <div class="ovs-meta">Effort: <code>max</code> &middot; Skill: <code>none</code><br/>Quality: <strong>98%</strong> &middot; Speed: <strong>92 tok/s</strong> &middot; 180s</div>
+            </div>
+            <div class="ovs-card">
+              <span class="ovs-badge ovs-badge-amber">TOP REVIEWERS (2-AXIS)</span>
+              <h3>mcode M3.1-Flash &amp; muse 1.3</h3>
+              <div class="ovs-score-big">20,112 / 19,934</div>
+              <div class="ovs-meta">Effort: <code>medium</code> &middot; Skills: <code>code-review</code> / <code>adversarial-qa</code><br/>Quality: <strong>95%&ndash;97%</strong> &middot; 112&ndash;128 tok/s</div>
+            </div>
+          </div>
+
+          <div class="ovs-table-wrap">
+            <table class="ovs-table" aria-label="OODA Value Score Agent Leaderboard">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Agent / Model Profile</th>
+                  <th>Thinking Effort</th>
+                  <th>Specialized Skill</th>
+                  <th>Gate Quality (Q)</th>
+                  <th>Efficiency</th>
+                  <th>Throughput</th>
+                  <th>Task Time</th>
+                  <th>Cost Index</th>
+                  <th>OVS Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>#1</strong></td>
+                  <td><code>devin/swe-2-flash-max</code></td>
+                  <td><span class="ovs-badge">max</span></td>
+                  <td><code>none</code> (Builder Backbone)</td>
+                  <td><strong>97 / 100</strong></td>
+                  <td>120%</td>
+                  <td>145 tok/s</td>
+                  <td>120s</td>
+                  <td>10</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:100%;"></div></div><strong style="color:#50fa7b;">56,454</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>#2</strong></td>
+                  <td><code>oopi/local-5gpu</code></td>
+                  <td><span class="ovs-badge ovs-badge-cyan">medium</span></td>
+                  <td><code>native-oo</code> (5-GPU Local)</td>
+                  <td><strong>91 / 100</strong></td>
+                  <td>125%</td>
+                  <td>110 tok/s</td>
+                  <td>150s</td>
+                  <td>10</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:73%;"></div></div><strong style="color:#00e5ff;">41,405</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>#3</strong></td>
+                  <td><code>devin/swe-2-max</code></td>
+                  <td><span class="ovs-badge">max</span></td>
+                  <td><code>none</code> (Deep Synthesis)</td>
+                  <td><strong>98 / 100</strong></td>
+                  <td>118%</td>
+                  <td>92 tok/s</td>
+                  <td>180s</td>
+                  <td>10</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:67%;"></div></div><strong style="color:#50fa7b;">37,775</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>#4</strong></td>
+                  <td><code>devin/glm-5-3-flash-high</code></td>
+                  <td><span class="ovs-badge ovs-badge-amber">high</span></td>
+                  <td><code>none</code> (24h Daily Pool)</td>
+                  <td><strong>94 / 100</strong></td>
+                  <td>115%</td>
+                  <td>135 tok/s</td>
+                  <td>130s</td>
+                  <td>15</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:55%;"></div></div><strong>31,265</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>#5</strong></td>
+                  <td><code>mcode/MiniMax-M3.1-Flash</code></td>
+                  <td><span class="ovs-badge ovs-badge-cyan">medium</span></td>
+                  <td><code>code-review</code> (2-Axis QA)</td>
+                  <td><strong>95 / 100</strong></td>
+                  <td>130%</td>
+                  <td>128 tok/s</td>
+                  <td>140s</td>
+                  <td>25</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:36%;"></div></div><strong>20,112</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>#6</strong></td>
+                  <td><code>muse/spark-1.3-contributor</code></td>
+                  <td><span class="ovs-badge ovs-badge-cyan">medium</span></td>
+                  <td><code>adversarial-qa</code> (Deep Falsification)</td>
+                  <td><strong>97 / 100</strong></td>
+                  <td>128%</td>
+                  <td>112 tok/s</td>
+                  <td>145s</td>
+                  <td>25</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:35%;"></div></div><strong>19,934</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>#7</strong></td>
+                  <td><code>grok/grok-4.7-build-fast</code></td>
+                  <td><span class="ovs-badge ovs-badge-cyan">medium</span></td>
+                  <td><code>fleet-orchestration</code></td>
+                  <td><strong>96 / 100</strong></td>
+                  <td>128%</td>
+                  <td>115 tok/s</td>
+                  <td>150s</td>
+                  <td>35</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:24%;"></div></div><strong>13,481</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>#8</strong></td>
+                  <td><code>vibe/glm-5-3</code></td>
+                  <td><span class="ovs-badge ovs-badge-cyan">medium</span></td>
+                  <td><code>none</code> (Monthly Paced Pool)</td>
+                  <td><strong>95 / 100</strong></td>
+                  <td>115%</td>
+                  <td>95 tok/s</td>
+                  <td>165s</td>
+                  <td>40</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:17%;"></div></div><strong>9,435</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel" id="cli-output">
+          <p class="hero-eyebrow">VERIFIED CLI OUTPUT // DETERMINISTIC ELF BINARY</p>
+          <h2 class="terminal-title" style="font-size:1.25rem;">Live <code>oobench rank</code> Telemetry</h2>
+          <pre class="ovs-cli">$ oobench rank
+=== oobench: OODA Value Score (OVS) Agent Leaderboard ===
+formula: OVS = (Quality^2 * Efficiency * 60) / (Time_s * Cost_norm)
+  #1 devin/swe-2-flash-max [effort=max skill=none] Q=97 speed=145tok/s time=120s cost=10 -&gt; OVS=56454
+  #2 devin/swe-2-max [effort=max skill=none] Q=98 speed=92tok/s time=180s cost=10 -&gt; OVS=37775
+  #3 oopi/local-5gpu [effort=medium skill=native-oo] Q=91 speed=110tok/s time=150s cost=10 -&gt; OVS=41405
+  #4 devin/glm-5-3-flash-high [effort=high skill=none] Q=94 speed=135tok/s time=130s cost=15 -&gt; OVS=31265
+  #5 mcode/MiniMax-M3.1-Flash [effort=medium skill=code-review] Q=95 speed=128tok/s time=140s cost=25 -&gt; OVS=20112
+  #6 muse/spark-1.3-contributor [effort=medium skill=adversarial-qa] Q=97 speed=112tok/s time=145s cost=25 -&gt; OVS=19934
+  #7 grok/grok-4.7-build-fast [effort=medium skill=fleet-orchestration] Q=96 speed=115tok/s time=150s cost=35 -&gt; OVS=13481
+  #8 vibe/glm-5-3 [effort=medium skill=none] Q=95 speed=95tok/s time=165s cost=40 -&gt; OVS=9435
+verdict=pass profiles=8</pre>
+        </section>
+      </main>
+
+      <footer class="window-statusbar">
+        <nav class="statusbar-links" aria-label="oobench footer">
+          <a href="/">[HOME]</a>
+          <a href="/status/">[FLEET QUOTA]</a>
+          <a href="https://status.openooda.org" target="_blank" rel="noopener noreferrer">[LIVE TELEMETRY]</a>
+          <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">[@OPENOODA]</a>
+        </nav>
+      </footer>
+    </div>
+  </body>
+</html>
