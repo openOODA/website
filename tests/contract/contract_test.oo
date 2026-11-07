@@ -1,0 +1,98 @@
+// # Contract Test - Producer/consumer JSON key agreement
+//
+// Logline: Prove quota.js and fleet.js consume exactly the keys emit_json.oo produces.
+//
+// Setup: Reads js/quota.js, js/fleet.js, and src/emit_json.oo under FsReadCap. No network.
+//
+// Beats:
+//   1. Extract a.<agent> accesses from quota.js and require the exact four-key set.
+//   2. Extract d.<key> accesses from fleet.js and require each key present in the emitter.
+//   3. Refuse the agy agent on both the producer and the consumer surface.
+
+import "std/fs/os/fs.oo";
+
+fn ct_expect(cond: Bool, label: String) -> Bool {
+    if cond { println("ok " + label);
+    return true; }
+    println("FAIL " + label);
+    return false;
+}
+
+fn ct_ident(b: Int) -> Bool {
+    return (b >= 97 && b <= 122) || b == 95;
+}
+
+fn ct_boundary(s: String, i: Int) -> Bool {
+    if i <= 0 { return true; }
+    let b: Int = byte_at(s, i - 1);
+    if ct_ident(b) || (b >= 65 && b <= 90) || (b >= 48 && b <= 57) || b == 46 { return false; }
+    return true;
+}
+
+fn ct_has(list: List[String], key: String) -> Bool {
+    let mut i: Int = 0;
+    while i < list_len(list) {
+        if list_get(list, i) == key { return true; }
+        i = i + 1;
+    }
+    return false;
+}
+
+fn ct_keys(src: String, prefix: String) -> List[String] {
+    let plen: Int = bytes_len(prefix);
+    let mut out: List[String] = list_new();
+    let mut rest: String = src;
+    let mut k: Int = str_index_of(rest, prefix);
+    while k >= 0 {
+        if ct_boundary(rest, k) {
+            let after: String = byte_slice(rest, k + plen, bytes_len(rest));
+            let n: Int = bytes_len(after);
+            let mut i: Int = 0;
+            while i < n && ct_ident(byte_at(after, i)) { i = i + 1; }
+            if i > 0 {
+                let key: String = byte_slice(after, 0, i);
+                if !ct_has(out, key) { out = list_push(out, key); }
+            }
+        }
+        rest = byte_slice(rest, k + plen, bytes_len(rest));
+        k = str_index_of(rest, prefix);
+    }
+    return out;
+}
+
+fn ct_read(fs: &FsReadCap, path: String) -> String {
+    let r: Result[String, String] = fs_read_file(fs, path);
+    return match r { Ok(s) => s, Err(_) => "" };
+}
+
+pub fn main(fs_r: &FsReadCap, _args: List[String]) -> Result[Int, String] {
+    let mut p: Int = 0;
+    let qjs: String = ct_read(fs_r, "js/quota.js");
+    let fjs: String = ct_read(fs_r, "js/fleet.js");
+    let esm: String = ct_read(fs_r, "src/emit_json.oo");
+    if bytes_len(qjs) == 0 || bytes_len(fjs) == 0 || bytes_len(esm) == 0 {
+        println("contract tests: FAILED (unreadable inputs)");
+        return Ok(1);
+    }
+    let akeys: List[String] = ct_keys(qjs, "a.");
+    let a_ok: Bool = list_len(akeys) == 4 && ct_has(akeys, "mcode") &&
+        ct_has(akeys, "grok") && ct_has(akeys, "devin") && ct_has(akeys, "vibe") &&
+        !ct_has(akeys, "agy");
+    if ct_expect(a_ok, "01 quota.js agent accesses agree exactly with the four qr_json keys") { p = p + 1; }
+    let dkeys: List[String] = ct_keys(fjs, "d.");
+    let mut d_ok: Bool = list_len(dkeys) >= 9;
+    let mut i: Int = 0;
+    while i < list_len(dkeys) {
+        if str_index_of(esm, list_get(dkeys, i)) < 0 { d_ok = false; }
+        i = i + 1;
+    }
+    if ct_expect(d_ok, "02 every fleet.js document key is emitted by fr_json") { p = p + 1; }
+    let agy_ok: Bool = str_index_of(esm, "\"agy\"") < 0 && str_index_of(qjs, "agy") < 0;
+    if ct_expect(agy_ok, "03 the agy agent stays off the public quota contract") { p = p + 1; }
+    if p == 3 {
+        println("contract tests: 3/3 passed");
+        return Ok(0);
+    }
+    println("contract tests: FAILED (" + to_string(p) + "/3)");
+    return Ok(1);
+}

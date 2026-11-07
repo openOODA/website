@@ -47,6 +47,8 @@ jobs:
           "/tmp/json_test"
           "${OODA_COMPILER}" build tests/test_website.oo -o /tmp/test_website
           "/tmp/test_website"
+          "${OODA_COMPILER}" build tests/contract/contract_test.oo -o /tmp/contract_test
+          "/tmp/contract_test"
 
   auto-release:
     needs: [static-test]

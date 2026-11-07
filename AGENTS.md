@@ -40,6 +40,10 @@ done
 /tmp/json_test || exit 1
 "$OODA_COMPILER" build tests/test_website.oo -o /tmp/test_website || exit 1
 /tmp/test_website || exit 1
+# Producer/consumer contract gate: js consumers must only read keys the
+# .oo emitters produce (tests/contract/contract_test.oo).
+"$OODA_COMPILER" build tests/contract/contract_test.oo -o /tmp/contract_test || exit 1
+/tmp/contract_test || exit 1
 ```
 Each page prints one `PASS ...` line and exits 0. A failed assertion prints
 `FAIL ...` and exits 1. The pages read the site from the repository root, so
