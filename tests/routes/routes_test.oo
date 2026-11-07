@@ -1,0 +1,87 @@
+// # Routes Test - Sitemap And Asset Integrity
+//
+// Logline: Assert every sitemap route resolves to a published file and the robots contract stays wired.
+//
+// Setup: Read-only FsReadCap over the site root. Pure string and file assertions; no subprocess, no network.
+//
+// Beats:
+//   1. Extract every <loc> URL from sitemap.xml and map each path to a file.
+//   2. Require every sitemap route to resolve on disk, fail-closed.
+//   3. Require robots.txt to declare the sitemap and core routes to exist non-empty.
+
+import "std/core/primitives/str.oo";
+import "std/fs/os/fs.oo";
+
+fn rt_expect(cond: Bool, label: String) -> Bool {
+    if cond {
+        println("ok " + label);
+        return true;
+    }
+    println("FAIL " + label);
+    return false;
+}
+
+fn rt_locs(sm: String) -> List[String] {
+    let mut out: List[String] = list_new();
+    let mut rest: String = sm;
+    while bytes_len(rest) > 0 {
+        let op: Int = str_index_of(rest, "<loc>");
+        if op < 0 { break; }
+        let after: String = byte_slice(rest, op + 5, bytes_len(rest));
+        let cl: Int = str_index_of(after, "</loc>");
+        if cl < 0 { break; }
+        let url: String = byte_slice(after, 0, cl);
+        let di: Int = str_index_of(url, "openooda.org");
+        let path: String = if di < 0 { "" } else { byte_slice(url, di + 12, bytes_len(url)) };
+        out = list_push(out, if bytes_len(path) == 0 { "/" } else { path });
+        rest = byte_slice(after, cl + 6, bytes_len(after));
+    }
+    return out;
+}
+
+fn rt_file(path: String) -> String {
+    if path == "/" { return "index.html"; }
+    let rel: String = byte_slice(path, 1, bytes_len(path));
+    let last: Int = bytes_len(rel) - 1;
+    let tail: String = byte_slice(rel, last, bytes_len(rel));
+    if tail == "/" { return rel + "index.html"; }
+    if str_index_of(rel, ".") >= 0 { return rel; }
+    return rel + "/index.html";
+}
+
+fn rt_alive(fr: &FsReadCap, root: String, path: String) -> Bool {
+    let hr: Result[String, String] = fs_read_file(fr, root + "/" + rt_file(path));
+    return hr.is_ok() && bytes_len(hr.val) > 0;
+}
+
+pub fn main(fs_r: &FsReadCap, _args: List[String]) -> Result[Int, String] {
+    let mut np: Int = 0;
+    let root: String = ".";
+    let sr: Result[String, String] = fs_read_file(fs_r, "sitemap.xml");
+    let sm: String = if sr.is_ok() { sr.val } else { "" };
+    let locs: List[String] = rt_locs(sm);
+    let mut all_ok: Bool = list_len(locs) > 0;
+    let mut i: Int = 0;
+    while i < list_len(locs) {
+        if !rt_alive(fs_r, root, list_get(locs, i)) { all_ok = false; }
+        i = i + 1;
+    }
+    if rt_expect(all_ok, "01 every sitemap route resolves to a published file") { np = np + 1; }
+    let rr: Result[String, String] = fs_read_file(fs_r, "robots.txt");
+    let rb: String = if rr.is_ok() { rr.val } else { "" };
+    let rob_ok: Bool = str_contains(rb, "Sitemap: https://openooda.org/sitemap.xml") &&
+        bytes_len(sm) > 0;
+    if rt_expect(rob_ok, "02 robots.txt declares the live sitemap") { np = np + 1; }
+    let cn: Result[String, String] = fs_read_file(fs_r, "CNAME");
+    let core_ok: Bool = rt_alive(fs_r, root, "/") &&
+        rt_alive(fs_r, root, "/404.html") &&
+        rt_alive(fs_r, root, "/llms.txt") &&
+        cn.is_ok() && bytes_len(cn.val) > 0;
+    if rt_expect(core_ok, "03 core routes and site files exist non-empty") { np = np + 1; }
+    if np == 3 {
+        println("website routes tests: 3/3 passed");
+        return Ok(0);
+    }
+    println("website routes tests: FAILED (" + to_string(np) + "/3)");
+    return Ok(1);
+}

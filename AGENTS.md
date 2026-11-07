@@ -44,6 +44,10 @@ done
 # .oo emitters produce (tests/contract/contract_test.oo).
 "$OODA_COMPILER" build tests/contract/contract_test.oo -o /tmp/contract_test || exit 1
 /tmp/contract_test || exit 1
+# Route/asset integrity gate: every sitemap <loc> resolves on disk and
+# robots.txt declares the live sitemap (tests/routes/routes_test.oo).
+"$OODA_COMPILER" build tests/routes/routes_test.oo -o /tmp/routes_test || exit 1
+/tmp/routes_test || exit 1
 ```
 Each page prints one `PASS ...` line and exits 0. A failed assertion prints
 `FAIL ...` and exits 1. The pages read the site from the repository root, so

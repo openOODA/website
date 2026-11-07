@@ -49,6 +49,8 @@ jobs:
           "/tmp/test_website"
           "${OODA_COMPILER}" build tests/contract/contract_test.oo -o /tmp/contract_test
           "/tmp/contract_test"
+          "${OODA_COMPILER}" build tests/routes/routes_test.oo -o /tmp/routes_test
+          "/tmp/routes_test"
 
   auto-release:
     needs: [static-test]
