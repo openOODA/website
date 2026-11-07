@@ -22,7 +22,8 @@ fn st_expect(cond: Bool, label: String) -> Bool {
 }
 
 fn st_curl(mode: String) -> String {
-    let head: String = "#!/bin/sh\no=\"\"\nfor a in \"$@\"; do if [ \"$prev\" = \"-o\" ]; then o=\"$a\"; fi; prev=\"$a\"; done\n";
+    let head: String = "#!/bin/sh\no=\"\"\nfor a in \"$@\"; do if [ \"$prev\" = \"-o\" ]; then o=\"$a\"; fi; "
+        + "prev=\"$a\"; done\n";
     if mode == "http" { return head + "exit 22\n"; }
     if mode == "partial" { return head + "printf 'echo half' > \"$o\"\nexit 18\n"; }
     if mode == "empty" { return head + ": > \"$o\"\nexit 0\n"; }
