@@ -41,7 +41,3 @@ openOODA replaces implicit trust with verifiable proof:
 ## This Repository (`website`)
 
 Static source for [openooda.org](https://openooda.org).
-
-## License
-
-Apache-2.0. See [LICENSE](LICENSE) for full text.
