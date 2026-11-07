@@ -3,64 +3,69 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>openOODA // oobench — OODA Value Score (OVS) Agent Leaderboard</title>
+    <title>openOODA // oobench — AI Agent &amp; LLM Performance Leaderboard (OVS)</title>
     <meta
       name="description"
-      content="Live OODA Value Score (OVS) benchmark leaderboard ranking autonomous coding agents across Quality, Efficiency, Speed (tok/s), Time, and Cost."
+      content="Artificial-Analysis-style AI Agent &amp; LLM Performance Leaderboard ranking autonomous coding agents across Quality, Output Speed (tok/s), 24/7 Pane Capacity, Pricing, and OODA Value Score (OVS)."
     />
-    <meta property="og:title" content="openOODA // oobench — OODA Value Score (OVS) Agent Leaderboard" />
-    <meta property="og:description" content="OVS = (Quality^2 * Efficiency * 60) / (Time_s * Cost_norm) across the openOODA multi-agent fleet." />
+    <meta property="og:title" content="openOODA // oobench — AI Agent &amp; LLM Performance Leaderboard (OVS)" />
+    <meta property="og:description" content="Fleet_OVS = (Quality^2 * Efficiency * Panes_24x7 * 60) / (Time_s * Cost_24x7) across cloud subscriptions and local GPU nodes." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://openooda.org/oobench/" />
+    <meta property="og:url" content="https://bench.openooda.org/" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/styles/base.css" />
     <link rel="stylesheet" href="/styles/panels.css" />
+    <link rel="stylesheet" href="/styles/hero.css" />
+    <link rel="stylesheet" href="/styles/bench.css" />
     <style>
-      .ovs-formula-box { border: 1.5px solid rgba(80, 250, 123, 0.45); background: rgba(8, 12, 18, 0.9); padding: 1.1rem 1.3rem; margin: 1rem 0 1.4rem; border-radius: 6px; box-shadow: 3px 3px 0 0 #000; }
-      .ovs-formula-code { font-size: clamp(0.95rem, 2.2vw, 1.25rem); font-weight: 800; color: #50fa7b; display: block; margin-top: 0.35rem; }
-      .ovs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.9rem; margin: 1rem 0; }
-      .ovs-card { border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 0.9rem 1rem; background: rgba(255,255,255,0.02); }
-      .ovs-card-top { border-color: rgba(80, 250, 123, 0.55); background: rgba(80, 250, 123, 0.05); }
-      .ovs-card h3 { margin: 0 0 0.25rem; font-size: 0.92rem; color: #00e5ff; }
-      .ovs-score-big { font-size: 1.55rem; font-weight: 900; color: #50fa7b; margin: 0.2rem 0; }
-      .ovs-meta { font-size: 0.76rem; opacity: 0.8; line-height: 1.45; }
-      .ovs-table-wrap { overflow-x: auto; margin: 1rem 0; }
-      table.ovs-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-      table.ovs-table th, table.ovs-table td { text-align: left; padding: 0.55rem 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
-      table.ovs-table th { color: #ffb000; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid rgba(255,255,255,0.16); }
-      .ovs-bar-wrap { width: 120px; height: 10px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.14); display: inline-block; vertical-align: middle; margin-right: 6px; }
-      .ovs-bar-fill { height: 100%; background: #50fa7b; }
-      .ovs-badge { display: inline-block; padding: 0.1rem 0.45rem; font-size: 0.7rem; font-weight: 700; border-radius: 3px; border: 1px solid rgba(80,250,123,0.4); color: #50fa7b; background: rgba(80,250,123,0.1); }
-      .ovs-badge-cyan { border-color: rgba(0,229,255,0.4); color: #00e5ff; background: rgba(0,229,255,0.1); }
-      .ovs-badge-amber { border-color: rgba(255,176,0,0.4); color: #ffb000; background: rgba(255,176,0,0.1); }
-      pre.ovs-cli { font-size: 0.78rem; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.9rem; overflow-x: auto; color: #e2e8f0; line-height: 1.5; }
+      .ovs-formula-box { border: 1.5px solid var(--border-accent-color); background: rgba(8, 12, 18, 0.92); padding: 1rem 1.25rem; margin: 0.9rem 0 1.2rem; box-shadow: 3px 3px 0 0 #000; }
+      .ovs-formula-code { font-size: clamp(0.9rem, 2vw, 1.18rem); font-weight: 800; color: var(--phosphor); display: block; margin-top: 0.3rem; }
+      .ovs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem; margin: 0.9rem 0; }
+      .ovs-card { border: 1px solid #1e2636; padding: 0.85rem 1rem; background: rgba(10, 14, 22, 0.88); box-shadow: 2px 2px 0 0 #000; }
+      .ovs-card-top { border-color: var(--border-accent-color); background: rgba(80, 250, 123, 0.05); }
+      .ovs-card h3 { margin: 0.2rem 0; font-size: 0.9rem; color: #00e5ff; }
+      .ovs-score-big { font-size: 1.5rem; font-weight: 900; color: var(--phosphor); margin: 0.15rem 0; }
+      .ovs-meta { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.45; }
+      .ovs-table-wrap { overflow-x: auto; margin: 0.75rem 0; background: rgba(8, 12, 18, 0.92); border: 1.5px solid #1e2636; box-shadow: 3px 3px 0 0 #000; }
+      table.ovs-table { width: 100%; border-collapse: collapse; font-size: 0.79rem; }
+      table.ovs-table th, table.ovs-table td { text-align: left; padding: 0.55rem 0.65rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      table.ovs-table th { color: #ffb000; font-size: 0.71rem; text-transform: uppercase; letter-spacing: 0.06em; background: rgba(12, 17, 27, 0.95); border-bottom: 1.5px solid #1e2636; }
+      .ovs-bar-wrap { width: 95px; height: 9px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.14); display: inline-block; vertical-align: middle; margin-right: 6px; }
+      .ovs-bar-fill { height: 100%; background: var(--phosphor); }
+      .ovs-badge { display: inline-block; padding: 0.1rem 0.42rem; font-size: 0.68rem; font-weight: 700; border: 1px solid rgba(80,250,123,0.45); color: #50fa7b; background: rgba(80,250,123,0.1); }
+      .ovs-badge-cyan { border-color: rgba(0,229,255,0.45); color: #00e5ff; background: rgba(0,229,255,0.1); }
+      .ovs-badge-amber { border-color: rgba(255,176,0,0.45); color: #ffb000; background: rgba(255,176,0,0.1); }
+      pre.ovs-cli { font-size: 0.76rem; background: rgba(6, 9, 14, 0.92); border: 1.5px solid #1e2636; box-shadow: 3px 3px 0 0 #000; padding: 0.9rem; overflow-x: auto; color: #e2e8f0; line-height: 1.5; }
     </style>
   </head>
   <body class="terminal-body">
+    <canvas id="review-canvas" class="review-canvas" aria-hidden="true"></canvas>
+    <a href="#quadrants" class="skip-link">Skip to Leaderboard</a>
+
     <div class="terminal-window">
       <header class="window-titlebar">
-        <a href="/" class="header-brand" aria-label="openOODA Home">
+        <a href="https://openooda.org" class="header-brand" aria-label="openOODA Home">
           <img class="crest-emblem" src="/assets/favicon.svg" alt="" width="30" height="30" />
+          <canvas id="header-wordmark" class="header-wordmark" width="258" height="42" aria-label="openOODA"></canvas>
         </a>
-        <span class="window-title">sys@openooda:~# oobench rank // OODA VALUE SCORE (OVS v0.5.0)</span>
+        <span class="window-title">sys@openooda:~# oobench rank // AI AGENT &amp; LLM PERFORMANCE LEADERBOARD</span>
         <div class="header-right">
           <span class="term-status-badge">[146/146 ASSERTIONS]</span>
-          <span class="term-status-online">[12 AGENT PROFILES]</span>
+          <span class="term-status-online">[12 AGENT &amp; GPU PROFILES]</span>
         </div>
       </header>
 
       <main id="main-content" class="scroll-port" tabindex="-1">
-        <section class="panel" id="leaderboard">
+        <!-- SECTION 1: OVERVIEW & QUADRANT FRONTIER CHARTS -->
+        <section class="panel panel-wide vis" id="quadrants">
           <p class="hero-eyebrow">L7 AUTONOMOUS BENCHMARK HARNESS // OPENOODA-AGENTS/OOBENCH</p>
-          <h1 class="terminal-title">OODA Value Score (OVS)<span class="term-cursor" aria-hidden="true">_</span></h1>
+          <h1 class="terminal-title"><span id="hero-title">AI Agent &amp; LLM Performance Leaderboard</span><span class="term-cursor" aria-hidden="true">_</span></h1>
           <p class="terminal-intro">
-            <strong><code>oobench</code></strong> is the native <code>.oo</code> benchmark harness and agent evaluator for the openOODA ecosystem.
-            Rather than ranking models on raw pass-rate alone or raw tokens/sec alone, <code>oobench</code> computes the
-            <strong>OODA Value Score (OVS)</strong>—squaring verified gate quality while weighting token efficiency, wall-clock completion speed, and normalized cycle cost.
+            <strong><code>oobench</code></strong> evaluates autonomous coding agents and local GPU inference models across <strong>Gate Quality (Q)</strong>, <strong>Output Throughput (tok/s)</strong>, <strong>24/7 Concurrent Pane Capacity</strong>, and <strong>Verified Subscription / Hardware Cost</strong>. Inspired by Artificial Analysis, every profile is plotted across the Quality-vs-Speed and Quality-vs-Cost efficiency frontiers.
           </p>
 
           <div class="ovs-formula-box">
-            <span style="font-size:0.74rem; text-transform:uppercase; letter-spacing:0.08em; color:#ffb000; font-weight:700;">// Canonical 24/7 Fleet OVS Equation (oobench/core/score.oo)</span>
+            <span style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:#ffb000; font-weight:700;">// Canonical 24/7 Fleet OVS Equation (oobench/core/score.oo)</span>
             <code class="ovs-formula-code">Fleet_OVS = (Quality&sup2; &times; Efficiency_% &times; Panes_24x7 &times; 60) / (Time_s &times; Cost_24x7)</code>
           </div>
 
@@ -69,197 +74,101 @@
               <span class="ovs-badge">#1 OVERALL 24/7 FLEET OVS</span>
               <h3>devin / swe-2-flash-max</h3>
               <div class="ovs-score-big">564,540</div>
-              <div class="ovs-meta"><strong>10 Panes 24/7</strong> &middot; <a href="https://devin.ai/pricing" target="_blank" rel="noopener" style="color:#50fa7b;">$0 Promo ($20 Pro)</a><br/>Quality: <strong>97%</strong> &middot; <strong>145 tok/s</strong> &middot; 120s</div>
+              <div class="ovs-meta"><strong>10.0x Panes 24/7</strong> &middot; <a href="https://devin.ai/pricing" target="_blank" rel="noopener" style="color:#50fa7b;">$0 Promo ($20 Pro)</a><br/>Quality: <strong>97/100</strong> &middot; <strong>145 tok/s</strong> &middot; 120s</div>
             </div>
             <div class="ovs-card ovs-card-top">
-              <span class="ovs-badge">#2 DEEP ARCHITECT (10 PANES)</span>
+              <span class="ovs-badge">#2 HIGHEST QUALITY (Q=98)</span>
               <h3>devin / swe-2-max</h3>
               <div class="ovs-score-big">377,750</div>
-              <div class="ovs-meta"><strong>10 Panes 24/7</strong> &middot; <a href="https://devin.ai/pricing" target="_blank" rel="noopener" style="color:#50fa7b;">$0 Promo ($20 Pro)</a><br/>Quality: <strong>98%</strong> &middot; <strong>92 tok/s</strong> &middot; 180s</div>
+              <div class="ovs-meta"><strong>10.0x Panes 24/7</strong> &middot; <a href="https://devin.ai/pricing" target="_blank" rel="noopener" style="color:#50fa7b;">$0 Promo ($20 Pro)</a><br/>Quality: <strong>98/100</strong> &middot; <strong>92 tok/s</strong> &middot; 180s</div>
             </div>
             <div class="ovs-card">
-              <span class="ovs-badge ovs-badge-cyan">#3 BEST MULTI-PANE SUB (3.5x)</span>
+              <span class="ovs-badge ovs-badge-cyan">#3 TOP PAID ANNUAL SUB (3.5x)</span>
               <h3>mcode / MiniMax-M3.1-Flash</h3>
               <div class="ovs-score-big">135,373</div>
-              <div class="ovs-meta"><strong>3.5 Panes 24/7</strong> &middot; <a href="https://www.minimax.io/platform/coding-plan" target="_blank" rel="noopener" style="color:#00e5ff;">Annual M-Plan (~$13/pane)</a><br/>Quality: <strong>95%</strong> &middot; <strong>128 tok/s</strong> &middot; 140s</div>
+              <div class="ovs-meta"><strong>3.5x Panes 24/7</strong> &middot; <a href="https://www.minimax.io/platform/coding-plan" target="_blank" rel="noopener" style="color:#00e5ff;">$550/yr (~$13/pane)</a><br/>Quality: <strong>95/100</strong> &middot; <strong>128 tok/s</strong> &middot; 140s</div>
             </div>
             <div class="ovs-card">
-              <span class="ovs-badge ovs-badge-amber">OWNED GPUS (5 LOADED LLMS)</span>
-              <h3>oopi / 2x4060ti &amp; 1x3060</h3>
+              <span class="ovs-badge ovs-badge-amber">#8 TOP OWNED GPU NODE (oocode)</span>
+              <h3>oocode / 2x4060ti (30B-A3B)</h3>
               <div class="ovs-score-big">23,468</div>
-              <div class="ovs-meta"><strong>2x 32GB Nodes + 1x 12GB Node</strong><br/>Top Local LLM: <code>qwen3-coder-30b-a3b</code> (Q=74, 78 tok/s, <strong>$0 Sub</strong>)</div>
+              <div class="ovs-meta"><strong>2.0x Panes (2x 32GB Nodes)</strong> via <code>oollama</code><br/><code>qwen3-coder-30b-a3b</code> (Q=74, <strong>78 tok/s</strong>, $0 Sub)</div>
             </div>
+          </div>
+
+          <div class="aa-grid-2">
+            <div class="aa-card">
+              <div class="aa-card-header">
+                <span class="aa-card-title">Quality vs. Output Speed Frontier</span>
+                <span class="aa-card-sub">Bubble size = 24/7 Concurrent Panes</span>
+              </div>
+              <div class="aa-svg-wrap">
+                <svg id="svg-q-speed" class="aa-svg" viewBox="0 0 520 290" aria-label="Quality vs Speed Scatter Plot"></svg>
+              </div>
+            </div>
+            <div class="aa-card">
+              <div class="aa-card-header">
+                <span class="aa-card-title">Quality vs. 24/7 Cost Index</span>
+                <span class="aa-card-sub">Green = Unlimited Promo &middot; Cyan = Cloud Sub &middot; Amber = Local GPU</span>
+              </div>
+              <div class="aa-svg-wrap">
+                <svg id="svg-q-cost" class="aa-svg" viewBox="0 0 520 290" aria-label="Quality vs Cost Scatter Plot"></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="aa-grid-2">
+            <div class="aa-card">
+              <div class="aa-card-header">
+                <span class="aa-card-title">24/7 Fleet OVS Ranking</span>
+                <span class="aa-card-sub">Quality&sup2; &times; Efficiency &times; Panes / (Time &times; Cost)</span>
+              </div>
+              <div id="bars-ovs" class="aa-bar-list"></div>
+            </div>
+            <div class="aa-card">
+              <div class="aa-card-header">
+                <span class="aa-card-title">Output Throughput (Tokens / Sec)</span>
+                <span class="aa-card-sub">Sustained streaming decode speed</span>
+              </div>
+              <div id="bars-speed" class="aa-bar-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2: INTERACTIVE MATRIX TABLE & CLI OUTPUT -->
+        <section class="panel panel-wide" id="matrix">
+          <p class="panel-label">-- INTERACTIVE AGENT &amp; LOCAL GPU MATRIX // CLICK HEADERS TO SORT --</p>
+          <div class="aa-filter-bar">
+            <div class="aa-filter-group" role="group" aria-label="Filter by Tier">
+              <button type="button" class="aa-pill active" data-tier-filter="all">[ALL 12 PROFILES]</button>
+              <button type="button" class="aa-pill" data-tier-filter="promo">[UNLIMITED PROMO (2)]</button>
+              <button type="button" class="aa-pill" data-tier-filter="cloud">[PAID CLOUD SUBS (5)]</button>
+              <button type="button" class="aa-pill" data-tier-filter="local">[OWNED LOCAL GPUS: OOCODE + OOLLAMA (5)]</button>
+            </div>
+            <span style="font-size:0.72rem; color:var(--text-secondary);">Click any column header to sort &darr;&uarr;</span>
           </div>
 
           <div class="ovs-table-wrap">
             <table class="ovs-table" aria-label="OODA Value Score Agent Leaderboard">
               <thead>
                 <tr>
-                  <th>Rank</th>
+                  <th class="sortable" data-sort-key="rank">Rank &updownarrow;</th>
                   <th>Agent / Model Profile</th>
-                  <th>24/7 Panes</th>
-                  <th>Plan / Pricing Verification Link</th>
-                  <th>Price / Pane (24/7)</th>
-                  <th>Quality (Q)</th>
-                  <th>Efficiency</th>
-                  <th>Speed / Time</th>
-                  <th>Cost Index</th>
-                  <th>24/7 Fleet OVS</th>
+                  <th class="sortable" data-sort-key="panes">24/7 Panes &updownarrow;</th>
+                  <th>Plan / Hardware Verification Link</th>
+                  <th class="sortable" data-sort-key="priceNum">Price / Pane (24/7) &updownarrow;</th>
+                  <th class="sortable" data-sort-key="q">Quality (Q) &updownarrow;</th>
+                  <th class="sortable" data-sort-key="eff">Efficiency &updownarrow;</th>
+                  <th class="sortable" data-sort-key="speed">Speed / Time &updownarrow;</th>
+                  <th class="sortable" data-sort-key="costIdx">Cost Index &updownarrow;</th>
+                  <th class="sortable" data-sort-key="ovs">24/7 Fleet OVS &updownarrow;</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><strong>#1</strong></td>
-                  <td><code>devin/swe-2-flash-max</code></td>
-                  <td><span class="ovs-badge">10.0x Panes</span></td>
-                  <td><a href="https://devin.ai/pricing" target="_blank" rel="noopener noreferrer" style="color:#50fa7b; text-decoration:underline;">Devin Pro ($20/mo — Free Unlimited SWE-2 Promo)</a></td>
-                  <td><strong>$0 / pane</strong> ($2 base)</td>
-                  <td><strong>97 / 100</strong></td>
-                  <td>120%</td>
-                  <td>145 tok/s (120s)</td>
-                  <td>10</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:100%;"></div></div><strong style="color:#50fa7b;">564,540</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>#2</strong></td>
-                  <td><code>devin/swe-2-max</code></td>
-                  <td><span class="ovs-badge">10.0x Panes</span></td>
-                  <td><a href="https://devin.ai/pricing" target="_blank" rel="noopener noreferrer" style="color:#50fa7b; text-decoration:underline;">Devin Pro ($20/mo — Free Unlimited SWE-2 Promo)</a></td>
-                  <td><strong>$0 / pane</strong> ($2 base)</td>
-                  <td><strong>98 / 100</strong></td>
-                  <td>118%</td>
-                  <td>92 tok/s (180s)</td>
-                  <td>10</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:67%;"></div></div><strong style="color:#50fa7b;">377,750</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>#3</strong></td>
-                  <td><code>mcode/MiniMax-M3.1-Flash</code></td>
-                  <td><span class="ovs-badge ovs-badge-cyan">3.5x Panes</span></td>
-                  <td><a href="https://www.minimax.io/platform/coding-plan" target="_blank" rel="noopener noreferrer" style="color:#00e5ff; text-decoration:underline;">MiniMax M-Plan Annual ($550/yr = $45.83/mo, 5h Rolling)</a></td>
-                  <td><strong>~$13 / pane</strong> (Annual)</td>
-                  <td><strong>95 / 100</strong></td>
-                  <td>130%</td>
-                  <td>128 tok/s (140s)</td>
-                  <td>13</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:42%;"></div></div><strong style="color:#00e5ff;">135,373</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>#4</strong></td>
-                  <td><code>devin/glm-5-3-flash-high</code></td>
-                  <td><span class="ovs-badge ovs-badge-cyan">2.0x Panes</span></td>
-                  <td><a href="https://docs.devin.ai/" target="_blank" rel="noopener noreferrer" style="color:#00e5ff; text-decoration:underline;">Devin 24h Daily Pool ($0.15/$0.50 per 1M)</a></td>
-                  <td><strong>~$10 / pane</strong> (Inc. in Pro)</td>
-                  <td><strong>94 / 100</strong></td>
-                  <td>115%</td>
-                  <td>135 tok/s (130s)</td>
-                  <td>15</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:22%;"></div></div><strong>62,530</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>#5</strong></td>
-                  <td><code>muse/spark-1.3-contributor</code></td>
-                  <td><span class="ovs-badge ovs-badge-cyan">2.0x Panes</span></td>
-                  <td><a href="https://ai.meta.com/" target="_blank" rel="noopener noreferrer" style="color:#00e5ff; text-decoration:underline;">Meta Muse Contributor ($50/mo or $1.25/$4.25 1M)</a></td>
-                  <td><strong>~$25 / pane</strong> ($50/mo)</td>
-                  <td><strong>97 / 100</strong></td>
-                  <td>128%</td>
-                  <td>112 tok/s (145s)</td>
-                  <td>25</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:18%;"></div></div><strong>39,868</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>#6</strong></td>
-                  <td><code>vibe/glm-5-3</code></td>
-                  <td><span class="ovs-badge ovs-badge-amber">1.0x Pane</span></td>
-                  <td><a href="https://mistral.ai/products/le-chat" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Mistral Le Chat Pro Annual (~$12/mo, 30-Day Cap)</a></td>
-                  <td><strong>~$12 / pane</strong> (Annual)</td>
-                  <td><strong>95 / 100</strong></td>
-                  <td>115%</td>
-                  <td>95 tok/s (165s)</td>
-                  <td>12</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:16%;"></div></div><strong>31,450</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>#7</strong></td>
-                  <td><code>grok/grok-4.7-build-fast</code></td>
-                  <td><span class="ovs-badge ovs-badge-amber">1.0x Pane</span></td>
-                  <td><a href="https://x.ai/grok" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">xAI SuperGrok Annual ($300/yr = $25/mo, 7-Day Cap)</a></td>
-                  <td><strong>$25 / pane</strong> (Annual)</td>
-                  <td><strong>96 / 100</strong></td>
-                  <td>128%</td>
-                  <td>115 tok/s (150s)</td>
-                  <td>25</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:13%;"></div></div><strong>18,874</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>#8</strong></td>
-                  <td><code>oopi/2x4060ti (qwen3-coder-30b-a3b)</code></td>
-                  <td><span class="ovs-badge ovs-badge-cyan">2.0x Panes</span></td>
-                  <td><a href="https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Owned HW: 2&times; Nodes (2&times; RTX 4060 Ti 16GB = 32GB VRAM/node) &middot; MoE 30B-A3B Q4_K_M</a></td>
-                  <td><strong>$0 sub</strong> (~$15/pane power)</td>
-                  <td><strong style="color:#ffb000;">74 / 100</strong></td>
-                  <td>90%</td>
-                  <td>78 tok/s (210s)</td>
-                  <td>12</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:15%; background:#ffb000;"></div></div><strong style="color:#ffb000;">23,468</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>#9</strong></td>
-                  <td><code>oopi/2x4060ti (qwen36-35b-mtp)</code></td>
-                  <td><span class="ovs-badge ovs-badge-cyan">2.0x Panes</span></td>
-                  <td><a href="https://status.openooda.org" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Owned HW: 2&times; Nodes (2&times; RTX 4060 Ti 16GB = 32GB VRAM/node) &middot; Dense 35B MTP Q4_K_M</a></td>
-                  <td><strong>$0 sub</strong> (~$15/pane power)</td>
-                  <td><strong style="color:#ffb000;">68 / 100</strong></td>
-                  <td>82%</td>
-                  <td>42 tok/s (360s)</td>
-                  <td>12</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:9%; background:#ffb000;"></div></div><strong style="color:#ffb000;">10,532</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>#10</strong></td>
-                  <td><code>oopi/2x4060ti (deepseek-r1-32b)</code></td>
-                  <td><span class="ovs-badge ovs-badge-cyan">2.0x Panes</span></td>
-                  <td><a href="https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-32B" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Owned HW: 2&times; Nodes (2&times; RTX 4060 Ti 16GB = 32GB VRAM/node) &middot; Reasoning 32B Q4_K_M</a></td>
-                  <td><strong>$0 sub</strong> (~$15/pane power)</td>
-                  <td><strong style="color:#ffb000;">72 / 100</strong></td>
-                  <td>85%</td>
-                  <td>38 tok/s (420s)</td>
-                  <td>12</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:9%; background:#ffb000;"></div></div><strong style="color:#ffb000;">10,490</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>#11</strong></td>
-                  <td><code>oopi/1x3060 (qwen2.5-coder-14b)</code></td>
-                  <td><span class="ovs-badge ovs-badge-amber">1.0x Pane</span></td>
-                  <td><a href="https://huggingface.co/Qwen/Qwen2.5-Coder-14B-Instruct" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Owned HW: 1&times; Node (1&times; RTX 3060 12GB = 12GB VRAM) &middot; Dense 14B Q4_K_M</a></td>
-                  <td><strong>$0 sub</strong> (~$8/pane power)</td>
-                  <td><strong style="color:#ffb000;">62 / 100</strong></td>
-                  <td>78%</td>
-                  <td>58 tok/s (310s)</td>
-                  <td>8</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:7%; background:#ffb000;"></div></div><strong style="color:#ffb000;">7,254</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>#12</strong></td>
-                  <td><code>oopi/1x3060 (qwen2.5-coder-7b)</code></td>
-                  <td><span class="ovs-badge ovs-badge-amber">1.0x Pane</span></td>
-                  <td><a href="https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Owned HW: 1&times; Node (1&times; RTX 3060 12GB = 12GB VRAM) &middot; Dense 7B Q8_0</a></td>
-                  <td><strong>$0 sub</strong> (~$8/pane power)</td>
-                  <td><strong style="color:#ffb000;">54 / 100</strong></td>
-                  <td>72%</td>
-                  <td>95 tok/s (240s)</td>
-                  <td>8</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:6%; background:#ffb000;"></div></div><strong style="color:#ffb000;">6,561</strong></td>
-                </tr>
-              </tbody>
+              <tbody id="ovs-tbody"></tbody>
             </table>
           </div>
-        </section>
 
-        <section class="panel" id="cli-output">
-          <p class="hero-eyebrow">VERIFIED CLI OUTPUT // DETERMINISTIC ELF BINARY</p>
-          <h2 class="terminal-title" style="font-size:1.25rem;">Live <code>oobench rank</code> Telemetry</h2>
+          <p class="hero-eyebrow" style="margin-top:1.4rem;">VERIFIED CLI OUTPUT // DETERMINISTIC ELF64 BINARY</p>
           <pre class="ovs-cli">$ oobench rank
 === oobench: 24/7 Fleet OODA Value Score (OVS) Leaderboard ===
 formula: Fleet_OVS = (Quality^2 * Efficiency * Panes_24x7 * 60) / (Time_s * Cost_24x7)
@@ -270,23 +179,52 @@ formula: Fleet_OVS = (Quality^2 * Efficiency * Panes_24x7 * 60) / (Time_s * Cost
   #5 muse/spark-1.3-contributor [effort=medium panes=2.0x] Q=97 speed=112tok/s time=145s cost=25 -&gt; OVS=39868
   #6 vibe/glm-5-3 [effort=medium panes=1.0x] Q=95 speed=95tok/s time=165s cost=12 -&gt; OVS=31450
   #7 grok/grok-4.7-build-fast [effort=medium panes=1.0x] Q=96 speed=115tok/s time=150s cost=25 -&gt; OVS=18874
-  #8 oopi/2x4060ti (qwen3-coder-30b-a3b) [effort=medium panes=2.0x] Q=74 speed=78tok/s time=210s cost=12 -&gt; OVS=23468
-  #9 oopi/2x4060ti (qwen36-35b-mtp) [effort=medium panes=2.0x] Q=68 speed=42tok/s time=360s cost=12 -&gt; OVS=10532
-  #10 oopi/2x4060ti (deepseek-r1-32b) [effort=medium panes=2.0x] Q=72 speed=38tok/s time=420s cost=12 -&gt; OVS=10490
-  #11 oopi/1x3060 (qwen2.5-coder-14b) [effort=medium panes=1.0x] Q=62 speed=58tok/s time=310s cost=8 -&gt; OVS=7254
-  #12 oopi/1x3060 (qwen2.5-coder-7b) [effort=medium panes=1.0x] Q=54 speed=95tok/s time=240s cost=8 -&gt; OVS=6561
+  #8 oocode/2x4060ti (qwen3-coder-30b-a3b) [effort=medium panes=2.0x] Q=74 speed=78tok/s time=210s cost=12 -&gt; OVS=23468
+  #9 oocode/2x4060ti (qwen36-35b-mtp) [effort=medium panes=2.0x] Q=68 speed=42tok/s time=360s cost=12 -&gt; OVS=10532
+  #10 oocode/2x4060ti (deepseek-r1-32b) [effort=medium panes=2.0x] Q=72 speed=38tok/s time=420s cost=12 -&gt; OVS=10490
+  #11 oocode/1x3060 (qwen2.5-coder-14b) [effort=medium panes=1.0x] Q=62 speed=58tok/s time=310s cost=8 -&gt; OVS=7254
+  #12 oocode/1x3060 (qwen2.5-coder-7b) [effort=medium panes=1.0x] Q=54 speed=95tok/s time=240s cost=8 -&gt; OVS=6561
 verdict=pass profiles=12</pre>
         </section>
       </main>
 
-      <footer class="window-statusbar">
-        <nav class="statusbar-links" aria-label="oobench footer">
-          <a href="/">[HOME]</a>
-          <a href="/status/">[FLEET QUOTA]</a>
-          <a href="https://status.openooda.org" target="_blank" rel="noopener noreferrer">[LIVE TELEMETRY]</a>
-          <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">[@OPENOODA]</a>
-        </nav>
+      <footer class="window-statusbar" id="footer-dock">
+        <div class="dock-side">
+          <button type="button" class="nav-arrow nav-up" id="nav-up" aria-label="Previous section">[&#9650; UP]</button>
+          <span class="footer-links">
+            <a href="https://openooda.org">[OPENOODA.ORG]</a>
+            <a href="#quadrants">[QUADRANTS &amp; BARS]</a>
+            <a href="#matrix">[FULL MATRIX]</a>
+            <a href="https://status.openooda.org" target="_blank" rel="noopener noreferrer">[LIVE TELEMETRY]</a>
+            <a href="https://github.com/openOODA-agents/oobench" target="_blank" rel="noopener noreferrer">[GITHUB // OOBENCH]</a>
+          </span>
+        </div>
+
+        <div class="dock-center">
+          <button type="button" class="arcade-btn" id="act-pulse" title="Trigger Ripple (Key: 1)">[1] PULSE</button>
+          <button type="button" class="arcade-btn" id="act-theme" title="Cycle Accent Theme (Key: 2)">[2] THEME</button>
+          <button type="button" class="arcade-btn" id="act-storm" title="Trigger Wave (Key: 3)">[3] WAVE</button>
+          <span class="dock-swatch-label" id="dock-swatch-name">EMERALD</span>
+          <div class="footer-accent-picker" id="footer-accent-picker" role="radiogroup" aria-label="Accent Palette">
+            <button type="button" class="dock-accent-dot" data-accent-name="Coral" style="--swatch:#ff5555;background-color:#ff5555;" role="radio" aria-checked="false" tabindex="-1" aria-label="Coral" title="Coral"></button>
+            <button type="button" class="dock-accent-dot" data-accent-name="Orange" style="--swatch:#ff7700;background-color:#ff7700;" role="radio" aria-checked="false" tabindex="-1" aria-label="Orange" title="Orange"></button>
+            <button type="button" class="dock-accent-dot" data-accent-name="Amber" style="--swatch:#ffb000;background-color:#ffb000;" role="radio" aria-checked="false" tabindex="-1" aria-label="Amber" title="Amber"></button>
+            <button type="button" class="dock-accent-dot" data-accent-name="Yellow" style="--swatch:#f1fa8c;background-color:#f1fa8c;" role="radio" aria-checked="false" tabindex="-1" aria-label="Yellow" title="Yellow"></button>
+            <button type="button" class="dock-accent-dot active" data-accent-name="Emerald" style="--swatch:#50fa7b;background-color:#50fa7b;" role="radio" aria-checked="true" tabindex="0" aria-label="Emerald" title="Emerald"></button>
+            <button type="button" class="dock-accent-dot" data-accent-name="Cyan" style="--swatch:#00e5ff;background-color:#00e5ff;" role="radio" aria-checked="false" tabindex="-1" aria-label="Cyan" title="Cyan"></button>
+            <button type="button" class="dock-accent-dot" data-accent-name="Blue" style="--swatch:#3b82f6;background-color:#3b82f6;" role="radio" aria-checked="false" tabindex="-1" aria-label="Blue" title="Blue"></button>
+            <button type="button" class="dock-accent-dot" data-accent-name="Violet" style="--swatch:#bd93f9;background-color:#bd93f9;" role="radio" aria-checked="false" tabindex="-1" aria-label="Violet" title="Violet"></button>
+          </div>
+        </div>
+
+        <div class="dock-side">
+          <button type="button" class="nav-arrow nav-down" id="nav-down" aria-label="Next section">[DOWN &#9660;]</button>
+        </div>
       </footer>
     </div>
+
+    <script src="/js/rotate.js"></script>
+    <script src="/js/panels.js"></script>
+    <script src="/js/bench.js"></script>
   </body>
 </html>
