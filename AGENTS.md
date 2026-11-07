@@ -23,10 +23,23 @@ All work in this repository strictly defers to the organization standards in [`o
 # One .oo page per gate. Build and run each from the website root.
 # OODA_COMPILER must point at the compiler; no path is hardcoded here.
 : "${OODA_COMPILER:?set OODA_COMPILER to the oodac binary}"
-for page in copy hooks layout links privacy shim; do
+for page in copy layout privacy; do
   "$OODA_COMPILER" build "tests/${page}_test.oo" -o "/tmp/${page}_test" || exit 1
   "/tmp/${page}_test" || exit 1
 done
+# Gates that spawn host tools (node --check, curl, sh -n) need the runtime
+# jail relaxed: the default cwd-scoped Landlock+seccomp profile cannot exec
+# shells or open sockets for child processes. OODA_NO_JAIL is the runtime's
+# own escape hatch for integration gates; CI sets it in the workflow env.
+for page in hooks links shim; do
+  "$OODA_COMPILER" build "tests/${page}_test.oo" -o "/tmp/${page}_test" || exit 1
+  OODA_NO_JAIL=1 "/tmp/${page}_test" || exit 1
+done
+# JSON-injection gate over the .oo state emitters (src/json_test.oo).
+"$OODA_COMPILER" build src/json_test.oo -o /tmp/json_test || exit 1
+/tmp/json_test || exit 1
+"$OODA_COMPILER" build tests/test_website.oo -o /tmp/test_website || exit 1
+/tmp/test_website || exit 1
 ```
 Each page prints one `PASS ...` line and exits 0. A failed assertion prints
 `FAIL ...` and exits 1. The pages read the site from the repository root, so

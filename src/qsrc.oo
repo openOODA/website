@@ -8,6 +8,7 @@
 //   1. qs_slice/qs_num/qs_str/qs_tok/qs_ctx — minimal extraction over JSON-ish, TSV, and pane text.
 //   2. qs_mcode/qs_grok/qs_vibe — each returns a JSON object fragment or "ok":false.
 
+import "std/app/agent/token/json_envelope.oo";
 import "std/fs/os/fs.oo";
 
 // The byte range [start, end) copied into a fresh String.
@@ -47,7 +48,33 @@ pub fn qs_num(text: String, key: String) -> Int {
     return v;
 }
 
+// Leading signed integer of text; -1 when no digits follow an optional '-'.
+// Number-position JSON fields must emit through this so hostile tokens
+// can never leak raw text into the document.
+pub fn qs_int(text: String) -> Int {
+    let n: Int = bytes_len(text);
+    let mut i: Int = 0;
+    let mut neg: Bool = false;
+    if n > 0 && byte_at(text, 0) == 45 {
+        neg = true;
+        i = 1;
+    }
+    let mut v: Int = 0;
+    let mut seen: Bool = false;
+    while i < n {
+        let b: Int = byte_at(text, i);
+        if b < 48 || b > 57 { break; }
+        v = v * 10 + (b - 48);
+        seen = true;
+        i = i + 1;
+    }
+    if !seen { return -1; }
+    if neg { return 0 - v; }
+    return v;
+}
+
 // Value string after a key passed WITH quotes ("key" -> "value"); "" when absent.
+// Backslash-escaped quotes inside the value do not terminate the scan.
 pub fn qs_str(text: String, key: String) -> String {
     let k: Int = str_index_of(text, key);
     if k < 0 { return ""; }
@@ -56,7 +83,14 @@ pub fn qs_str(text: String, key: String) -> String {
     while i < n && byte_at(text, i) != 34 { i = i + 1; }
     let s: Int = i + 1;
     let mut e: Int = s;
-    while e < n && byte_at(text, e) != 34 { e = e + 1; }
+    let mut esc: Bool = false;
+    while e < n {
+        let b: Int = byte_at(text, e);
+        if esc { esc = false; }
+        else if b == 92 { esc = true; }
+        else if b == 34 { break; }
+        e = e + 1;
+    }
     return qs_slice(text, s, e);
 }
 
@@ -82,36 +116,6 @@ pub fn qs_tok(text: String, want: Int) -> String {
     return "";
 }
 
-// Last (NN%) context percent in a pane footer — the devin Context: line
-// renders "Context: 195k / 262k tokens (74%)"; -1 when absent.
-pub fn qs_ctx(text: String) -> Int {
-    let mut best: Int = -1;
-    let n: Int = bytes_len(text);
-    let mut o: Int = 0;
-    let mut go: Bool = true;
-    while go {
-        let mut p: Int = o;
-        while p < n && byte_at(text, p) != 40 { p = p + 1; }
-        if p >= n { go = false; }
-        else {
-            let mut i: Int = p + 1;
-            let mut v: Int = 0;
-            let mut saw: Bool = false;
-            while i < n {
-                let b: Int = byte_at(text, i);
-                if b < 48 || b > 57 { break; }
-                v = v * 10 + (b - 48);
-                saw = true;
-                i = i + 1;
-            }
-            if saw && i + 1 < n && byte_at(text, i) == 37 && byte_at(text, i + 1) == 41 { best = v; }
-            o = i + 1;
-            if o >= n { go = false; }
-        }
-    }
-    return best;
-}
-
 // mcode: aggregate local_runtime_token_usage over 5h and 24h windows.
 pub fn qs_mcode(p: &ProcessCap, home: String) -> String {
     let code: String = "import sqlite3,sys,time\n"
@@ -130,12 +134,16 @@ pub fn qs_mcode(p: &ProcessCap, home: String) -> String {
     if nl < 0 { return "\"ok\":false"; }
     let l1: String = qs_slice(out, 0, nl);
     let l2: String = qs_slice(out, nl + 1, bytes_len(out));
-    return "\"ok\":true,\"in_5h\":" + qs_tok(l1, 1) + ",\"out_5h\":" + qs_tok(l1, 2)
-        + ",\"cost_usd_5h\":" + qs_tok(l1, 3) + ",\"turns_5h\":" + qs_tok(l1, 4)
-        + ",\"latest_ms_5h\":" + qs_tok(l1, 5)
-        + ",\"in_24h\":" + qs_tok(l2, 1) + ",\"out_24h\":" + qs_tok(l2, 2)
-        + ",\"cost_usd_24h\":" + qs_tok(l2, 3) + ",\"turns_24h\":" + qs_tok(l2, 4)
-        + ",\"latest_ms_24h\":" + qs_tok(l2, 5);
+    return "\"ok\":true,\"in_5h\":" + qs_int(qs_tok(l1, 1)).to_string()
+        + ",\"out_5h\":" + qs_int(qs_tok(l1, 2)).to_string()
+        + ",\"cost_usd_5h\":" + qs_int(qs_tok(l1, 3)).to_string()
+        + ",\"turns_5h\":" + qs_int(qs_tok(l1, 4)).to_string()
+        + ",\"latest_ms_5h\":" + qs_int(qs_tok(l1, 5)).to_string()
+        + ",\"in_24h\":" + qs_int(qs_tok(l2, 1)).to_string()
+        + ",\"out_24h\":" + qs_int(qs_tok(l2, 2)).to_string()
+        + ",\"cost_usd_24h\":" + qs_int(qs_tok(l2, 3)).to_string()
+        + ",\"turns_24h\":" + qs_int(qs_tok(l2, 4)).to_string()
+        + ",\"latest_ms_24h\":" + qs_int(qs_tok(l2, 5)).to_string();
 }
 
 // grok: sessions list -> per-session usage JSON -> summed tokens + cost ticks.
@@ -177,7 +185,7 @@ pub fn qs_grok(p: &ProcessCap, home: String) -> String {
         + ",\"with_usage\":" + used.to_string()
         + ",\"total_tokens\":" + tok.to_string()
         + ",\"cost_usd_ticks\":" + ticks.to_string()
-        + ",\"latest_at\":\"" + latest + "\"";
+        + ",\"latest_at\":" + json_str(latest);
 }
 
 // vibe: last 402 budget event in the log; tail position decides live state.
@@ -207,5 +215,6 @@ pub fn qs_vibe(fr: &FsReadCap, home: String) -> String {
         ts = qs_slice(log, ls, ls + 19);
     }
     let state: String = if count > 0 && last > bytes_len(log) - 8000 { "EXHAUSTED" } else { "OK" };
-    return "\"ok\":true,\"state\":\"" + state + "\",\"count_402\":" + count.to_string() + ",\"last_402_at\":\"" + ts + "\"";
+    return "\"ok\":true,\"state\":\"" + state + "\",\"count_402\":" + count.to_string()
+        + ",\"last_402_at\":" + json_str(ts);
 }

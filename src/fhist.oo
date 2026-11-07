@@ -11,6 +11,7 @@
 //   4. fr_hist_append — same-sig replace, prune to 1008 lines (7 days at 600s).
 
 import "fsrc.oo";
+import "std/app/agent/token/json_envelope.oo";
 import "std/fs/os/fs.oo";
 
 // Content signature: first 8 hex chars of the HMAC — history dedupe key.
@@ -20,7 +21,7 @@ pub fn fr_sig(doc: String) -> String {
 }
 
 // Per-repo severity vector "name":sev — the sparkline feed.
-fn fr_repo_map(lines: List[String]) -> String {
+pub fn fr_repo_map(lines: List[String]) -> String {
     let rl: List[String] = fr_rows(lines, "CLEAN ");
     let dl: List[String] = fr_rows(lines, "DIRTY ");
     let recs: List[String] = fr_rows(lines, "RECON ");
@@ -37,7 +38,7 @@ fn fr_repo_map(lines: List[String]) -> String {
             j = j + 1;
         }
         if out != "" { out = out + ","; }
-        out = out + "\"" + name + "\":" + fr_sev(qs_tok(l, 0), ver).to_string();
+        out = out + json_str(name) + ":" + fr_sev(qs_tok(l, 0), ver).to_string();
         i = i + 1;
     }
     return out;
@@ -66,7 +67,8 @@ pub fn fr_hist_line(iso: String, epoch: String, sig: String, alert_n: Int, lines
         if s != "OK" && s != "UNKNOWN" { c = c + 1; }
         i = i + 1;
     }
-    return "{\"at\":\"" + iso + "\",\"epoch\":" + epoch + ",\"sig\":\"" + sig + "\",\"dirty\":" + dirty.to_string()
+    return "{\"at\":" + json_str(iso) + ",\"epoch\":" + qs_int(epoch).to_string() + ",\"sig\":" + json_str(sig)
+        + ",\"dirty\":" + dirty.to_string()
         + ",\"recon_bad\":" + bad.to_string() + ",\"quota_bad\":" + c.to_string() + ",\"alerts\":" + alert_n.to_string()
         + ",\"mem\":" + m.to_string() + ",\"repo\":{" + fr_repo_map(lines) + "}}";
 }

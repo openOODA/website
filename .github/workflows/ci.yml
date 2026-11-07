@@ -8,22 +8,45 @@ jobs:
     steps:
       - name: checkout website
         uses: actions/checkout@v4
-      - name: setup node
-        uses: actions/setup-node@v4
         with:
-          node-version: '22'
-      - name: run copy test
-        run: node tests/test_copy.js
-      - name: run layout test
-        run: node tests/test_layout.js
-      - name: run link test
-        run: node tests/test_links.js
-      - name: run shim test
-        run: node tests/test_shim.js
-      - name: run hooks test
-        run: node tests/test_hooks.js
-      - name: run privacy test
-        run: node tests/test_privacy.js
+          path: site
+      - name: checkout oodac
+        uses: actions/checkout@v4
+        with:
+          repository: openOODA-core/oodac
+          path: oodac
+      - name: checkout std
+        uses: actions/checkout@v4
+        with:
+          repository: openOODA-core/std
+          path: std
+      - name: checkout oodar
+        uses: actions/checkout@v4
+        with:
+          repository: openOODA-core/oodar
+          path: oodar
+      - name: clang
+        run: sudo apt-get update && sudo apt-get install -y clang
+      - name: build oodar libs
+        run: make -C oodar/scripts -f Makefile modular
+      - name: build and run .oo site gates
+        working-directory: site
+        env:
+          OODA_COMPILER: ${{ github.workspace }}/oodac/bin/oodac
+          OODA_SITE_ROOT: ${{ github.workspace }}/site
+          OODA_FS_READDIR: ${{ github.workspace }}
+          OODA_FS_WRITEDIR: ${{ github.workspace }}
+          OODA_NO_JAIL: '1'
+        run: |
+          test -x ../oodac/bin/oodac || chmod +x ../oodac/bin/oodac
+          for page in copy hooks layout links privacy shim; do
+            "${OODA_COMPILER}" build "tests/${page}_test.oo" -o "/tmp/${page}_test"
+            "/tmp/${page}_test"
+          done
+          "${OODA_COMPILER}" build src/json_test.oo -o /tmp/json_test
+          "/tmp/json_test"
+          "${OODA_COMPILER}" build tests/test_website.oo -o /tmp/test_website
+          "/tmp/test_website"
 
   auto-release:
     needs: [static-test]

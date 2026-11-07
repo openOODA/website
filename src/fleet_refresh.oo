@@ -11,6 +11,7 @@
 //   4. fr_json — assemble the digest; fr_hist_* — sig-deduped append + prune.
 //   5. main — read, parse, write, print verdicts.
 
+import "emit_json.oo";
 import "fsrc.oo";
 import "fhist.oo";
 import "std/fs/os/fs.oo";
@@ -37,58 +38,15 @@ fn fr_now(p: &ProcessCap) -> String {
 // Live alert filenames from the spool dir as "<count>|<json-array>".
 fn fr_alerts(fr: &FsReadCap, spool: String) -> String {
     let names: List[String] = fs_read_dir(fr, spool);
-    let mut out: String = "";
     let mut c: Int = 0;
     let n: Int = list_len(names);
     let mut i: Int = 0;
     while i < n {
         let f: String = list_get(names, i) + "";
-        if f != "." && f != ".." {
-            if out != "" { out = out + ","; }
-            out = out + "\"" + f + "\"";
-            c = c + 1;
-        }
+        if f != "." && f != ".." { c = c + 1; }
         i = i + 1;
     }
-    return c.to_string() + "|[" + out + "]";
-}
-
-// repos=/workspaces=/recon=/SEAL rollup lines into a summary object.
-fn fr_summary(lines: List[String]) -> String {
-    let mut out: String = "\"repos_total\":0";
-    let sums: List[String] = fr_rows(lines, "repos=");
-    if list_len(sums) > 0 {
-        let l: String = list_get(sums, 0) + "";
-        out = "\"repos_total\":" + qs_num(l, "repos=").to_string() + ",\"dirty\":" + qs_num(l, "dirty=").to_string()
-            + ",\"clean\":" + qs_num(l, "clean=").to_string() + ",\"err\":" + qs_num(l, "err=").to_string()
-            + ",\"locked\":" + qs_num(l, "locked=").to_string();
-    }
-    let wsl: List[String] = fr_rows(lines, "workspaces=");
-    if list_len(wsl) > 0 {
-        let l: String = list_get(wsl, 0) + "";
-        out = out + ",\"ws_total\":" + qs_num(l, "workspaces=").to_string()
-            + ",\"ws_active\":" + qs_num(l, "active=").to_string();
-    }
-    let rcl: List[String] = fr_rows(lines, "recon=");
-    if list_len(rcl) > 0 {
-        let l: String = list_get(rcl, 0) + "";
-        out = out + ",\"recon_total\":" + qs_num(l, "recon=").to_string();
-    }
-    let sl: List[String] = fr_rows(lines, "SEAL ");
-    if list_len(sl) > 0 {
-        let l: String = list_get(sl, 0) + "";
-        out = out + ",\"seal\":\"" + qs_tok(l, 1) + "\"";
-    }
-    return out;
-}
-
-// The fleet.json document: digest of one tick's state file + live alerts.
-fn fr_json(iso: String, epoch: String, state_path: String, sig: String, alerts: String, lines: List[String]) -> String {
-    return "{\n  \"generated_at\": \"" + iso + "\",\n  \"generated_epoch\": " + epoch + ",\n  \"state_file\": \"" + state_path
-        + "\",\n  \"state_sig\": \"" + sig + "\",\n  \"alerts\": " + alerts + ",\n  \"summary\": {" + fr_summary(lines)
-        + "},\n  \"repos\": " + fr_repos(lines) + ",\n  \"quota\": " + fr_quota(lines)
-        + ",\n  \"workspaces\": " + fr_active(lines)
-        + ",\n  \"health_forge\": " + fr_health(lines) + "\n}\n";
+    return c.to_string() + "|" + fr_alert_list(names);
 }
 
 pub fn main(p: &ProcessCap, fr: &FsReadCap, fw: &FsWriteCap, args: List[String]) -> Int {

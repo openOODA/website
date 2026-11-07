@@ -11,6 +11,7 @@
 //   4. fr_sig — content signature (hmac first-8) for history dedupe.
 
 import "qsrc.oo";
+import "std/app/agent/token/json_envelope.oo";
 
 // Split doc on newlines into a list of lines (no trailing empty).
 pub fn fr_lines(doc: String) -> List[String] {
@@ -84,8 +85,9 @@ pub fn fr_repos(lines: List[String]) -> String {
             j = j + 1;
         }
         if out != "" { out = out + ","; }
-        out = out + "{\"name\":\"" + name + "\",\"state\":\"" + qs_tok(l, 0) + "\",\"recon\":\"" + ver
-            + "\",\"sev\":" + fr_sev(qs_tok(l, 0), ver).to_string() + "}";
+        out = out + "{\"name\":" + json_str(name) + ",\"state\":" + json_str(qs_tok(l, 0))
+            + ",\"recon\":" + json_str(ver)
+            + ",\"sev\":" + fr_sev(qs_tok(l, 0), ver).to_string() + "}";
         i = i + 1;
     }
     return "[" + out + "]";
@@ -100,8 +102,8 @@ pub fn fr_quota(lines: List[String]) -> String {
     while i < n {
         let l: String = list_get(ql, i) + "";
         if out != "" { out = out + ","; }
-        out = out + "{\"agent\":\"" + qs_tok(l, 1) + "\",\"state\":\"" + qs_tok(l, 2)
-            + "\",\"used\":" + qs_num(l, "used=").to_string()
+        out = out + "{\"agent\":" + json_str(qs_tok(l, 1)) + ",\"state\":" + json_str(qs_tok(l, 2))
+            + ",\"used\":" + qs_num(l, "used=").to_string()
             + ",\"rem\":" + qs_num(l, "rem=").to_string() + "}";
         i = i + 1;
     }
@@ -117,7 +119,7 @@ pub fn fr_active(lines: List[String]) -> String {
     while i < n {
         let l: String = list_get(wl, i) + "";
         if out != "" { out = out + ","; }
-        out = out + "{\"ws\":\"" + qs_tok(l, 1) + "\",\"blocked\":" + qs_num(l, "blocked=").to_string()
+        out = out + "{\"ws\":" + json_str(qs_tok(l, 1)) + ",\"blocked\":" + qs_num(l, "blocked=").to_string()
             + ",\"working\":" + qs_num(l, "working=").to_string()
             + ",\"idle\":" + qs_num(l, "idle=").to_string()
             + ",\"other\":" + qs_num(l, "other=").to_string() + "}";
@@ -139,7 +141,7 @@ pub fn fr_health(lines: List[String]) -> String {
             let l: String = list_get(rows, i) + "";
             if out != "" { out = out + ","; }
             let rest: String = qs_slice(l, bytes_len(qs_tok(l, 0)) + 1, bytes_len(l));
-            out = out + "{\"src\":\"" + qs_tok(l, 0) + "\",\"line\":\"" + rest + "\"}";
+            out = out + "{\"src\":" + json_str(qs_tok(l, 0)) + ",\"line\":" + json_str(rest) + "}";
             i = i + 1;
         }
         p = p + 1;

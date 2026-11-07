@@ -10,9 +10,40 @@
 //   3. qr_hist_line/qr_hist_append — day-grain append-only trend snapshots.
 //   4. main — probe all four, write the file + history, print verdicts.
 
+import "emit_json.oo";
 import "qsrc.oo";
 import "std/fs/os/fs.oo";
 import "std/fs/process/env.oo";
+
+// Last (NN%) context percent in a pane footer — the devin Context: line
+// renders "Context: 195k / 262k tokens (74%)"; -1 when absent.
+fn qr_ctx(text: String) -> Int {
+    let mut best: Int = -1;
+    let n: Int = bytes_len(text);
+    let mut o: Int = 0;
+    let mut go: Bool = true;
+    while go {
+        let mut p: Int = o;
+        while p < n && byte_at(text, p) != 40 { p = p + 1; }
+        if p >= n { go = false; }
+        else {
+            let mut i: Int = p + 1;
+            let mut v: Int = 0;
+            let mut saw: Bool = false;
+            while i < n {
+                let b: Int = byte_at(text, i);
+                if b < 48 || b > 57 { break; }
+                v = v * 10 + (b - 48);
+                saw = true;
+                i = i + 1;
+            }
+            if saw && i + 1 < n && byte_at(text, i) == 37 && byte_at(text, i + 1) == 41 { best = v; }
+            o = i + 1;
+            if o >= n { go = false; }
+        }
+    }
+    return best;
+}
 
 // Every devin pane's context-token proxy: herdr agent list -> pane ids
 // -> pane read --source visible -> last (NNNc) footer count.
@@ -45,39 +76,17 @@ fn qr_devin(p: &ProcessCap, home: String, xdg: String) -> String {
         let pr: Result[String, String] = sys_exec(p, "env", "HOME=" + home,
             "XDG_RUNTIME_DIR=" + xdg, bin, "pane", "read", pid, "--source", "visible");
         let pt: String = match pr { Ok(t) => t, Err(_) => "" };
-        let ctx: Int = qs_ctx(pt);
+        let ctx: Int = qr_ctx(pt);
         if ctx > 0 {
             rep = rep + 1;
             if ctx > maxc { maxc = ctx; }
         }
         if i > 0 { j = j + ","; }
-        j = j + "{\"pane\":\"" + pid + "\",\"ctx_pct\":" + ctx.to_string() + "}";
+        j = j + qr_pane_entry(pid, ctx);
         i = i + 1;
     }
     return "\"ok\":true,\"panes\":" + list_len(panes).to_string() + ",\"reporting\":" + rep.to_string()
         + ",\"max_ctx_pct\":" + maxc.to_string() + ",\"detail\":[" + j + "]";
-}
-
-// Assemble the data file: four agent fragments under one timestamp.
-fn qr_json(mcode: String, grok: String, devin: String, vibe: String, now: String) -> String {
-    let bar: Int = str_index_of(now, "|");
-    let ep: String = if bar < 0 { "0" } else { qs_slice(now, 0, bar) };
-    let is: String = if bar < 0 { "" } else { qs_slice(now, bar + 1, bytes_len(now)) };
-    let q: String = "\"";
-    let nl: String = "\n";
-    return "{" + nl
-        + "  " + q + "generated_at" + q + ": " + q + is + q + "," + nl
-        + "  " + q + "generated_epoch" + q + ": " + ep + "," + nl
-        + "  " + q + "agents" + q + ": {" + nl
-        + "    " + q + "mcode" + q + ": {" + q + "source" + q + ": "
-        + q + "minimax sqlite local_runtime_token_usage" + q + ", " + mcode + "}," + nl
-        + "    " + q + "grok" + q + ": {" + q + "source" + q + ": "
-        + q + "grok sessions list + grok usage" + q + ", " + grok + "}," + nl
-        + "    " + q + "devin" + q + ": {" + q + "source" + q + ": "
-        + q + "herdr pane footers" + q + ", " + devin + "}," + nl
-        + "    " + q + "vibe" + q + ": {" + q + "source" + q + ": "
-        + q + "vibe.log 402 budget events" + q + ", " + vibe + "}" + nl
-        + "  }" + nl + "}" + nl;
 }
 
 // Wall clock as "epoch|iso" — the stamp fields the file carries.
@@ -87,23 +96,6 @@ fn qr_now(p: &ProcessCap) -> String {
     let ep: String = match e { Ok(t) => qs_tok(t, 0), Err(_) => "0" };
     let is: String = match i { Ok(t) => qs_tok(t, 0), Err(_) => "" };
     return ep + "|" + is;
-}
-
-// Compact one-line history entry built from the agent fragments — the
-// per-day snapshot the 7-day trend view renders.
-fn qr_hist_line(m: String, g: String, d: String, v: String, is: String) -> String {
-    let vs: String = qs_str(v, "\"state\"");
-    return "{\"date\":\"" + qs_slice(is, 0, 10) + "\",\"at\":\"" + qs_slice(is, 11, 19)
-        + "\",\"m_in\":" + qs_num(m, "in_5h").to_string()
-        + ",\"m_out\":" + qs_num(m, "out_5h").to_string()
-        + ",\"m_turns\":" + qs_num(m, "turns_5h").to_string()
-        + ",\"g_tok\":" + qs_num(g, "total_tokens").to_string()
-        + ",\"g_ticks\":" + qs_num(g, "cost_usd_ticks").to_string()
-        + ",\"g_used\":" + qs_num(g, "with_usage").to_string()
-        + ",\"d_rep\":" + qs_num(d, "reporting").to_string()
-        + ",\"d_pan\":" + qs_num(d, "panes").to_string()
-        + ",\"d_max\":" + qs_num(d, "max_ctx_pct").to_string()
-        + ",\"v\":\"" + vs + "\"}";
 }
 
 // Append the daily snapshot: drop any earlier line for the same date

@@ -21,12 +21,39 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          path: site
+      - name: checkout oodac
+        uses: actions/checkout@v4
+        with:
+          repository: openOODA-core/oodac
+          path: oodac
+      - name: checkout std
+        uses: actions/checkout@v4
+        with:
+          repository: openOODA-core/std
+          path: std
+      - name: checkout oodar
+        uses: actions/checkout@v4
+        with:
+          repository: openOODA-core/oodar
+          path: oodar
+      - name: clang
+        run: sudo apt-get update && sudo apt-get install -y clang
+      - name: build oodar libs
+        run: make -C oodar/scripts -f Makefile modular
       - name: Run the zero-trust privacy gate
-        run: node tests/test_privacy.js
+        working-directory: site
+        env:
+          OODA_COMPILER: ${{ github.workspace }}/oodac/bin/oodac
+          OODA_SITE_ROOT: ${{ github.workspace }}/site
+          OODA_FS_READDIR: ${{ github.workspace }}
+          OODA_FS_WRITEDIR: ${{ github.workspace }}
+          OODA_NO_JAIL: '1'
+        run: |
+          test -x ../oodac/bin/oodac || chmod +x ../oodac/bin/oodac
+          "${OODA_COMPILER}" build tests/privacy_test.oo -o /tmp/privacy_test
+          "/tmp/privacy_test"
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
@@ -34,7 +61,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

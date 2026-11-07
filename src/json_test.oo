@@ -1,0 +1,128 @@
+// # website JSON Injection Gate — Escaped Emitters
+//
+// Logline: Hostile state-file, pane, filename, and timestamp text must never break out of the JSON string fields the .oo refresh drivers emit.
+//
+// Setup: Pure string functions over crafted inputs; qs_vibe reads the committed fixture at tests/json/fixtures/home. No writes, no network.
+//
+// Beats:
+//   1. fsrc emitters escape repo names, recon verdicts, quota agents, workspace names, and health lines.
+//   2. fhist/fleet/quota emitters escape keys, filenames, paths, timestamps, and pane ids; numeric fields coerce to integers.
+//   3. qsrc helpers honor backslash escapes and refuse non-numeric tokens in number position.
+
+import "emit_json.oo";
+import "fsrc.oo";
+import "fhist.oo";
+import "qsrc.oo";
+
+fn expect(cond: Bool, label: String) -> Bool {
+    if cond {
+        println("ok " + label);
+        return true;
+    }
+    println("FAIL " + label);
+    return false;
+}
+
+fn check_repos(p: Int) -> Int {
+    let doc: String = "CLEAN /x/oo\"bad\".txt\nRECON /x/oo\"bad\".txt SYNC\n";
+    let lines: List[String] = fr_lines(doc);
+    let repos: String = fr_repos(lines);
+    if expect(str_index_of(repos, "oo" + "\\\"" + "bad" + "\\\"" + ".txt") >= 0, "01 repo name quote escaped") { p = p + 1; }
+    if expect(str_index_of(repos, "\"name\":\"oo\"bad") < 0, "02 raw quote breakout absent") { p = p + 1; }
+    let rdoc: String = "CLEAN /x/oo\"bad\".txt\nRECON /x/oo\"bad\".txt \"PWN\"\n";
+    let rrepos: String = fr_repos(fr_lines(rdoc));
+    let pwn_l: Bool = str_index_of(rrepos, "PWN" + "\\\"") >= 0;
+    let pwn_r: Bool = str_index_of(rrepos, "\\\"" + "PWN") >= 0;
+    if expect(pwn_l || pwn_r, "03 recon verdict quote escaped") { p = p + 1; }
+    let map: String = fr_repo_map(fr_lines(doc));
+    if expect(str_index_of(map, "\\\"" + "bad" + "\\\"" + ".txt\":") >= 0, "04 repo map key quote escaped") { p = p + 1; }
+    return p;
+}
+
+fn check_sections(p: Int) -> Int {
+    let qdoc: String = "QUOTA ag\"ent OK used=1 rem=2\n";
+    let quota: String = fr_quota(fr_lines(qdoc));
+    if expect(str_index_of(quota, "ag" + "\\\"" + "ent") >= 0, "05 quota agent quote escaped") { p = p + 1; }
+    let adoc: String = "ACTIVE-WS ws\"name blocked=1 working=2 idle=3 other=4\n";
+    let act: String = fr_active(fr_lines(adoc));
+    if expect(str_index_of(act, "ws" + "\\\"" + "name") >= 0, "06 workspace name quote escaped") { p = p + 1; }
+    let hdoc: String = "HEALTH node \",\"injected\":1,\"y\":\"\n";
+    let health: String = fr_health(fr_lines(hdoc));
+    if expect(str_index_of(health, "\\\"" + "injected" + "\\\"") >= 0, "07 health line quote escaped") { p = p + 1; }
+    if expect(str_index_of(health, "\",\"injected\":1") < 0, "08 health breakout absent") { p = p + 1; }
+    let sdoc: String = "FORGE host </script><script>alert(1)</script>\n";
+    let forge: String = fr_health(fr_lines(sdoc));
+    if expect(str_index_of(forge, "</script>") >= 0, "09 markup stays inert string data") { p = p + 1; }
+    return p;
+}
+
+fn check_hist(p: Int) -> Int {
+    let lines: List[String] = list_new();
+    let h: String = fr_hist_line("2026-11-07T00:00:00Z\"inj", "123\"bad", "abc12345", 0, lines);
+    if expect(str_index_of(h, "Z" + "\\\"" + "inj") >= 0, "10 history iso quote escaped") { p = p + 1; }
+    if expect(str_index_of(h, "\"epoch\":123,") >= 0, "11 hostile epoch coerced to int") { p = p + 1; }
+    let h2: String = fr_hist_line("iso", "notanum", "s", 0, lines);
+    if expect(str_index_of(h2, "\"epoch\":-1,") >= 0, "12 non-numeric epoch fails to -1") { p = p + 1; }
+    return p;
+}
+
+fn check_fleet(p: Int) -> Int {
+    let names: List[String] = list_push(list_push(list_new(), "ok.txt"), "a\"b,c.txt");
+    let arr: String = fr_alert_list(names);
+    if expect(str_index_of(arr, "a" + "\\\"" + "b,c.txt") >= 0, "13 alert filename quote escaped") { p = p + 1; }
+    let dot: List[String] = list_push(list_new(), "..");
+    let only: String = fr_alert_list(dot);
+    if expect(only == "[]", "14 dot entries filtered") { p = p + 1; }
+    let j: String = fr_json("2026-01-01T00:00:00Z\"i", "9\"x", "/tmp/a\"b", "sig", "[\"a\"]", list_new());
+    if expect(str_index_of(j, "a" + "\\\"" + "b") >= 0, "15 state path quote escaped") { p = p + 1; }
+    if expect(str_index_of(j, "Z" + "\\\"" + "i") >= 0, "16 fleet iso quote escaped") { p = p + 1; }
+    if expect(str_index_of(j, "\"generated_epoch\": 9,") >= 0, "17 fleet epoch coerced") { p = p + 1; }
+    let sdoc: String = "SEAL tok\"en extra\n";
+    let sum: String = fr_summary(fr_lines(sdoc));
+    if expect(str_index_of(sum, "tok" + "\\\"" + "en") >= 0, "18 seal token quote escaped") { p = p + 1; }
+    return p;
+}
+
+fn check_quota(p: Int) -> Int {
+    let q: String = qr_json("", "", "", "", "0|2026-01-01T00:00:00Z\"inj");
+    if expect(str_index_of(q, "Z" + "\\\"" + "inj") >= 0, "19 quota timestamp quote escaped") { p = p + 1; }
+    let qh: String = qr_hist_line("", "", "", "", "2026-11-07T00:00:\"0Z");
+    if expect(str_index_of(qh, ":" + "\\\"" + "0") >= 0, "20 history stamp quote escaped") { p = p + 1; }
+    let pe: String = qr_pane_entry("pane\"inj", 42);
+    if expect(str_index_of(pe, "pane" + "\\\"" + "inj") >= 0, "21 pane id quote escaped") { p = p + 1; }
+    if expect(str_index_of(pe, "\"ctx_pct\":42") >= 0, "22 pane ctx stays numeric") { p = p + 1; }
+    return p;
+}
+
+fn check_qsrc(p: Int, fr: &FsReadCap, proc: &ProcessCap) -> Int {
+    let sv: String = qs_str("{\"k\":\"a\\\"b\"}", "\"k\"");
+    if expect(sv == "a\\\"b", "23 qs_str honors backslash escape") { p = p + 1; }
+    let qi_ok: Bool = qs_int("123x") == 123 && qs_int("abc") == 0 - 1 &&
+        qs_int("-7") == 0 - 7 && qs_int("") == 0 - 1;
+    if expect(qi_ok, "24 qs_int parses or refuses") { p = p + 1; }
+    let vibe: String = qs_vibe(fr, "tests/json/fixtures/home");
+    if expect(str_index_of(vibe, "\\\"") >= 0, "25 vibe timestamp quote escaped") { p = p + 1; }
+    let mc: String = qs_mcode(proc, "/nonexistent-openooda-home");
+    if expect(str_index_of(mc, "\"ok\":false") >= 0, "26 mcode failure stays valid JSON") { p = p + 1; }
+    return p;
+}
+
+pub fn main(
+    p: &ProcessCap,
+    fr: &FsReadCap,
+    e: &EnvCap
+) -> Result[Int, String] {
+    let mut n: Int = 0;
+    n = check_repos(n);
+    n = check_sections(n);
+    n = check_hist(n);
+    n = check_fleet(n);
+    n = check_quota(n);
+    n = check_qsrc(n, fr, p);
+    if n == 26 {
+        println("website json tests: 26/26 passed");
+        return Ok(0);
+    }
+    println("website json tests: FAILED (" + to_string(n) + "/26)");
+    return Ok(1);
+}
