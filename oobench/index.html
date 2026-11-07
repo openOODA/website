@@ -80,8 +80,8 @@
             <div class="ovs-card">
               <span class="ovs-badge ovs-badge-cyan">#3 BEST MULTI-PANE SUB (3.5x)</span>
               <h3>mcode / MiniMax-M3.1-Flash</h3>
-              <div class="ovs-score-big">97,769</div>
-              <div class="ovs-meta"><strong>3.5 Panes 24/7</strong> &middot; <a href="https://www.minimax.io/platform/coding-plan" target="_blank" rel="noopener" style="color:#00e5ff;">$55/mo M-Plan (~$16/pane)</a><br/>Quality: <strong>95%</strong> &middot; <strong>128 tok/s</strong> &middot; 140s</div>
+              <div class="ovs-score-big">135,373</div>
+              <div class="ovs-meta"><strong>3.5 Panes 24/7</strong> &middot; <a href="https://www.minimax.io/platform/coding-plan" target="_blank" rel="noopener" style="color:#00e5ff;">Annual M-Plan (~$13/pane)</a><br/>Quality: <strong>95%</strong> &middot; <strong>128 tok/s</strong> &middot; 140s</div>
             </div>
             <div class="ovs-card">
               <span class="ovs-badge ovs-badge-amber">OWNED 3-SERVER GPUS (2.5x)</span>
@@ -136,13 +136,13 @@
                   <td><strong>#3</strong></td>
                   <td><code>mcode/MiniMax-M3.1-Flash</code></td>
                   <td><span class="ovs-badge ovs-badge-cyan">3.5x Panes</span></td>
-                  <td><a href="https://www.minimax.io/platform/coding-plan" target="_blank" rel="noopener noreferrer" style="color:#00e5ff; text-decoration:underline;">MiniMax M-Plan Explore ($55/mo, 5h Rolling)</a></td>
-                  <td><strong>~$16 / pane</strong></td>
+                  <td><a href="https://www.minimax.io/platform/coding-plan" target="_blank" rel="noopener noreferrer" style="color:#00e5ff; text-decoration:underline;">MiniMax M-Plan Annual ($550/yr = $45.83/mo, 5h Rolling)</a></td>
+                  <td><strong>~$13 / pane</strong> (Annual)</td>
                   <td><strong>95 / 100</strong></td>
                   <td>130%</td>
                   <td>128 tok/s (140s)</td>
-                  <td>18</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:35%;"></div></div><strong style="color:#00e5ff;">97,769</strong></td>
+                  <td>13</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:42%;"></div></div><strong style="color:#00e5ff;">135,373</strong></td>
                 </tr>
                 <tr>
                   <td><strong>#4</strong></td>
@@ -172,25 +172,25 @@
                   <td><strong>#6</strong></td>
                   <td><code>vibe/glm-5-3</code></td>
                   <td><span class="ovs-badge ovs-badge-amber">1.0x Pane</span></td>
-                  <td><a href="https://mistral.ai/products/le-chat" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Mistral Le Chat Pro ($14.99/mo, 30-Day Cap)</a></td>
-                  <td><strong>$15 / pane</strong> (1 max)</td>
+                  <td><a href="https://mistral.ai/products/le-chat" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">Mistral Le Chat Pro Annual (~$12/mo, 30-Day Cap)</a></td>
+                  <td><strong>~$12 / pane</strong> (Annual)</td>
                   <td><strong>95 / 100</strong></td>
                   <td>115%</td>
                   <td>95 tok/s (165s)</td>
-                  <td>15</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:14%;"></div></div><strong>25,160</strong></td>
+                  <td>12</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:16%;"></div></div><strong>31,450</strong></td>
                 </tr>
                 <tr>
                   <td><strong>#7</strong></td>
                   <td><code>grok/grok-4.7-build-fast</code></td>
                   <td><span class="ovs-badge ovs-badge-amber">1.0x Pane</span></td>
-                  <td><a href="https://x.ai/grok" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">xAI SuperGrok ($30/mo, 7-Day Weekly Cap)</a></td>
-                  <td><strong>$30 / pane</strong> (1 max)</td>
+                  <td><a href="https://x.ai/grok" target="_blank" rel="noopener noreferrer" style="color:#ffb000; text-decoration:underline;">xAI SuperGrok Annual ($300/yr = $25/mo, 7-Day Cap)</a></td>
+                  <td><strong>$25 / pane</strong> (Annual)</td>
                   <td><strong>96 / 100</strong></td>
                   <td>128%</td>
                   <td>115 tok/s (150s)</td>
-                  <td>30</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:12%;"></div></div><strong>15,728</strong></td>
+                  <td>25</td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:13%;"></div></div><strong>18,874</strong></td>
                 </tr>
                 <tr>
                   <td><strong>#8</strong></td>
@@ -217,11 +217,11 @@
 formula: Fleet_OVS = (Quality^2 * Efficiency * Panes_24x7 * 60) / (Time_s * Cost_24x7)
   #1 devin/swe-2-flash-max [effort=max panes=10.0x] Q=97 speed=145tok/s time=120s cost=10 -&gt; OVS=564540
   #2 devin/swe-2-max [effort=max panes=10.0x] Q=98 speed=92tok/s time=180s cost=10 -&gt; OVS=377750
-  #3 mcode/MiniMax-M3.1-Flash [effort=medium panes=3.5x] Q=95 speed=128tok/s time=140s cost=18 -&gt; OVS=97769
+  #3 mcode/MiniMax-M3.1-Flash [effort=medium panes=3.5x] Q=95 speed=128tok/s time=140s cost=13 -&gt; OVS=135373
   #4 devin/glm-5-3-flash-high [effort=high panes=2.0x] Q=94 speed=135tok/s time=130s cost=15 -&gt; OVS=62530
   #5 muse/spark-1.3-contributor [effort=medium panes=2.0x] Q=97 speed=112tok/s time=145s cost=25 -&gt; OVS=39868
-  #6 vibe/glm-5-3 [effort=medium panes=1.0x] Q=95 speed=95tok/s time=165s cost=15 -&gt; OVS=25160
-  #7 grok/grok-4.7-build-fast [effort=medium panes=1.0x] Q=96 speed=115tok/s time=150s cost=30 -&gt; OVS=15728
+  #6 vibe/glm-5-3 [effort=medium panes=1.0x] Q=95 speed=95tok/s time=165s cost=12 -&gt; OVS=31450
+  #7 grok/grok-4.7-build-fast [effort=medium panes=1.0x] Q=96 speed=115tok/s time=150s cost=25 -&gt; OVS=18874
   #8 oopi/local-gpus (3-node) [effort=medium panes=2.5x] Q=68 speed=42tok/s time=360s cost=12 -&gt; OVS=13165
 verdict=pass profiles=8</pre>
         </section>
