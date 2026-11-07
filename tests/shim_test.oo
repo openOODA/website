@@ -37,7 +37,10 @@ fn sh_code(shim: String) -> String {
         let mut keep: Bool = true;
         while j < bytes_len(line) {
             let c: String = byte_slice(line, j, j + 1);
-            if c != " " && c != "\t" { keep = c != "#"; break; }
+            if c != " " && c != "\t" {
+                keep = c != "#";
+                break;
+            }
             j = j + 1;
         }
         if keep { out = out + line + "\n"; }

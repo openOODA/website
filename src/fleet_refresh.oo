@@ -22,9 +22,15 @@ fn fr_now(p: &ProcessCap) -> String {
     let mut es: String = match e { Ok(v) => v, Err(_) => "0" };
     let mut is: String = match i { Ok(v) => v, Err(_) => "?" };
     let mut n: Int = bytes_len(es);
-    while n > 0 && byte_at(es, n - 1) < 48 { es = qs_slice(es, 0, n - 1); n = n - 1; }
+    while n > 0 && byte_at(es, n - 1) < 48 {
+        es = qs_slice(es, 0, n - 1);
+        n = n - 1;
+    }
     let mut m: Int = bytes_len(is);
-    while m > 0 && byte_at(is, m - 1) < 33 { is = qs_slice(is, 0, m - 1); m = m - 1; }
+    while m > 0 && byte_at(is, m - 1) < 33 {
+        is = qs_slice(is, 0, m - 1);
+        m = m - 1;
+    }
     return es + "|" + is;
 }
 
@@ -60,7 +66,8 @@ fn fr_summary(lines: List[String]) -> String {
     let wsl: List[String] = fr_rows(lines, "workspaces=");
     if list_len(wsl) > 0 {
         let l: String = list_get(wsl, 0) + "";
-        out = out + ",\"ws_total\":" + qs_num(l, "workspaces=").to_string() + ",\"ws_active\":" + qs_num(l, "active=").to_string();
+        out = out + ",\"ws_total\":" + qs_num(l, "workspaces=").to_string()
+            + ",\"ws_active\":" + qs_num(l, "active=").to_string();
     }
     let rcl: List[String] = fr_rows(lines, "recon=");
     if list_len(rcl) > 0 {
@@ -79,7 +86,8 @@ fn fr_summary(lines: List[String]) -> String {
 fn fr_json(iso: String, epoch: String, state_path: String, sig: String, alerts: String, lines: List[String]) -> String {
     return "{\n  \"generated_at\": \"" + iso + "\",\n  \"generated_epoch\": " + epoch + ",\n  \"state_file\": \"" + state_path
         + "\",\n  \"state_sig\": \"" + sig + "\",\n  \"alerts\": " + alerts + ",\n  \"summary\": {" + fr_summary(lines)
-        + "},\n  \"repos\": " + fr_repos(lines) + ",\n  \"quota\": " + fr_quota(lines) + ",\n  \"workspaces\": " + fr_active(lines)
+        + "},\n  \"repos\": " + fr_repos(lines) + ",\n  \"quota\": " + fr_quota(lines)
+        + ",\n  \"workspaces\": " + fr_active(lines)
         + ",\n  \"health_forge\": " + fr_health(lines) + "\n}\n";
 }
 
@@ -89,7 +97,10 @@ pub fn main(p: &ProcessCap, fr: &FsReadCap, fw: &FsWriteCap, args: List[String])
     let out_json: String = if list_len(args) > 2 { list_get(args, 2) + "" } else { "status/fleet.json" };
     let out_hist: String = if list_len(args) > 3 { list_get(args, 3) + "" } else { "status/fleet_history.jsonl" };
     let rd: Result[String, String] = fs_read_file(fr, state_path);
-    if rd.is_err() { println("ERR state file unreadable: " + state_path); return 1; }
+    if rd.is_err() {
+        println("ERR state file unreadable: " + state_path);
+        return 1;
+    }
     let doc: String = match rd { Ok(v) => v, Err(_) => "" };
     let sig: String = fr_sig(doc);
     let araw: String = fr_alerts(fr, spool);
@@ -102,7 +113,10 @@ pub fn main(p: &ProcessCap, fr: &FsReadCap, fw: &FsWriteCap, args: List[String])
     let epoch: String = qs_slice(nowp, 0, bar);
     let iso: String = qs_slice(nowp, bar + 1, bytes_len(nowp));
     let w1: Result[Void, String] = fs_write_file(fw, out_json, fr_json(iso, epoch, state_path, sig, alerts, lines));
-    if w1.is_err() { println("ERR fleet.json write"); return 1; }
+    if w1.is_err() {
+        println("ERR fleet.json write");
+        return 1;
+    }
     let hist: String = fr_hist_line(iso, epoch, sig, alert_n, lines);
     fr_hist_append(fr, fw, out_hist, hist, sig);
     println("OK fleet.json " + sig + " lines=" + list_len(lines).to_string() + " alerts=" + alerts);

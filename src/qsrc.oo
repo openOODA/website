@@ -16,7 +16,10 @@ pub fn qs_slice(s: String, start: Int, stop: Int) -> String {
     let hi: Int = if stop > n { n } else { stop };
     let mut bs: List[Int] = bytes_new();
     let mut i: Int = if start < 0 { 0 } else { start };
-    while i < hi { bs = bytes_push(bs, byte_at(s, i)); i = i + 1; }
+    while i < hi {
+        bs = bytes_push(bs, byte_at(s, i));
+        i = i + 1;
+    }
     return bytes_to_str(bs);
 }
 
@@ -111,8 +114,17 @@ pub fn qs_ctx(text: String) -> Int {
 
 // mcode: aggregate local_runtime_token_usage over 5h and 24h windows.
 pub fn qs_mcode(p: &ProcessCap, home: String) -> String {
-    let code: String = "import sqlite3,sys,time\nc=sqlite3.connect('file:'+sys.argv[1]+'?mode=ro',uri=True)\nnow=int(time.time()*1000)\nfor ms,t in [(18000000,'w5'),(86400000,'w24')]:\n r=c.execute('select coalesce(sum(input_tokens),0),coalesce(sum(output_tokens),0),coalesce(sum(cost_usd),0),count(*),coalesce(max(ts),0) from local_runtime_token_usage where ts>=?',(now-ms,)).fetchone()\n print(t,r[0],r[1],r[2],r[3],r[4])";
-    let r: Result[String, String] = sys_exec(p, "python3", "-c", code, home + "/.minimax/v2/sqlite/runtime-state.sqlite");
+    let code: String = "import sqlite3,sys,time\n"
+        + "c=sqlite3.connect('file:'+sys.argv[1]+'?mode=ro',uri=True)\n"
+        + "now=int(time.time()*1000)\n"
+        + "for ms,t in [(18000000,'w5'),(86400000,'w24')]:\n"
+        + " r=c.execute('select coalesce(sum(input_tokens),0),"
+        + "coalesce(sum(output_tokens),0),coalesce(sum(cost_usd),0),"
+        + "count(*),coalesce(max(ts),0) from local_runtime_token_usage "
+        + "where ts>=?',(now-ms,)).fetchone()\n"
+        + " print(t,r[0],r[1],r[2],r[3],r[4])";
+    let db: String = home + "/.minimax/v2/sqlite/runtime-state.sqlite";
+    let r: Result[String, String] = sys_exec(p, "python3", "-c", code, db);
     let out: String = match r { Ok(t) => t, Err(_) => "" };
     let nl: Int = str_index_of(out, "\n");
     if nl < 0 { return "\"ok\":false"; }
@@ -131,7 +143,9 @@ pub fn qs_mcode(p: &ProcessCap, home: String) -> String {
 // grok sessions list is project-scoped and reports "No sessions found." when
 // run from any other working directory.
 pub fn qs_grok(p: &ProcessCap, home: String) -> String {
-    let r: Result[String, String] = sys_exec(p, "env", "-C", home, "HOME=" + home, home + "/.local/bin/grok", "sessions", "list");
+    let bin: String = home + "/.local/bin/grok";
+    let r: Result[String, String] = sys_exec(p, "env", "-C", home, "HOME=" + home,
+        bin, "sessions", "list");
     let mut rest: String = match r { Ok(t) => t, Err(_) => "" };
     let mut ids: List[String] = list_new();
     while bytes_len(rest) > 0 && list_len(ids) < 20 {
@@ -147,7 +161,8 @@ pub fn qs_grok(p: &ProcessCap, home: String) -> String {
     let mut used: Int = 0;
     let mut latest: String = "";
     while i < list_len(ids) {
-        let u: Result[String, String] = sys_exec(p, "env", "-C", home, "HOME=" + home, home + "/.local/bin/grok", "usage", list_get(ids, i));
+        let u: Result[String, String] = sys_exec(p, "env", "-C", home, "HOME=" + home,
+            bin, "usage", list_get(ids, i));
         let ut: String = match u { Ok(t) => t, Err(_) => "" };
         if bytes_len(ut) > 0 && byte_at(ut, 0) == 123 {
             used = used + 1;
@@ -158,8 +173,11 @@ pub fn qs_grok(p: &ProcessCap, home: String) -> String {
         }
         i = i + 1;
     }
-    return "\"ok\":true,\"sessions\":" + list_len(ids).to_string() + ",\"with_usage\":" + used.to_string()
-        + ",\"total_tokens\":" + tok.to_string() + ",\"cost_usd_ticks\":" + ticks.to_string() + ",\"latest_at\":\"" + latest + "\"";
+    return "\"ok\":true,\"sessions\":" + list_len(ids).to_string()
+        + ",\"with_usage\":" + used.to_string()
+        + ",\"total_tokens\":" + tok.to_string()
+        + ",\"cost_usd_ticks\":" + ticks.to_string()
+        + ",\"latest_at\":\"" + latest + "\"";
 }
 
 // vibe: last 402 budget event in the log; tail position decides live state.

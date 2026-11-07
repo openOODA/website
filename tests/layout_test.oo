@@ -74,8 +74,14 @@ fn ly_refs(html: String) -> List[String] {
         let s: Int = index_of(rest, "src=\"");
         let mut at: Int = -1;
         let mut mlen: Int = 0;
-        if h >= 0 { at = h; mlen = 6; }
-        if s >= 0 && (at < 0 || s < at) { at = s; mlen = 5; }
+        if h >= 0 {
+            at = h;
+            mlen = 6;
+        }
+        if s >= 0 && (at < 0 || s < at) {
+            at = s;
+            mlen = 5;
+        }
         if at < 0 { break; }
         let tail: String = byte_slice(rest, at + mlen, bytes_len(rest));
         let j: Int = index_of(tail, "\"");

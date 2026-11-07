@@ -42,7 +42,8 @@ fn qr_devin(p: &ProcessCap, home: String, xdg: String) -> String {
     let mut rep: Int = 0;
     while i < list_len(panes) {
         let pid: String = list_get(panes, i);
-        let pr: Result[String, String] = sys_exec(p, "env", "HOME=" + home, "XDG_RUNTIME_DIR=" + xdg, bin, "pane", "read", pid, "--source", "visible");
+        let pr: Result[String, String] = sys_exec(p, "env", "HOME=" + home,
+            "XDG_RUNTIME_DIR=" + xdg, bin, "pane", "read", pid, "--source", "visible");
         let pt: String = match pr { Ok(t) => t, Err(_) => "" };
         let ctx: Int = qs_ctx(pt);
         if ctx > 0 {
@@ -62,7 +63,21 @@ fn qr_json(mcode: String, grok: String, devin: String, vibe: String, now: String
     let bar: Int = str_index_of(now, "|");
     let ep: String = if bar < 0 { "0" } else { qs_slice(now, 0, bar) };
     let is: String = if bar < 0 { "" } else { qs_slice(now, bar + 1, bytes_len(now)) };
-    return "{\n  \"generated_at\": \"" + is + "\",\n  \"generated_epoch\": " + ep + ",\n  \"agents\": {\n    \"mcode\": {\"source\": \"minimax sqlite local_runtime_token_usage\", " + mcode + "},\n    \"grok\": {\"source\": \"grok sessions list + grok usage\", " + grok + "},\n    \"devin\": {\"source\": \"herdr pane footers\", " + devin + "},\n    \"vibe\": {\"source\": \"vibe.log 402 budget events\", " + vibe + "}\n  }\n}\n";
+    let q: String = "\"";
+    let nl: String = "\n";
+    return "{" + nl
+        + "  " + q + "generated_at" + q + ": " + q + is + q + "," + nl
+        + "  " + q + "generated_epoch" + q + ": " + ep + "," + nl
+        + "  " + q + "agents" + q + ": {" + nl
+        + "    " + q + "mcode" + q + ": {" + q + "source" + q + ": "
+        + q + "minimax sqlite local_runtime_token_usage" + q + ", " + mcode + "}," + nl
+        + "    " + q + "grok" + q + ": {" + q + "source" + q + ": "
+        + q + "grok sessions list + grok usage" + q + ", " + grok + "}," + nl
+        + "    " + q + "devin" + q + ": {" + q + "source" + q + ": "
+        + q + "herdr pane footers" + q + ", " + devin + "}," + nl
+        + "    " + q + "vibe" + q + ": {" + q + "source" + q + ": "
+        + q + "vibe.log 402 budget events" + q + ", " + vibe + "}" + nl
+        + "  }" + nl + "}" + nl;
 }
 
 // Wall clock as "epoch|iso" — the stamp fields the file carries.
@@ -112,7 +127,10 @@ fn qr_hist_append(fr: &FsReadCap, fw: &FsWriteCap, path: String, line: String, d
 
 pub fn main(p: &ProcessCap, fr: &FsReadCap, fw: &FsWriteCap, env: &EnvCap, args: List[String]) -> Int {
     let home: String = match env_get(env, "OODA_FLEET_HOME") { Ok(h) => h, Err(_) => "" };
-    if home == "" { println("ERR quota_refresh OODA_FLEET_HOME unset"); return 2; }
+    if home == "" {
+        println("ERR quota_refresh OODA_FLEET_HOME unset");
+        return 2;
+    }
     let xdg: String = match env_get(env, "OODA_FLEET_XDG") { Ok(x) => x, Err(_) => "" };
     let out: String = if list_len(args) > 0 { list_get(args, 0) } else { "status/quota.json" };
     let m: String = qs_mcode(p, home);

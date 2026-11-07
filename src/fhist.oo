@@ -87,7 +87,10 @@ pub fn fr_hist_append(fr: &FsReadCap, fw: &FsWriteCap, path: String, line: Strin
     if hi + 1 > 1008 { lo = hi + 1 - 1008; }
     let mut doc: String = "";
     let mut i: Int = lo;
-    while i < hi { doc = doc + list_get(keep, i) + "\n"; i = i + 1; }
+    while i < hi {
+        doc = doc + list_get(keep, i) + "\n";
+        i = i + 1;
+    }
     doc = doc + line + "\n";
     let wr: Result[Void, String] = fs_write_file(fw, path, doc);
     if wr.is_err() { println("ERR fleet_history write"); }
