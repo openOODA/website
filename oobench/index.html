@@ -60,8 +60,8 @@
           </p>
 
           <div class="ovs-formula-box">
-            <span style="font-size:0.74rem; text-transform:uppercase; letter-spacing:0.08em; color:#ffb000; font-weight:700;">// Canonical OVS Equation (oobench/core/score.oo)</span>
-            <code class="ovs-formula-code">OVS = (Quality&sup2; &times; Efficiency_% &times; 60) / (Time_s &times; Cost_norm)</code>
+            <span style="font-size:0.74rem; text-transform:uppercase; letter-spacing:0.08em; color:#ffb000; font-weight:700;">// Canonical OVS Equation &amp; Minimum Quality Floor (oobench/core/score.oo)</span>
+            <code class="ovs-formula-code">OVS = (Quality&sup2; &times; Efficiency_% &times; 60) / (Time_s &times; Cost_norm) &nbsp;&nbsp;[if Quality &lt; 85 &rarr; OVS = 0 (DISQUALIFIED)]</code>
           </div>
 
           <div class="ovs-grid">
@@ -196,13 +196,13 @@
                   <td><strong>#8</strong></td>
                   <td><code>oopi/local-5gpu (qwen36-35b)</code></td>
                   <td><span class="ovs-badge ovs-badge-amber">medium</span></td>
-                  <td><code>native-oo</code> (5x RTX 4060 Ti Offline)</td>
-                  <td><strong>68 / 100</strong></td>
+                  <td><code>native-oo</code> (5x RTX 4060 Ti &mdash; Fails Q&ge;85 Floor)</td>
+                  <td><strong style="color:#ff5555;">68 / 100</strong></td>
                   <td>82%</td>
                   <td>42 tok/s</td>
                   <td>360s</td>
                   <td>18</td>
-                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:6%;"></div></div><strong style="color:#ffb000;">3,510</strong></td>
+                  <td><div class="ovs-bar-wrap"><div class="ovs-bar-fill" style="width:0%; background:#ff5555;"></div></div><strong style="color:#ff5555;">0 (UNUSABLE)</strong></td>
                 </tr>
               </tbody>
             </table>
@@ -214,7 +214,7 @@
           <h2 class="terminal-title" style="font-size:1.25rem;">Live <code>oobench rank</code> Telemetry</h2>
           <pre class="ovs-cli">$ oobench rank
 === oobench: OODA Value Score (OVS) Agent Leaderboard ===
-formula: OVS = (Quality^2 * Efficiency * 60) / (Time_s * Cost_norm)
+formula: OVS = (Quality^2 * Efficiency * 60) / (Time_s * Cost_norm) [Q &lt; 85 -&gt; 0 DISQUALIFIED]
   #1 devin/swe-2-flash-max [effort=max skill=none] Q=97 speed=145tok/s time=120s cost=10 -&gt; OVS=56454
   #2 devin/swe-2-max [effort=max skill=none] Q=98 speed=92tok/s time=180s cost=10 -&gt; OVS=37775
   #3 devin/glm-5-3-flash-high [effort=high skill=none] Q=94 speed=135tok/s time=130s cost=15 -&gt; OVS=31265
@@ -222,7 +222,7 @@ formula: OVS = (Quality^2 * Efficiency * 60) / (Time_s * Cost_norm)
   #5 muse/spark-1.3-contributor [effort=medium skill=adversarial-qa] Q=97 speed=112tok/s time=145s cost=25 -&gt; OVS=19934
   #6 grok/grok-4.7-build-fast [effort=medium skill=fleet-orchestration] Q=96 speed=115tok/s time=150s cost=35 -&gt; OVS=13481
   #7 vibe/glm-5-3 [effort=medium skill=none] Q=95 speed=95tok/s time=165s cost=40 -&gt; OVS=9435
-  #8 oopi/local-5gpu (qwen36-35b) [effort=medium skill=native-oo] Q=68 speed=42tok/s time=360s cost=18 -&gt; OVS=3513
+  #8 oopi/local-5gpu (qwen36-35b) [effort=medium skill=native-oo] Q=68 speed=42tok/s time=360s cost=18 -&gt; OVS=0 [DISQUALIFIED: UNUSABLE]
 verdict=pass profiles=8</pre>
         </section>
       </main>
