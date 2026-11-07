@@ -51,6 +51,8 @@ jobs:
           "/tmp/contract_test"
           "${OODA_COMPILER}" build tests/routes/routes_test.oo -o /tmp/routes_test
           "/tmp/routes_test"
+          OODA_SITE_ROOT="$PWD" "${OODA_COMPILER}" build tests/shim/shim_trust_test.oo -o /tmp/shim_trust_test
+          OODA_SITE_ROOT="$PWD" "/tmp/shim_trust_test"
 
   auto-release:
     needs: [static-test]

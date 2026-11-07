@@ -48,6 +48,10 @@ done
 # robots.txt declares the live sitemap (tests/routes/routes_test.oo).
 "$OODA_COMPILER" build tests/routes/routes_test.oo -o /tmp/routes_test || exit 1
 /tmp/routes_test || exit 1
+# Shim trust gate: HTTP-error, partial, and empty installer downloads
+# never reach exec (tests/shim/shim_trust_test.oo, stubbed curl/bash).
+"$OODA_COMPILER" build tests/shim/shim_trust_test.oo -o /tmp/shim_trust_test || exit 1
+OODA_SITE_ROOT="$PWD" /tmp/shim_trust_test || exit 1
 ```
 Each page prints one `PASS ...` line and exits 0. A failed assertion prints
 `FAIL ...` and exits 1. The pages read the site from the repository root, so
