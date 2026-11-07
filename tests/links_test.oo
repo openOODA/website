@@ -10,7 +10,7 @@
 //   2. ln_kind sorts a target into skip, owned, local, or third-party.
 //   3. ln_exists resolves a relative target against the site root.
 //   4. ln_pages walks every published .html page; ln_alive asks an owned link for a status.
-//   5. main checks the local references and the owned links, then prints the verdict line.
+//   5. main self-tests the extractor, then checks local references and owned links.
 
 import "std/core/primitives/str.oo";
 import "std/fs/os/fs.oo";
@@ -21,26 +21,44 @@ fn ln_fail(msg: String) -> Result[Int, String] {
     return Err(msg);
 }
 
-// Every href and src target of the page, in markup order.
+// Every href and src target of the page, in markup order. Both quote
+// styles are extracted; a single-quoted attribute must never hide a
+// reference from the link gate.
 fn ln_refs(html: String) -> List[String] {
     let mut out: List[String] = list_new();
     let mut rest: String = html;
     while true {
-        let h: Int = index_of(rest, "href=\"");
-        let s: Int = index_of(rest, "src=\"");
+        let h2: Int = index_of(rest, "href=\"");
+        let h1: Int = index_of(rest, "href='");
+        let s2: Int = index_of(rest, "src=\"");
+        let s1: Int = index_of(rest, "src='");
         let mut at: Int = -1;
         let mut mlen: Int = 0;
-        if h >= 0 {
-            at = h;
+        let mut quote: Int = 34;
+        if h2 >= 0 {
+            at = h2;
             mlen = 6;
+            quote = 34;
         }
-        if s >= 0 && (at < 0 || s < at) {
-            at = s;
+        if h1 >= 0 && (at < 0 || h1 < at) {
+            at = h1;
+            mlen = 6;
+            quote = 39;
+        }
+        if s2 >= 0 && (at < 0 || s2 < at) {
+            at = s2;
             mlen = 5;
+            quote = 34;
+        }
+        if s1 >= 0 && (at < 0 || s1 < at) {
+            at = s1;
+            mlen = 5;
+            quote = 39;
         }
         if at < 0 { break; }
         let tail: String = byte_slice(rest, at + mlen, bytes_len(rest));
-        let j: Int = index_of(tail, "\"");
+        let closer: String = if quote == 39 { "'" } else { "\"" };
+        let j: Int = index_of(tail, closer);
         if j >= 0 {
             let v: String = byte_slice(tail, 0, j);
             if str_len(v) > 0 { out = list_push(out, v); }
@@ -152,6 +170,24 @@ pub fn main(p: &ProcessCap, fr: &FsReadCap, e: &EnvCap) -> Result[Int, String] {
     let mut root: String = "/Projects/openOODA/website";
     let er: Result[String, String] = env_get(e, "OODA_SITE_ROOT");
     if er.is_ok() && str_len(er.val) > 0 { root = er.val; }
+    // Self-test: the extractor sees both quote styles, refuses
+    // unterminated attributes, and dangerous schemes degrade to the
+    // local-existence gate; never skipped, never probed as owned.
+    let sq: List[String] = ln_refs("<a href='one.css'><img src='two.png'>");
+    if list_len(sq) != 2 || list_get(sq, 0) != "one.css" || list_get(sq, 1) != "two.png" {
+        return ln_fail("selftest single-quoted refs not extracted");
+    }
+    if list_len(ln_refs("<a href=\"unterminated")) != 0 {
+        return ln_fail("selftest unterminated ref extracted");
+    }
+    let jsref: String = "javascript:" + "alert(1)";
+    if ln_kind(jsref) != 2 || ln_kind("vbscript:x") != 2 ||
+        ln_kind("//evil.example/x") != 2 {
+        return ln_fail("selftest dangerous ref classified as skippable");
+    }
+    if ln_exists(fr, root, jsref) {
+        return ln_fail("selftest javascript ref resolved on disk");
+    }
     let pages: List[String] = ln_pages(fr, root, "", 0);
     if list_len(pages) == 0 { return ln_fail("route scan found no pages under " + root); }
     let mut local_count: Int = 0;

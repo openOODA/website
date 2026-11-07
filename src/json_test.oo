@@ -141,6 +141,12 @@ fn check_qsrc(p: Int, fr: &FsReadCap, proc: &ProcessCap) -> Int {
     if expect(str_index_of(vibe, "\\\"") >= 0, "30 vibe timestamp quote escaped") { p = p + 1; }
     let mc: String = qs_mcode(proc, "/nonexistent-openooda-home");
     if expect(str_index_of(mc, "\"ok\":false") >= 0, "31 mcode failure stays valid JSON") { p = p + 1; }
+    let qn: Bool = qs_num("{\"n\": -7}", "\"n\"") == 0 - 1 &&
+        qs_num("{\"n\": \"12\"}", "\"n\"") == 12 &&
+        qs_num("{\"n\": 0042}", "\"n\"") == 42;
+    if expect(qn, "32 qs_num refuses sign, accepts quoted and zero-padded digits") { p = p + 1; }
+    let qt: String = qs_str("{\"k\":\"abc", "\"k\"");
+    if expect(qt == "abc", "33 qs_str unterminated value returns tail") { p = p + 1; }
     return p;
 }
 
@@ -156,8 +162,8 @@ pub fn main(
     n = check_fleet(n);
     n = check_quota(n);
     n = check_qsrc(n, fr, p);
-    if n == 31 {
-        println("website json tests: 31/31 passed");
+    if n == 33 {
+        println("website json tests: 33/33 passed");
         return Ok(0);
     }
     println("website json tests: FAILED (" + to_string(n) + "/31)");
