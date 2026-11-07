@@ -95,17 +95,30 @@ fn check_fleet(p: Int) -> Int {
         qs_num(fj, "repos_total") == 5 && qs_num(fj, "dirty") == 1 &&
         qs_str(fj, "\"seal\"") == "abc123";
     if expect(frt, "20 fleet doc fields round-trip to source values") { p = p + 1; }
+    // Output-schema invariants: empty inputs still emit valid shapes,
+    // dot-entries never reach the array, and multi-item rows emit one
+    // object per repo under the required keys.
+    if expect(fr_alert_list(list_new()) == "[]", "21 empty alert input emits []") { p = p + 1; }
+    let dots: List[String] = list_push(list_push(list_push(list_new(), "."), ".."), "ok.txt");
+    if expect(fr_alert_list(dots) == "[\"ok.txt\"]", "22 dot and dot-dot alerts filtered from array") { p = p + 1; }
+    let ml: List[String] = fr_lines("CLEAN /a/aaa 1.0\nDIRTY /b/bbb 2.0\n");
+    let fjm: String = fr_json("iso", "1", "/s", "sig", "[]", ml);
+    let multi: Bool = str_index_of(fjm, "\"name\":\"aaa\"") >= 0 &&
+        str_index_of(fjm, "\"name\":\"bbb\"") >= 0 &&
+        str_index_of(fjm, "\"repos_total\"") >= 0 &&
+        str_index_of(fjm, "\"health_forge\"") >= 0;
+    if expect(multi, "23 multi-item rows emit named objects under required keys") { p = p + 1; }
     return p;
 }
 
 fn check_quota(p: Int) -> Int {
     let q: String = qr_json("", "", "", "", "0|2026-01-01T00:00:00Z\"inj");
-    if expect(str_index_of(q, "Z" + "\\\"" + "inj") >= 0, "21 quota timestamp quote escaped") { p = p + 1; }
+    if expect(str_index_of(q, "Z" + "\\\"" + "inj") >= 0, "24 quota timestamp quote escaped") { p = p + 1; }
     let qh: String = qr_hist_line("", "", "", "", "2026-11-07T00:00:\"0Z");
-    if expect(str_index_of(qh, ":" + "\\\"" + "0") >= 0, "22 history stamp quote escaped") { p = p + 1; }
+    if expect(str_index_of(qh, ":" + "\\\"" + "0") >= 0, "25 history stamp quote escaped") { p = p + 1; }
     let pe: String = qr_pane_entry("pane\"inj", 42);
-    if expect(str_index_of(pe, "pane" + "\\\"" + "inj") >= 0, "23 pane id quote escaped") { p = p + 1; }
-    if expect(str_index_of(pe, "\"ctx_pct\":42") >= 0, "24 pane ctx stays numeric") { p = p + 1; }
+    if expect(str_index_of(pe, "pane" + "\\\"" + "inj") >= 0, "26 pane id quote escaped") { p = p + 1; }
+    if expect(str_index_of(pe, "\"ctx_pct\":42") >= 0, "27 pane ctx stays numeric") { p = p + 1; }
     // Round-trip: qr_hist_line and qr_json fields parse back to sources.
     let hm: String = "{\"in_5h\":11,\"out_5h\":22,\"turns_5h\":33}";
     let hg: String = "{\"total_tokens\":44,\"cost_usd_ticks\":45,\"with_usage\":46}";
@@ -114,39 +127,50 @@ fn check_quota(p: Int) -> Int {
     let his: String = "2026-11-07T01:02:03Z";
     let hl: String = qr_hist_line(hm, hg, hd, hv, his);
     let hl2: String = qr_hist_line(hm, hg, hd, hv, his);
-    if expect(hl == hl2, "25 hist line re-emit is byte-identical") { p = p + 1; }
+    if expect(hl == hl2, "28 hist line re-emit is byte-identical") { p = p + 1; }
     let hrt: Bool = qs_num(hl, "m_in") == 11 && qs_num(hl, "m_out") == 22 &&
         qs_num(hl, "m_turns") == 33 && qs_num(hl, "g_tok") == 44 &&
         qs_num(hl, "g_ticks") == 45 && qs_num(hl, "g_used") == 46 &&
         qs_num(hl, "d_rep") == 47 && qs_num(hl, "d_pan") == 48 &&
         qs_num(hl, "d_max") == 49 && qs_str(hl, "\"date\"") == "2026-11-07" &&
         qs_str(hl, "\"at\"") == "01:02:03" && qs_str(hl, "\"v\"") == "ok";
-    if expect(hrt, "26 hist line fields round-trip to source values") { p = p + 1; }
+    if expect(hrt, "29 hist line fields round-trip to source values") { p = p + 1; }
     let qj: String = qr_json(hm, hg, hd, hv, "456|" + his);
     let qrt: Bool = qs_str(qj, "\"generated_at\"") == his &&
         qs_num(qj, "generated_epoch") == 456 && qs_num(qj, "in_5h") == 11 &&
         qs_num(qj, "total_tokens") == 44 && qs_num(qj, "reporting") == 47 &&
         qs_str(qj, "\"state\"") == "ok";
-    if expect(qrt, "27 quota doc fields round-trip to source values") { p = p + 1; }
+    if expect(qrt, "30 quota doc fields round-trip to source values") { p = p + 1; }
+    // Failure-shape input: every agent probe degrades to "ok":false yet
+    // the document must still carry all required agent blocks.
+    let qe: String = qr_json("\"ok\":false", "\"ok\":false", "\"ok\":false", "\"ok\":false", "0|");
+    let qkeys: Bool = str_index_of(qe, "\"generated_at\"") >= 0 &&
+        str_index_of(qe, "\"generated_epoch\"") >= 0 &&
+        str_index_of(qe, "\"agents\"") >= 0 &&
+        str_index_of(qe, "\"mcode\"") >= 0 &&
+        str_index_of(qe, "\"grok\"") >= 0 &&
+        str_index_of(qe, "\"devin\"") >= 0 &&
+        str_index_of(qe, "\"vibe\"") >= 0;
+    if expect(qkeys, "31 failure fragments still emit all required agent keys") { p = p + 1; }
     return p;
 }
 
 fn check_qsrc(p: Int, fr: &FsReadCap, proc: &ProcessCap) -> Int {
     let sv: String = qs_str("{\"k\":\"a\\\"b\"}", "\"k\"");
-    if expect(sv == "a\\\"b", "28 qs_str honors backslash escape") { p = p + 1; }
+    if expect(sv == "a\\\"b", "32 qs_str honors backslash escape") { p = p + 1; }
     let qi_ok: Bool = qs_int("123x") == 123 && qs_int("abc") == 0 - 1 &&
         qs_int("-7") == 0 - 7 && qs_int("") == 0 - 1;
-    if expect(qi_ok, "29 qs_int parses or refuses") { p = p + 1; }
+    if expect(qi_ok, "33 qs_int parses or refuses") { p = p + 1; }
     let vibe: String = qs_vibe(fr, "tests/json/fixtures/home");
-    if expect(str_index_of(vibe, "\\\"") >= 0, "30 vibe timestamp quote escaped") { p = p + 1; }
+    if expect(str_index_of(vibe, "\\\"") >= 0, "34 vibe timestamp quote escaped") { p = p + 1; }
     let mc: String = qs_mcode(proc, "/nonexistent-openooda-home");
-    if expect(str_index_of(mc, "\"ok\":false") >= 0, "31 mcode failure stays valid JSON") { p = p + 1; }
+    if expect(str_index_of(mc, "\"ok\":false") >= 0, "35 mcode failure stays valid JSON") { p = p + 1; }
     let qn: Bool = qs_num("{\"n\": -7}", "\"n\"") == 0 - 1 &&
         qs_num("{\"n\": \"12\"}", "\"n\"") == 12 &&
         qs_num("{\"n\": 0042}", "\"n\"") == 42;
-    if expect(qn, "32 qs_num refuses sign, accepts quoted and zero-padded digits") { p = p + 1; }
+    if expect(qn, "36 qs_num refuses sign, accepts quoted and zero-padded digits") { p = p + 1; }
     let qt: String = qs_str("{\"k\":\"abc", "\"k\"");
-    if expect(qt == "abc", "33 qs_str unterminated value returns tail") { p = p + 1; }
+    if expect(qt == "abc", "37 qs_str unterminated value returns tail") { p = p + 1; }
     return p;
 }
 
@@ -162,8 +186,8 @@ pub fn main(
     n = check_fleet(n);
     n = check_quota(n);
     n = check_qsrc(n, fr, p);
-    if n == 33 {
-        println("website json tests: 33/33 passed");
+    if n == 37 {
+        println("website json tests: 37/37 passed");
         return Ok(0);
     }
     println("website json tests: FAILED (" + to_string(n) + "/31)");
