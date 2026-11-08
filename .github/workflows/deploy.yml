@@ -28,11 +28,11 @@ jobs:
         with:
           repository: openOODA-core/oodac
           path: oodac
-      - name: checkout std
+      - name: checkout oostd
         uses: actions/checkout@v4
         with:
-          repository: openOODA-core/std
-          path: std
+          repository: openOODA-core/oostd
+          path: oostd
       - name: checkout oodar
         uses: actions/checkout@v4
         with:
