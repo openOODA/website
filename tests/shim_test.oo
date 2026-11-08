@@ -11,9 +11,9 @@
 //   3. sh_url lifts the canonical fetch URL and its branch.
 //   4. main parses the shim, checks the guards, and fetches the canonical installer.
 
-import "std/core/primitives/str.oo";
-import "std/fs/os/fs.oo";
-import "std/fs/process/env.oo";
+import "oostd/core/primitives/str.oo";
+import "oostd/fs/os/fs.oo";
+import "oostd/fs/process/env.oo";
 
 fn sh_read(fr: &FsReadCap, path: String) -> String {
     let r: Result[String, String] = fs_read_file(fr, path);

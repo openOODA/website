@@ -9,8 +9,8 @@
 //   2. Require every sitemap route to resolve on disk, fail-closed.
 //   3. Require robots.txt to declare the sitemap and core routes to exist non-empty.
 
-import "std/core/primitives/str.oo";
-import "std/fs/os/fs.oo";
+import "oostd/core/primitives/str.oo";
+import "oostd/fs/os/fs.oo";
 
 fn rt_expect(cond: Bool, label: String) -> Bool {
     if cond {

@@ -8,8 +8,8 @@
 //   1. qs_slice/qs_num/qs_str/qs_tok/qs_ctx — minimal extraction over JSON-ish, TSV, and pane text.
 //   2. qs_mcode/qs_grok/qs_vibe — each returns a JSON object fragment or "ok":false.
 
-import "std/app/agent/token/json_envelope.oo";
-import "std/fs/os/fs.oo";
+import "oostd/app/agent/token/json_envelope.oo";
+import "oostd/fs/os/fs.oo";
 
 // The byte range [start, end) copied into a fresh String.
 pub fn qs_slice(s: String, start: Int, stop: Int) -> String {

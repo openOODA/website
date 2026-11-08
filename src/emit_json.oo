@@ -11,7 +11,7 @@
 
 import "fsrc.oo";
 import "qsrc.oo";
-import "std/app/agent/token/json_envelope.oo";
+import "oostd/app/agent/token/json_envelope.oo";
 
 // Alert names as a JSON array; "." and ".." never appear. Every name is
 // escaped — spool filenames are filesystem-controlled text.

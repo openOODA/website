@@ -13,9 +13,9 @@
 //   3. pv_find runs the token table over one file and names the line of each hit.
 //   4. main walks the tree, holds the gate closed on any violation, and prints the verdict line.
 
-import "std/core/primitives/str.oo";
-import "std/fs/os/fs.oo";
-import "std/fs/process/env.oo";
+import "oostd/core/primitives/str.oo";
+import "oostd/fs/os/fs.oo";
+import "oostd/fs/process/env.oo";
 
 // Byte class: 1 is a digit, 2 is a lowercase letter, 3 is a word character.
 fn pv_byte(b: Int, kind: Int) -> Bool {

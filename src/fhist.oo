@@ -11,8 +11,8 @@
 //   4. fr_hist_append — same-sig replace, prune to 1008 lines (7 days at 600s).
 
 import "fsrc.oo";
-import "std/app/agent/token/json_envelope.oo";
-import "std/fs/os/fs.oo";
+import "oostd/app/agent/token/json_envelope.oo";
+import "oostd/fs/os/fs.oo";
 
 // Content signature: first 8 hex chars of the HMAC — history dedupe key.
 pub fn fr_sig(doc: String) -> String {

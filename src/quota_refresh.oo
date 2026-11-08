@@ -12,8 +12,8 @@
 
 import "emit_json.oo";
 import "qsrc.oo";
-import "std/fs/os/fs.oo";
-import "std/fs/process/env.oo";
+import "oostd/fs/os/fs.oo";
+import "oostd/fs/process/env.oo";
 
 // Last (NN%) context percent in a pane footer — the devin Context: line
 // renders "Context: 195k / 262k tokens (74%)"; -1 when absent.

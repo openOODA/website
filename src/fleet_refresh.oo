@@ -14,7 +14,7 @@
 import "emit_json.oo";
 import "fsrc.oo";
 import "fhist.oo";
-import "std/fs/os/fs.oo";
+import "oostd/fs/os/fs.oo";
 
 // "<epoch>|<iso>" pair via argv date.
 fn fr_now(p: &ProcessCap) -> String {

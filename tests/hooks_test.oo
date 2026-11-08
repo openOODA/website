@@ -11,9 +11,9 @@
 //   3. hk_skel holds the page skeleton, and hk_sitemap binds the host, the locs, and the robots pointer.
 //   4. main parses the scripts, runs the three gates, and prints the verdict line.
 
-import "std/core/primitives/str.oo";
-import "std/fs/os/fs.oo";
-import "std/fs/process/env.oo";
+import "oostd/core/primitives/str.oo";
+import "oostd/fs/os/fs.oo";
+import "oostd/fs/process/env.oo";
 
 fn hk_read(fr: &FsReadCap, path: String) -> String {
     let r: Result[String, String] = fs_read_file(fr, path);

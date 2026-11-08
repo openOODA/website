@@ -9,7 +9,7 @@
 //   2. Assert a tampered nonce changes the seal.
 //   3. Assert a forged digest fails closed.
 
-import "std/sec/pqc.oo";
+import "oostd/sec/pqc.oo";
 
 fn expect(cond: Bool, label: String) -> Bool {
     if cond {

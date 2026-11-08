@@ -11,9 +11,9 @@
 //   2. cp_spa reports a home script that pulls from the retired app tree.
 //   3. main runs every assertion and prints the verdict line.
 
-import "std/core/primitives/str.oo";
-import "std/fs/os/fs.oo";
-import "std/fs/process/env.oo";
+import "oostd/core/primitives/str.oo";
+import "oostd/fs/os/fs.oo";
+import "oostd/fs/process/env.oo";
 
 fn cp_read(fr: &FsReadCap, path: String) -> String {
     let r: Result[String, String] = fs_read_file(fr, path);

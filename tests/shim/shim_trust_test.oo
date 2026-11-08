@@ -10,9 +10,9 @@
 //   2. st_run executes the shim with the stub directory first on PATH.
 //   3. main proves HTTP errors, partial transfers, and empty bodies refuse, and a good body runs.
 
-import "std/core/primitives/str.oo";
-import "std/fs/os/fs.oo";
-import "std/fs/process/env.oo";
+import "oostd/core/primitives/str.oo";
+import "oostd/fs/os/fs.oo";
+import "oostd/fs/process/env.oo";
 
 fn st_expect(cond: Bool, label: String) -> Bool {
     if cond { println("ok " + label);

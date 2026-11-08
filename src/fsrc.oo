@@ -11,7 +11,7 @@
 //   4. fr_sig — content signature (hmac first-8) for history dedupe.
 
 import "qsrc.oo";
-import "std/app/agent/token/json_envelope.oo";
+import "oostd/app/agent/token/json_envelope.oo";
 
 // Split doc on newlines into a list of lines (no trailing empty).
 pub fn fr_lines(doc: String) -> List[String] {

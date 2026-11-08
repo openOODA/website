@@ -9,7 +9,7 @@
 //   2. Extract d.<key> accesses from fleet.js and require each key present in the emitter.
 //   3. Refuse the agy agent on both the producer and the consumer surface.
 
-import "std/fs/os/fs.oo";
+import "oostd/fs/os/fs.oo";
 
 fn ct_expect(cond: Bool, label: String) -> Bool {
     if cond { println("ok " + label);
