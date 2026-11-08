@@ -65,7 +65,3 @@ make test                                          # Run functional /tmp round-t
 make det                                           # Diverse Double-Compilation bit-for-bit determinism gate
 /Projects/openOODA-agents/oohat/bin/oohat cycle .  # 8-Hat consensus + CISA KEV gate (quorum_mask=255)
 ```
-
----
-
-License: Apache-2.0.
