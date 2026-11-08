@@ -6,13 +6,12 @@
 //        No hash router. Do not load src/ as the homepage.
 //
 // Beats:
-//   1. index.html — live home: install, panels, constellation (incl. cli).
+//   1. index.html — live home: install, panels, constellation (incl. ooda).
 //   2. 404.html — static not-found. No router.
 //   3. docs/anchor.oo — RFC-0005 package manual for this repo.
 //   4. src/ — retired SPA; not the homepage path.
-//   5. js/, styles/, llms.txt, audit/ — copy/rotate/panels, chrome, LLM, audit.
+//   5. js/, styles/, llms.txt — copy/rotate/panels, chrome, LLM surface.
 
-import "audit/anchor.oo";
 import "docs/anchor.oo";
 import "js/anchor.oo";
 import "src/anchor.oo";

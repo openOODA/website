@@ -6,7 +6,7 @@
 //        so it cannot overwrite the home body. Do not invent a new SPA.
 //
 // Beats:
-//   1. Public home is index.html (install box + constellation, including cli).
+//   1. Public home is index.html (install box + constellation, including ooda).
 //   2. 404.html is static. There is no data-page router.
 //   3. Do not fetch /docs/*.oot into #content. That path is dead.
 //   4. quota_refresh.oo + qsrc.oo regenerate status/quota.json for the

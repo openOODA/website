@@ -120,11 +120,15 @@ fn pv_find(text: String, rel: String) -> List[String] {
         || ends_with(rel, ".xml") || ends_with(rel, ".oot") || ends_with(rel, ".oo")
         || ends_with(rel, ".json") || ends_with(rel, ".yml") || ends_with(rel, ".yaml");
     let mut out: List[String] = list_new();
-    let spec: String = "zeb|es|4|0|the name of a fleet node|ring|master|4|0|the name of a fleet node|"
+    let mut spec: String = "zeb|es|4|0|the name of a fleet node|ring|master|4|0|the name of a fleet node|"
         + "spot|light|4|1|the name of a fleet node|100|.|5|0|a Tailscale address|"
         + "114|35|1|0|the local inference port|/hom|e/|2|0|a local home path|"
-        + "04:|30|0|0|a local time zone|~04:|00|0|0|a local time zone|$||3|0|a dollar amount|"
-        + "star|jammer|1|0|the name of a node";
+        + "04:|30|0|0|a local time zone|~04:|00|0|0|a local time zone|"
+        + "star|jammer|1|0|the name of a node|";
+    // The oobench leaderboard publishes public plan pricing by design; the
+    // dollar rule still guards every other published file.
+    let board: Bool = rel == "oobench/index.html" || rel == "js/bench.js";
+    if !board { spec = spec + "$||3|0|a dollar amount|"; }
     let f: List[String] = str_split(spec, "|");
     let mut i: Int = 0;
     while i + 4 < list_len(f) {

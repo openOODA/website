@@ -1,72 +1,18 @@
-# website: Agent Engineering Standards (v1)
-
-This repository houses the official static documentation and web portal for openOODA (`openooda.org`).
-All work in this repository strictly defers to the organization standards in [`openOODA/AGENTS.md`](https://github.com/openOODA/openOODA/blob/master/AGENTS.md).
-
----
-
-## 1. Web Architecture & Invariants
-- **Zero-Build Static Assets**: Pure vanilla HTML, CSS, and client-side JavaScript. No webpack, npm, or node.js build pipelines.
-- **Offline & Low-Bandwidth Resilience**: Fast, lightweight, semantic HTML with zero blocking external trackers.
-- **Accurate Ecosystem Map**: Reflects the current constellation of repositories and active toolchain commands.
-
----
-
-## 2. Invariants & Quality Standards
-- **Pure Client JS**: `.js` files are strictly confined to `js/` for UI navigation, copy buttons, and theme rotation.
-- **W3C Valid**: Valid HTML5 and CSS3.
-
----
-
-## 3. Local Verification Commands
-```bash
-# One .oo page per gate. Build and run each from the website root.
-# OODA_COMPILER must point at the compiler; no path is hardcoded here.
-: "${OODA_COMPILER:?set OODA_COMPILER to the oodac binary}"
-for page in copy layout privacy; do
-  "$OODA_COMPILER" build "tests/${page}_test.oo" -o "/tmp/${page}_test" || exit 1
-  "/tmp/${page}_test" || exit 1
-done
-# Gates that spawn host tools (node --check, curl, sh -n) need the runtime
-# jail relaxed: the default cwd-scoped Landlock+seccomp profile cannot exec
-# shells or open sockets for child processes. OODA_NO_JAIL is the runtime's
-# own escape hatch for integration gates; CI sets it in the workflow env.
-for page in hooks links shim; do
-  "$OODA_COMPILER" build "tests/${page}_test.oo" -o "/tmp/${page}_test" || exit 1
-  OODA_NO_JAIL=1 "/tmp/${page}_test" || exit 1
-done
-# JSON-injection gate over the .oo state emitters (src/json_test.oo).
-"$OODA_COMPILER" build src/json_test.oo -o /tmp/json_test || exit 1
-/tmp/json_test || exit 1
-"$OODA_COMPILER" build tests/test_website.oo -o /tmp/test_website || exit 1
-/tmp/test_website || exit 1
-# Producer/consumer contract gate: js consumers must only read keys the
-# .oo emitters produce (tests/contract/contract_test.oo).
-"$OODA_COMPILER" build tests/contract/contract_test.oo -o /tmp/contract_test || exit 1
-/tmp/contract_test || exit 1
-# Route/asset integrity gate: every sitemap <loc> resolves on disk and
-# robots.txt declares the live sitemap (tests/routes/routes_test.oo).
-"$OODA_COMPILER" build tests/routes/routes_test.oo -o /tmp/routes_test || exit 1
-/tmp/routes_test || exit 1
-# Shim trust gate: HTTP-error, partial, and empty installer downloads
-# never reach exec (tests/shim/shim_trust_test.oo, stubbed curl/bash).
-"$OODA_COMPILER" build tests/shim/shim_trust_test.oo -o /tmp/shim_trust_test || exit 1
-OODA_SITE_ROOT="$PWD" /tmp/shim_trust_test || exit 1
-```
-Each page prints one `PASS ...` line and exits 0. A failed assertion prints
-`FAIL ...` and exits 1. The pages read the site from the repository root, so
-run them from the website directory.
-
----
-
-## 7. Multi-Engine Audit Protocol (Pre-Release)
-
-Advisory tiered audit run before tagging releases, budgeted by token capacity:
-1. **`mcode`** (Abundant tokens): Full codebase scan for contract mismatches, packaging specs, and CI gates.  
-   `mcode exec --permission full "<prompt>"`
-2. **`vibe`** (Moderate tokens): Adversarial diff inspection for subtle regressions, security bypasses, and API validity.  
-   `vibe -p "<prompt>" --trust --auto-approve`
-3. **`grok`** (Strict quota): High-value referee and final sanity check on critical release diffs.  
-   `grok -p "<prompt>" --always-approve`
-
-**Rule:** External audits are strictly advisory; all findings must be verified against source code. External LLMs never gate CI—the §5 Verification Ladder is the sole canonical authority.
+# openOODA (.oo) Agent Quick Card
+1. **The 8 Canonical Quick Cards** (Zero-bloat ~24-line cards built into `ooda`):
+   - `ooda ooda`     -> `ooda.md`     (How to rapidly build, test, and adapt openOODA software)
+   - `ooda layers`   -> `layers.md`   (The 8-Layer Architecture Map `L0`–`L7` across Desktop, Server & Mobile)
+   - `ooda spec`     -> `spec.md`     (`.oo` syntax, types, structs, `match`, and `oostd` builtins)
+   - `ooda rules`    -> `rules.md`    (Power-of-2 Shape Ladder `1/2/4/8/16/32/64/128/256` & CLI laws)
+   - `ooda ui`       -> `ui.md`       (CLI, TUI, Desktop & Mobile UI + `ootheme` 25 presets & 34 tokens)
+   - `ooda security` -> `security.md` (Zero-Trust `CapReg64` `0..31` caps, `oosandbox`, `oosign`, `ooprovenance`, `oovault`)
+   - `ooda privacy`  -> `privacy.md`  (Zero-telemetry, PII/EXIF/SECRET scrubbing `ooredact`, LED & clipboard TTL gates)
+   - `ooda defense`  -> `defense.md`  (Active defense `oodefense` IDS/canary/honeypot, `oofirewall`, DMA/DRAM/USB guards)
+2. **Power-of-2 Shape Ladder (`1/2/4/8/16/32/64/128/256`)**:
+   - `1`: Link count == 1 (0 symlinks/hardlinks) & max 1 statement/line. `2`: Min 2 tests (functional + negative-trust exit != 0).
+   - `4`: Max 4 nesting depth. `8`: Max 8 files/dir, 8 fns/file, 8 params/fn. `16`: Min 16 lines/file.
+   - `32`: 32 explicit capabilities (`&FsReadCap`, `&FsWriteCap`, `&NetCap`, `&ProcessCap`, `&EnvCap`), max 32 chars/name (no `*_1.oo` splits), <=32 files/repo.
+   - `64`: Max 64 code lines/fn. `128`: Max 128 chars/line. `256`: Max 256 lines/file.
+3. **Syntax & Workflow**:
+   - Relative string imports only (`import "core/engine.oo";` or `import "oostd/fs/os/fs.oo";`, never `::`). No parens on `if cond { }` / `while cond { }`. No struct trailing commas. Connect all CLI/TUI/GUI output to `ootheme` and expose `<binary> about`.
+   - Build & Verify: `ooda build && ooda test && ooda check && ooda audit`.
