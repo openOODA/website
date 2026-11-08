@@ -2,7 +2,7 @@
 //
 // Logline: Assemble the fleet board and quota board JSON documents from parsed fragments; every externally-derived string field passes through json_str so hostile text can never break the document.
 //
-// Setup: Pure string work — no capabilities. fsrc.oo supplies line parsing; qsrc.oo supplies qs_int/qs_num/qs_str/qs_slice; json_envelope.oo supplies json_str/json_escape (std reuse, rules.oot §1.22).
+// Setup: Pure string work — no capabilities. fsrc.oo supplies line parsing; qsrc.oo supplies qs_int/qs_num/qs_str/qs_slice; json_envelope.oo supplies json_str/json_escape (std reuse, cards/rules.md §1.22).
 //
 // Beats:
 //   1. fr_alert_list/fr_summary/fr_json — fleet.json document and its alert/seal fragments.
