@@ -75,7 +75,6 @@
             <a href="https://github.com/openOODA/install/releases/download/hub/ooda-os-x86_64.iso" class="term-btn">[ DOWNLOAD OODA-OS.ISO &#8595; ]</a>
             <a href="https://github.com/openOODA/install/releases/download/hub/ooda-buildbox-x86_64.tar.gz" class="term-btn">[ OODA-BUILDBOX CONTAINER &#8595; ]</a>
             <a href="#ecosystem" class="term-btn">[ L0–L7 ARCHITECTURE ]</a>
-            <a href="https://openooda.org/llms.txt" class="term-btn term-btn-amber">[ BRIEFING // LLMS.TXT ]</a>
           </div>
 
           <div class="terminal-install-box">
@@ -111,60 +110,12 @@
         <section class="panel" id="brings">
           <p class="panel-label">-- WHY WE ARE REBUILDING THE STACK: SYSTEMS + CRYPTO + AI --</p>
           <div class="bring-list">
-            <div class="bring-row">
-              <span class="bring-num">01</span>
-              <div class="bring-text">
-                <strong>ZERO AMBIENT AUTHORITY // Conservation of Authority</strong>
-                <p>
-                  In conventional stacks, any library you import inherits the full permissions of the user running the process. In openOODA, authority is an explicit bearer capability governed by conservation of authority: permissions can never be minted out of thin air or widened, only explicitly delegated or monotonically attenuated.
-                </p>
-              </div>
-            </div>
-            <div class="bring-row">
-              <span class="bring-num">02</span>
-              <div class="bring-text">
-                <strong>FULL USE OF EVERY 64-BIT CPU CYCLE // 32 + 32 = 64 Architecture</strong>
-                <p>
-                  The lower 32 bits encode all 32 root capabilities (13 Hardware + 19 Software/OS)—fitting natively in a single 32-lane GPU warp mask and seccomp-BPF accumulator. The upper 32 bits pack a 16-bit OODA Epoch (instant revocation), 8-bit Rights Mask (R/W/X/Delegate/Revoke), and 8-bit Scope Badge, validating WHAT and HOW/WHEN in a single 64-bit CPU cycle.
-                </p>
-              </div>
-            </div>
-            <div class="bring-row">
-              <span class="bring-num">03</span>
-              <div class="bring-text">
-                <strong>CRYPTOGRAPHIC PROVENANCE // Proof at Silicon Speed</strong>
-                <p>
-                  We bring the mathematical guarantees of cryptographic systems—bearer capabilities, Merkle-DAG AST and build provenance, post-quantum warrants, and strict resource quotas—directly into the compiler and kernel ABI at nanosecond speed, with zero blockchain consensus overhead.
-                </p>
-              </div>
-            </div>
-            <div class="bring-row">
-              <span class="bring-num">04</span>
-              <div class="bring-text">
-                <strong>DETERMINISTIC SUBSTRATE // Linux &amp; Unix Heritage Reimagined</strong>
-                <p>
-                  From systems programming and Landlock/IOMMU hardware isolation up to a capability microkernel, zero-root OS, and graphical desktop, openOODA pairs Unix composability with deterministic linear arenas, bounded resource quotas, and zero garbage-collection pauses.
-                </p>
-              </div>
-            </div>
-            <div class="bring-row">
-              <span class="bring-num">05</span>
-              <div class="bring-text">
-                <strong>AUTONOMOUS AI LOOPS // Closed-Loop OODA &amp; Falsification</strong>
-                <p>
-                  Built from day one for autonomous AI synthesis and verification. Every Observe–Orient–Decide–Act loop operates within strict capability budgets, backed by compile-time contracts and adversarial falsification rather than fragile prompt guardrails.
-                </p>
-              </div>
-            </div>
-            <div class="bring-row">
-              <span class="bring-num">06</span>
-              <div class="bring-text">
-                <strong>NATIVE MACHINE-CODE LOWERING // Zero External Toolchain Dependency</strong>
-                <p>
-                  The self-hosting compiler lowers directly to native x86-64 ELF64 machine code without external C compilers or libc dependencies, verified end-to-end across hardware-isolated KVM microVMs.
-                </p>
-              </div>
-            </div>
+            <div class="bring-row"><span class="bring-num">01</span><div class="bring-text"><strong>ZERO AMBIENT AUTHORITY // Conservation of Authority</strong><p>In conventional stacks, any library you import inherits the full permissions of the user running the process. In openOODA, authority is an explicit bearer capability governed by conservation of authority: permissions can never be minted out of thin air or widened, only explicitly delegated or monotonically attenuated.</p></div></div>
+            <div class="bring-row"><span class="bring-num">02</span><div class="bring-text"><strong>FULL USE OF EVERY 64-BIT CPU CYCLE // 32 + 32 = 64 Architecture</strong><p>The lower 32 bits encode all 32 root capabilities (13 Hardware + 19 Software/OS)—fitting natively in a single 32-lane GPU warp mask and seccomp-BPF accumulator. The upper 32 bits pack a 16-bit OODA Epoch (instant revocation), 8-bit Rights Mask (R/W/X/Delegate/Revoke), and 8-bit Scope Badge, validating WHAT and HOW/WHEN in a single 64-bit CPU cycle.</p></div></div>
+            <div class="bring-row"><span class="bring-num">03</span><div class="bring-text"><strong>CRYPTOGRAPHIC PROVENANCE // Proof at Silicon Speed</strong><p>We bring the mathematical guarantees of cryptographic systems—bearer capabilities, Merkle-DAG AST and build provenance, post-quantum warrants, and strict resource quotas—directly into the compiler and kernel ABI at nanosecond speed, with zero blockchain consensus overhead.</p></div></div>
+            <div class="bring-row"><span class="bring-num">04</span><div class="bring-text"><strong>DETERMINISTIC SUBSTRATE // Linux &amp; Unix Heritage Reimagined</strong><p>From systems programming and Landlock/IOMMU hardware isolation up to a capability microkernel, zero-root OS, and graphical desktop, openOODA pairs Unix composability with deterministic linear arenas, bounded resource quotas, and zero garbage-collection pauses.</p></div></div>
+            <div class="bring-row"><span class="bring-num">05</span><div class="bring-text"><strong>AUTONOMOUS AI LOOPS // Closed-Loop OODA &amp; Falsification</strong><p>Built from day one for autonomous AI synthesis and verification. Every Observe–Orient–Decide–Act loop operates within strict capability budgets, backed by compile-time contracts and adversarial falsification rather than fragile prompt guardrails.</p></div></div>
+            <div class="bring-row"><span class="bring-num">06</span><div class="bring-text"><strong>NATIVE MACHINE-CODE LOWERING // Zero External Toolchain Dependency</strong><p>The self-hosting compiler lowers directly to native x86-64 ELF64 machine code without external C compilers or libc dependencies, verified end-to-end across hardware-isolated KVM microVMs.</p></div></div>
           </div>
         </section>
 
@@ -230,15 +181,15 @@
           <p class="panel-label">-- THE UNIFIED 8-LAYER ARCHITECTURE (L0–L7) --</p>
           <p class="org-subtitle">Cohesive Full-Stack Substrate From Native Compiler and Microkernel to Cloud Grid and OODA Loops</p>
           <div class="repo-list">
-            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Root // @openOODA</code><span class="repo-cat">ROOT</span><span class="repo-role">Umbrella Organization — Architectural specifications, governance standards, public portal, and package catalog</span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 0 // Core</code><span class="repo-cat">L0</span><span class="repo-role">Language, Self-Hosting Native Compiler, Deterministic Standard Library, and Developer Toolchain</span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 1 // Kernel</code><span class="repo-cat">L1</span><span class="repo-role">Capability Microkernel, Hardware Abstraction Layers, IOMMU Isolation, and User-Space Device Drivers</span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 2 // OS</code><span class="repo-cat">L2</span><span class="repo-role">Zero-Root Operating System Services, Capability Filesystems, Network Stack, and Compatibility Realms</span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 3 // Tools</code><span class="repo-cat">L3</span><span class="repo-role">Capability-Scoped Userland Command-Line Utilities, Structured Data Pipelines, and System Diagnostics</span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 4 // Desktop</code><span class="repo-cat">L4</span><span class="repo-role">Capability Compositor, Spatial Window Management, Interactive Privacy Portals, and Command Deck UI</span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 5 // Apps</code><span class="repo-cat">L5</span><span class="repo-role">Native Productivity, Creative, Communication, and Developer Applications with Zero Ambient Authority</span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 6 // Cloud</code><span class="repo-cat">L6</span><span class="repo-role">Distributed Compute Grid, Content-Addressed Storage, Encrypted Mesh Networking, and Cluster Scheduling</span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 7 // Agents</code><span class="repo-cat">L7</span><span class="repo-role">Bounded Autonomous OODA Loops (Observe, Orient, Decide, Act), Verification Engines, and Fleet Governance</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Root // @openOODA</code><span class="repo-cat">ROOT</span><span class="repo-role">Umbrella Organization — Architectural specifications, governance Quick Cards, public portal, and package catalog</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-core" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 0 // Core</code><span class="repo-cat">L0</span><span class="repo-role">Language, Self-Hosting Native Compiler (oodac), Deterministic Standard Library (oostd), Runtime (oodar), and Toolchain</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-kernel" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 1 // Kernel</code><span class="repo-cat">L1</span><span class="repo-role">Capability Microkernel (ookernel), UEFI Bootloader (ooboot), Hardware Abstraction (oohal), and Ring-3 Device Drivers</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-OS" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 2 // OS</code><span class="repo-cat">L2</span><span class="repo-role">Zero-Root System Daemons (ooinit, oovfs, oonetd, oosysbus, oocontainer, oollama, oomodemd)</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-tools" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 3 // Tools</code><span class="repo-cat">L3</span><span class="repo-role">Capability-Scoped Userland Multi-Call Utilities, Active Defense (oodefense, oosandbox), and UI/Theme Engine (ootheme, ooui)</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-DE" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 4 // Desktop</code><span class="repo-cat">L4</span><span class="repo-role">Wayland Capability Compositor (oocomp), Desktop Panel (oopanel), Privacy Portals (ooportal), and Terminal (ooterm)</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-apps" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 5 // Apps</code><span class="repo-cat">L5</span><span class="repo-role">Flagship Native Applications (oobrowser, oostudio, oooffice, oocanvas, oomedia, ooflash, oodaw, ooarcade, oostrike)</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-cloud" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 6 // Cloud</code><span class="repo-cat">L6</span><span class="repo-role">Encrypted Mesh Networking (oomesh), Content-Addressed Storage (oostore), Bare-Metal/VM Fleet Deploy (oodeploy), and DB (oodb)</span><span class="repo-arrow">&#8599;</span></a>
+            <a class="repo-row" href="https://github.com/openOODA-agents" target="_blank" rel="noopener noreferrer"><code class="repo-name">Layer 7 // Agents</code><span class="repo-cat">L7</span><span class="repo-role">Autonomous OODA Loops (ooloop, ooswarm), 8-Hat Verification (oohat), Adversarial Falsification (oofalsify), and Governance</span><span class="repo-arrow">&#8599;</span></a>
           </div>
           <div class="cat-grid">
             <div class="cat-card"><span class="cat-code">[01]</span><span class="cat-title">64-Bit Cycle Register</span><p class="cat-desc">32 root capabilities (WHAT) + 32-bit epoch/rights/scope header (HOW) checked in 1 CPU cycle</p></div>
@@ -247,16 +198,6 @@
             <div class="cat-card"><span class="cat-code">[04]</span><span class="cat-title">Deterministic Quotas</span><p class="cat-desc">Linear arena memory and bounded resource budgets with zero GC pauses</p></div>
             <div class="cat-card"><span class="cat-code">[05]</span><span class="cat-title">Autonomous OODA AI</span><p class="cat-desc">Closed-loop synthesis, formal contracts, and adversarial falsification</p></div>
             <div class="cat-card"><span class="cat-code">[06]</span><span class="cat-title">Compatibility Realms</span><p class="cat-desc">Run existing desktop, server, and gaming workloads safely</p></div>
-          </div>
-        </section>
-
-        <section class="panel" id="stealth-roadmap">
-          <p class="panel-label">-- STEALTH MODE // ENGINEERING MILESTONES &amp; AGENT PROVENANCE --</p>
-          <p class="org-subtitle">Stealth Mode First-Principles Implementation &amp; Live Fleet Verification Across Layers 0 Through 7</p>
-          <div class="repo-list">
-            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Milestone 1 // Core &amp; ELF64</code><span class="repo-cat">VERIFIED</span><span class="repo-role">Self-hosting compiler pipeline, direct x86-64 ELF64 machine-code emission, 16-byte SIMD arena allocator, and 32 + 32 = 64 capability cycle register</span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer"><code class="repo-name">Milestone 2 // Kernel &amp; OS</code><span class="repo-cat">VERIFIED</span><span class="repo-role">Capability microkernel (16/16 100% at v0.6.0), 8-word (64-byte) cache-line IPC frames, zero-root system daemons (18/18 100% at v0.4.1), userland tools (261/261 100% usable at v0.2.12), Wayland compositor &amp; desktop (20/20 100% at v0.4.0), native apps (17/17 100% at v0.4.0), cloud grid (18/18 100% at v0.3.7), and autonomous agents (17/17 100% at v0.4.1)</span><span class="repo-arrow">&#8599;</span></a>
-            <a class="repo-row" href="https://status.openooda.org" target="_blank" rel="noopener noreferrer"><code class="repo-name">Milestone 3 // PQC, Quorum &amp; Live Fleet</code><span class="repo-cat">LIVE</span><span class="repo-role">Post-Quantum ML-DSA-65 + SHA3-256 attestation, 2f+1 Byzantine quorum, 232 repositories (100.0% usable, 0 scaffolds) across all 9 orgs, RFC 0012 Unix &ldquo;Less-Is-More&rdquo; multi-call <code>sys_argv0</code> dispatch, 102/102 KVM microVM verification, and multi-agent release provenance (GLM-5.3, M3.1-Flash, SWE-2 High/Max, Claude Opus 4.6, Gemini 4 Argon)</span><span class="repo-arrow">&#8599;</span></a>
           </div>
         </section>
       </main>
@@ -268,11 +209,8 @@
             <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">[@OPENOODA]</a>
             <a href="#overview">[OVERVIEW]</a>
             <a href="#brings">[PRINCIPLES]</a>
+            <a href="#anatomy">[BENCHMARKS]</a>
             <a href="#ecosystem">[L0–L7 STACK]</a>
-            <a href="#stealth-roadmap">[ROADMAP]</a>
-            <a href="https://openooda.org/llms.txt">[LLMS.TXT]</a>
-            <a href="/oobench/">[OOBENCH OVS]</a>
-            <a href="/status/">[FLEET QUOTA]</a>
           </span>
         </div>
 
