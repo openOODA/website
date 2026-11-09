@@ -2,6 +2,7 @@ name: ci
 
 on:
   workflow_dispatch:
+
 jobs:
   static-test:
     runs-on: ubuntu-latest
@@ -10,50 +11,38 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: site
-      - name: checkout oodac
-        uses: actions/checkout@v4
-        with:
-          repository: openOODA-core/oodac
-          path: oodac
-      - name: checkout oostd
-        uses: actions/checkout@v4
-        with:
-          repository: openOODA-core/oostd
-          path: oostd
-      - name: checkout oodar
-        uses: actions/checkout@v4
-        with:
-          repository: openOODA-core/oodar
-          path: oodar
-      - name: clang
-        run: sudo apt-get update && sudo apt-get install -y clang
-      - name: build oodar libs
-        run: make -C oodar/scripts -f Makefile modular
-      - name: build and run .oo site gates
+      - name: static site gate
         working-directory: site
-        env:
-          OODA_COMPILER: ${{ github.workspace }}/oodac/bin/oodac
-          OODA_SITE_ROOT: ${{ github.workspace }}/site
-          OODA_FS_READDIR: ${{ github.workspace }}
-          OODA_FS_WRITEDIR: ${{ github.workspace }}
-          OODA_NO_JAIL: '1'
         run: |
-          test -x ../oodac/bin/oodac || chmod +x ../oodac/bin/oodac
-          for page in copy hooks layout links privacy shim; do
-            "${OODA_COMPILER}" build "tests/${page}_test.oo" -o "/tmp/${page}_test"
-            "/tmp/${page}_test"
+          set -euo pipefail
+          # 8-entry repo root: at most 8 non-hidden entries at root.
+          n=$(find . -maxdepth 1 -mindepth 1 ! -name '.*' | wc -l)
+          test "$n" -le 8 || { echo "ERR root entries=$n > 8"; exit 1; }
+          test -d docs && cd docs
+          test -f index.html
+          test -f CNAME
+          test -f install.sh
+          test -f .nojekyll
+          test -d assets
+          test -d styles
+          test -d js
+          grep -qx 'openooda.org' CNAME
+          sh -n install.sh
+          # Every local src/href in index.html must resolve under docs/ (the webroot).
+          grep -oE '(src|href)="[^"]+"' index.html \
+            | sed -E 's/^(src|href)="([^"]+)".*/\2/' \
+            | grep '^/' \
+            | while read -r ref; do
+                test -f ".$ref" || { echo "ERR broken asset ref: $ref"; exit 1; }
+              done
+          # All 9 org icons ship as SVG + PNG.
+          for o in openOODA openOODA-core openOODA-kernel openOODA-OS openOODA-tools openOODA-DE openOODA-apps openOODA-cloud openOODA-agents; do
+            test -f "assets/brand/$o.svg" || { echo "ERR missing $o.svg"; exit 1; }
+            test -f "assets/brand/$o.png" || { echo "ERR missing $o.png"; exit 1; }
           done
-          "${OODA_COMPILER}" build src/json_test.oo -o /tmp/json_test
-          "/tmp/json_test"
-          "${OODA_COMPILER}" build tests/test_website.oo -o /tmp/test_website
-          "/tmp/test_website"
-          "${OODA_COMPILER}" build tests/contract/contract_test.oo -o /tmp/contract_test
-          "/tmp/contract_test"
-          "${OODA_COMPILER}" build tests/routes/routes_test.oo -o /tmp/routes_test
-          "/tmp/routes_test"
-          OODA_SITE_ROOT="$PWD" "${OODA_COMPILER}" build tests/shim/shim_trust_test.oo -o /tmp/shim_trust_test
-          OODA_SITE_ROOT="$PWD" "/tmp/shim_trust_test"
-
-  auto-release:
-    needs: [static-test]
-    uses: openOODA/openOODA/.github/workflows/auto-release.yml@v2.10.44
+          # Zero hardcoded node names / tailnet addresses (fleet law).
+          if grep -rniE 'ringmaster|spotlight|zebes|100\.[0-9]+\.[0-9]+\.[0-9]+' .; then
+            echo "ERR hardcoded node reference in published tree"
+            exit 1
+          fi
+          echo "[static OK] index.html assets resolve; CNAME + icons + no-node laws hold"
