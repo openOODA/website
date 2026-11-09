@@ -5,14 +5,15 @@ const navUp = document.getElementById("nav-up");
 const navDown = document.getElementById("nav-down");
 
 const ACCENTS = [
-  { name: "Coral", hex: "#ff5555", rgb: [255, 85, 85], hot: "#ff9999", hotRgb: [255, 153, 153] },
-  { name: "Orange", hex: "#ff7700", rgb: [255, 119, 0], hot: "#ffa040", hotRgb: [255, 160, 64] },
-  { name: "Amber", hex: "#ffb000", rgb: [255, 176, 0], hot: "#ffd447", hotRgb: [255, 212, 71] },
-  { name: "Yellow", hex: "#f1fa8c", rgb: [241, 250, 140], hot: "#ffffb0", hotRgb: [255, 255, 176] },
-  { name: "Emerald", hex: "#50fa7b", rgb: [80, 250, 123], hot: "#a2ffbc", hotRgb: [162, 255, 188] },
-  { name: "Cyan", hex: "#00e5ff", rgb: [0, 229, 255], hot: "#80f4ff", hotRgb: [128, 244, 255] },
-  { name: "Blue", hex: "#3b82f6", rgb: [59, 130, 246], hot: "#7cb3ff", hotRgb: [124, 179, 255] },
-  { name: "Violet", hex: "#bd93f9", rgb: [189, 147, 249], hot: "#d9b8ff", hotRgb: [217, 184, 255] },
+  { name: "Emerald", layer: "ROOT", hex: "#50fa7b", rgb: [80, 250, 123], hot: "#a2ffbc", hotRgb: [162, 255, 188] },
+  { name: "Cyan", layer: "L0", hex: "#00e5ff", rgb: [0, 229, 255], hot: "#80f4ff", hotRgb: [128, 244, 255] },
+  { name: "Coral", layer: "L1", hex: "#ff5555", rgb: [255, 85, 85], hot: "#ff9999", hotRgb: [255, 153, 153] },
+  { name: "Amber", layer: "L2", hex: "#ffb000", rgb: [255, 176, 0], hot: "#ffd447", hotRgb: [255, 212, 71] },
+  { name: "Mint", layer: "L3", hex: "#10b981", rgb: [16, 185, 129], hot: "#6ee7b7", hotRgb: [110, 231, 183] },
+  { name: "Violet", layer: "L4", hex: "#bd93f9", rgb: [189, 147, 249], hot: "#d9b8ff", hotRgb: [217, 184, 255] },
+  { name: "Magenta", layer: "L5", hex: "#ff79c6", rgb: [255, 121, 198], hot: "#ffb3de", hotRgb: [255, 179, 222] },
+  { name: "Blue", layer: "L6", hex: "#3b82f6", rgb: [59, 130, 246], hot: "#7cb3ff", hotRgb: [124, 179, 255] },
+  { name: "Gold", layer: "L7", hex: "#f1fa8c", rgb: [241, 250, 140], hot: "#ffffb0", hotRgb: [255, 255, 176] },
 ];
 
 function applyAccent(a) {
