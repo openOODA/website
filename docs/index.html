@@ -195,12 +195,12 @@
             <div class="cat-card"><span class="cat-code">[05]</span><span class="cat-title">Autonomous OODA AI</span><p class="cat-desc">Closed-loop synthesis, formal contracts, and adversarial falsification</p></div>
             <div class="cat-card"><span class="cat-code">[06]</span><span class="cat-title">Compatibility Realms</span><p class="cat-desc">Run existing desktop, server, and gaming workloads safely</p></div>
           </div>
-          <p class="panel-label" style="margin-top: 24px;" id="requirements">-- SYSTEM REQUIREMENTS BY DEPLOYMENT TIER --</p>
+          <p class="panel-label" style="margin-top: 24px;" id="requirements">-- SYSTEM REQUIREMENTS &amp; HARDWARE SUPPORT BY DEPLOYMENT TIER --</p>
           <div class="cat-grid">
-            <div class="cat-card"><span class="cat-code">[T1 // CLI &amp; TOOLS]</span><span class="cat-title">64–256 MiB RAM • 1+ Core</span><p class="cat-desc">x86_64, ARM64, or RISC-V • 10–250 MiB disk • Linux 4.19+, openOODA OS, Windows 10/11 (PE32+), macOS, WASM32</p></div>
-            <div class="cat-card"><span class="cat-code">[T2 // OS &amp; DESKTOP]</span><span class="cat-title">512 MiB Min • 2–4 GiB Rec</span><p class="cat-desc">2–4+ cores • 1–4 GiB NVMe/VirtIO/USB • UEFI GOP or DRM-KMS/VirtIO-GPU for Wayland (oocomp) &amp; 128 Hz engines</p></div>
-            <div class="cat-card"><span class="cat-code">[T3 // DEV WORKSTATION]</span><span class="cat-title">8–16 GiB Min • 32–64 GiB Rec</span><p class="cat-desc">4–16+ threads • 20–50 GiB NVMe SSD • Full source builds with oodac, SMT/Z3 proofs &amp; 8-hat oohat verification</p></div>
-            <div class="cat-card"><span class="cat-code">[T4 // AI &amp; SCIENCE GPU]</span><span class="cat-title">16 GiB+ RAM • 8–24 GiB+ VRAM</span><p class="cat-desc">NVIDIA CUDA (SM 7.5+) or AMD ROCm GPU • Local L7 agent swarm (ooaid, oocoder) &amp; oostd GPU compute (CPU fallback)</p></div>
+            <div class="cat-card"><span class="cat-code">[T1 // CLI &amp; TOOLS]</span><span class="cat-title">64–256 MiB RAM • 1+ Core</span><p class="cat-desc">x86_64 (AVX-512), ARM64 (SVE2), RISC-V (RVV 1.0) • Linux 4.19+, openOODA OS, Windows PE32+, macOS, WASM32</p></div>
+            <div class="cat-card"><span class="cat-code">[T2 // OS &amp; DESKTOP]</span><span class="cat-title">512 MiB Min • 2–4 GiB Rec</span><p class="cat-desc">TPM 2.0 / DICE / Caliptra Boot • NVMe ZNS, AHCI, eMMC/SDHCI, USB4 • GOP / DRM-KMS / VirtIO-GPU 3D (128 Hz)</p></div>
+            <div class="cat-card"><span class="cat-code">[T3 // DEV &amp; TEE HOST]</span><span class="cat-title">8–16 GiB Min • 32–64 GiB Rec</span><p class="cat-desc">AMD SEV-SNP, Intel TDX, ARM CCA TEE • Intel RDT / ARM MPAM QoS • SR-IOV VF &amp; VirtIO-FS DAX • 20–50 GiB NVMe</p></div>
+            <div class="cat-card"><span class="cat-code">[T4 // AI &amp; CXL/RDMA]</span><span class="cat-title">CXL 3.0 Pool • 8–24 GiB+ VRAM</span><p class="cat-desc">Intel AMX / ARM SME + CUDA / ROCm • Zero-Copy RDMA / RoCEv2 / InfiniBand &amp; Peer-to-Peer DMA (CPU fallback)</p></div>
           </div>
         </section>
       </main>
