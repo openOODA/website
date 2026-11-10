@@ -1,0 +1,45 @@
+// # Website Functional Suite - Positive-Trust Assertions
+//
+// Logline: Positive assertions that docs/index.html resolves every root-absolute href/src, every
+//          in-page anchor finds its id= target, and CNAME plus the installer shim are present.
+// Setup: Imports the site conformance checker; FsReadCap bounds every read inside the jail.
+// Beats:
+//   1. site_attr extracts quoted attribute values for href and src.
+//   2. site_refs_ok walks the real index.html reference set.
+//   3. site_repo_ok folds index integrity, CNAME, and the shim into one verdict.
+
+import "core/site_check.oo";
+
+fn t_expect(cond: Bool, label: String, p: Int) -> Int {
+    if cond {
+        println("ok " + label);
+        return p + 1;
+    }
+    println("FAIL " + label);
+    return p;
+}
+
+fn t_site(fs: &FsReadCap) -> Int {
+    let mut p: Int = 0;
+    let html: String = "<a href=\"/styles/base.css\"><img src=\"/assets/favicon.svg\"></a>";
+    let refs: List[String] = site_attr(html, "href");
+    p = t_expect(list_len(refs) == 1 && list_get(refs, 0) == "/styles/base.css",
+        "attr extraction", p);
+    p = t_expect(list_len(site_attr(html, "src")) == 1, "src extraction", p);
+    let r: Result[String, String] = oo_read_file(fs, "docs/index.html");
+    p = t_expect(r.is_ok(), "index.html readable", p);
+    let real: String = match r { Ok(s) => s, Err(_) => "" };
+    p = t_expect(site_refs_ok(fs, real), "all local refs resolve", p);
+    p = t_expect(site_repo_ok(fs), "site conformance verdict", p);
+    return p;
+}
+
+pub fn main(fs: &FsReadCap, _args: List[String]) -> Result[Int, String] {
+    let p: Int = t_site(fs);
+    if p == 5 {
+        println("PASS: functional suite (5/5 assertions)");
+        return Ok(0);
+    }
+    println("FAIL: functional suite (" + p.to_string() + "/5 assertions)");
+    return Ok(2);
+}

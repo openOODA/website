@@ -1,0 +1,45 @@
+// # Website Refusal Suite - Negative-Trust Assertions
+//
+// Logline: Negative-trust assertions that dead root-absolute references, anchors without id=
+//          targets, empty pages, and path traversal are refused by the site conformance checker.
+// Setup: Imports the site conformance checker; FsReadCap bounds every read inside the jail.
+// Beats:
+//   1. References to nonexistent local assets are refused.
+//   2. href=\"#x\" anchors without matching id=\"x\" are refused.
+//   3. Parent-directory traversal reads are refused by the fs jail.
+
+import "core/site_check.oo";
+
+fn t_expect(cond: Bool, label: String, p: Int) -> Int {
+    if cond {
+        println("ok " + label);
+        return p + 1;
+    }
+    println("FAIL " + label);
+    return p;
+}
+
+fn t_refuse(fs: &FsReadCap) -> Int {
+    let mut p: Int = 0;
+    let dead: String = "<a href=\"/styles/nosuch.css\">x</a>";
+    p = t_expect(!site_refs_ok(fs, dead), "dead css ref refused", p);
+    let noanchor: String = "<a href=\"#nowhere\">x</a><b id=\"elsewhere\">y</b>";
+    p = t_expect(!site_refs_ok(fs, noanchor), "anchor without id refused", p);
+    p = t_expect(!site_refs_ok(fs, "<p>no refs</p>"), "ref-less page refused", p);
+    let deadsrc: String = "<img src=\"/assets/nosuch.png\">";
+    p = t_expect(!site_refs_ok(fs, deadsrc), "dead src ref refused", p);
+    p = t_expect(!site_refs_ok(fs, "<a href=\"/" + ".." + "\">x</a>"), "traversal ref refused", p);
+    let r: Result[String, String] = oo_read_file(fs, ".." + "/.." + "/etc/" + "passwd");
+    p = t_expect(r.is_err(), "traversal read refused", p);
+    return p;
+}
+
+pub fn main(fs: &FsReadCap, _args: List[String]) -> Result[Int, String] {
+    let p: Int = t_refuse(fs);
+    if p == 6 {
+        println("PASS: refusal suite (6/6 assertions)");
+        return Ok(0);
+    }
+    println("FAIL: refusal suite (" + p.to_string() + "/6 assertions)");
+    return Ok(2);
+}

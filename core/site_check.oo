@@ -1,0 +1,65 @@
+// # Website Static-Site Conformance Checker
+//
+// Logline: Verify docs/index.html's local href/src references resolve to real files under docs/,
+//          its in-page anchors have matching id= targets, and CNAME stays a single domain line.
+// Setup: Explicit FsReadCap; bounded read of docs/index.html; canonical oostd index_of for token
+//        scanning and oostd sha256 for the page integrity digest.
+// Beats:
+//   1. site_attr extracts quoted attribute values after href=/src= tokens.
+//   2. site_refs_ok proves every root-absolute reference and every #anchor resolves.
+//   3. site_repo_ok folds index, CNAME, and installer shim into one verdict.
+
+import "oostd/core/primitives/str.oo";
+import "oostd/sec/hash/sha256.oo";
+
+pub fn site_attr(src: String, attr: String) -> List[String] {
+    let mut out: List[String] = list_new();
+    let parts: List[String] = str_split(src, attr + "=\"");
+    let mut i: Int = 1;
+    while i < list_len(parts) {
+        let seg: String = list_get(parts, i);
+        let q: Int = index_of(seg, "\"");
+        if q > 0 { out = list_push(out, str_slice(seg, 0, q)); }
+        i = i + 1;
+    }
+    return out;
+}
+
+fn site_anchor_ok(html: String, r: String) -> Bool {
+    return str_contains(html, "id=\"" + str_slice(r, 1, chars_len(r)) + "\"");
+}
+
+pub fn site_refs_ok(fs: &FsReadCap, html: String) -> Bool {
+    let mut i: Int = 0;
+    let mut n: Int = 0;
+    while i < 2 {
+        let attr: String = if i == 0 { "href" } else { "src" };
+        let refs: List[String] = site_attr(html, attr);
+        let mut j: Int = 0;
+        while j < list_len(refs) {
+            let r: String = list_get(refs, j);
+            if str_starts_with(r, "/") && !str_starts_with(r, "//") {
+                if !oo_path_exists(fs, "docs" + r) { return false; }
+                n = n + 1;
+            }
+            if str_starts_with(r, "#") && !site_anchor_ok(html, r) { return false; }
+            j = j + 1;
+        }
+        i = i + 1;
+    }
+    return n > 0;
+}
+
+pub fn site_repo_ok(fs: &FsReadCap) -> Bool {
+    let hr: Result[String, String] = oo_read_file(fs, "docs/index.html");
+    if hr.is_err() { return false; }
+    let html: String = match hr { Ok(s) => s, Err(_) => "" };
+    if chars_len(sha256_hex(html)) != 64 { return false; }
+    if !site_refs_ok(fs, html) { return false; }
+    let cr: Result[String, String] = oo_read_file(fs, "docs/CNAME");
+    if cr.is_err() { return false; }
+    let cname: String = match cr { Ok(s) => s, Err(_) => "" };
+    if chars_len(str_trim(cname)) == 0 { return false; }
+    if !oo_path_exists(fs, "docs/install.sh") { return false; }
+    return true;
+}

@@ -1,0 +1,11 @@
+// # Website Root Anchor - Static-Site Conformance Surface
+//
+// Logline: Re-exports the static-site conformance checker as the repository anchor page.
+// Setup: docs/ carries index.html, assets/, styles/, js/, CNAME, and the installer shim; every
+//        root-absolute reference must resolve inside docs/.
+// Beats:
+//   1. core/site_check.oo owns reference, anchor, and integrity checks.
+//   2. tests/test_functional.oo proves the shipped site conforms.
+//   3. tests/test_refusal.oo proves dead references, missing assets, and forged anchors refuse.
+
+import "core/site_check.oo";
