@@ -1,0 +1,76 @@
+// # Website CLI - openooda.org Static-Site Conformance Verbs
+//
+// Logline: Dispatch `website check` and `website about` under an explicit FsReadCap so the docs/
+//          zero-telemetry conformance gate runs as a native capability-bounded binary.
+// Setup: Imports core/site_check.oo for the conformance fold and the canonical oostd ootheme
+//        palette engine for framed verdict output; every refusal exits 2 (fail-closed).
+// Beats:
+//   1. `website check` runs site_repo_ok over docs/ and prints the framed PASS/REFUSAL verdict.
+//   2. `website about` prints the canonical five-field card; --json emits the machine form.
+//   3. Unknown verbs, flags, and refused checks exit 2 with zero ambient authority.
+
+import "core/site_check.oo";
+import "oostd/core/app/ui/ootheme.oo";
+
+pub fn site_about_card() -> String {
+    let l1: String = "Binary       : website (v" + "0.1.0" + ")";
+    let l2: String = "Organization : openOODA (https://github.com/openOODA/website)";
+    let l3: String = "Summary      : Zero-telemetry static-site conformance gate for openooda.org";
+    let l4: String = "Subcommands  : check,about";
+    let l5: String = "Capabilities : FsRead";
+    return l1 + "\n" + l2 + "\n" + l3 + "\n" + l4 + "\n" + l5;
+}
+
+pub fn site_about_json() -> String {
+    return "{\"component\":\"website\",\"version\":\"" + "0.1.0" +
+        "\",\"organization\":\"openOODA\"" +
+        ",\"summary\":\"Zero-telemetry static-site conformance gate for openooda.org\"" +
+        ",\"subcommands\":\"check,about\"" +
+        ",\"capabilities\":\"FsRead\"}";
+}
+
+fn site_check_run(fs: &FsReadCap) -> Int {
+    let ok: Bool = site_repo_ok(fs);
+    let status: String = if ok { "PASS" } else { "REFUSAL" };
+    let p: OoThemePalette = ootheme_resolve("ooda-dark");
+    if ootheme_verify(p) {
+        println(ootheme_tui_frame(p, "website", "0.1.0", "site-gate", status));
+    }
+    if ok { println("site check verdict=PASS telemetry_free=1");
+    return 0; }
+    println("site check verdict=REFUSAL telemetry_free=0");
+    return 2;
+}
+
+pub fn site_run(fs: &FsReadCap, args: List[String]) -> Int {
+    if list_len(args) == 0 { println(site_about_card());
+    return 0; }
+    let a0: String = list_get(args, 0);
+    if a0 == "check" { return site_check_run(fs); }
+    if a0 == "about" {
+        let mut json: Bool = false;
+        let mut i: Int = 1;
+        while i < list_len(args) {
+            let a: String = list_get(args, i);
+            if a == "--json" { json = true; }
+            else {
+                println("website: about: unknown flag: " + a);
+                return 2;
+            }
+            i = i + 1;
+        }
+        if json { println(site_about_json()); }
+        else { println(site_about_card()); }
+        return 0;
+    }
+    if a0 == "--help" || a0 == "-h" { println(site_about_card());
+    return 0; }
+    if a0 == "--version" || a0 == "-v" { println("website 0.1.0");
+    return 0; }
+    println("website: unknown argument " + a0);
+    return 2;
+}
+
+pub fn main(fs: &FsReadCap, args: List[String]) -> Result[Int, String] {
+    return Ok(site_run(fs, args));
+}

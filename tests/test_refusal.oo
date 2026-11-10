@@ -1,12 +1,14 @@
 // # Website Refusal Suite - Negative-Trust Assertions
 //
-// Logline: Negative-trust assertions that dead root-absolute references, anchors without id=
-//          targets, empty pages, and path traversal are refused by the site conformance checker.
+// Logline: Negative-trust assertions that dead references, orphan anchors, traversal, and every
+//          third-party telemetry surface (beacons, remote src/link/url(), exfil hosts) refuse.
 // Setup: Imports the site conformance checker; FsReadCap bounds every read inside the jail.
+//        Detector needles in fixtures are split so this page never self-matches them.
 // Beats:
 //   1. References to nonexistent local assets are refused.
 //   2. href=\"#x\" anchors without matching id=\"x\" are refused.
 //   3. Parent-directory traversal reads are refused by the fs jail.
+//   4. Third-party telemetry scripts and remote subresource loads are refused.
 
 import "core/site_check.oo";
 
@@ -31,15 +33,32 @@ fn t_refuse(fs: &FsReadCap) -> Int {
     p = t_expect(!site_refs_ok(fs, "<a href=\"/" + ".." + "\">x</a>"), "traversal ref refused", p);
     let r: Result[String, String] = oo_read_file(fs, ".." + "/.." + "/etc/" + "passwd");
     p = t_expect(r.is_err(), "traversal read refused", p);
+    let beacon: String = "<script defer src=\"https://static.cloudflareinsights" +
+        ".com/beacon.min.js\"></script>";
+    p = t_expect(!site_telemetry_free(beacon), "cloudflare beacon refused", p);
+    let gta: String = "<script src=\"https://www.googletagmanager" + ".com/gtag/js\"></script>";
+    p = t_expect(!site_telemetry_free(gta), "gtag script refused", p);
+    let ga: String = "var t = \"google-" + "analytics\";";
+    p = t_expect(!site_telemetry_free(ga), "ga host refused", p);
+    let rimg: String = "<img src=\"https://cdn.example/x.png\">";
+    p = t_expect(!site_telemetry_free(rimg), "remote img src refused", p);
+    let sqsrc: String = "<img src='https://cdn.example/y.png'>";
+    p = t_expect(!site_telemetry_free(sqsrc), "single-quoted remote src refused", p);
+    let rproto: String = "<script src=\"//cdn.example/x.js\"></script>";
+    p = t_expect(!site_telemetry_free(rproto), "protocol-relative src refused", p);
+    let rlink: String = "<link rel=\"stylesheet\" href=\"https://fonts.example/x.css\">";
+    p = t_expect(!site_telemetry_free(rlink), "remote stylesheet refused", p);
+    let rurl: String = "body{background:url(https://cdn.example/x.png)}";
+    p = t_expect(!site_telemetry_free(rurl), "remote css url refused", p);
     return p;
 }
 
 pub fn main(fs: &FsReadCap, _args: List[String]) -> Result[Int, String] {
     let p: Int = t_refuse(fs);
-    if p == 6 {
-        println("PASS: refusal suite (6/6 assertions)");
+    if p == 14 {
+        println("PASS: refusal suite (14/14 assertions)");
         return Ok(0);
     }
-    println("FAIL: refusal suite (" + p.to_string() + "/6 assertions)");
+    println("FAIL: refusal suite (" + p.to_string() + "/14 assertions)");
     return Ok(2);
 }

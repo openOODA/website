@@ -40,6 +40,19 @@ jobs:
             test -f "assets/brand/$o.svg" || { echo "ERR missing $o.svg"; exit 1; }
             test -f "assets/brand/$o.png" || { echo "ERR missing $o.png"; exit 1; }
           done
+          # Zero-telemetry law: no third-party beacon hosts in shipped markup/code.
+          if find . -type f \( -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.svg' \) \
+              -exec grep -liE 'cloudflareinsights|google-analytics|googletagmanager|mixpanel|sentry\.io|telemetry_upload' {} + | grep .; then
+            echo "ERR third-party telemetry beacon in published tree"
+            exit 1
+          fi
+          # No remote subresource loads: src= and <link href=> must stay local
+          # (anchor <a href=https://...> stays navigation, never a fetch).
+          if grep -oE 'src="(https?:)?//[^"]+"' index.html | grep . \
+              || grep -oE "<link[^>]*href=\"(https?:)?//" index.html | grep .; then
+            echo "ERR remote subresource ref in index.html"
+            exit 1
+          fi
           # Zero hardcoded node names / tailnet addresses (fleet law).
           if grep -rniE 'ringmaster|spotlight|zebes|100\.[0-9]+\.[0-9]+\.[0-9]+' .; then
             echo "ERR hardcoded node reference in published tree"

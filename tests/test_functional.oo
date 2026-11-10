@@ -1,12 +1,14 @@
 // # Website Functional Suite - Positive-Trust Assertions
 //
 // Logline: Positive assertions that docs/index.html resolves every root-absolute href/src, every
-//          in-page anchor finds its id= target, and CNAME plus the installer shim are present.
+//          in-page anchor finds its id= target, CNAME plus the installer shim are present, and the
+//          shipped docs/ tree carries zero third-party telemetry beacons or remote subresources.
 // Setup: Imports the site conformance checker; FsReadCap bounds every read inside the jail.
 // Beats:
 //   1. site_attr extracts quoted attribute values for href and src.
 //   2. site_refs_ok walks the real index.html reference set.
-//   3. site_repo_ok folds index integrity, CNAME, and the shim into one verdict.
+//   3. site_telemetry_free proves index.html plus every docs/ .html/.js/.svg/.css page is clean.
+//   4. site_repo_ok folds index integrity, CNAME, the shim, and the telemetry fold into one verdict.
 
 import "core/site_check.oo";
 
@@ -30,16 +32,20 @@ fn t_site(fs: &FsReadCap) -> Int {
     p = t_expect(r.is_ok(), "index.html readable", p);
     let real: String = match r { Ok(s) => s, Err(_) => "" };
     p = t_expect(site_refs_ok(fs, real), "all local refs resolve", p);
+    p = t_expect(site_telemetry_free(real), "index zero-telemetry", p);
+    p = t_expect(site_telemetry_free("<a href=\"https://github.com/openOODA\">x</a>"),
+        "external nav anchor allowed", p);
+    p = t_expect(site_tree_free(fs, "docs", 0), "docs/ tree telemetry-free", p);
     p = t_expect(site_repo_ok(fs), "site conformance verdict", p);
     return p;
 }
 
 pub fn main(fs: &FsReadCap, _args: List[String]) -> Result[Int, String] {
     let p: Int = t_site(fs);
-    if p == 5 {
-        println("PASS: functional suite (5/5 assertions)");
+    if p == 8 {
+        println("PASS: functional suite (8/8 assertions)");
         return Ok(0);
     }
-    println("FAIL: functional suite (" + p.to_string() + "/5 assertions)");
+    println("FAIL: functional suite (" + p.to_string() + "/8 assertions)");
     return Ok(2);
 }

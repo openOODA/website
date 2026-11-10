@@ -36,7 +36,17 @@ jobs:
             | while read -r ref; do
                 test -f ".$ref" || { echo "ERR broken asset ref: $ref"; exit 1; }
               done
-          echo "[static-gate OK] docs/ is a self-contained webroot"
+          if find . -type f \( -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.svg' \) \
+              -exec grep -liE 'cloudflareinsights|google-analytics|googletagmanager|mixpanel|sentry\.io|telemetry_upload' {} + | grep .; then
+            echo "ERR third-party telemetry beacon in published tree"
+            exit 1
+          fi
+          if grep -oE 'src="(https?:)?//[^"]+"' index.html | grep . \
+              || grep -oE "<link[^>]*href=\"(https?:)?//" index.html | grep .; then
+            echo "ERR remote subresource ref in index.html"
+            exit 1
+          fi
+          echo "[static-gate OK] docs/ is a self-contained zero-telemetry webroot"
 
   deploy:
     needs: static-gate

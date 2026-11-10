@@ -1,6 +1,7 @@
 # Build / cache artifacts
 .ooda-cache/
 node_modules/
+bin/
 dist/
 build/
 *.log

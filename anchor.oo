@@ -2,10 +2,12 @@
 //
 // Logline: Re-exports the static-site conformance checker as the repository anchor page.
 // Setup: docs/ carries index.html, assets/, styles/, js/, CNAME, and the installer shim; every
-//        root-absolute reference must resolve inside docs/.
+//        root-absolute reference must resolve inside docs/ and zero telemetry may ship.
 // Beats:
-//   1. core/site_check.oo owns reference, anchor, and integrity checks.
-//   2. tests/test_functional.oo proves the shipped site conforms.
-//   3. tests/test_refusal.oo proves dead references, missing assets, and forged anchors refuse.
+//   1. core/site_check.oo owns reference, anchor, integrity, and zero-telemetry checks.
+//   2. cli/main.oo exposes the `website check|about` verbs (the lone entry page).
+//   3. tests/test_functional.oo proves the shipped site conforms.
+//   4. tests/test_refusal.oo proves dead references, missing assets, forged anchors, and
+//      third-party telemetry refuse.
 
 import "core/site_check.oo";

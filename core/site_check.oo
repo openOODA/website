@@ -1,13 +1,15 @@
 // # Website Static-Site Conformance Checker
 //
 // Logline: Verify docs/index.html's local href/src references resolve to real files under docs/,
-//          its in-page anchors have matching id= targets, and CNAME stays a single domain line.
-// Setup: Explicit FsReadCap; bounded read of docs/index.html; canonical oostd index_of for token
-//        scanning and oostd sha256 for the page integrity digest.
+//          anchors have id= targets, CNAME stays canonical, and zero telemetry ships in docs/.
+// Setup: Explicit FsReadCap; bounded reads; oostd index_of scanning and sha256 integrity digest;
+//        detector needles are split like oohat's own pages.
 // Beats:
 //   1. site_attr extracts quoted attribute values after href=/src= tokens.
-//   2. site_refs_ok proves every root-absolute reference and every #anchor resolves.
-//   3. site_repo_ok folds index, CNAME, and installer shim into one verdict.
+//   2. site_refs_ok proves every root-absolute reference, ..-free, and every #anchor resolves.
+//   3. site_beacon_hits + site_remote_refs + site_tree_free enforce the zero-telemetry law:
+//      no third-party beacon hosts and no remote script/link/url() fetches under docs/.
+//   4. site_repo_ok folds index, CNAME, the installer shim, and the telemetry fold into one verdict.
 
 import "oostd/core/primitives/str.oo";
 import "oostd/sec/hash/sha256.oo";
@@ -39,6 +41,8 @@ pub fn site_refs_ok(fs: &FsReadCap, html: String) -> Bool {
         while j < list_len(refs) {
             let r: String = list_get(refs, j);
             if str_starts_with(r, "/") && !str_starts_with(r, "//") {
+                if str_contains(r, "/" + ".." + "/") { return false; }
+                if str_ends_with(r, "/" + "..") { return false; }
                 if !oo_path_exists(fs, "docs" + r) { return false; }
                 n = n + 1;
             }
@@ -50,16 +54,100 @@ pub fn site_refs_ok(fs: &FsReadCap, html: String) -> Bool {
     return n > 0;
 }
 
+pub fn site_beacon_hits(src: String) -> Int {
+    let mut n: Int = 0;
+    if str_contains(src, "cloudflareinsights" + ".com") { n = n + 1; }
+    if str_contains(src, "google-" + "analytics") { n = n + 1; }
+    if str_contains(src, "googletagmanager" + ".com") { n = n + 1; }
+    if str_contains(src, "mixpanel" + ".com") { n = n + 1; }
+    if str_contains(src, "sentry" + ".io") { n = n + 1; }
+    if str_contains(src, "telemetry_" + "upload") { n = n + 1; }
+    return n;
+}
+
+pub fn site_remote_refs(src: String) -> Int {
+    let mut n: Int = 0;
+    let refs: List[String] = site_attr(src, "src");
+    let mut i: Int = 0;
+    while i < list_len(refs) {
+        let r: String = list_get(refs, i);
+        if str_starts_with(r, "http") || str_starts_with(r, "//") { n = n + 1; }
+        i = i + 1;
+    }
+    let sq: List[String] = str_split(src, "src='");
+    let mut s: Int = 1;
+    while s < list_len(sq) {
+        let seg0: String = list_get(sq, s);
+        let e: Int = index_of(seg0, "'");
+        if e > 0 {
+            let v: String = str_slice(seg0, 0, e);
+            if str_starts_with(v, "http") || str_starts_with(v, "//") { n = n + 1; }
+        }
+        s = s + 1;
+    }
+    let parts: List[String] = str_split(src, "<link");
+    let mut j: Int = 1;
+    while j < list_len(parts) {
+        let seg: String = list_get(parts, j);
+        let g: Int = index_of(seg, ">");
+        let tag: String = if g > 0 { str_slice(seg, 0, g) } else { seg };
+        if str_contains(tag, "href=\"http") || str_contains(tag, "href='http") ||
+            str_contains(tag, "href=\"//") || str_contains(tag, "href='//") { n = n + 1; }
+        j = j + 1;
+    }
+    let ups: List[String] = str_split(src, "url(");
+    let mut k: Int = 1;
+    while k < list_len(ups) {
+        let u0: String = str_trim(list_get(ups, k));
+        let u: String = if str_starts_with(u0, "\"") || str_starts_with(u0, "'") {
+            str_slice(u0, 1, chars_len(u0)) } else { u0 };
+        if str_starts_with(u, "http") || str_starts_with(u, "//") { n = n + 1; }
+        k = k + 1;
+    }
+    return n;
+}
+
+pub fn site_telemetry_free(src: String) -> Bool {
+    if site_beacon_hits(src) > 0 { return false; }
+    if site_remote_refs(src) > 0 { return false; }
+    return true;
+}
+
+pub fn site_tree_free(fs: &FsReadCap, dir: String, depth: Int) -> Bool {
+    if depth > 4 { return true; }
+    let entries: List[String] = oo_fs_read_dir(fs, dir);
+    let mut i: Int = 0;
+    while i < list_len(entries) {
+        let name: String = list_get(entries, i);
+        let path: String = dir + "/" + name;
+        let isd: Bool = oo_fs_is_dir(fs, path);
+        let pg: Bool = str_ends_with(name, ".html") || str_ends_with(name, ".js") ||
+            str_ends_with(name, ".svg") || str_ends_with(name, ".css");
+        if name != "." && name != ".." && !str_starts_with(name, ".") && isd && depth < 4 {
+            if !site_tree_free(fs, path, depth + 1) { return false; }
+        }
+        if name != "." && name != ".." && !isd && pg {
+            let r: Result[String, String] = oo_read_file(fs, path);
+            if r.is_err() { return false; }
+            let s: String = match r { Ok(v) => v, Err(_) => "" };
+            if !site_telemetry_free(s) { return false; }
+        }
+        i = i + 1;
+    }
+    return true;
+}
+
 pub fn site_repo_ok(fs: &FsReadCap) -> Bool {
     let hr: Result[String, String] = oo_read_file(fs, "docs/index.html");
     if hr.is_err() { return false; }
     let html: String = match hr { Ok(s) => s, Err(_) => "" };
     if chars_len(sha256_hex(html)) != 64 { return false; }
     if !site_refs_ok(fs, html) { return false; }
+    if !site_tree_free(fs, "docs", 0) { return false; }
     let cr: Result[String, String] = oo_read_file(fs, "docs/CNAME");
     if cr.is_err() { return false; }
     let cname: String = match cr { Ok(s) => s, Err(_) => "" };
-    if chars_len(str_trim(cname)) == 0 { return false; }
+    if str_trim(cname) != "openooda.org" { return false; }
     if !oo_path_exists(fs, "docs/install.sh") { return false; }
     return true;
 }

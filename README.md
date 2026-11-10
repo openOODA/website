@@ -2,13 +2,29 @@
 
 Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs).
 
+**Zero telemetry.** The shipped webroot carries no third-party beacons or remote
+subresource loads — `core/site_check.oo`, `tests/`, `make site-gate`, both CI gates,
+and `oohat black` (`telemetry_beacons=0`) all refuse them. See `AGENTS.md` for the
+full invariant and verification ladder.
+
 ## Layout
 
 - [`docs/index.html`](docs/index.html) — Main landing page, interactive `ootheme` switcher, layer explorer, and direct ISO / Buildbox downloads
-- [`docs/install.sh`](docs/install.sh) — Redirect bootstrap script (`curl -fsSL https://openOODA.org/install.sh | bash`)
+- [`docs/install.sh`](docs/install.sh) — Redirect installer shim (`curl -fsSL https://openooda.org/install.sh | bash`)
 - [`docs/CNAME`](docs/CNAME) — Custom domain binding (`openooda.org`)
-- [`docs/styles/`](docs/styles) & [`docs/js/`](docs/js) — Stylesheets and interactive preview scripts
+- [`docs/styles/`](docs/styles) & [`docs/js/`](docs/js) — Stylesheets and interactive preview scripts (local only)
 - [`docs/assets/`](docs/assets) — SVG icons and diagrams
+- [`cli/main.oo`](cli/main.oo) — `website check|about` conformance verbs (`bin/website`)
+- [`core/site_check.oo`](core/site_check.oo) — Reference, anchor, integrity & zero-telemetry fold over `docs/`
+- [`tests/`](tests) — Functional + refusal `.oo` suites (8 + 14 assertions)
+
+## Verify
+
+```sh
+make build && make test     # bin/website + both .oo suites + site gate
+make verify                 # shape/file/academy/link laws + oodac check + site-gate
+/Projects/openOODA-core/oohat/bin/oohat cycle .   # 8-hat quorum_mask=255, telemetry_beacons=0
+```
 
 ## System Requirements (`openOODA` Stack)
 
