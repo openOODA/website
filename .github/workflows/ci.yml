@@ -27,7 +27,11 @@ jobs:
           test -d styles
           test -d js
           grep -qx 'openooda.org' CNAME
-          sh -n install.sh
+          # install.sh is a bash script (shebang: /usr/bin/env bash) that
+          # uses bash-only syntax (declare -A, arrays, [[ ]]). `sh -n`
+          # parses it with dash on ubuntu runners and fails on syntax
+          # bash accepts; gate it with the interpreter it declares.
+          bash -n install.sh
           # Every local src/href in index.html must resolve under docs/ (the webroot).
           grep -oE '(src|href)="[^"]+"' index.html \
             | sed -E 's/^(src|href)="([^"]+)".*/\2/' \
