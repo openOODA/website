@@ -9,5 +9,9 @@
 //   3. tests/test_functional.oo proves the shipped site conforms.
 //   4. tests/test_refusal.oo proves dead references, missing assets, forged anchors, and
 //      third-party telemetry refuse.
+//   5. Stay comment-only: no code lives on this page.
+//   6. Hold the sixteen-line page floor with these doc beats.
 
 import "core/site_check.oo";
+
+// The anchor stays import-only.
