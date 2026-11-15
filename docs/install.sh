@@ -41,7 +41,7 @@ XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 # fallback below is this script's own version at authoring time, kept in
 # sync by the bump bot (see bump-version.yml), so offline curl|bash shows
 # the right version. Display-only: downloads always use releases/latest.
-VERSION="$(cat "$(dirname "${BASH_SOURCE[0]:-$0}")/VERSION" 2>/dev/null || curl -sSL --max-time 3 "https://raw.githubusercontent.com/openOODA/install/master/VERSION" 2>/dev/null || echo "0.2.6")"
+VERSION="$(cat "$(dirname "${BASH_SOURCE[0]:-$0}")/VERSION" 2>/dev/null || curl -sSL --max-time 3 "https://raw.githubusercontent.com/openOODA/install/master/VERSION" 2>/dev/null || echo "0.2.8")"
 VERSION="$(printf '%s' "$VERSION" | tr -d '\r\n ' | head -c 20)"
 [[ -z "$VERSION" ]] && VERSION="?"
 
@@ -929,19 +929,12 @@ GROUPS_OOT=""
 GROUPS_OOT_TRIED=0
 declare -A GDEF=()
 
-# Fetch groups.oot once per run. catalog.openooda.org serves the repo tree
-# on GitHub Pages; raw.githubusercontent is the fallback.
+# Fetch groups.oot once per run from openOODA/catalog on GitHub.
 groups_oot_load() {
   [[ "$GROUPS_OOT_TRIED" == "1" ]] && return 0
   GROUPS_OOT_TRIED=1
-  local u
-  for u in \
-    "https://catalog.openooda.org/groups.oot" \
-    "https://raw.githubusercontent.com/openOODA/catalog/master/groups.oot"
-  do
-    GROUPS_OOT=$(curl -fsSL --connect-timeout 8 --max-time 20 "$u" 2>/dev/null || true)
-    [[ -n "$GROUPS_OOT" ]] && break
-  done
+  local u="https://raw.githubusercontent.com/openOODA/catalog/master/groups.oot"
+  GROUPS_OOT=$(curl -fsSL --connect-timeout 8 --max-time 20 "$u" 2>/dev/null || true)
   [[ -z "$GROUPS_OOT" ]] && return 1
   local line g rest
   while IFS= read -r line; do
@@ -1316,9 +1309,26 @@ install_file_from_source() {
 
 # --- shell rc ----------------------------------------------------------------
 
+# shell_init_bin: absolute path of an ooda that can generate shell env,
+# or empty when the generator is unavailable (then embedded blocks apply).
+# Probes with a real emission, not --help: main.oo answers --help globally
+# on every ooda build, so only a working emission proves the verb exists.
+shell_init_bin() {
+  local ooda_bin="$BIN_DIR/ooda" out=""
+  if [[ -x "$ooda_bin" ]]; then
+    out="$("$ooda_bin" shell-init sh 2>/dev/null)" || out=""
+  fi
+  if [[ "$out" == *'export PATH='* ]]; then
+    printf '%s' "$ooda_bin"
+  fi
+}
+
 setup_shell_rc() {
   if [[ $NO_MODIFY_SHELL -eq 1 ]]; then skip "shell rc: --no-modify-shell, not editing"; return 0; fi
-  if [[ "$DRY_RUN" == "1" ]]; then ok "[dry-run] would update shell rc (.bashrc, .bash_profile, .zshrc)"; return 0; fi
+  if [[ "$DRY_RUN" == "1" ]]; then ok "[dry-run] would update shell rc (.bashrc, .bash_profile, .zshrc, fish config.fish, nushell env.nu, pwsh profile)"; return 0; fi
+  local gen
+  gen="$(shell_init_bin)"
+  local eval_line='eval "$("$HOME/.openooda/bin/ooda" shell-init bash)"'
   local l1='export PATH="$HOME/.openooda/bin:$PATH"'
   local l2='export OODA_OOSTD_ROOT="$HOME/.openooda/oostd"'
   local l3='export OODA_COMPILER="$HOME/.openooda/bin/oodac"'
@@ -1335,6 +1345,15 @@ setup_shell_rc() {
     [[ -f "$rc" || ( "$rc" == "$HOME/.bashrc" && ! -f "$HOME/.bash_profile" && ! -f "$HOME/.zshrc" ) ]] || continue
     [[ -e "$rc" ]] || : >> "$rc" 2>/dev/null || continue
     if [[ -f "$rc" && ! -f "$rc.bak.openooda" ]]; then cp -p "$rc" "$rc.bak.openooda" 2>/dev/null || true; _log "backup $rc -> $rc.bak.openooda"; fi
+    if grep -Fqx "$eval_line" "$rc" 2>/dev/null; then
+      info "$(basename "$rc") already has openOODA shell-init"
+      continue
+    fi
+    if ! grep -q '# openOODA' "$rc" 2>/dev/null && [[ -n "$gen" ]]; then
+      printf '\n# openOODA (shell-init)\n%s\n# end openOODA\n' "$eval_line" >> "$rc"
+      ok "$(basename "$rc") updated (shell-init)"
+      continue
+    fi
     if grep -q '\.local/bin/oodac' "$rc" 2>/dev/null; then
       sed -i 's|.*\.local/bin/oodac.*|'"$l3"'|' "$rc" 2>/dev/null || true
       ok "$(basename "$rc") fixed OODA_COMPILER -> ~/.openooda/bin/oodac"
@@ -1350,7 +1369,7 @@ setup_shell_rc() {
       ok "$(basename "$rc") updated"
     fi
     # Merge jail dirs into an existing READDIR. Never clobber extra
-    # developer paths (e.g. $HOME/Projects/openOODA:/tmp).
+    # developer paths (e.g. $OODA_POLYROOT/openOODA:/tmp).
     merge_readdir_line "$rc"
     grep -Fqx "$l5" "$rc" 2>/dev/null || printf '%s\n' "$l5" >> "$rc"
     grep -q '^export OODACODEX=' "$rc" 2>/dev/null || printf '%s\n' "$l6" >> "$rc"
@@ -1358,12 +1377,46 @@ setup_shell_rc() {
     grep -q '^export OODA_SPEC=' "$rc" 2>/dev/null || printf '%s\n' "$l9" >> "$rc"
     grep -q '^export OO_LIST_AMBIENT_QUOTA=' "$rc" 2>/dev/null || printf '%s\n' "$l7" >> "$rc"
   done
+  local fish_cfg="$HOME/.config/fish/config.fish"
+  if [[ -f "$fish_cfg" ]] || [[ -d "$HOME/.config/fish" ]] || command -v fish >/dev/null 2>&1; then
+    mkdir -p "$HOME/.config/fish" 2>/dev/null || true
+    touch "$fish_cfg" 2>/dev/null || true
+    [[ -f "$fish_cfg.bak.openooda" ]] || cp -p "$fish_cfg" "$fish_cfg.bak.openooda" 2>/dev/null || true
+    local fish_eval='$HOME/.openooda/bin/ooda shell-init fish | source'
+    if grep -Fqx "$fish_eval" "$fish_cfg" 2>/dev/null || grep -q '# openOODA' "$fish_cfg" 2>/dev/null; then
+      info "config.fish already has openOODA exports"
+    elif [[ -n "$gen" ]]; then
+      printf '\n# openOODA (shell-init)\n%s\n# end openOODA\n' "$fish_eval" >> "$fish_cfg"
+      ok "fish config.fish updated (shell-init)"
+    else
+      cat >> "$fish_cfg" <<'FISH_EOF'
+
+# openOODA
+fish_add_path $HOME/.openooda/bin
+set -gx OODA_OOSTD_ROOT $HOME/.openooda/oostd
+set -gx OODA_COMPILER $HOME/.openooda/bin/oodac
+set -gx OODA_FS_READDIR $HOME/.openooda:/etc:/usr
+set -gx OODA_FS_WRITEDIR $HOME
+set -gx OODACODEX $HOME/.openooda/AGENTS.md
+set -gx OODASPEC $HOME/.openooda/cards/spec.md
+set -gx OODA_SPEC $HOME/.openooda/cards/spec.md
+set -gx OO_LIST_AMBIENT_QUOTA 8589934592
+# end openOODA
+FISH_EOF
+      ok "fish config.fish updated"
+    fi
+  fi
   local nu_env="$XDG_CONFIG_HOME/nushell/env.nu"
   if [[ -f "$nu_env" ]] || [[ -d "$XDG_CONFIG_HOME/nushell" ]] || command -v nu >/dev/null 2>&1; then
     mkdir -p "$XDG_CONFIG_HOME/nushell" 2>/dev/null || true
     touch "$nu_env" 2>/dev/null || true
-    if [[ -f "$nu_env" ]] && ! grep -q '# openOODA' "$nu_env" 2>/dev/null; then
-      [[ -f "$nu_env.bak.openooda" ]] || cp -p "$nu_env" "$nu_env.bak.openooda" 2>/dev/null || true
+    [[ -f "$nu_env.bak.openooda" ]] || cp -p "$nu_env" "$nu_env.bak.openooda" 2>/dev/null || true
+    if grep -q '# openOODA' "$nu_env" 2>/dev/null; then
+      info "nushell env.nu already has openOODA exports"
+    elif [[ -n "$gen" ]] && { printf '# generated by ooda shell-init nu - re-run the installer to refresh\n'; "$gen" shell-init nu; } > "$OPENOODA_HOME/env.nu" 2>/dev/null; then
+      printf '\n# openOODA (shell-init)\nsource ~/.openooda/env.nu\n# end openOODA\n' >> "$nu_env"
+      ok "nushell env.nu updated (shell-init)"
+    else
       cat >> "$nu_env" <<'NU_EOF'
 
 # openOODA
@@ -1379,8 +1432,40 @@ $env.OO_LIST_AMBIENT_QUOTA = "8589934592"
 # end openOODA
 NU_EOF
       ok "nushell env.nu updated"
+    fi
+  fi
+  if command -v pwsh >/dev/null 2>&1; then
+    local pw_profile
+    pw_profile="$(pwsh -NoProfile -Command '$PROFILE' 2>/dev/null | tr -d '\r\n' | head -c 300)"
+    if [[ -z "$pw_profile" ]]; then
+      info "pwsh detected but profile path unreadable - skipping pwsh setup"
     else
-      info "nushell env.nu already has openOODA exports"
+      mkdir -p "$(dirname "$pw_profile")" 2>/dev/null || true
+      touch "$pw_profile" 2>/dev/null || true
+      [[ -f "$pw_profile.bak.openooda" ]] || cp -p "$pw_profile" "$pw_profile.bak.openooda" 2>/dev/null || true
+      local pw_eval='& "$HOME/.openooda/bin/ooda" shell-init pwsh | Out-String | Invoke-Expression'
+      if grep -Fqx "$pw_eval" "$pw_profile" 2>/dev/null || grep -q '# openOODA' "$pw_profile" 2>/dev/null; then
+        info "pwsh profile already has openOODA exports"
+      elif [[ -n "$gen" ]]; then
+        printf '\n# openOODA (shell-init)\n%s\n# end openOODA\n' "$pw_eval" >> "$pw_profile"
+        ok "pwsh profile updated (shell-init)"
+      else
+        cat >> "$pw_profile" <<'PW_EOF'
+
+# openOODA
+$env:PATH = "$HOME/.openooda/bin" + [IO.Path]::PathSeparator + $env:PATH
+$env:OODA_OOSTD_ROOT = "$HOME/.openooda/oostd"
+$env:OODA_COMPILER = "$HOME/.openooda/bin/oodac"
+$env:OODA_FS_READDIR = "$HOME/.openooda:/etc:/usr"
+$env:OODA_FS_WRITEDIR = "$HOME"
+$env:OODACODEX = "$HOME/.openooda/AGENTS.md"
+$env:OODASPEC = "$HOME/.openooda/cards/spec.md"
+$env:OODA_SPEC = "$HOME/.openooda/cards/spec.md"
+$env:OO_LIST_AMBIENT_QUOTA = "8589934592"
+# end openOODA
+PW_EOF
+        ok "pwsh profile updated"
+      fi
     fi
   fi
 }
@@ -1412,20 +1497,22 @@ merge_readdir_line() {
   printf 'export OODA_FS_READDIR="%s"\n' "$out" >> "$rc"
 }
 
-# warn_for_other_shells: if zsh or fish is detected on PATH, print a one-line
-# hint telling the user how to add openOODA to their non-bash rc. The install
-# only writes ~/.bashrc; users with other shells do it themselves. Detected at
-# the level of "binary on PATH" (not "rc file exists") so a leftover ~/.zshrc
-# from a previous install doesn't trigger the warning.
+# warn_for_other_shells: safety net for detected-but-unconfigured shells
+# (e.g. the user passed --no-modify-shell). setup_shell_rc writes bash,
+# zsh, fish, nushell, and pwsh configs; this only speaks up when a shell
+# is present but its rc still lacks any openOODA section.
 warn_for_other_shells() {
   [[ "${QUIET:-0}" == "1" ]] && { _log "SKIP warn_for_other_shells (QUIET)"; return; }
-  if command -v zsh >/dev/null 2>&1; then
-    warn "zsh detected — to use openOODA in zsh, add to ~/.zshrc:"
-    printf '       export PATH="$HOME/.openooda/bin:$PATH"\n' >&2
+  if command -v zsh >/dev/null 2>&1 && ! grep -q 'openOODA' "$HOME/.zshrc" 2>/dev/null; then
+    warn "zsh detected but ~/.zshrc has no openOODA section — add:"
+    printf '       eval "$("$HOME/.openooda/bin/ooda" shell-init zsh)"\n' >&2
   fi
-  if command -v fish >/dev/null 2>&1; then
-    warn "fish detected — to use openOODA in fish, add to ~/.config/fish/config.fish:"
-    printf '       fish_add_path $HOME/.openooda/bin\n' >&2
+  if command -v fish >/dev/null 2>&1 && ! grep -q 'openOODA' "$HOME/.config/fish/config.fish" 2>/dev/null; then
+    warn "fish detected but config.fish has no openOODA section — add:"
+    printf '       $HOME/.openooda/bin/ooda shell-init fish | source\n' >&2
+  fi
+  if command -v nu >/dev/null 2>&1 && ! grep -q 'openOODA' "$XDG_CONFIG_HOME/nushell/env.nu" 2>/dev/null; then
+    warn "nushell detected but env.nu has no openOODA section — run: ooda shell-init nu > ~/.openooda/env.nu, then source it"
   fi
 }
 
@@ -1778,7 +1865,7 @@ do_install() {
     # fetch_and_verify): a failed refresh must never clobber a codex we
     # already hold — MCP servers fail closed without OODACODEX.
     step_status "fetching orientation codex (openOODA/AGENTS.md)"
-    if curl -sSL --connect-timeout 10 --max-time 60 -o "$OPENOODA_HOME/AGENTS.md.tmp" "https://raw.githubusercontent.com/openOODA/openOODA/master/AGENTS.md" 2>/dev/null && [[ -s "$OPENOODA_HOME/AGENTS.md.tmp" ]]; then
+    if curl -fsSL --connect-timeout 10 --max-time 60 -o "$OPENOODA_HOME/AGENTS.md.tmp" "https://raw.githubusercontent.com/openOODA/openOODA/master/AGENTS.md" 2>/dev/null && [[ -s "$OPENOODA_HOME/AGENTS.md.tmp" ]]; then
       mv -f "$OPENOODA_HOME/AGENTS.md.tmp" "$OPENOODA_HOME/AGENTS.md" 2>/dev/null || warn "codex rename failed; keeping previous AGENTS.md"
     else
       rm -f "$OPENOODA_HOME/AGENTS.md.tmp" 2>/dev/null || true
@@ -1798,6 +1885,7 @@ do_install() {
     skip "[dry-run] skipping spec fetch"
   elif [[ "$FROM_SOURCE" == "1" ]]; then
     step_status "copying language specification from source"
+    mkdir -p "$OPENOODA_HOME/cards" 2>/dev/null || true
     install_file_from_source "openOODA/cards/spec.md" "$OPENOODA_HOME/cards/spec.md" "spec"
   else
     # Download to .tmp then rename on success (same atomic pattern as
@@ -1805,7 +1893,7 @@ do_install() {
     # already hold.
     step_status "fetching language specification (openOODA/cards/spec.md)"
     mkdir -p "$OPENOODA_HOME/cards" 2>/dev/null || true
-    if curl -sSL --connect-timeout 10 --max-time 60 -o "$OPENOODA_HOME/cards/spec.md.tmp" "https://raw.githubusercontent.com/openOODA/openOODA/master/cards/spec.md" 2>/dev/null && [[ -s "$OPENOODA_HOME/cards/spec.md.tmp" ]]; then
+    if curl -fsSL --connect-timeout 10 --max-time 60 -o "$OPENOODA_HOME/cards/spec.md.tmp" "https://raw.githubusercontent.com/openOODA/openOODA/master/cards/spec.md" 2>/dev/null && [[ -s "$OPENOODA_HOME/cards/spec.md.tmp" ]]; then
       mv -f "$OPENOODA_HOME/cards/spec.md.tmp" "$OPENOODA_HOME/cards/spec.md" 2>/dev/null || warn "spec rename failed; keeping previous cards/spec.md"
     else
       rm -f "$OPENOODA_HOME/cards/spec.md.tmp" 2>/dev/null || true
@@ -1817,8 +1905,50 @@ do_install() {
     fi
   fi
 
-  # step 4: shell rc (bash only; zsh/fish users get a hint via warn_for_other_shells)
-  step_status "setting up shell environment (~/.bashrc)"
+  # step 3e: capability table (oolsp/oohat read ~/.openooda/cards/cap_table.oot).
+  if [[ "$DRY_RUN" == "1" ]]; then
+    step_status "[dry-run] skipping cap_table.oot fetch"
+    skip "[dry-run] skipping cap_table.oot fetch"
+  elif [[ "$FROM_SOURCE" == "1" ]]; then
+    step_status "copying capability table from source"
+    mkdir -p "$OPENOODA_HOME/cards" 2>/dev/null || true
+    install_file_from_source "oodar/core/sec/cap/cap_table.oot" "$OPENOODA_HOME/cards/cap_table.oot" "cap_table"
+  else
+    # openOODA-core/oodar is private; public installs fetch cap_table.oot from openOODA/install@hub.
+    step_status "fetching capability table (hub/cap_table.oot)"
+    mkdir -p "$OPENOODA_HOME/cards" 2>/dev/null || true
+    sums_ensure || true
+    local cap_exp="" cap_act=""
+    cap_exp="$(sums_expected "cap_table.oot" || true)"
+    if [[ -z "$cap_exp" ]]; then
+      warn "cap_table checksum missing in SHA256SUMS; skipping unverified download"
+    elif curl -fsSL --connect-timeout 10 --max-time 60 -o "$OPENOODA_HOME/cards/cap_table.oot.tmp" "https://github.com/openOODA/install/releases/download/hub/cap_table.oot" 2>/dev/null && [[ -s "$OPENOODA_HOME/cards/cap_table.oot.tmp" ]]; then
+      if command -v sha256sum >/dev/null 2>&1; then
+        cap_act=$(sha256sum "$OPENOODA_HOME/cards/cap_table.oot.tmp" | awk '{print $1}')
+      else
+        cap_act=$(shasum -a 256 "$OPENOODA_HOME/cards/cap_table.oot.tmp" | awk '{print $1}')
+      fi
+      if [[ "$cap_act" == "$cap_exp" ]]; then
+        if ! mv -f "$OPENOODA_HOME/cards/cap_table.oot.tmp" "$OPENOODA_HOME/cards/cap_table.oot" 2>/dev/null; then
+          rm -f "$OPENOODA_HOME/cards/cap_table.oot.tmp" 2>/dev/null || true
+          warn "cap_table rename failed; keeping previous cards/cap_table.oot"
+        fi
+      else
+        rm -f "$OPENOODA_HOME/cards/cap_table.oot.tmp" 2>/dev/null || true
+        warn "cap_table SHA256 mismatch; keeping existing cards/cap_table.oot"
+      fi
+    else
+      rm -f "$OPENOODA_HOME/cards/cap_table.oot.tmp" 2>/dev/null || true
+      if [[ -s "$OPENOODA_HOME/cards/cap_table.oot" ]]; then
+        warn "cap_table refresh failed; keeping existing cards/cap_table.oot"
+      else
+        warn "cap_table fetch failed; oolsp/oohat cap_table lookup needs network to populate cards/cap_table.oot"
+      fi
+    fi
+  fi
+
+  # step 4: shell rc (eval lines via ooda shell-init, embedded fallback)
+  step_status "setting up shell environment (all detected shells)"
   if [[ "$DRY_RUN" != "1" ]]; then setup_shell_rc; fi
   warn_for_other_shells
 
@@ -1902,7 +2032,7 @@ print_summary() {
     if [[ "${NO_MODIFY_SHELL:-0}" -eq 1 ]]; then
       printf '  %s✓%s shell rc:    skipped (--no-modify-shell)\n' "$GREEN" "$RESET"
     else
-      printf '  %s✓%s shell rc:    bash updated (.bak.openooda backup)\n' "$GREEN" "$RESET"
+      printf '  %s✓%s shell rc:    updated (.bak.openooda backups)\n' "$GREEN" "$RESET"
     fi
   fi
   printf '\n  %sWelcome to openOODA. https://openooda.org%s\n' "$BOLD$MAGENTA" "$RESET"
@@ -1944,19 +2074,36 @@ if [[ $DO_UNINSTALL -eq 1 ]]; then
     if [[ -L "$s" && "$(readlink "$s" 2>/dev/null)" == "$BIN_DIR/"* ]]; then rm -f "$s" 2>/dev/null || true; fi
   done
   # remove binaries, oostd, spec, and build sources (keep OPENOODA_HOME for logs)
-  rm -rf "$BIN_DIR" "$OOSTD_DIR" "$OPENOODA_HOME/oodar" "$OPENOODA_HOME/cards/spec.md" "$OPENOODA_HOME/AGENTS.md" 2>/dev/null || true
+  rm -rf "$BIN_DIR" "$OOSTD_DIR" "$OPENOODA_HOME/oodar" "$OPENOODA_HOME/cards/spec.md" "$OPENOODA_HOME/cards/cap_table.oot" "$OPENOODA_HOME/AGENTS.md" 2>/dev/null || true
   # surgically remove the # openOODA section from shell rc files
   for rc in "$HOME/.bashrc" "$HOME/.bash_profile" "$HOME/.zshrc"; do
     if [[ -f "$rc" ]] && grep -q '# openOODA' "$rc" 2>/dev/null; then
+      sed -i '/^# openOODA (shell-init)$/,/^# end openOODA$/d' "$rc" 2>/dev/null || true
       sed -i '/# openOODA/,/export OODA_FS_WRITEDIR/d' "$rc" 2>/dev/null || true
       sed -i '/^export OODACODEX=/d; /^export OODASPEC=/d; /^export OODA_SPEC=/d; /^export OO_LIST_AMBIENT_QUOTA=/d; /^export OODA_FS_READDIR=/d' "$rc" 2>/dev/null || true
       ok "surgically removed openOODA section from $(basename "$rc")"
     fi
   done
-  local nu_env="$XDG_CONFIG_HOME/nushell/env.nu"
+  nu_env="$XDG_CONFIG_HOME/nushell/env.nu"
   if [[ -f "$nu_env" ]] && grep -q '# openOODA' "$nu_env" 2>/dev/null; then
+    sed -i '/^# openOODA (shell-init)$/,/^# end openOODA$/d' "$nu_env" 2>/dev/null || true
     sed -i '/^# openOODA$/,/^# end openOODA$/d' "$nu_env" 2>/dev/null || true
     ok "surgically removed openOODA section from env.nu"
+  fi
+  rm -f "$OPENOODA_HOME/env.nu" 2>/dev/null || true
+  fish_cfg="$HOME/.config/fish/config.fish"
+  if [[ -f "$fish_cfg" ]] && grep -q '# openOODA' "$fish_cfg" 2>/dev/null; then
+    sed -i '/^# openOODA (shell-init)$/,/^# end openOODA$/d' "$fish_cfg" 2>/dev/null || true
+    sed -i '/^# openOODA$/,/^# end openOODA$/d' "$fish_cfg" 2>/dev/null || true
+    ok "surgically removed openOODA section from config.fish"
+  fi
+  if command -v pwsh >/dev/null 2>&1; then
+    pw_profile="$(pwsh -NoProfile -Command '$PROFILE' 2>/dev/null | tr -d '\r\n' | head -c 300)"
+    if [[ -n "$pw_profile" && -f "$pw_profile" ]] && grep -q '# openOODA' "$pw_profile" 2>/dev/null; then
+      sed -i '/^# openOODA (shell-init)$/,/^# end openOODA$/d' "$pw_profile" 2>/dev/null || true
+      sed -i '/^# openOODA$/,/^# end openOODA$/d' "$pw_profile" 2>/dev/null || true
+      ok "surgically removed openOODA section from pwsh profile"
+    fi
   fi
   ok "uninstall complete"
   exit 0

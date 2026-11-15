@@ -8,21 +8,23 @@
 #   make site-gate  - static webroot gate over docs/ (refs, CNAME, icons, telemetry)
 #   make clean      - remove build artifacts
 
-OODA_COMPILER ?= /Projects/openOODA-core/oodac/bin/oodac
+OODA_COMPILER ?= $(HOME)/.openooda/bin/oodac
 export OODA_COMPILER
 OODAC_BIN ?= $(OODA_COMPILER)
 export OODAC_BIN
-OODA_READDIR ?= /Projects:/tmp:/usr:/lib:/lib64
+OODA_READDIR ?= $(HOME)/.openooda:$(CURDIR):/tmp:/usr:/lib:/lib64
 OODA_WRITEDIR ?= $(CURDIR):/tmp
 OO_LIST_AMBIENT_QUOTA ?= 8589934592
-OODA_OODAR_ROOT ?= /Projects/openOODA-core/oodar/core
+OODA_OODAR_ROOT ?= $(HOME)/.openooda/bin
 export OODA_OODAR_ROOT
+OODA_OOSTD_ROOT ?= $(HOME)/.openooda/oostd
+export OODA_OOSTD_ROOT
 BIN := bin/website
 TBIN := .ooda-cache/test_functional
 TBIN2 := .ooda-cache/test_refusal
 SRC := $(shell find . -name '*.oo' -not -path './.git/*' -not -path './bin/*' -not -path './dist/*' -not -path './.ooda-cache/*' | sort)
 
-ENV := OO_LIST_AMBIENT_QUOTA=$(OO_LIST_AMBIENT_QUOTA) OO_LINT_ROOTS=$(CURDIR) OODA_COMPILER=$(OODA_COMPILER) OODAC_BIN=$(OODAC_BIN) OODA_FS_READDIR=$(OODA_READDIR) OODA_FS_WRITEDIR=$(OODA_WRITEDIR) OODA_OODAR_ROOT=$(OODA_OODAR_ROOT) OODA_NO_JAIL=1
+ENV := OO_LIST_AMBIENT_QUOTA=$(OO_LIST_AMBIENT_QUOTA) OO_LINT_ROOTS=$(CURDIR) OODA_COMPILER=$(OODA_COMPILER) OODAC_BIN=$(OODAC_BIN) OODA_FS_READDIR=$(OODA_READDIR) OODA_FS_WRITEDIR=$(OODA_WRITEDIR) OODA_OODAR_ROOT=$(OODA_OODAR_ROOT) OODA_OOSTD_ROOT=$(OODA_OOSTD_ROOT) OODA_NO_JAIL=1
 
 .PHONY: all build test verify clean line-cap file-law academy density vocab shape link-law check site-gate
 
@@ -149,7 +151,7 @@ site-gate:
 	test -f docs/.nojekyll; \
 	test -d docs/assets && test -d docs/styles && test -d docs/js; \
 	grep -qx 'openooda.org' docs/CNAME; \
-	sh -n docs/install.sh; \
+	bash -n docs/install.sh; \
 	grep -oE '(src|href)="[^"]+"' docs/index.html \
 		| sed -E 's/^(src|href)="([^"]+)".*/\2/' \
 		| grep '^/' \

@@ -23,7 +23,7 @@ full invariant and verification ladder.
 ```sh
 make build && make test     # bin/website + both .oo suites + site gate
 make verify                 # shape/file/academy/link laws + oodac check + site-gate
-/Projects/openOODA-core/oohat/bin/oohat cycle .   # 8-hat quorum_mask=255, telemetry_beacons=0
+~/.openooda/bin/oohat cycle .   # 8-hat quorum_mask=255, telemetry_beacons=0
 ```
 
 ## System Requirements (`openOODA` Stack)

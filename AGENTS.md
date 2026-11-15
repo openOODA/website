@@ -50,7 +50,7 @@ on checkout and before Pages deploy.
 make build    # oodac build cli/main.oo -> bin/website + dist/website
 make test     # functional 8/8 + refusal 14/14 + check gate + about card (PATH=/nonexistent)
 make verify   # line-cap, file-law, academy, density, vocab, shape, link-law, check, site-gate
-/Projects/openOODA-core/oohat/bin/oohat cycle /Projects/openOODA/website
+~/.openooda/bin/oohat cycle .
 # required: cycle=PASS quorum_mask=255 telemetry_beacons=0
 ```
 
