@@ -10,7 +10,7 @@ full invariant and verification ladder.
 ## Layout
 
 - [`docs/index.html`](docs/index.html) — Main landing page, interactive `ootheme` switcher, layer explorer, and direct ISO / Buildbox downloads
-- [`docs/install.sh`](docs/install.sh) — Redirect installer shim (`curl -fsSL https://openooda.org/install.sh | bash`)
+- [docs/install.sh](docs/install.sh) — Installer copy served at https://openooda.org/install.sh (v0.2.9)
 - [`docs/CNAME`](docs/CNAME) — Custom domain binding (`openooda.org`)
 - [`docs/styles/`](docs/styles) & [`docs/js/`](docs/js) — Stylesheets and interactive preview scripts (local only)
 - [`docs/assets/`](docs/assets) — SVG icons and diagrams
