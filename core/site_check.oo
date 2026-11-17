@@ -2,8 +2,8 @@
 //
 // Logline: Verify docs/index.html's local href/src references resolve to real files under docs/,
 //          anchors have id= targets, CNAME stays canonical, and zero telemetry ships in docs/.
-// Setup: Explicit FsReadCap; bounded reads; oostd index_of scanning and sha256 integrity digest;
-//        detector needles are split like oohat's own pages.
+// Setup: Explicit FsReadCap; bounded reads; ooda-standard index_of scanning and sha256
+//        integrity digest; detector needles are split like the verifier's own pages.
 // Beats:
 //   1. site_attr extracts quoted attribute values after href=/src= tokens.
 //   2. site_refs_ok proves every root-absolute reference, ..-free, and every #anchor resolves.
@@ -11,8 +11,8 @@
 //      no third-party beacon hosts and no remote script/link/url() fetches under docs/.
 //   4. site_repo_ok folds index, CNAME, the installer shim, and the telemetry fold into one verdict.
 
-import "oostd/core/primitives/str.oo";
-import "oostd/sec/hash/sha256.oo";
+import "ooda-standard/core/primitives/str.oo";
+import "ooda-standard/sec/hash/sha256.oo";
 
 pub fn site_attr(src: String, attr: String) -> List[String] {
     let mut out: List[String] = list_new();

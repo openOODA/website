@@ -1,14 +1,14 @@
 # website (openOODA) — public docs & zero-telemetry static-site conformance gate
 #
 # Usage:
-#   make build      - oodac build cli/main.oo -> bin/website (+ dist/website copy)
+#   make build      - ooda-compiler build cli/main.oo -> bin/website (+ dist/website copy)
 #   make test       - build + run functional/refusal .oo suites and the site gate
 #   make verify     - line-cap, file-law, academy, density, vocab, shape, link-law,
 #                     check, site-gate
 #   make site-gate  - static webroot gate over docs/ (refs, CNAME, icons, telemetry)
 #   make clean      - remove build artifacts
 
-OODA_COMPILER ?= $(HOME)/.openooda/bin/oodac
+OODA_COMPILER ?= $(HOME)/.openooda/bin/ooda-compiler
 export OODA_COMPILER
 OODAC_BIN ?= $(OODA_COMPILER)
 export OODAC_BIN
@@ -17,14 +17,15 @@ OODA_WRITEDIR ?= $(CURDIR):/tmp
 OO_LIST_AMBIENT_QUOTA ?= 8589934592
 OODA_OODAR_ROOT ?= $(HOME)/.openooda/bin
 export OODA_OODAR_ROOT
-OODA_OOSTD_ROOT ?= $(HOME)/.openooda/oostd
-export OODA_OOSTD_ROOT
+OODA_STANDARD_ROOT ?= $(HOME)/.openooda/ooda-standard
+export OODA_STANDARD_ROOT
+unexport OODA_OOSTD_ROOT
 BIN := bin/website
 TBIN := .ooda-cache/test_functional
 TBIN2 := .ooda-cache/test_refusal
 SRC := $(shell find . -name '*.oo' -not -path './.git/*' -not -path './bin/*' -not -path './dist/*' -not -path './.ooda-cache/*' | sort)
 
-ENV := OO_LIST_AMBIENT_QUOTA=$(OO_LIST_AMBIENT_QUOTA) OO_LINT_ROOTS=$(CURDIR) OODA_COMPILER=$(OODA_COMPILER) OODAC_BIN=$(OODAC_BIN) OODA_FS_READDIR=$(OODA_READDIR) OODA_FS_WRITEDIR=$(OODA_WRITEDIR) OODA_OODAR_ROOT=$(OODA_OODAR_ROOT) OODA_OOSTD_ROOT=$(OODA_OOSTD_ROOT) OODA_NO_JAIL=1
+ENV := OO_LIST_AMBIENT_QUOTA=$(OO_LIST_AMBIENT_QUOTA) OO_LINT_ROOTS=$(CURDIR) OODA_COMPILER=$(OODA_COMPILER) OODAC_BIN=$(OODAC_BIN) OODA_FS_READDIR=$(OODA_READDIR) OODA_FS_WRITEDIR=$(OODA_WRITEDIR) OODA_OODAR_ROOT=$(OODA_OODAR_ROOT) OODA_STANDARD_ROOT=$(OODA_STANDARD_ROOT) OODA_NO_JAIL=1
 
 .PHONY: all build test verify clean line-cap file-law academy density vocab shape link-law check site-gate
 
@@ -141,7 +142,7 @@ check:
 	@for f in $$(find . -name "*.oo" -not -path "./.git/*" -not -path "./bin/*" -not -path "./dist/*" -not -path "./.ooda-cache/*"); do \
 		$(ENV) $(OODA_COMPILER) check "$$f" > /dev/null || exit 1; \
 	done; \
-	echo "PASS: oodac check holds on all .oo files"
+	echo "PASS: ooda-compiler check holds on all .oo files"
 
 site-gate:
 	@set -e; \
@@ -158,7 +159,7 @@ site-gate:
 		| while read -r ref; do \
 			test -f "docs$$ref" || { echo "ERR broken asset ref: $$ref"; exit 1; }; \
 		done; \
-	for o in openOODA openOODA-core openOODA-kernel openOODA-OS openOODA-tools openOODA-DE openOODA-apps openOODA-cloud openOODA-agents; do \
+	for o in openOODA openOODA-core openOODA-system openOODA-apps; do \
 		test -f "docs/assets/brand/$$o.svg" || { echo "ERR missing $$o.svg"; exit 1; }; \
 		test -f "docs/assets/brand/$$o.png" || { echo "ERR missing $$o.png"; exit 1; }; \
 	done; \

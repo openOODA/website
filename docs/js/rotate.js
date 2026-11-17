@@ -6,7 +6,7 @@ const HEADLINES = [
   "Systems + Crypto + AI Unified",
   "Conservation of Authority",
   "Born With No Privileges",
-  "Unified L0-L7 Architecture",
+  "4 Orgs, 70 Packages, 78 Repos",
   "Verifiable Proof Over Trust",
 ];
 

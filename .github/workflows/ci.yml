@@ -43,8 +43,8 @@ jobs:
             | while read -r ref; do
                 test -f ".$ref" || { echo "ERR broken asset ref: $ref"; exit 1; }
               done
-          # All 9 org icons ship as SVG + PNG.
-          for o in openOODA openOODA-core openOODA-kernel openOODA-OS openOODA-tools openOODA-DE openOODA-apps openOODA-cloud openOODA-agents; do
+          # All 4 org icons ship as SVG + PNG.
+          for o in openOODA openOODA-core openOODA-system openOODA-apps; do
             test -f "assets/brand/$o.svg" || { echo "ERR missing $o.svg"; exit 1; }
             test -f "assets/brand/$o.png" || { echo "ERR missing $o.png"; exit 1; }
           done

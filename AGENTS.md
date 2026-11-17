@@ -1,9 +1,12 @@
 # website (openOODA) — Public Documentation & Static Site Generator
 
 Public source for [https://openooda.org](https://openooda.org) (`@openOODA`), served via
-GitHub Pages from `docs/` (the sealed webroot). The repository is a pure `.oo`
-conformance surface over the static site: every build/test proves the shipped tree is
-self-contained, reference-complete, and telemetry-free.
+GitHub Pages from `docs/` (the sealed webroot). **v2.0.0** ships the canonical
+4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core`
+(`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) = `70` product packages,
+`78` repositories total. The repository is a pure `.oo` conformance surface over the
+static site: every build/test proves the shipped tree is self-contained,
+reference-complete, and telemetry-free.
 
 ## Zero-Telemetry Invariant (privacy.md Law 1)
 
@@ -13,14 +16,14 @@ capability register — the public site honors the same law in the webroot:
 1. **Zero third-party beacon hosts** in any shipped `.html`/`.js`/`.css`/`.svg` page:
    `cloudflareinsights.com`, `google-analytics`, `googletagmanager.com`, `mixpanel.com`,
    `sentry.io`, `telemetry_upload` are refused (detector needles stay split, matching
-   `oohat` Black Hat `telemetry_beacons`).
+   `ooda-verify` Black Hat `telemetry_beacons`).
 2. **Zero remote subresource loads**: `src=` (double- and single-quoted), `<link href=>`,
    and `url()` fetches must resolve locally under `docs/` — `<a href="https://…">` stays
    user-initiated navigation, never a fetch.
 3. **Fail-closed enforcement**: `core/site_check.oo` (`site_beacon_hits`,
    `site_remote_refs`, `site_telemetry_free`, `site_tree_free`, `site_repo_ok`),
    `tests/test_refusal.oo` (8 telemetry refusal fixtures), `make site-gate`, both CI
-   gates, and `oohat black` (`telemetry_beacons=0` required for `quorum_mask=255`).
+   gates, and `ooda-verify black` (`telemetry_beacons=0` required for `quorum_mask=255`).
 
 ## Architecture (8-entry root)
 
@@ -47,18 +50,18 @@ on checkout and before Pages deploy.
 ## Verification Gates
 
 ```sh
-make build    # oodac build cli/main.oo -> bin/website + dist/website
+make build    # ooda-compiler build cli/main.oo -> bin/website + dist/website
 make test     # functional 8/8 + refusal 14/14 + check gate + about card (PATH=/nonexistent)
 make verify   # line-cap, file-law, academy, density, vocab, shape, link-law, check, site-gate
-~/.openooda/bin/oohat cycle .
+~/.openooda/bin/ooda-verify cycle .
 # required: cycle=PASS quorum_mask=255 telemetry_beacons=0
 ```
 
 ## Power-of-2 Shape Ladder & .oo Rules
 
 `1` stmt/line & link-count 1 · `2`-file tests suite · `4` max nesting & 4-Axis review
-(`oohat` + semantics + native binary + ecosystem) · `8` files/dir, fns/file, params/fn,
+(`ooda-verify` + semantics + native binary + ecosystem) · `8` files/dir, fns/file, params/fn,
 root entries · `16` min lines/file · `32` caps & 32-char names · `64` lines/fn ·
 `128` chars/line · `256` lines/file. Relative string imports only; no `if`/`while`
 parens; no struct trailing commas; Academy header on every `.oo` page; always reuse
-`oostd` (`str.oo`, `sec/hash/sha256.oo`, `app/ui/ootheme.oo`) — never duplicate helpers.
+`ooda-standard` (`str.oo`, `sec/hash/sha256.oo`, `app/ui/ootheme.oo`) — never duplicate helpers.
