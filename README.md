@@ -1,6 +1,6 @@
 # `@openOODA/website`
 
-Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.2.0** documents the canonical 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) — `70` product packages, `78` repositories total.
+Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.2.1** documents the canonical 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) — `70` product packages, `78` repositories total.
 
 **Zero telemetry.** The shipped webroot carries no third-party beacons or remote
 subresource loads — `core/site_check.oo`, `tests/`, `make site-gate`, both CI gates,

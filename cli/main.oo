@@ -13,7 +13,7 @@ import "core/site_check.oo";
 import "ooda-standard/core/app/ui/ootheme.oo";
 
 pub fn site_about_card() -> String {
-    let l1: String = "Binary       : website (v" + "2.2.0" + ")";
+    let l1: String = "Binary       : website (v" + "2.2.1" + ")";
     let l2: String = "Organization : openOODA (https://github.com/openOODA/website)";
     let l3: String = "Summary      : Zero-telemetry static-site conformance gate for openooda.org";
     let l4: String = "Subcommands  : check,about";
@@ -22,7 +22,7 @@ pub fn site_about_card() -> String {
 }
 
 pub fn site_about_json() -> String {
-    return "{\"component\":\"website\",\"version\":\"" + "2.2.0" +
+    return "{\"component\":\"website\",\"version\":\"" + "2.2.1" +
         "\",\"organization\":\"openOODA\"" +
         ",\"summary\":\"Zero-telemetry static-site conformance gate for openooda.org\"" +
         ",\"subcommands\":\"check,about\"" +
@@ -34,7 +34,7 @@ fn site_check_run(fs: &FsReadCap) -> Int {
     let status: String = if ok { "PASS" } else { "REFUSAL" };
     let p: OoThemePalette = ootheme_resolve("ooda-dark");
     if ootheme_verify(p) {
-        println(ootheme_tui_frame(p, "website", "2.2.0", "site-gate", status));
+        println(ootheme_tui_frame(p, "website", "2.2.1", "site-gate", status));
     }
     if ok { println("site check verdict=PASS telemetry_free=1");
     return 0; }
@@ -65,7 +65,7 @@ pub fn site_run(fs: &FsReadCap, args: List[String]) -> Int {
     }
     if a0 == "--help" || a0 == "-h" { println(site_about_card());
     return 0; }
-    if a0 == "--version" || a0 == "-v" { println("website 2.2.0");
+    if a0 == "--version" || a0 == "-v" { println("website 2.2.1");
     return 0; }
     println("website: unknown argument " + a0);
     return 2;
