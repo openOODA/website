@@ -353,6 +353,30 @@ def render(rows):
 # Page rewrite
 # --------------------------------------------------------------------------
 
+# --------------------------------------------------------------------------
+# Fail-closed census check
+#
+# The token used to regenerate the page must be able to read every canonical
+# organization. A repository-scoped token can only see its own organization and
+# would silently produce a census of a fraction of the stack — so a short
+# census is refused rather than published.
+# --------------------------------------------------------------------------
+
+def census_incomplete(rows, html):
+    """Returns the reason the census cannot be trusted, or None."""
+    seen = {}
+    for r in rows:
+        seen[r["org"]] = seen.get(r["org"], 0) + 1
+    empty = [org for org in ORGS if seen.get(org, 0) == 0]
+    if empty:
+        return ("no repositories read from " + ", ".join(empty) +
+                " — the token cannot read every canonical organization")
+    listed = len(re.findall(r'class="tk-row"', html))
+    if listed and len(rows) < listed:
+        return ("census shrank from %d to %d repositories" % (listed, len(rows)))
+    return None
+
+
 def rewrite(html, rows):
     versions = {("%s/%s" % (r["org"], r["name"])): r["version"] for r in rows}
     missing = []
@@ -394,6 +418,9 @@ def main():
     for key, label, _n in TIERS:
         print("tracker:   %-10s %-10s %d" % (key, label, counts.get(key, 0)))
     old = open(PAGE, encoding="utf-8").read()
+    reason = census_incomplete(rows, old)
+    if reason:
+        raise SystemExit("tracker: refusing to publish an incomplete census: " + reason)
     new = rewrite(old, rows)
     if new == old:
         print("tracker: page already current")
