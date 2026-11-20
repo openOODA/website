@@ -143,8 +143,10 @@
 <span class="code-kw">04.</span> Checked in 1 CPU clock cycle: zero pointer chasing, zero consensus latency.</pre>
             </div>
           </div>
+        </section>
 
-          <p class="panel-label" style="margin-top: 28px;">-- REAL-WORLD BENCHMARK CASE STUDY: OODA-SCREENSAVER v4.8.2 (RUST) VS. v5.0.0 (NATIVE OPENOODA .oo) -- MEASURED ON v5.0.0 • CURRENT RELEASE <span data-ver="openOODA-system/ooda-screensaver">v5.3.0</span> --</p>
+        <section class="panel" id="benchmarks">
+          <p class="panel-label">-- REAL-WORLD BENCHMARK CASE STUDY: OODA-SCREENSAVER v4.8.2 (RUST) VS. v5.0.0 (NATIVE OPENOODA .oo) -- MEASURED ON v5.0.0 • CURRENT RELEASE <span data-ver="openOODA-system/ooda-screensaver">v5.3.0</span> --</p>
           <div class="capability-demo-grid">
             <div class="demo-pane demo-pane-term">
               <div class="demo-pane-header">
@@ -183,6 +185,10 @@
             <a class="repo-row" style="--layer-color:#ff5555;--layer-rgb:255, 85, 85;" href="https://github.com/openOODA-system" target="_blank" rel="noopener noreferrer"><img class="repo-icon" src="/assets/brand/openOODA-system.svg" alt="" width="24" height="24" /><code class="repo-name">System // @openOODA-system</code><span class="repo-cat">SYSTEM</span><span class="repo-role">37 Packages: Capability Microkernel (ooda-kernel), UEFI/TPM2 Boot (ooda-boot), Drivers &amp; HAL (ooda-drivers, ooda-hardware), Zero-Root Daemons (ooda-start, ooda-filesystem, ooda-network, ooda-bus, ooda-authority, ooda-health, ooda-container, ooda-inference, ooda-modem), Security &amp; Data Tools (ooda-sandbox, ooda-firewall, ooda-vault, ooda-archive, ooda-disk, ooda-data, ooda-database, ooda-connect, ooda-web, ooda-machine, ooda-version), Shell &amp; Text Userland (ooda-shell, ooda-edit, ooda-read, ooda-list, ooda-text, ooda-theme), and Wayland Desktop (ooda-compositor, ooda-panel, ooda-portal, ooda-terminal, ooda-files, ooda-settings, ooda-screensaver)</span><span class="repo-arrow">&#8599;</span></a>
             <a class="repo-row" style="--layer-color:#ff79c6;--layer-rgb:255, 121, 198;" href="https://github.com/openOODA-apps" target="_blank" rel="noopener noreferrer"><img class="repo-icon" src="/assets/brand/openOODA-apps.svg" alt="" width="24" height="24" /><code class="repo-name">Apps // @openOODA-apps</code><span class="repo-cat">APPS</span><span class="repo-role">18 Packages: Flagship Native Applications — Browser &amp; Media (ooda-browser, ooda-player, ooda-audio), Creative Suite (ooda-studio, ooda-office, ooda-canvas), Comms &amp; Secrets (ooda-chat, ooda-passwords, ooda-remote), System Companions (ooda-calculator, ooda-camera, ooda-flasher, ooda-store), and Native Games &amp; Emulation (ooda-arcade, ooda-commander, ooda-emulator, ooda-strike, ooda-voxel)</span><span class="repo-arrow">&#8599;</span></a>
           </div>
+        </section>
+
+        <section class="panel" id="capabilities">
+          <p class="panel-label">-- THE SIX CAPABILITY LAYERS OF THE STACK --</p>
           <div class="cat-grid">
             <div class="cat-card"><span class="cat-code">[01]</span><span class="cat-title">64-Bit Cycle Register</span><p class="cat-desc">32 root capabilities (WHAT) + 32-bit epoch/rights/scope header (HOW) checked in 1 CPU cycle</p></div>
             <div class="cat-card"><span class="cat-code">[02]</span><span class="cat-title">Cryptographic Authority</span><p class="cat-desc">Merkle-DAG provenance, post-quantum warrants, and conservation of authority</p></div>
@@ -191,7 +197,10 @@
             <div class="cat-card"><span class="cat-code">[05]</span><span class="cat-title">Autonomous OODA AI</span><p class="cat-desc">Closed-loop synthesis, formal contracts, and adversarial falsification</p></div>
             <div class="cat-card"><span class="cat-code">[06]</span><span class="cat-title">Compatibility Realms</span><p class="cat-desc">Run existing desktop, server, and gaming workloads safely</p></div>
           </div>
-          <p class="panel-label" style="margin-top: 24px;" id="requirements">-- SYSTEM REQUIREMENTS &amp; HARDWARE SUPPORT BY DEPLOYMENT TIER --</p>
+        </section>
+
+        <section class="panel" id="requirements">
+          <p class="panel-label">-- SYSTEM REQUIREMENTS &amp; HARDWARE SUPPORT BY DEPLOYMENT TIER --</p>
           <div class="cat-grid">
             <div class="cat-card"><span class="cat-code">[T1 // CLI &amp; TOOLS]</span><span class="cat-title">64–256 MiB RAM • 1+ Core</span><p class="cat-desc">x86_64 (AVX-512), ARM64 (SVE2), RISC-V (RVV 1.0) • Linux 4.19+, openOODA OS, Windows PE32+, macOS, WASM32</p></div>
             <div class="cat-card"><span class="cat-code">[T2 // OS &amp; DESKTOP]</span><span class="cat-title">512 MiB Min • 2–4 GiB Rec</span><p class="cat-desc">TPM 2.0 / DICE / Caliptra Boot • NVMe ZNS, AHCI, eMMC/SDHCI, USB4 • GOP / DRM-KMS / VirtIO-GPU 3D (128 Hz)</p></div>
@@ -313,8 +322,11 @@
             <a href="https://github.com/openOODA" target="_blank" rel="noopener noreferrer">[@OPENOODA]</a>
             <a href="#overview">[OVERVIEW]</a>
             <a href="#brings">[PRINCIPLES]</a>
-            <a href="#anatomy">[BENCHMARKS]</a>
+            <a href="#anatomy">[THE SHIFT]</a>
+            <a href="#benchmarks">[BENCHMARKS]</a>
             <a href="#ecosystem">[4-ORG STACK]</a>
+            <a href="#capabilities">[CAPABILITIES]</a>
+            <a href="#requirements">[REQUIREMENTS]</a>
             <a href="#tracker">[TRACKER]</a>
           </span>
         </div>

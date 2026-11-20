@@ -1,10 +1,12 @@
 /* panels.css — fullport sections, review stage, and persistent bottom dock */
 .panel {
   min-height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   max-width: 1040px;
   margin: 0 auto;
   padding: 64px 48px;
@@ -15,6 +17,17 @@
 .panel.vis {
   opacity: 1;
   transform: none;
+}
+/* Centre a section that fits the viewport. Auto margins rather than
+   justify-content: center, because a centred flex column that overflows
+   cannot be scrolled up to its own first line — with auto margins the top
+   of an oversized section stays reachable and the section scrolls inside
+   itself. */
+.panel:not(.review-stage) > *:first-child {
+  margin-top: auto;
+}
+.panel:not(.review-stage) > *:last-child {
+  margin-bottom: auto;
 }
 
 .panel-label {
