@@ -177,6 +177,17 @@
   white-space: nowrap;
 }
 
+.tk-org {
+  display: inline-block;
+  margin-right: 7px;
+  padding: 1px 4px;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  vertical-align: 1px;
+  color: var(--text-dim);
+  border: 1px solid #1e2636;
+}
+
 .tk-ver {
   font-size: 0.7rem;
   color: var(--color-cyan);

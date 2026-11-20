@@ -322,9 +322,10 @@ def render(rows):
         pct = int(round(100.0 * r["score"] / len(GATES)))
         out.append(
             '            <a class="tk-row" data-org="%s" data-tier="%s" data-name="%s" '
-            'data-version="%s" data-ci="%s" data-releases="%d" data-pushed="%d" data-score="%d" '
+            'data-search="%s" data-version="%s" data-ci="%s" data-releases="%d" '
+            'data-pushed="%d" data-score="%d" '
             'href="https://github.com/%s/%s" target="_blank" rel="noopener noreferrer">'
-            '<code class="tk-name">%s</code>'
+            '<code class="tk-name"><span class="tk-org">%s</span>%s</code>'
             '<span class="tk-ver">%s</span>'
             '<span class="tk-tier" data-tier="%s">%s</span>'
             '<span class="tk-ci" data-ci="%s">%s</span>'
@@ -333,9 +334,10 @@ def render(rows):
             '<span class="tk-bar" title="%d of %d gates pass"><i style="width:%d%%"></i></span>'
             '</a>' % (
                 r["org"], r["tier"], r["name"].lower(),
+                ("%s/%s" % (r["org"], r["name"])).lower(),
                 r["version"] or "", ci_kind, r["releases"], int(r["pushed"]), r["score"],
                 r["org"], r["name"],
-                esc(r["name"]), esc(r["version"] or "UNRELEASED"),
+                ORG_SHORT[r["org"]], esc(r["name"]), esc(r["version"] or "UNRELEASED"),
                 r["tier"], TIER_LABEL[r["tier"]],
                 ci_kind, ci_label, r["releases"], ago(r["pushed"]),
                 r["score"], len(GATES), pct))

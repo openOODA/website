@@ -73,7 +73,7 @@
     var shown = 0;
     rows.sort(comparator);
     rows.forEach(function (row) {
-      var name = row.getAttribute("data-name") || "";
+      var name = row.getAttribute("data-search") || row.getAttribute("data-name") || "";
       var orgOk = org === "all" || row.getAttribute("data-org") === org;
       var queryOk = !query || name.indexOf(query) !== -1;
       var visible = orgOk && queryOk;
