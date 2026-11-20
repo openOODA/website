@@ -1,0 +1,45 @@
+name: token-probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe token reach
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          echo "--- REST: orgs/<org>/repos ---"
+          for o in openOODA openOODA-core openOODA-system openOODA-apps; do
+            n=$(gh api "orgs/$o/repos?per_page=100" --jq 'length' 2>&1 | head -1)
+            echo "$o -> $n"
+          done
+          echo "--- REST: repos/<org>/<repo> ---"
+          for r in openOODA/website openOODA-core/ooda openOODA-system/ooda-kernel openOODA-apps/ooda-browser; do
+            out=$(gh api "repos/$r" --jq '.full_name' 2>&1 | head -1)
+            echo "$r -> $out"
+          done
+          echo "--- REST: actions/runs ---"
+          for r in openOODA/website openOODA-core/ooda; do
+            out=$(gh api "repos/$r/actions/runs?per_page=1" --jq '.total_count' 2>&1 | head -1)
+            echo "$r -> $out"
+          done
+          echo "--- GraphQL: organization(login:) ---"
+          for o in openOODA openOODA-core; do
+            out=$(gh api graphql -F org="$o" -f query='query($org:String!){organization(login:$org){repositories(first:3){nodes{name}}}}' --jq '.data.organization.repositories.nodes[].name' 2>&1 | tr '\n' ' ')
+            echo "$o -> $out"
+          done
+          echo "--- GraphQL: repository(owner:,name:) ---"
+          for r in "openOODA-core:ooda" "openOODA-system:ooda-kernel"; do
+            owner="${r%%:*}"; name="${r##*:}"
+            out=$(gh api graphql -F owner="$owner" -F name="$name" -f query='query($owner:String!,$name:String!){repository(owner:$owner,name:$name){name refs(refPrefix:"refs/tags/",first:3){nodes{name}}}}' --jq '.data.repository.name' 2>&1 | head -1)
+            echo "$owner/$name -> $out"
+          done
+          echo "--- rate limit ---"
+          gh api rate_limit --jq '.resources.core | "\(.limit) remaining \(.remaining)"' 2>&1
