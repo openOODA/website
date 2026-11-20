@@ -1,7 +1,7 @@
 # website (openOODA) — Public Documentation & Static Site Generator
 
 Public source for [https://openooda.org](https://openooda.org) (`@openOODA`), served via
-GitHub Pages from `docs/` (the sealed webroot). **v2.1.1** ships the canonical
+GitHub Pages from `docs/` (the sealed webroot). **v2.2.0** ships the canonical
 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core`
 (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) = `70` product packages,
 `78` repositories total. The repository is a pure `.oo` conformance surface over the
@@ -60,6 +60,12 @@ Each repository is scored on five gates — `VERSIONED`, `CITED`, `GREEN`, `SHIP
 `CLEAN` — and the tier is decided by the **first gate that fails**, so a repository
 is never credited for a later gate while an earlier one is red. Tiers: `COMPLETE`,
 `BLOCKED`, `STALE`, `CI RED`, `NO CI GATE`, `SKELETON`.
+
+**CI/CD is gated in `@openOODA` only** — that is the one organization that carries
+CI/CD gates, and the other three ship without them. `CITED` and `GREEN` therefore do
+not apply outside `@openOODA`, and a repository only counts as gated when it actually
+carries a CI workflow file, so a verdict left behind by a removed workflow never
+counts against it.
 
 The webroot stays static: the tracker is rendered into the HTML at generation time and
 the browser only ever reads local files, so no remote subresource load is introduced. and before Pages deploy.

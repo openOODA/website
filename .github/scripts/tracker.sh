@@ -37,6 +37,10 @@ if not TOKEN:
 ORGS = ["openOODA", "openOODA-core", "openOODA-system", "openOODA-apps"]
 ORG_SHORT = {"openOODA": "ROOT", "openOODA-core": "CORE",
              "openOODA-system": "SYSTEM", "openOODA-apps": "APPS"}
+# CI/CD is gated in @openOODA only. The other three organizations ship without
+# gates, so their CI/CD is not tracked and their tier is decided by the gates
+# that do apply to them.
+CI_ORGS = {"openOODA"}
 API = "https://api.github.com/graphql"
 REST = "https://api.github.com"
 PAGE = os.path.join(ROOT, "docs", "index.html")
@@ -155,16 +159,23 @@ def collect_repos():
 def side_data(repo):
     """Latest CI verdict for a repository, from its Actions history."""
     org, name = repo["org"], repo["name"]
+    gated = org in CI_ORGS
+    workflows = None
+    if gated:
+        workflows = rest("/repos/%s/%s/contents/.github/workflows" % (org, name))
+    has_ci_wf = isinstance(workflows, list) and any(
+        "ci" in (w.get("name") or "").lower() for w in workflows)
     runs = rest("/repos/%s/%s/actions/runs?per_page=30" % (org, name))
     all_runs = (runs or {}).get("workflow_runs") or []
     ci_runs = [x for x in all_runs if "ci" in (x.get("name") or "").lower()]
     pick = ci_runs or all_runs
     if not pick:
-        return {"ci": None}
+        return {"ci": None, "has_ci_wf": has_ci_wf, "gated": gated}
     x = pick[0]
     return {"ci": {"conclusion": x.get("conclusion") or x.get("status"),
                    "workflow": (x.get("name") or "")[:28],
-                   "date": (x.get("created_at") or "")[:10]}}
+                   "date": (x.get("created_at") or "")[:10]},
+            "has_ci_wf": has_ci_wf, "gated": gated}
 
 
 # --------------------------------------------------------------------------
@@ -192,7 +203,7 @@ TIERS = [
 GATE_TIER = {"versioned": "skeleton", "cited": "uncited", "green": "red",
              "shipping": "stale", "clean": "blocked"}
 TIER_LABEL = {key: label for key, label, _n in TIERS}
-TILES = [("complete", "COMPLETE"), ("red", "CI RED"), ("uncited", "NO CI GATE")]
+TILES = [("complete", "COMPLETE"), ("red", "CI RED @ROOT"), ("uncited", "NO CI GATE @ROOT")]
 
 
 def semver(tag):
@@ -234,21 +245,28 @@ def build_rows(repos):
         released = sem[0][1] if sem else None
         ci = r.get("ci")
         verdict = ci["conclusion"] if ci else "none"
+        gated = r.get("gated", False)
+        carries_ci = gated and r.get("has_ci_wf")
         gates = {
             "versioned": bool(version),
-            "cited": verdict != "none",
-            "green": verdict == "success",
+            "cited": (carries_ci and verdict != "none") if gated else None,
+            "green": (carries_ci and verdict == "success") if gated else None,
             "shipping": released is not None and days_since(released) <= 30,
             "clean": r["issues"]["totalCount"] == 0 and r["pullRequests"]["totalCount"] == 0,
         }
         tier = "complete"
         for gate in GATES:
+            if gates[gate] is None:
+                continue
             if not gates[gate]:
                 tier = GATE_TIER[gate]
                 break
+        applicable = [g for g in GATES if gates[g] is not None]
+        passed = sum(1 for g in applicable if gates[g])
         rows.append({
             "org": r["org"], "name": r["name"], "version": version,
-            "gates": gates, "tier": tier, "score": sum(1 for g in GATES if gates[g]),
+            "gates": gates, "tier": tier, "score": passed, "applicable": len(applicable),
+            "gated": gated, "has_ci_wf": bool(r.get("has_ci_wf")),
             "ci": verdict, "ciwf": ci["workflow"] if ci else "",
             "cidate": ci["date"] if ci else "",
             "releases": len(sem),
@@ -286,7 +304,7 @@ def render(rows):
     releases = sum(r["releases"] for r in rows)
     out = []
     out.append('          <p class="tracker-sub">%d REPOSITORIES • %d RELEASES SHIPPED • '
-               'LIVE CENSUS OF ALL 4 ORGANIZATIONS</p>' % (total, releases))
+               'CI/CD IS GATED IN @openOODA ONLY</p>' % (total, releases))
     out.append('          <div class="tk-summary">')
     out.append('            <div class="tk-tile"><span class="tk-num">%d</span>'
                '<span class="tk-lbl">REPOSITORIES</span></div>' % total)
@@ -319,7 +337,11 @@ def render(rows):
         ci_label = {"success": "GREEN", "failure": "RED", "startup_failure": "RED",
                     "cancelled": "RED", "skipped": "SKIP"}.get(r["ci"], "NO CI")
         ci_kind = "success" if r["ci"] == "success" else ("none" if r["ci"] == "none" else "failure")
-        pct = int(round(100.0 * r["score"] / len(GATES)))
+        if not r.get("gated"):
+            ci_label, ci_kind = "&#8212;", "na"
+        elif not r.get("has_ci_wf"):
+            ci_label, ci_kind = "NO CI", "none"
+        pct = int(round(100.0 * r["score"] / r["applicable"])) if r["applicable"] else 0
         out.append(
             '            <a class="tk-row" data-org="%s" data-tier="%s" data-name="%s" '
             'data-search="%s" data-version="%s" data-ci="%s" data-releases="%d" '
@@ -340,14 +362,18 @@ def render(rows):
                 ORG_SHORT[r["org"]], esc(r["name"]), esc(r["version"] or "UNRELEASED"),
                 r["tier"], TIER_LABEL[r["tier"]],
                 ci_kind, ci_label, r["releases"], ago(r["pushed"]),
-                r["score"], len(GATES), pct))
+                r["score"], r["applicable"], pct))
     out.append('          </div>')
     out.append('          <p class="tk-legend">Completion is fail-closed: a repository is credited only when '
                'every earlier gate passes — <code>VERSIONED</code> (a semver release tag) → '
                '<code>CITED</code> (a CI gate has run) → <code>GREEN</code> (that gate concluded '
                'successfully) → <code>SHIPPING</code> (released within 30 days) → <code>CLEAN</code> '
                '(no open issues and no open pull requests). The first red gate decides the tier, so a '
-               'repository is never credited for a later gate while an earlier one is red.</p>')
+               'repository is never credited for a later gate while an earlier one is red. '
+               '<code>CITED</code> and <code>GREEN</code> apply to <code>@openOODA</code> only — that is '
+               'the one organization that carries CI/CD gates. The other three ship without them, so those '
+               'gates do not apply to their repositories and their tier is decided by '
+               '<code>VERSIONED</code> → <code>SHIPPING</code> → <code>CLEAN</code>.</p>')
     return "\n".join(out)
 
 

@@ -224,6 +224,9 @@
 .tk-ci[data-ci="none"] {
   color: var(--text-dim);
 }
+.tk-ci[data-ci="na"] {
+  color: var(--text-dim);
+}
 
 .tk-rel,
 .tk-pushed {

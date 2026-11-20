@@ -25,7 +25,7 @@
     uncited: 4,
     skeleton: 5
   };
-  var CI_ORDER = { success: 0, failure: 1, none: 2 };
+  var CI_ORDER = { success: 0, failure: 1, none: 2, na: 3 };
 
   function tierOf(row) {
     return row.getAttribute("data-tier") || "skeleton";

@@ -1,6 +1,6 @@
 # `@openOODA/website`
 
-Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.1.1** documents the canonical 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) — `70` product packages, `78` repositories total.
+Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.2.0** documents the canonical 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) — `70` product packages, `78` repositories total.
 
 **Zero telemetry.** The shipped webroot carries no third-party beacons or remote
 subresource loads — `core/site_check.oo`, `tests/`, `make site-gate`, both CI gates,
@@ -29,13 +29,20 @@ Each repository is scored on five gates, and the tier is decided by the **first 
 that fails** — so a repository is never credited for a later gate while an earlier one
 is red:
 
-| Gate | Passes when |
-| :--- | :--- |
-| `VERSIONED` | the repository carries a semver release tag |
-| `CITED` | a CI gate has run against it |
-| `GREEN` | that gate concluded successfully |
-| `SHIPPING` | the latest release is within 30 days |
-| `CLEAN` | no open issues and no open pull requests |
+| Gate | Passes when | Applies to |
+| :--- | :--- | :--- |
+| `VERSIONED` | the repository carries a semver release tag | every repository |
+| `CITED` | a CI gate has run against it | `@openOODA` only |
+| `GREEN` | that gate concluded successfully | `@openOODA` only |
+| `SHIPPING` | the latest release is within 30 days | every repository |
+| `CLEAN` | no open issues and no open pull requests | every repository |
+
+**CI/CD is gated in `@openOODA` only.** That is the one organization that carries
+CI/CD gates; the other three ship without them. The `CITED` and `GREEN` gates
+therefore do not apply to `@openOODA-core`, `@openOODA-system` and `@openOODA-apps`,
+and their tier is decided by `VERSIONED` → `SHIPPING` → `CLEAN`. A repository only
+counts as gated when it actually carries a CI workflow file — a verdict left behind
+by a workflow that has since been removed does not count.
 
 | Tier | Meaning |
 | :--- | :--- |
