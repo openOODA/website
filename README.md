@@ -1,6 +1,6 @@
 # `@openOODA/website`
 
-Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.0.0** documents the canonical 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) — `70` product packages, `78` repositories total.
+Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.1.0** documents the canonical 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) — `70` product packages, `78` repositories total.
 
 **Zero telemetry.** The shipped webroot carries no third-party beacons or remote
 subresource loads — `core/site_check.oo`, `tests/`, `make site-gate`, both CI gates,
@@ -9,7 +9,7 @@ full invariant and verification ladder.
 
 ## Layout
 
-- [`docs/index.html`](docs/index.html) — Main landing page, interactive `ootheme` switcher, 4-organization explorer, and direct ISO / Buildbox downloads
+- [`docs/index.html`](docs/index.html) — Main landing page, interactive `ootheme` switcher, 4-organization explorer, repository completion tracker, and direct ISO / Buildbox downloads
 - [docs/install.sh](docs/install.sh) — Installer copy served at https://openooda.org/install.sh (v2.0.0)
 - [`docs/CNAME`](docs/CNAME) — Custom domain binding (`openooda.org`)
 - [`docs/styles/`](docs/styles) & [`docs/js/`](docs/js) — Stylesheets and interactive preview scripts (local only)
@@ -17,12 +17,54 @@ full invariant and verification ladder.
 - [`cli/main.oo`](cli/main.oo) — `website check|about` conformance verbs (`bin/website`)
 - [`core/site_check.oo`](core/site_check.oo) — Reference, anchor, integrity & zero-telemetry fold over `docs/`
 - [`tests/`](tests) — Functional + refusal `.oo` suites (8 + 14 assertions)
+- [`.github/scripts/tracker.sh`](.github/scripts/tracker.sh) — Regenerates the completion tracker and every live version claim from the live repository state
+
+## Repository Completion Tracker
+
+The tracker on the landing page is a live census of all `78` repositories across the
+four organizations. It is generated, never hand-edited, so the page cannot drift from
+the repositories it describes.
+
+Each repository is scored on five gates, and the tier is decided by the **first gate
+that fails** — so a repository is never credited for a later gate while an earlier one
+is red:
+
+| Gate | Passes when |
+| :--- | :--- |
+| `VERSIONED` | the repository carries a semver release tag |
+| `CITED` | a CI gate has run against it |
+| `GREEN` | that gate concluded successfully |
+| `SHIPPING` | the latest release is within 30 days |
+| `CLEAN` | no open issues and no open pull requests |
+
+| Tier | Meaning |
+| :--- | :--- |
+| `COMPLETE` | every gate passes |
+| `BLOCKED` | shipped, but carries open work |
+| `STALE` | released, but not shipped in 30 days |
+| `CI RED` | gated, and the gate is red |
+| `NO CI GATE` | no CI gate has run |
+| `SKELETON` | no release tag |
+
+Version numbers printed anywhere on the page are wrapped in
+`<span data-ver="org/repo">` and rewritten by the same generator, so a version on the
+page always matches the repository's latest release tag.
+
+```sh
+export GH_TOKEN=...            # or GITHUB_TOKEN
+make tracker                   # regenerate docs/index.html from live state
+make tracker-check             # fail when docs/index.html is stale
+```
+
+`.github/workflows/tracker.yml` runs the same generator on a schedule and opens a pull
+request when the page has fallen behind.
 
 ## Verify
 
 ```sh
 make build && make test     # bin/website + both .oo suites + site gate
 make verify                 # shape/file/academy/link laws + ooda-compiler check + site-gate
+make tracker-check          # page still matches the live repository state
 ~/.openooda/bin/ooda-verify cycle .   # 8-hat quorum_mask=255, telemetry_beacons=0
 ```
 
