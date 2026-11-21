@@ -1,6 +1,6 @@
 # `@openOODA/website`
 
-Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.4.4** documents the canonical 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) — `70` product packages, `78` repositories total.
+Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.5.0** documents the canonical 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) — `70` product packages, `78` repositories total.
 
 **Zero telemetry.** The shipped webroot carries no third-party beacons or remote
 subresource loads — `core/site_check.oo`, `tests/`, `make site-gate`, both CI gates,
@@ -35,7 +35,7 @@ is red:
 | `ORG` | the canonical organization: root, core, system or apps |
 | `VERSION` | the latest semver release tag on the repository |
 | `CONTRACT` | the fail-closed completion verdict, with the gate count it passed |
-| `ATTESTED` | `SIGNED` when the signed package index in `@openOODA/catalog` attests that exact release, `DRIFT` when the repository has shipped ahead of the catalog |
+| `ATTESTED` | `SIGNED` when the signed package index in `@openOODA/catalog` attests the release the repository declares, `DRIFT` when the repository has shipped ahead of the catalog |
 | `CAPS` | the capability set the catalog records for the package — exactly the authority it may hold, never ambient |
 | `GATE` | the CI verdict |
 | `PUSHED` | how long ago the repository was last pushed |
@@ -79,6 +79,12 @@ export GH_TOKEN=...            # or GITHUB_TOKEN
 make tracker                   # regenerate docs/index.html from live state
 make tracker-check             # fail when docs/index.html is stale
 ```
+
+The catalog is kept current by the release hub itself: `sync-hub` records the version,
+capabilities and dependencies each package declares at the commit it built, rewrites
+the signed index from those values, and re-signs it. The registry therefore tracks
+the source instead of drifting behind it, and a `DRIFT` row means a package shipped
+after the last hub run rather than that the registry fell behind.
 
 `.github/workflows/tracker.yml` runs the same generator on a schedule and opens a pull
 request when the page has fallen behind.

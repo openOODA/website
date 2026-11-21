@@ -1,7 +1,7 @@
 # website (openOODA) — Public Documentation & Static Site Generator
 
 Public source for [https://openooda.org](https://openooda.org) (`@openOODA`), served via
-GitHub Pages from `docs/` (the sealed webroot). **v2.4.4** ships the canonical
+GitHub Pages from `docs/` (the sealed webroot). **v2.5.0** ships the canonical
 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core`
 (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) = `70` product packages,
 `78` repositories total. The repository is a pure `.oo` conformance surface over the
@@ -64,7 +64,10 @@ is never credited for a later gate while an earlier one is red. Tiers: `COMPLETE
 Every column is a directly observed fact rather than an inference. `ATTESTED`
 compares the repository's latest release tag against the signed package index in
 `@openOODA/catalog` — `SIGNED` when the catalog attests that exact release,
-`DRIFT` when the repository has shipped ahead of the catalog. `CAPS` is the
+`DRIFT` when the repository has shipped ahead of the catalog. The release hub
+owns that index: `sync-hub` records what each package declares at the commit it
+built, rewrites the index from those values and re-signs it, so the registry
+tracks the source rather than drifting behind it. `CAPS` is the
 capability set the catalog records for the package. A matrix above the table rolls
 the same facts up per layer.
 
