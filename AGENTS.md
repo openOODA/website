@@ -1,7 +1,7 @@
 # website (openOODA) — Public Documentation & Static Site Generator
 
 Public source for [https://openooda.org](https://openooda.org) (`@openOODA`), served via
-GitHub Pages from `docs/` (the sealed webroot). **v2.5.0** ships the canonical
+GitHub Pages from `docs/` (the sealed webroot). **v2.5.1** ships the canonical
 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core`
 (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) = `70` product packages,
 `78` repositories total. The repository is a pure `.oo` conformance surface over the
