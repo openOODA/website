@@ -1,6 +1,6 @@
 # `@openOODA/website`
 
-Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.3.1** documents the canonical 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) — `70` product packages, `78` repositories total.
+Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.4.0** documents the canonical 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) — `70` product packages, `78` repositories total.
 
 **Zero telemetry.** The shipped webroot carries no third-party beacons or remote
 subresource loads — `core/site_check.oo`, `tests/`, `make site-gate`, both CI gates,
@@ -29,6 +29,20 @@ Each repository is scored on five gates, and the tier is decided by the **first 
 that fails** — so a repository is never credited for a later gate while an earlier one
 is red:
 
+| Column | What it reports |
+| :--- | :--- |
+| `REPO` | the repository, and the organization that owns it |
+| `ORG` | the canonical organization: root, core, system or apps |
+| `VERSION` | the latest semver release tag on the repository |
+| `CONTRACT` | the fail-closed completion verdict, with the gate count it passed |
+| `ATTESTED` | `SIGNED` when the signed package index in `@openOODA/catalog` attests that exact release, `DRIFT` when the repository has shipped ahead of the catalog |
+| `CAPS` | the capability set the catalog records for the package — exactly the authority it may hold, never ambient |
+| `GATE` | the CI verdict |
+| `PUSHED` | how long ago the repository was last pushed |
+
+The contract verdict is fail-closed, so a repository is credited only when every
+earlier gate passes:
+
 | Gate | Passes when | Applies to |
 | :--- | :--- | :--- |
 | `VERSIONED` | the repository carries a semver release tag | every repository |
@@ -36,6 +50,9 @@ is red:
 | `GREEN` | that gate concluded successfully | `@openOODA` only |
 | `SHIPPING` | the latest release is within 30 days | every repository |
 | `CLEAN` | no open issues and no open pull requests | every repository |
+
+A matrix above the table rolls the same facts up per layer, so the shape of the
+stack is legible before any single row is read.
 
 **CI/CD is gated in `@openOODA` only.** That is the one organization that carries
 CI/CD gates; the other three ship without them. The `CITED` and `GREEN` gates

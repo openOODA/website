@@ -25,7 +25,7 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
 python3 - "$ROOT" "${1:-}" <<'PYEOF'
-import datetime, json, os, re, sys, urllib.request, urllib.error
+import base64, datetime, json, os, re, sys, urllib.request, urllib.error
 from concurrent.futures import ThreadPoolExecutor
 
 ROOT = sys.argv[1]
@@ -138,6 +138,21 @@ def all_tags(org, name):
             return tags
 
 
+def fetch_catalog():
+    """The signed package index: name|version|capabilities|standard|digest."""
+    raw = rest("/repos/openOODA/catalog/contents/index")
+    if not raw or "content" not in raw:
+        return {}
+    body = base64.b64decode(raw["content"]).decode("utf-8", "replace")
+    out = {}
+    for line in body.splitlines():
+        parts = line.strip().split("|")
+        if len(parts) >= 3 and parts[0]:
+            out[parts[0]] = {"version": parts[1], "caps": parts[2],
+                              "digest": parts[4] if len(parts) > 4 else ""}
+    return out
+
+
 def collect_repos():
     repos = []
     for org in ORGS:
@@ -193,11 +208,11 @@ def side_data(repo):
 
 GATES = ["versioned", "cited", "green", "shipping", "clean"]
 TIERS = [
-    ("skeleton", "SKELETON", "no release tag"),
-    ("uncited", "NO CI GATE", "no CI gate has run"),
+    ("skeleton", "UNRELEASED", "no release tag"),
+    ("uncited", "UNGATED", "no CI gate has run"),
     ("red", "CI RED", "gated, and the gate is red"),
     ("stale", "STALE", "released, but not shipped in 30 days"),
-    ("blocked", "BLOCKED", "shipped, but carries open work"),
+    ("blocked", "OPEN WORK", "shipped, but carries open work"),
     ("complete", "COMPLETE", "every gate passes"),
 ]
 GATE_TIER = {"versioned": "skeleton", "cited": "uncited", "green": "red",
@@ -232,7 +247,7 @@ def days_since(stamp):
     return (NOW - stamp) / 86400.0
 
 
-def build_rows(repos):
+def build_rows(repos, catalog):
     rows = []
     for r in repos:
         tags = r["tags"]
@@ -245,6 +260,13 @@ def build_rows(repos):
         released = sem[0][1] if sem else None
         ci = r.get("ci")
         verdict = ci["conclusion"] if ci else "none"
+        entry = catalog.get(r["name"])
+        if not entry:
+            attested, caps, catalog_ver = "none", "", ""
+        elif entry["version"] == (version or "").lstrip("v"):
+            attested, caps, catalog_ver = "signed", entry["caps"], entry["version"]
+        else:
+            attested, caps, catalog_ver = "drift", entry["caps"], entry["version"]
         gated = r.get("gated", False)
         carries_ci = gated and r.get("has_ci_wf")
         gates = {
@@ -267,6 +289,7 @@ def build_rows(repos):
             "org": r["org"], "name": r["name"], "version": version,
             "gates": gates, "tier": tier, "score": passed, "applicable": len(applicable),
             "gated": gated, "has_ci_wf": bool(r.get("has_ci_wf")),
+            "attested": attested, "caps": caps, "catalog_ver": catalog_ver,
             "ci": verdict, "ciwf": ci["workflow"] if ci else "",
             "cidate": ci["date"] if ci else "",
             "releases": len(sem),
@@ -302,17 +325,29 @@ def render(rows):
     for r in rows:
         counts[r["tier"]] = counts.get(r["tier"], 0) + 1
     releases = sum(r["releases"] for r in rows)
+    signed = sum(1 for r in rows if r["attested"] == "signed")
+    drift = sum(1 for r in rows if r["attested"] == "drift")
     out = []
     out.append('          <p class="tracker-sub">%d REPOSITORIES • %d RELEASES SHIPPED • '
-               'CI/CD IS GATED IN @openOODA ONLY</p>' % (total, releases))
-    out.append('          <div class="tk-summary">')
-    out.append('            <div class="tk-tile"><span class="tk-num">%d</span>'
-               '<span class="tk-lbl">REPOSITORIES</span></div>' % total)
-    for key, label in TILES:
-        out.append('            <div class="tk-tile" data-tier="%s"><span class="tk-num">%d</span>'
-                   '<span class="tk-lbl">%s</span></div>' % (key, counts.get(key, 0), label))
-    out.append('            <div class="tk-tile"><span class="tk-num">%d</span>'
-               '<span class="tk-lbl">RELEASES</span></div>' % releases)
+               'EVERY CELL BELOW IS A DIRECTLY OBSERVED FACT, NEVER AN INFERENCE</p>'
+               % (total, releases))
+    out.append('          <div class="tk-matrix" id="tk-matrix">')
+    out.append('            <div class="tk-mrow tk-mhead"><span>LAYER</span><span>REPOS</span>'
+               '<span>CATALOGUED</span><span>SIGNED</span><span>DRIFT</span>'
+               '<span>COMPLETE</span></div>')
+    for org in ORGS:
+        layer = [r for r in rows if r["org"] == org]
+        cat = sum(1 for r in layer if r["attested"] != "none")
+        sg = sum(1 for r in layer if r["attested"] == "signed")
+        dr = sum(1 for r in layer if r["attested"] == "drift")
+        cp = sum(1 for r in layer if r["tier"] == "complete")
+        out.append('            <div class="tk-mrow" data-org="%s"><span class="tk-mname">%s</span>'
+                   '<span>%d</span><span>%s</span><span>%d</span><span>%d</span><span>%d</span></div>'
+                   % (org, ORG_SHORT[org], len(layer), cat if cat else "—", sg, dr, cp))
+    out.append('            <div class="tk-mrow tk-mtotal"><span class="tk-mname">TOTAL</span>'
+               '<span>%d</span><span>%d</span><span>%d</span><span>%d</span><span>%d</span></div>'
+               % (total, total - sum(1 for r in rows if r["attested"] == "none"), signed, drift,
+                  counts.get("complete", 0)))
     out.append('          </div>')
     out.append('          <div class="tk-controls">')
     out.append('            <button type="button" class="tk-chip is-on" data-org="all">ALL %d</button>' % total)
@@ -324,62 +359,78 @@ def render(rows):
                'placeholder="FILTER REPOSITORY…" aria-label="Filter repositories" />')
     out.append('            <span class="tk-count" id="tk-count">%d / %d</span>' % (total, total))
     out.append('          </div>')
+    out.append('          <details class="tk-legend-box" open>')
+    out.append('            <summary class="tk-legend-sum">HOW THE CONTRACT IS SCORED</summary>')
+    out.append('            <p class="tk-legend">Every cell is a directly observed fact, never an '
+               'inference. <code>VERSION</code> is the repository\u2019s latest semver release tag. '
+               '<code>ATTESTED</code> compares that tag against the signed package index in '
+               '<code>@openOODA/catalog</code>: <code>SIGNED</code> means the catalog attests this '
+               'exact release with an audited digest, <code>DRIFT</code> means the repository has '
+               'shipped ahead of the catalog. <code>CAPS</code> is the capability set the catalog '
+               'records for the package \u2014 exactly the authority it may hold, never ambient. '
+               '<code>GATE</code> is the CI verdict, and it applies to <code>@openOODA</code> only, '
+               'the one organization that carries CI/CD gates; the other three ship without them, so '
+               'those gates do not apply to their repositories. <code>CONTRACT</code> is the '
+               'fail-closed verdict \u2014 a repository is credited only when every earlier gate '
+               'passes: <code>RELEASED</code> \u2192 <code>CITED</code> \u2192 <code>GREEN</code> '
+               '\u2192 <code>SHIPPING</code> \u2192 <code>CLEAN</code>.</p>')
+    out.append('          </details>')
     out.append('          <div class="tk-head" id="tk-head">'
-               '<span data-sort="name">REPOSITORY</span>'
+               '<span data-sort="name">REPO</span>'
+               '<span data-sort="org">ORG</span>'
                '<span data-sort="version">VERSION</span>'
-               '<span data-sort="tier">TIER</span>'
-               '<span data-sort="ci">CI</span>'
-               '<span data-sort="releases">REL</span>'
-               '<span data-sort="pushed">PUSHED</span>'
-               '<span data-sort="score">COMPLETION</span></div>')
+               '<span data-sort="score">CONTRACT</span>'
+               '<span data-sort="attested">ATTESTED</span>'
+               '<span data-sort="caps">CAPS</span>'
+               '<span data-sort="ci">GATE</span>'
+               '<span data-sort="pushed">PUSHED</span></div>')
     out.append('          <div class="tk-rows" id="tk-rows">')
     for r in rows:
         ci_label = {"success": "GREEN", "failure": "RED", "startup_failure": "RED",
-                    "cancelled": "RED", "skipped": "SKIP"}.get(r["ci"], "NO CI")
+                    "cancelled": "RED", "skipped": "SKIP"}.get(r["ci"], "NO GATE")
         ci_kind = "success" if r["ci"] == "success" else ("none" if r["ci"] == "none" else "failure")
         if not r.get("gated"):
             ci_label, ci_kind = "&#8212;", "na"
         elif not r.get("has_ci_wf"):
-            ci_label, ci_kind = "NO CI", "none"
+            ci_label, ci_kind = "NO GATE", "none"
         pct = int(round(100.0 * r["score"] / r["applicable"])) if r["applicable"] else 0
+        att_label = {"signed": "SIGNED", "drift": "DRIFT"}.get(r["attested"], "&#8212;")
+        caps = r["caps"] or "&#8212;"
+        caps_title = r["caps"] or "not a catalogued package"
+        if r["attested"] == "drift":
+            att_title = "catalog attests %s; this repository has shipped ahead" % r["catalog_ver"]
+        elif r["attested"] == "signed":
+            att_title = "the signed catalog attests this release"
+        else:
+            att_title = "not a catalogued package"
         out.append(
             '            <a class="tk-row" data-org="%s" data-tier="%s" data-name="%s" '
             'data-search="%s" data-version="%s" data-ci="%s" data-releases="%d" '
-            'data-pushed="%d" data-score="%d" '
+            'data-pushed="%d" data-score="%d" data-attested="%s" data-caps="%s" '
             'href="https://github.com/%s/%s" target="_blank" rel="noopener noreferrer">'
-            '<code class="tk-name"><span class="tk-org">%s</span>%s</code>'
+            '<code class="tk-name">%s</code>'
+            '<span class="tk-org" data-org="%s">%s</span>'
             '<span class="tk-ver">%s</span>'
-            '<span class="tk-tier" data-tier="%s">%s</span>'
-            '<span class="tk-ci" data-ci="%s">%s</span>'
-            '<span class="tk-rel">%d</span>'
+            '<span class="tk-contract"><span class="tk-tier" data-tier="%s">%s</span>'
+            '<span class="tk-bar" title="%d of %d gates pass"><i style="width:%d%%"></i></span></span>'
+            '<span class="tk-att" data-att="%s" title="%s">%s</span>'
+            '<span class="tk-caps" title="%s">%s</span>'
+            '<span class="tk-gate" data-ci="%s">%s</span>'
             '<span class="tk-pushed">%s</span>'
-            '<span class="tk-bar" title="%d of %d gates pass"><i style="width:%d%%"></i></span>'
             '</a>' % (
                 r["org"], r["tier"], r["name"].lower(),
                 ("%s/%s" % (r["org"], r["name"])).lower(),
                 r["version"] or "", ci_kind, r["releases"], int(r["pushed"]), r["score"],
+                r["attested"], r["caps"].lower(),
                 r["org"], r["name"],
-                ORG_SHORT[r["org"]], esc(r["name"]), esc(r["version"] or "UNRELEASED"),
-                r["tier"], TIER_LABEL[r["tier"]],
-                ci_kind, ci_label, r["releases"], ago(r["pushed"]),
-                r["score"], r["applicable"], pct))
+                esc(r["name"]), r["org"], ORG_SHORT[r["org"]], esc(r["version"] or "UNRELEASED"),
+                r["tier"], TIER_LABEL[r["tier"]], r["score"], r["applicable"], pct,
+                r["attested"], esc(att_title), att_label,
+                esc(caps_title), caps,
+                ci_kind, ci_label, ago(r["pushed"])))
     out.append('          </div>')
-    out.append('          <p class="tk-legend">Completion is fail-closed: a repository is credited only when '
-               'every earlier gate passes — <code>VERSIONED</code> (a semver release tag) → '
-               '<code>CITED</code> (a CI gate has run) → <code>GREEN</code> (that gate concluded '
-               'successfully) → <code>SHIPPING</code> (released within 30 days) → <code>CLEAN</code> '
-               '(no open issues and no open pull requests). The first red gate decides the tier, so a '
-               'repository is never credited for a later gate while an earlier one is red. '
-               '<code>CITED</code> and <code>GREEN</code> apply to <code>@openOODA</code> only — that is '
-               'the one organization that carries CI/CD gates. The other three ship without them, so those '
-               'gates do not apply to their repositories and their tier is decided by '
-               '<code>VERSIONED</code> → <code>SHIPPING</code> → <code>CLEAN</code>.</p>')
     return "\n".join(out)
 
-
-# --------------------------------------------------------------------------
-# Page rewrite
-# --------------------------------------------------------------------------
 
 # --------------------------------------------------------------------------
 # Fail-closed census check
@@ -438,7 +489,9 @@ def main():
         tags = list(ex.map(lambda r: all_tags(r["org"], r["name"]), repos))
     for r, t in zip(repos, tags):
         r["tags"] = t
-    rows = build_rows(repos)
+    catalog = fetch_catalog()
+    print("tracker: signed catalog carries %d packages" % len(catalog))
+    rows = build_rows(repos, catalog)
     print("tracker: %d repositories" % len(rows))
     counts = {}
     for r in rows:

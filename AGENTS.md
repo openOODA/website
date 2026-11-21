@@ -1,7 +1,7 @@
 # website (openOODA) — Public Documentation & Static Site Generator
 
 Public source for [https://openooda.org](https://openooda.org) (`@openOODA`), served via
-GitHub Pages from `docs/` (the sealed webroot). **v2.3.1** ships the canonical
+GitHub Pages from `docs/` (the sealed webroot). **v2.4.0** ships the canonical
 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core`
 (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) = `70` product packages,
 `78` repositories total. The repository is a pure `.oo` conformance surface over the
@@ -59,7 +59,14 @@ matches that repository's latest release tag.
 Each repository is scored on five gates — `VERSIONED`, `CITED`, `GREEN`, `SHIPPING`,
 `CLEAN` — and the tier is decided by the **first gate that fails**, so a repository
 is never credited for a later gate while an earlier one is red. Tiers: `COMPLETE`,
-`BLOCKED`, `STALE`, `CI RED`, `NO CI GATE`, `SKELETON`.
+`OPEN WORK`, `STALE`, `CI RED`, `UNGATED`, `UNRELEASED`.
+
+Every column is a directly observed fact rather than an inference. `ATTESTED`
+compares the repository's latest release tag against the signed package index in
+`@openOODA/catalog` — `SIGNED` when the catalog attests that exact release,
+`DRIFT` when the repository has shipped ahead of the catalog. `CAPS` is the
+capability set the catalog records for the package. A matrix above the table rolls
+the same facts up per layer.
 
 **CI/CD is gated in `@openOODA` only** — that is the one organization that carries
 CI/CD gates, and the other three ship without them. `CITED` and `GREEN` therefore do

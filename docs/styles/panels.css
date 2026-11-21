@@ -23,11 +23,27 @@
    cannot be scrolled up to its own first line — with auto margins the top
    of an oversized section stays reachable and the section scrolls inside
    itself. */
-.panel:not(.review-stage) > *:first-child {
+/* A panel is a flex column that scrolls internally, so its children must keep
+   their natural height. Left shrinkable, the browser squashes them to fit the
+   viewport: the title collapsed onto its own min-height and overlapped the
+   paragraph below it, and the tracker row list collapsed to zero height. */
+.panel > * {
+  flex-shrink: 0;
+}
+/* The tracker is excluded: it fills its panel with a list that has to grow,
+   and an auto margin would take the free space before flex-grow could. */
+.panel:not(.review-stage):not(#tracker) > *:first-child {
   margin-top: auto;
 }
-.panel:not(.review-stage) > *:last-child {
+.panel:not(.review-stage):not(#tracker) > *:last-child {
   margin-bottom: auto;
+}
+
+/* The tracker carries a fleet rollup, a layer matrix and a long list, so it
+   needs the vertical room more than the other sections do. */
+#tracker {
+  padding-top: 36px;
+  padding-bottom: 36px;
 }
 
 .panel-label {

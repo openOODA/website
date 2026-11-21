@@ -224,10 +224,15 @@ code {
   opacity: 0;
   pointer-events: none;
   transform: translateY(4px);
+  /* Hidden with display, not opacity: an absolutely positioned tooltip is
+     still laid out while transparent, so it stretched the paragraph that
+     holds it past the viewport on a narrow screen. */
+  display: none;
   transition: opacity 0.12s steps(2), transform 0.12s steps(2);
 }
 .t:hover::after,
 .t:focus::after {
+  display: block;
   opacity: 1;
   transform: translateY(0);
 }

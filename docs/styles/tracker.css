@@ -1,4 +1,6 @@
-/* tracker.css — Repository Completion Tracker (live census of all 4 orgs) */
+/* tracker.css — Repository Completion Tracker
+   Every column is a directly observed fact: a release tag, a signed catalog
+   entry, a capability set, a CI verdict, a push date. Nothing is inferred. */
 
 .tracker-sub {
   font-size: 0.72rem;
@@ -7,54 +9,47 @@
   margin: 0 0 18px;
 }
 
-.tk-summary {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 10px;
+/* ---------------------------------------------------------- layer matrix */
+.tk-matrix {
+  border: 1px solid #1e2636;
+  border-bottom: none;
   margin-bottom: 16px;
 }
 
-.tk-tile {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 12px 14px;
-  background: var(--bg-card);
-  border: 1px solid #1e2636;
-  border-left: 3px solid var(--phosphor);
-  box-shadow: 3px 3px 0 0 #000;
+.tk-mrow {
+  display: grid;
+  grid-template-columns: minmax(88px, 1.2fr) repeat(5, minmax(52px, 0.8fr));
+  gap: 10px;
+  padding: 4px 12px;
+  border-bottom: 1px solid #1e2636;
+  font-size: 0.66rem;
+  color: var(--text-secondary);
 }
 
-.tk-tile[data-tier="red"] {
-  border-left-color: var(--color-red);
-}
-.tk-tile[data-tier="uncited"] {
-  border-left-color: var(--color-amber);
-}
-.tk-tile[data-tier="complete"] {
-  border-left-color: var(--color-green);
-}
-
-.tk-num {
-  font-size: 1.55rem;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--phosphor);
-}
-
-.tk-tile[data-tier="red"] .tk-num {
-  color: var(--color-red);
-}
-.tk-tile[data-tier="uncited"] .tk-num {
-  color: var(--color-amber);
-}
-
-.tk-lbl {
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
+.tk-mhead {
+  background: var(--bg-bar);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
   color: var(--text-muted);
 }
 
+.tk-mname {
+  color: var(--hot);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.tk-mtotal {
+  background: var(--bg-bar);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.tk-mtotal .tk-mname {
+  color: var(--phosphor);
+}
+
+/* -------------------------------------------------------------- controls */
 .tk-controls {
   display: flex;
   flex-wrap: wrap;
@@ -109,17 +104,68 @@
   color: var(--text-muted);
 }
 
+/* ------------------------------------------------------------- the legend */
+.tk-legend-box {
+  margin: 0 0 14px;
+  border: 1px solid #1e2636;
+  border-left: 3px solid var(--phosphor);
+  background: var(--bg-card);
+}
+
+.tk-legend-sum {
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  color: var(--hot);
+  padding: 6px 12px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.tk-legend-sum::-webkit-details-marker {
+  display: none;
+}
+
+.tk-legend-sum::before {
+  content: "[+] ";
+  color: var(--phosphor);
+}
+
+.tk-legend-box[open] .tk-legend-sum::before {
+  content: "[-] ";
+}
+
+.tk-legend {
+  margin: 0;
+  padding: 0 12px 12px;
+  font-size: 0.66rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.tk-legend code {
+  color: var(--text-secondary);
+}
+
+/* ---------------------------------------------------------------- the table */
 .tk-head,
 .tk-row {
   display: grid;
-  grid-template-columns: minmax(120px, 1.5fr) 84px 96px 76px 46px 84px minmax(90px, 1fr);
+  grid-template-columns:
+    minmax(112px, 1.35fr)
+    54px
+    78px
+    100px
+    76px
+    minmax(132px, 1.6fr)
+    68px
+    72px;
   gap: 10px;
   align-items: center;
 }
 
 .tk-head {
-  padding: 8px 12px;
-  font-size: 0.6rem;
+  padding: 6px 12px;
+  font-size: 0.58rem;
   letter-spacing: 0.14em;
   color: var(--text-muted);
   background: var(--bg-bar);
@@ -136,10 +182,29 @@
   color: var(--phosphor);
 }
 
+/* The filters stay pinned and the list fills whatever the panel has left
+   over, scrolling inside itself. The fleet rollups above it never move. */
+#tracker > .panel-label {
+  margin-top: 0;
+}
+
+#tracker > .tk-rows {
+  margin-bottom: 0;
+}
+
+.tk-controls {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: 6px 0;
+  background: var(--bg-deep);
+}
+
 .tk-rows {
+  flex: 1 1 0;
+  min-height: 180px;
   border: 1px solid #1e2636;
   box-shadow: 3px 3px 0 0 #000;
-  max-height: 620px;
   overflow-y: auto;
 }
 
@@ -160,13 +225,14 @@
 }
 
 .tk-row[data-tier="complete"] {
-  border-left-color: var(--color-green);
+  border-left-color: #50fa7b;
 }
 .tk-row[data-tier="red"] {
-  border-left-color: var(--color-red);
+  border-left-color: #ff5555;
 }
-.tk-row[data-tier="uncited"] {
-  border-left-color: var(--color-amber);
+.tk-row[data-tier="uncited"],
+.tk-row[data-tier="blocked"] {
+  border-left-color: #ffb000;
 }
 
 .tk-name {
@@ -178,15 +244,13 @@
 }
 
 .tk-org {
-  display: inline-block;
-  margin-right: 9px;
-  padding: 1px 4px;
-  font-size: 0.52rem;
+  font-size: 0.54rem;
   letter-spacing: 0.1em;
-  vertical-align: 1px;
   color: var(--text-dim);
   border: 1px solid #1e2636;
   border-right-width: 2px;
+  padding: 1px 4px;
+  white-space: nowrap;
 }
 
 .tk-ver {
@@ -194,50 +258,39 @@
   color: var(--color-cyan);
 }
 
+.tk-contract {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
 .tk-tier {
   font-size: 0.58rem;
   letter-spacing: 0.08em;
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .tk-tier[data-tier="complete"] {
-  color: var(--color-green);
+  color: #50fa7b;
 }
 .tk-tier[data-tier="red"] {
-  color: var(--color-red);
+  color: #ff5555;
 }
-.tk-tier[data-tier="uncited"] {
-  color: var(--color-amber);
+.tk-tier[data-tier="uncited"],
+.tk-tier[data-tier="blocked"] {
+  color: #ffb000;
 }
-
-.tk-ci {
-  font-size: 0.58rem;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-}
-
-.tk-ci[data-ci="success"] {
-  color: var(--color-green);
-}
-.tk-ci[data-ci="failure"] {
-  color: var(--color-red);
-}
-.tk-ci[data-ci="none"] {
-  color: var(--text-dim);
-}
-.tk-ci[data-ci="na"] {
-  color: var(--text-dim);
-}
-
-.tk-rel,
-.tk-pushed {
-  font-size: 0.64rem;
-  color: var(--text-muted);
+.tk-tier[data-tier="stale"] {
+  color: #00e5ff;
 }
 
 .tk-bar {
   display: block;
-  height: 7px;
+  width: 100%;
+  height: 6px;
   background: #111823;
   border: 1px solid #1e2636;
 }
@@ -245,37 +298,136 @@
 .tk-bar i {
   display: block;
   height: 100%;
-  background: var(--phosphor);
+  background: #50fa7b;
 }
 
 .tk-row[data-tier="red"] .tk-bar i {
-  background: var(--color-red);
+  background: #ff5555;
 }
-.tk-row[data-tier="uncited"] .tk-bar i {
-  background: var(--color-amber);
+.tk-row[data-tier="uncited"] .tk-bar i,
+.tk-row[data-tier="blocked"] .tk-bar i {
+  background: #ffb000;
 }
 
-.tk-legend {
-  margin: 12px 0 0;
-  font-size: 0.66rem;
-  line-height: 1.6;
+.tk-att {
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.tk-att[data-att="signed"] {
+  color: #50fa7b;
+}
+.tk-att[data-att="drift"] {
+  color: #ffb000;
+}
+
+.tk-caps {
+  font-size: 0.58rem;
   color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.tk-legend code {
-  color: var(--text-secondary);
+.tk-gate {
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  white-space: nowrap;
 }
 
+.tk-gate[data-ci="success"] {
+  color: #50fa7b;
+}
+.tk-gate[data-ci="failure"] {
+  color: #ff5555;
+}
+
+.tk-pushed {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------- narrow */
 @media (max-width: 760px) {
-  .tk-head,
+  .tk-mrow {
+    grid-template-columns: minmax(66px, 1fr) repeat(3, minmax(44px, 0.7fr));
+    gap: 8px;
+    padding: 6px 10px;
+    font-size: 0.62rem;
+  }
+
+  .tk-mrow > span:nth-child(2),
+  .tk-mrow > span:nth-child(3) {
+    display: none;
+  }
+
+  .tk-head {
+    display: none;
+  }
+
+  /* The table becomes a card list: one card per repository. */
+  .tk-rows {
+    min-height: 240px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
   .tk-row {
-    grid-template-columns: minmax(90px, 1.4fr) 72px 76px 64px 70px;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "name org"
+      "ver contract"
+      "att gate"
+      "caps caps"
+      "push push";
+    row-gap: 5px;
+    column-gap: 10px;
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    background: var(--bg-card);
+    border: 1px solid #1e2636;
+    border-left: 3px solid transparent;
   }
-  .tk-head span:nth-child(5),
-  .tk-row .tk-rel {
-    display: none;
+
+  .tk-name {
+    grid-area: name;
   }
-  .tk-bar {
-    display: none;
+
+  .tk-org {
+    grid-area: org;
+    justify-self: end;
+  }
+
+  .tk-ver {
+    grid-area: ver;
+  }
+
+  .tk-contract {
+    grid-area: contract;
+    align-items: flex-end;
+  }
+
+  .tk-att {
+    grid-area: att;
+  }
+
+  .tk-gate {
+    grid-area: gate;
+    justify-self: end;
+  }
+
+  .tk-caps {
+    grid-area: caps;
+    font-size: 0.54rem;
+  }
+
+  .tk-pushed {
+    grid-area: push;
+    font-size: 0.56rem;
   }
 }
