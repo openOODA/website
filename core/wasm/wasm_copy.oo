@@ -1,0 +1,22 @@
+// # Website Copy Feedback Wasm32 Engine
+//
+// Logline: Exports copy button confirmation label, accent color token, and reset delay in pure .oo.
+// Setup: Uses standalone oo_wasm_heap_reset and oo_wasm_scratch_write_str linear-memory marshaling.
+// Beats:
+//   1. Reset Wasm scratch heap and write the confirmation string for copySnippet.
+//   2. Expose the theme CSS variable token for active confirmation state.
+//   3. Expose the fixed millisecond reset timer duration.
+
+export fn oo_ui_copy_label() -> Int {
+    oo_wasm_heap_reset();
+    return oo_wasm_scratch_write_str("[ COPIED! ]");
+}
+
+export fn oo_ui_copy_color() -> Int {
+    oo_wasm_heap_reset();
+    return oo_wasm_scratch_write_str("var(--color-green)");
+}
+
+export fn oo_ui_copy_timeout_ms() -> Int {
+    return 1600;
+}

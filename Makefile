@@ -11,33 +11,42 @@
 #   make clean      - remove build artifacts
 
 OODA_COMPILER ?= $(HOME)/.openooda/bin/ooda-compiler
+RESOLVED_COMP := $(if $(wildcard $(OODA_COMPILER)),$(OODA_COMPILER),$(HOME)/.openooda/bin/ooda-compiler)
 export OODA_COMPILER
-OODAC_BIN ?= $(OODA_COMPILER)
+OODAC_BIN ?= $(RESOLVED_COMP)
 export OODAC_BIN
 OODA_READDIR ?= $(HOME)/.openooda:$(CURDIR):/tmp:/usr:/lib:/lib64
 OODA_WRITEDIR ?= $(CURDIR):/tmp
 OO_LIST_AMBIENT_QUOTA ?= 8589934592
-OODA_OODAR_ROOT ?= $(HOME)/.openooda/bin
-export OODA_OODAR_ROOT
+OODA_RUNTIME_ROOT ?= $(HOME)/.openooda/bin
+export OODA_RUNTIME_ROOT
 OODA_STANDARD_ROOT ?= $(HOME)/.openooda/ooda-standard
 export OODA_STANDARD_ROOT
+unexport OODA_OODAR_ROOT
 unexport OODA_OOSTD_ROOT
 BIN := bin/website
+WASM := docs/js/site_ui.wasm
 TBIN := .ooda-cache/test_functional
 TBIN2 := .ooda-cache/test_refusal
 SRC := $(shell find . -name '*.oo' -not -path './.git/*' -not -path './bin/*' -not -path './dist/*' -not -path './.ooda-cache/*' | sort)
+WASM_SRC := $(sort $(wildcard core/wasm/*.oo))
 
-ENV := OO_LIST_AMBIENT_QUOTA=$(OO_LIST_AMBIENT_QUOTA) OO_LINT_ROOTS=$(CURDIR) OODA_COMPILER=$(OODA_COMPILER) OODAC_BIN=$(OODAC_BIN) OODA_FS_READDIR=$(OODA_READDIR) OODA_FS_WRITEDIR=$(OODA_WRITEDIR) OODA_OODAR_ROOT=$(OODA_OODAR_ROOT) OODA_STANDARD_ROOT=$(OODA_STANDARD_ROOT) OODA_NO_JAIL=1
+ENV := OO_LIST_AMBIENT_QUOTA=$(OO_LIST_AMBIENT_QUOTA) OO_LINT_ROOTS=$(CURDIR) OODA_COMPILER=$(RESOLVED_COMP) OODAC_BIN=$(RESOLVED_COMP) OODA_FS_READDIR=$(OODA_READDIR) OODA_FS_WRITEDIR=$(OODA_WRITEDIR) OODA_RUNTIME_ROOT=$(OODA_RUNTIME_ROOT) OODA_STANDARD_ROOT=$(OODA_STANDARD_ROOT) OODA_NO_JAIL=1
 
-.PHONY: all build test verify clean line-cap file-law academy density vocab shape link-law check site-gate tracker tracker-check assets version-check
+.PHONY: all build wasm test verify clean line-cap file-law academy density vocab shape link-law check site-gate tracker tracker-check assets version-check
 
 all: build verify test
 
-build: $(BIN)
+build: $(BIN) $(WASM)
+
+wasm: $(WASM)
+
+$(WASM): $(WASM_SRC)
+	$(ENV) $(RESOLVED_COMP) build core/wasm/site_ui.oo --target wasm32-unknown-unknown --shared -o $(WASM)
 
 $(BIN): $(SRC)
 	@mkdir -p bin dist .ooda-cache
-	$(ENV) $(OODA_COMPILER) build cli/main.oo -o $(BIN)
+	$(ENV) $(RESOLVED_COMP) build cli/main.oo -o $(BIN)
 	@chmod +x $(BIN)
 	@strip $(BIN) 2>/dev/null || true
 	@cp -f $(BIN) dist/website
@@ -111,8 +120,8 @@ vocab:
 shape:
 	@mkdir -p .ooda-cache; : > .ooda-cache/shape.now; \
 	for f in $$(find . -name "*.oo" -not -path "./.git/*" -not -path "./dist/*" -not -path "./.ooda-cache/*" -not -path "./bin/*"); do \
-		awk '/^[[:space:]]*(pub[[:space:]]+)?fn[[:space:]]/ { if (started) { len = NR - start; if (len > 64) print "FNLEN|$$f|" fn "|" len } started = 1; start = NR; if ($$1 == "pub") fn = $$3; else fn = $$2; gsub(/\(.*/, "", fn) } END { if (started) { len = NR - start + 1; if (len > 64) print "FNLEN|$$f|" fn "|" len } }' "$$f" >> .ooda-cache/shape.now; \
-		n=$$(grep -cE "^[[:space:]]*(pub[[:space:]]+)?fn " "$$f" || true); \
+		awk '/^[[:space:]]*((pub|export)[[:space:]]+)?fn[[:space:]]/ { if (started) { len = NR - start; if (len > 64) print "FNLEN|$$f|" fn "|" len } started = 1; start = NR; if ($$1 == "pub" || $$1 == "export") fn = $$3; else fn = $$2; gsub(/\(.*/, "", fn) } END { if (started) { len = NR - start + 1; if (len > 64) print "FNLEN|$$f|" fn "|" len } }' "$$f" >> .ooda-cache/shape.now; \
+		n=$$(grep -cE "^[[:space:]]*((pub|export)[[:space:]]+)?fn " "$$f" || true); \
 		if [ "$$n" -gt 8 ]; then echo "SHAPE|$$f|-|$$n" >> .ooda-cache/shape.now; fi; \
 	done; \
 	violations=0; \
@@ -142,7 +151,7 @@ link-law:
 
 check:
 	@for f in $$(find . -name "*.oo" -not -path "./.git/*" -not -path "./bin/*" -not -path "./dist/*" -not -path "./.ooda-cache/*"); do \
-		$(ENV) $(OODA_COMPILER) check "$$f" > /dev/null || exit 1; \
+		$(ENV) $(RESOLVED_COMP) check "$$f" > /dev/null || exit 1; \
 	done; \
 	echo "PASS: ooda-compiler check holds on all .oo files"
 
@@ -152,6 +161,8 @@ site-gate:
 	test -f docs/CNAME; \
 	test -f docs/install.sh; \
 	test -f docs/.nojekyll; \
+	test -f docs/js/site_ui.wasm; \
+	test "$$(head -c 4 docs/js/site_ui.wasm | od -An -tx1 | tr -d ' \n')" = "0061736d"; \
 	test -d docs/assets && test -d docs/styles && test -d docs/js; \
 	grep -qx 'openooda.org' docs/CNAME; \
 	bash -n docs/install.sh; \
@@ -204,10 +215,10 @@ tracker:
 tracker-check:
 	@.github/scripts/tracker.sh --check
 
-test: $(BIN)
+test: $(BIN) $(WASM)
 	@mkdir -p .ooda-cache
-	@$(ENV) $(OODA_COMPILER) build tests/test_functional.oo -o $(TBIN) > /dev/null
-	@$(ENV) $(OODA_COMPILER) build tests/test_refusal.oo -o $(TBIN2) > /dev/null
+	@$(ENV) $(RESOLVED_COMP) build tests/test_functional.oo -o $(TBIN) > /dev/null
+	@$(ENV) $(RESOLVED_COMP) build tests/test_refusal.oo -o $(TBIN2) > /dev/null
 	@PATH=/nonexistent $(ENV) ./$(TBIN) | grep -q "PASS: functional" && echo "PASS: functional suite under PATH=/nonexistent"
 	@PATH=/nonexistent $(ENV) ./$(TBIN2) | grep -q "PASS: refusal" && echo "PASS: refusal suite under PATH=/nonexistent"
 	@PATH=/nonexistent $(ENV) ./$(BIN) check | grep -q "verdict=PASS" && echo "PASS: website check gate"

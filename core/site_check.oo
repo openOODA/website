@@ -48,11 +48,8 @@ pub fn site_refs_ok(fs: &FsReadCap, html: String) -> Bool {
                 // with stale CSS or JavaScript out of the edge cache; the file
                 // a reference points at is the part before the "?".
                 let at: Int = str_index_of(r, "?");
-                if at >= 0 {
-                    if !oo_path_exists(fs, "docs" + byte_slice(r, 0, at)) { return false; }
-                } else {
-                    if !oo_path_exists(fs, "docs" + r) { return false; }
-                }
+                let clean: String = if at >= 0 { byte_slice(r, 0, at) } else { r };
+                if !oo_path_exists(fs, "docs" + clean) { return false; }
                 n = n + 1;
             }
             if str_starts_with(r, "#") && !site_anchor_ok(html, r) { return false; }
@@ -158,5 +155,9 @@ pub fn site_repo_ok(fs: &FsReadCap) -> Bool {
     let cname: String = match cr { Ok(s) => s, Err(_) => "" };
     if str_trim(cname) != "openooda.org" { return false; }
     if !oo_path_exists(fs, "docs/install.sh") { return false; }
-    return true;
+    let wr: Result[String, String] = oo_read_file(fs, "docs/js/site_ui.wasm");
+    if wr.is_err() { return false; }
+    let wb: String = match wr { Ok(s) => s, Err(_) => "" };
+    if bytes_len(wb) < 8 || byte_at(wb, 0) != 0 || byte_at(wb, 1) != 97 { return false; }
+    return byte_at(wb, 2) == 115 && byte_at(wb, 3) == 109;
 }

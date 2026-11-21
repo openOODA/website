@@ -1,0 +1,16 @@
+// # Website Wasm32 Engine Anchor
+//
+// Logline: Re-exports pure-.oo website UI, palette, typewriter, wordmark, and backdrop Wasm modules.
+// Setup: Comment-plus-import shim keeping >= 16 lines under core/wasm/.
+// Beats:
+//   1. wasm_copy.oo exports clipboard feedback label, highlight color, and timeout.
+//   2. wasm_panels.oo exports accent palettes, non-repeating cycling, and key action decoding.
+//   3. wasm_rotate.oo exports headline rotation and 86x14 header wordmark RGBA rendering.
+//   4. wasm_backdrop.oo exports Bayer dithering, ripples, and full-screen backdrop rasterization.
+
+import "core/wasm/wasm_copy.oo";
+import "core/wasm/wasm_panels.oo";
+import "core/wasm/wasm_rotate.oo";
+import "core/wasm/wasm_backdrop.oo";
+
+// Stay import-only; cli-free exports live in submodules and site_ui.oo.

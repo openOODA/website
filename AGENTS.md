@@ -36,10 +36,12 @@ cli/
   main.oo   `website check|about` verbs; FsRead-only, exit-2 refusals, ootheme frame
 core/
   site_check.oo   refs/anchors/integrity/zero-telemetry fold over docs/
+  wasm/           pure-.oo Wasm32 interactive UI engine compiled to docs/js/site_ui.wasm
 docs/       sealed GitHub Pages webroot (index.html, styles/, js/, assets/, CNAME,
-            install.sh, .nojekyll — no build step, no remote subresources)
+            install.sh, .nojekyll — no remote subresources; copy/panels/rotate driven
+            by pure-.oo site_ui.wasm)
 tests/
-  test_functional.oo   8 positive assertions over the shipped tree
+  test_functional.oo   9 positive assertions over the shipped tree + site_ui.wasm
   test_refusal.oo      14 negative assertions (dead refs, traversal, telemetry)
 ```
 
@@ -83,8 +85,8 @@ the browser only ever reads local files, so no remote subresource load is introd
 ## Verification Gates
 
 ```sh
-make build    # ooda-compiler build cli/main.oo -> bin/website + dist/website
-make test     # functional 8/8 + refusal 14/14 + check gate + about card (PATH=/nonexistent)
+make build    # ooda-compiler build cli/main.oo -> bin/website + dist/website + docs/js/site_ui.wasm
+make test     # functional 9/9 + refusal 14/14 + check gate + about card (PATH=/nonexistent)
 make verify   # line-cap, file-law, academy, density, vocab, shape, link-law, check, site-gate
 make assets   # stamp a content hash onto every asset reference (see below)
 ~/.openooda/bin/ooda-verify cycle .

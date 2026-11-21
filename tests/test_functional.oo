@@ -36,16 +36,21 @@ fn t_site(fs: &FsReadCap) -> Int {
     p = t_expect(site_telemetry_free("<a href=\"https://github.com/openOODA\">x</a>"),
         "external nav anchor allowed", p);
     p = t_expect(site_tree_free(fs, "docs", 0), "docs/ tree telemetry-free", p);
+    let wr: Result[String, String] = oo_read_file(fs, "docs/js/site_ui.wasm");
+    let wb: String = match wr { Ok(s) => s, Err(_) => "" };
+    let wm: Bool = wr.is_ok() && bytes_len(wb) >= 8 && byte_at(wb, 0) == 0 &&
+        byte_at(wb, 1) == 97 && byte_at(wb, 2) == 115 && byte_at(wb, 3) == 109;
+    p = t_expect(wm, "docs/js/site_ui.wasm compiled wasm32 magic", p);
     p = t_expect(site_repo_ok(fs), "site conformance verdict", p);
     return p;
 }
 
 pub fn main(fs: &FsReadCap, _args: List[String]) -> Result[Int, String] {
     let p: Int = t_site(fs);
-    if p == 8 {
-        println("PASS: functional suite (8/8 assertions)");
+    if p == 9 {
+        println("PASS: functional suite (9/9 assertions)");
         return Ok(0);
     }
-    println("FAIL: functional suite (" + p.to_string() + "/8 assertions)");
+    println("FAIL: functional suite (" + p.to_string() + "/9 assertions)");
     return Ok(2);
 }

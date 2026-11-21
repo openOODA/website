@@ -1,0 +1,54 @@
+// # Website Accent Palette & Input Action Wasm32 Engine
+//
+// Logline: Drives phosphor accent selection, non-repeating cycling, and keyboard shortcuts in .oo.
+// Setup: Standalone zero-import Wasm32 module writing pipe-delimited palette records into scratch.
+// Beats:
+//   1. Map canonical indices 0..3 to Emerald, Cyan, Coral, and Magenta palette records.
+//   2. Pick a guaranteed different next accent from a pure-integer PRNG seed.
+//   3. Resolve stored accent initials and keyboard shortcut codes without host lookup tables.
+
+export fn oo_ui_accent_count() -> Int {
+    return 4;
+}
+
+export fn oo_ui_accent_record(idx: Int) -> Int {
+    oo_wasm_heap_reset();
+    let k: Int = idx & 3;
+    if k == 0 {
+        return oo_wasm_scratch_write_str("Emerald|ROOT|#50fa7b|80, 250, 123|#a2ffbc|162, 255, 188|80|250|123");
+    }
+    if k == 1 {
+        return oo_wasm_scratch_write_str("Cyan|CORE|#00e5ff|0, 229, 255|#80f4ff|128, 244, 255|0|229|255");
+    }
+    if k == 2 {
+        return oo_wasm_scratch_write_str("Coral|SYSTEM|#ff5555|255, 85, 85|#ff9999|255, 153, 153|255|85|85");
+    }
+    return oo_wasm_scratch_write_str("Magenta|APPS|#ff79c6|255, 121, 198|#ffb3de|255, 179, 222|255|121|198");
+}
+
+export fn oo_ui_accent_cycle(cur: Int, seed: Int) -> Int {
+    let mut x: Int = seed ^ (cur * 6364136223846793005 + 1442695040888963407);
+    if x < 0 { x = 0 - x; }
+    let mut step: Int = (x % 3) + 1;
+    if step <= 0 { step = 1; }
+    return (cur + step) & 3;
+}
+
+export fn oo_ui_accent_by_code(c0: Int, c1: Int) -> Int {
+    let a0: Int = if c0 >= 65 && c0 <= 90 { c0 + 32 } else { c0 };
+    let a1: Int = if c1 >= 65 && c1 <= 90 { c1 + 32 } else { c1 };
+    if a0 == 101 { return 0; }
+    if a0 == 99 && a1 == 121 { return 1; }
+    if a0 == 99 && a1 == 111 { return 2; }
+    if a0 == 109 { return 3; }
+    return 0 - 1;
+}
+
+export fn oo_ui_key_action(key_code: Int) -> Int {
+    if key_code == 49 { return 1; }
+    if key_code == 50 { return 2; }
+    if key_code == 51 { return 3; }
+    if key_code == 38 { return 4; }
+    if key_code == 40 { return 5; }
+    return 0;
+}

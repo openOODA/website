@@ -1,0 +1,18 @@
+// # Website Wasm32 Shared Library Entrypoint
+//
+// Logline: Bundles all website interactive Wasm32 UI exports into docs/js/site_ui.wasm.
+// Setup: Imports core/wasm/anchor.oo and exposes ABI version and parameter scratch base.
+// Beats:
+//   1. Export oo_ui_abi_version for fail-closed loader compatibility verification.
+//   2. Export oo_ui_param_base pointing JS callers at the backdrop parameter frame buffer.
+//   3. Re-export all oo_ui_* functions from imported wasm_* modules under --shared.
+
+import "core/wasm/anchor.oo";
+
+export fn oo_ui_abi_version() -> Int {
+    return 1;
+}
+
+export fn oo_ui_param_base() -> Int {
+    return 65024;
+}
