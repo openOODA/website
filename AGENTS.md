@@ -83,9 +83,22 @@ the browser only ever reads local files, so no remote subresource load is introd
 make build    # ooda-compiler build cli/main.oo -> bin/website + dist/website
 make test     # functional 8/8 + refusal 14/14 + check gate + about card (PATH=/nonexistent)
 make verify   # line-cap, file-law, academy, density, vocab, shape, link-law, check, site-gate
+make assets   # stamp a content hash onto every asset reference (see below)
 ~/.openooda/bin/ooda-verify cycle .
 # required: cycle=PASS quorum_mask=255 telemetry_beacons=0
 ```
+
+## Asset References Carry a Content Hash
+
+GitHub Pages serves the page itself with a ten-minute cache and its assets
+with a four-hour one, and the edge keeps both. Without a stamp, a deploy
+publishes new HTML that can still be paired with the previous release's CSS
+and JavaScript — a layout fix that sits on the server and never reaches a
+browser. `make assets` puts `?v=<hash>` on every stylesheet and script
+reference; `make assets --check` fails when the committed page no longer
+matches the assets on disk, and CI runs it on every push. The reference
+checks in the site gate and in `core/site_check.oo` resolve the file a
+reference points at, so they cut the query before looking for it.
 
 ## Power-of-2 Shape Ladder & .oo Rules
 

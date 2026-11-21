@@ -29,7 +29,7 @@ SRC := $(shell find . -name '*.oo' -not -path './.git/*' -not -path './bin/*' -n
 
 ENV := OO_LIST_AMBIENT_QUOTA=$(OO_LIST_AMBIENT_QUOTA) OO_LINT_ROOTS=$(CURDIR) OODA_COMPILER=$(OODA_COMPILER) OODAC_BIN=$(OODAC_BIN) OODA_FS_READDIR=$(OODA_READDIR) OODA_FS_WRITEDIR=$(OODA_WRITEDIR) OODA_OODAR_ROOT=$(OODA_OODAR_ROOT) OODA_STANDARD_ROOT=$(OODA_STANDARD_ROOT) OODA_NO_JAIL=1
 
-.PHONY: all build test verify clean line-cap file-law academy density vocab shape link-law check site-gate tracker tracker-check
+.PHONY: all build test verify clean line-cap file-law academy density vocab shape link-law check site-gate tracker tracker-check assets
 
 all: build verify test
 
@@ -158,6 +158,7 @@ site-gate:
 	grep -oE '(src|href)="[^"]+"' docs/index.html \
 		| sed -E 's/^(src|href)="([^"]+)".*/\2/' \
 		| grep '^/' \
+		| sed -E 's/\?.*$$//' \
 		| while read -r ref; do \
 			test -f "docs$$ref" || { echo "ERR broken asset ref: $$ref"; exit 1; }; \
 		done; \
@@ -175,6 +176,12 @@ site-gate:
 	echo "PASS: site gate (refs + CNAME + icons + zero-telemetry + no-node laws)"
 
 verify: line-cap file-law academy density vocab shape link-law check site-gate
+
+# Stamps a content hash onto every asset reference in docs/index.html. Assets
+# are edge-cached for hours while the page is cached for minutes, so without
+# this a deploy can be served with the previous release's CSS and JavaScript.
+assets:
+	@.github/scripts/assets.sh
 
 # Regenerates the tracker block and every live version claim in docs/index.html
 # from the live state of the four canonical organizations.

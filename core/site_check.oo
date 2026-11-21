@@ -6,7 +6,8 @@
 //        integrity digest; detector needles are split like the verifier's own pages.
 // Beats:
 //   1. site_attr extracts quoted attribute values after href=/src= tokens.
-//   2. site_refs_ok proves every root-absolute reference, ..-free, and every #anchor resolves.
+//   2. site_path cuts a ?query suffix so a cache-busted asset still resolves.
+//   3. site_refs_ok proves every root-absolute reference, ..-free, and every #anchor resolves.
 //   3. site_beacon_hits + site_remote_refs + site_tree_free enforce the zero-telemetry law:
 //      no third-party beacon hosts and no remote script/link/url() fetches under docs/.
 //   4. site_repo_ok folds index, CNAME, the installer shim, and the telemetry fold into one verdict.
@@ -43,7 +44,15 @@ pub fn site_refs_ok(fs: &FsReadCap, html: String) -> Bool {
             if str_starts_with(r, "/") && !str_starts_with(r, "//") {
                 if str_contains(r, "/" + ".." + "/") { return false; }
                 if str_ends_with(r, "/" + "..") { return false; }
-                if !oo_path_exists(fs, "docs" + r) { return false; }
+                // Assets carry a ?v=hash stamp so a deploy cannot be served
+                // with stale CSS or JavaScript out of the edge cache; the file
+                // a reference points at is the part before the "?".
+                let at: Int = str_index_of(r, "?");
+                if at >= 0 {
+                    if !oo_path_exists(fs, "docs" + byte_slice(r, 0, at)) { return false; }
+                } else {
+                    if !oo_path_exists(fs, "docs" + r) { return false; }
+                }
                 n = n + 1;
             }
             if str_starts_with(r, "#") && !site_anchor_ok(html, r) { return false; }

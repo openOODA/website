@@ -89,6 +89,8 @@ request when the page has fallen behind.
 make build && make test     # bin/website + both .oo suites + site gate
 make verify                 # shape/file/academy/link laws + ooda-compiler check + site-gate
 make tracker-check          # page still matches the live repository state
+make assets                 # stamp a content hash onto every asset reference
+make assets --check         # fail when the committed page no longer matches its assets
 ~/.openooda/bin/ooda-verify cycle .   # 8-hat quorum_mask=255, telemetry_beacons=0
 ```
 
