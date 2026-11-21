@@ -29,7 +29,7 @@ SRC := $(shell find . -name '*.oo' -not -path './.git/*' -not -path './bin/*' -n
 
 ENV := OO_LIST_AMBIENT_QUOTA=$(OO_LIST_AMBIENT_QUOTA) OO_LINT_ROOTS=$(CURDIR) OODA_COMPILER=$(OODA_COMPILER) OODAC_BIN=$(OODAC_BIN) OODA_FS_READDIR=$(OODA_READDIR) OODA_FS_WRITEDIR=$(OODA_WRITEDIR) OODA_OODAR_ROOT=$(OODA_OODAR_ROOT) OODA_STANDARD_ROOT=$(OODA_STANDARD_ROOT) OODA_NO_JAIL=1
 
-.PHONY: all build test verify clean line-cap file-law academy density vocab shape link-law check site-gate tracker tracker-check assets
+.PHONY: all build test verify clean line-cap file-law academy density vocab shape link-law check site-gate tracker tracker-check assets version-check
 
 all: build verify test
 
@@ -175,7 +175,19 @@ site-gate:
 	fi; \
 	echo "PASS: site gate (refs + CNAME + icons + zero-telemetry + no-node laws)"
 
-verify: line-cap file-law academy density vocab shape link-law check site-gate
+# The version constant, the README and the agent card must agree. A release
+# whose binary claims the wrong version is worse than no release.
+version-check:
+	@cli=$$(grep -oE '"[0-9]+\.[0-9]+\.[0-9]+"' cli/main.oo | head -1 | tr -d '"'); \
+	readme=$$(sed -n '3s/.*\*\*v\([0-9.]*\)\*\*.*/\1/p' README.md); \
+	cards=$$(sed -n '4s/.*\*\*v\([0-9.]*\)\*\*.*/\1/p' AGENTS.md); \
+	ok=1; \
+	[ "$$cli" = "$$readme" ] || { echo "FAIL: cli/main.oo says $$cli, README says $$readme"; ok=0; }; \
+	[ "$$cli" = "$$cards" ] || { echo "FAIL: cli/main.oo says $$cli, AGENTS.md says $$cards"; ok=0; }; \
+	[ "$$ok" = "1" ] || exit 1; \
+	echo "PASS: version $$cli is consistent across cli/main.oo, README and AGENTS.md"
+
+verify: line-cap file-law academy density vocab shape link-law version-check check site-gate
 
 # Stamps a content hash onto every asset reference in docs/index.html. Assets
 # are edge-cached for hours while the page is cached for minutes, so without

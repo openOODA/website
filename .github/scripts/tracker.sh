@@ -139,10 +139,14 @@ def all_tags(org, name):
 
 
 def fetch_catalog():
-    """The signed package index: name|version|capabilities|standard|digest."""
+    """The signed package index: name|version|capabilities|standard|digest.
+
+    A registry that cannot be read must not be reported as a registry that
+    attests nothing, so an empty read is an error rather than an empty map.
+    """
     raw = rest("/repos/openOODA/catalog/contents/index")
     if not raw or "content" not in raw:
-        return {}
+        raise SystemExit("tracker: cannot read the signed package index")
     body = base64.b64decode(raw["content"]).decode("utf-8", "replace")
     out = {}
     for line in body.splitlines():
@@ -490,6 +494,8 @@ def main():
     for r, t in zip(repos, tags):
         r["tags"] = t
     catalog = fetch_catalog()
+    if not catalog:
+        raise SystemExit("tracker: the signed package index is empty")
     print("tracker: signed catalog carries %d packages" % len(catalog))
     rows = build_rows(repos, catalog)
     print("tracker: %d repositories" % len(rows))

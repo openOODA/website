@@ -18,6 +18,9 @@ jobs:
       - name: asset references are stamped
         working-directory: site
         run: .github/scripts/assets.sh --check
+      - name: version consistency
+        working-directory: site
+        run: make version-check
       - name: static site gate
         working-directory: site
         run: |
