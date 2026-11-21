@@ -351,8 +351,10 @@
   white-space: nowrap;
 }
 
-/* --------------------------------------------------------------- narrow */
-@media (max-width: 760px) {
+/* --------------------------------------------------------------- narrow
+   The eight-column table needs about 860px of viewport before it fits, so
+   the card layout takes over below that — not below 760px. */
+@media (max-width: 880px) {
   .tk-mrow {
     grid-template-columns: minmax(66px, 1fr) repeat(3, minmax(44px, 0.7fr));
     gap: 8px;
