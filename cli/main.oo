@@ -11,6 +11,8 @@
 
 import "core/site_check.oo";
 import "ooda-standard/core/app/ui/ootheme.oo";
+import "ooda-standard/core/app/feedback_grp/fb_schema.oo";
+import "ooda-standard/core/app/feedback_grp/fb_cli.oo";
 
 pub fn site_about_card() -> String {
     let l1: String = "Binary       : website (v" + "2.5.0" + ")";
@@ -72,5 +74,10 @@ pub fn site_run(fs: &FsReadCap, args: List[String]) -> Int {
 }
 
 pub fn main(fs: &FsReadCap, args: List[String]) -> Result[Int, String] {
+    if (list_len(&args) > 0 && list_get(&args, 0) == "feedback")
+        || (list_len(&args) > 1 && list_get(&args, 0) == "--json" && list_get(&args, 1) == "feedback") {
+        let fmeta: FbAppMeta = fb_meta_new("website", "0.1.0", "root", "cli", "");
+        return fb_cli_run_pure(fmeta, &args);
+    }
     return Ok(site_run(fs, args));
 }
