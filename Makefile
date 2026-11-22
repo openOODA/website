@@ -13,8 +13,6 @@
 OODA_COMPILER ?= $(HOME)/.openooda/bin/ooda-compiler
 RESOLVED_COMP := $(if $(wildcard $(OODA_COMPILER)),$(OODA_COMPILER),$(HOME)/.openooda/bin/ooda-compiler)
 export OODA_COMPILER
-OODAC_BIN ?= $(RESOLVED_COMP)
-export OODAC_BIN
 OODA_READDIR ?= $(HOME)/.openooda:$(CURDIR):/tmp:/usr:/lib:/lib64
 OODA_WRITEDIR ?= $(CURDIR):/tmp
 OO_LIST_AMBIENT_QUOTA ?= 8589934592
@@ -31,7 +29,7 @@ TBIN2 := .ooda-cache/test_refusal
 SRC := $(shell find . -name '*.oo' -not -path './.git/*' -not -path './bin/*' -not -path './dist/*' -not -path './.ooda-cache/*' | sort)
 WASM_SRC := $(sort $(wildcard core/wasm/*.oo))
 
-ENV := OO_LIST_AMBIENT_QUOTA=$(OO_LIST_AMBIENT_QUOTA) OO_LINT_ROOTS=$(CURDIR) OODA_COMPILER=$(RESOLVED_COMP) OODAC_BIN=$(RESOLVED_COMP) OODA_FS_READDIR=$(OODA_READDIR) OODA_FS_WRITEDIR=$(OODA_WRITEDIR) OODA_RUNTIME_ROOT=$(OODA_RUNTIME_ROOT) OODA_STANDARD_ROOT=$(OODA_STANDARD_ROOT) OODA_NO_JAIL=1
+ENV := OO_LIST_AMBIENT_QUOTA=$(OO_LIST_AMBIENT_QUOTA) OO_LINT_ROOTS=$(CURDIR) OODA_COMPILER=$(RESOLVED_COMP) OODA_FS_READDIR=$(OODA_READDIR) OODA_FS_WRITEDIR=$(OODA_WRITEDIR) OODA_RUNTIME_ROOT=$(OODA_RUNTIME_ROOT) OODA_STANDARD_ROOT=$(OODA_STANDARD_ROOT) OODA_NO_JAIL=1
 
 .PHONY: all build wasm test verify clean line-cap file-law academy density vocab shape link-law check site-gate tracker tracker-check assets version-check
 
