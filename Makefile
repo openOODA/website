@@ -171,7 +171,7 @@ site-gate:
 		| while read -r ref; do \
 			test -f "docs$$ref" || { echo "ERR broken asset ref: $$ref"; exit 1; }; \
 		done; \
-	for o in openOODA openOODA-core openOODA-system openOODA-apps; do \
+	for o in openOODA openOODA-core openOODA-system openOODA-apps openOODA-games; do \
 		test -f "docs/assets/brand/$$o.svg" || { echo "ERR missing $$o.svg"; exit 1; }; \
 		test -f "docs/assets/brand/$$o.png" || { echo "ERR missing $$o.png"; exit 1; }; \
 	done; \
