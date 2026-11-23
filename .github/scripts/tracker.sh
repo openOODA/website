@@ -2,7 +2,7 @@
 #
 # tracker.sh — regenerate the openOODA repository completion tracker.
 #
-# Reads the live state of every repository in the four canonical organizations
+# Reads the live state of every repository in the five canonical organizations
 # and rewrites two things inside docs/index.html:
 #
 #   1. the tracker block between <!-- TRACKER:BEGIN --> and <!-- TRACKER:END -->
@@ -14,7 +14,7 @@
 # the browser only ever reads local files.
 #
 # Auth: GH_TOKEN (preferred) or GITHUB_TOKEN. Needs read access to the public
-# repositories of the four organizations.
+# repositories of the five organizations.
 #
 # Usage: .github/scripts/tracker.sh [--check]
 #   --check  report what would change and exit non-zero if the page is stale
@@ -34,10 +34,11 @@ TOKEN = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or ""
 if not TOKEN:
     sys.exit("tracker: GH_TOKEN or GITHUB_TOKEN is required")
 
-ORGS = ["openOODA", "openOODA-core", "openOODA-system", "openOODA-apps"]
+ORGS = ["openOODA", "openOODA-core", "openOODA-system", "openOODA-apps", "openOODA-games"]
 ORG_SHORT = {"openOODA": "ROOT", "openOODA-core": "CORE",
-             "openOODA-system": "SYSTEM", "openOODA-apps": "APPS"}
-# CI/CD is gated in @openOODA only. The other three organizations ship without
+             "openOODA-system": "SYSTEM", "openOODA-apps": "APPS",
+             "openOODA-games": "GAMES"}
+# CI/CD is gated in @openOODA only. The other four organizations ship without
 # gates, so their CI/CD is not tracked and their tier is decided by the gates
 # that do apply to them.
 CI_ORGS = {"openOODA"}
@@ -165,6 +166,8 @@ def collect_repos():
             d = gql(ORGS_QUERY, {"org": org, "cursor": cursor})
             conn = d["organization"]["repositories"]
             for r in conn["nodes"]:
+                if r.get("isArchived"):
+                    continue
                 r["org"] = org
                 repos.append(r)
             if not conn["pageInfo"]["hasNextPage"]:
@@ -373,7 +376,7 @@ def render(rows):
                'shipped ahead of the catalog. <code>CAPS</code> is the capability set the catalog '
                'records for the package \u2014 exactly the authority it may hold, never ambient. '
                '<code>GATE</code> is the CI verdict, and it applies to <code>@openOODA</code> only, '
-               'the one organization that carries CI/CD gates; the other three ship without them, so '
+               'the one organization that carries CI/CD gates; the other four ship without them, so '
                'those gates do not apply to their repositories. <code>CONTRACT</code> is the '
                'fail-closed verdict \u2014 a repository is credited only when every earlier gate '
                'passes: <code>RELEASED</code> \u2192 <code>CITED</code> \u2192 <code>GREEN</code> '
@@ -454,8 +457,9 @@ def census_incomplete(rows, html):
     if empty:
         return ("no repositories read from " + ", ".join(empty) +
                 " — the token cannot read every canonical organization")
+    rebaseline = os.environ.get("TRACKER_REBASELINE") == "1" and len(rows) >= 60
     listed = len(re.findall(r'class="tk-row"', html))
-    if listed and len(rows) < listed:
+    if listed and len(rows) < listed and not rebaseline:
         return ("census shrank from %d to %d repositories" % (listed, len(rows)))
     return None
 

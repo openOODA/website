@@ -1,6 +1,6 @@
 # `@openOODA/website`
 
-Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.5.1** documents the canonical 4-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`15`), `@openOODA-system` (`37`), `@openOODA-apps` (`18`) — `70` product packages, `78` repositories total.
+Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.6.0** documents the canonical 5-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`11`), `@openOODA-system` (`26`), `@openOODA-apps` (`19`), `@openOODA-games` (`9`) — `65` product packages, `74` repositories total.
 
 **Zero telemetry.** The shipped webroot carries no third-party beacons or remote
 subresource loads — `core/site_check.oo`, `tests/`, `make site-gate`, both CI gates,
@@ -9,8 +9,8 @@ full invariant and verification ladder.
 
 ## Layout
 
-- [`docs/index.html`](docs/index.html) — Main landing page, interactive `ootheme` switcher, 4-organization explorer, repository completion tracker, and direct ISO / Buildbox downloads
-- [docs/install.sh](docs/install.sh) — Installer copy served at https://openooda.org/install.sh (v2.0.0)
+- [`docs/index.html`](docs/index.html) — Main landing page, interactive `ootheme` switcher, 5-organization explorer, repository completion tracker, and direct ISO / Buildbox downloads
+- [docs/install.sh](docs/install.sh) — Installer copy served at https://openooda.org/install.sh (v2.6.0)
 - [`docs/CNAME`](docs/CNAME) — Custom domain binding (`openooda.org`)
 - [`docs/styles/`](docs/styles) & [`docs/js/`](docs/js) — Stylesheets and interactive preview scripts (local only)
 - [`docs/assets/`](docs/assets) — SVG icons and diagrams
@@ -21,8 +21,8 @@ full invariant and verification ladder.
 
 ## Repository Completion Tracker
 
-The tracker on the landing page is a live census of all `78` repositories across the
-four organizations. It is generated, never hand-edited, so the page cannot drift from
+The tracker on the landing page is a live census of all `74` repositories across the
+five organizations. It is generated, never hand-edited, so the page cannot drift from
 the repositories it describes.
 
 Each repository is scored on five gates, and the tier is decided by the **first gate
@@ -32,7 +32,7 @@ is red:
 | Column | What it reports |
 | :--- | :--- |
 | `REPO` | the repository, and the organization that owns it |
-| `ORG` | the canonical organization: root, core, system or apps |
+| `ORG` | the canonical organization: root, core, system, apps or games |
 | `VERSION` | the latest semver release tag on the repository |
 | `CONTRACT` | the fail-closed completion verdict, with the gate count it passed |
 | `ATTESTED` | `SIGNED` when the signed package index in `@openOODA/catalog` attests the release the repository declares, `DRIFT` when the repository has shipped ahead of the catalog |
@@ -55,9 +55,9 @@ A matrix above the table rolls the same facts up per layer, so the shape of the
 stack is legible before any single row is read.
 
 **CI/CD is gated in `@openOODA` only.** That is the one organization that carries
-CI/CD gates; the other three ship without them. The `CITED` and `GREEN` gates
-therefore do not apply to `@openOODA-core`, `@openOODA-system` and `@openOODA-apps`,
-and their tier is decided by `VERSIONED` → `SHIPPING` → `CLEAN`. A repository only
+CI/CD gates; the other four ship without them. The `CITED` and `GREEN` gates
+therefore do not apply to `@openOODA-core`, `@openOODA-system`, `@openOODA-apps`
+and `@openOODA-games`, and their tier is decided by `VERSIONED` → `SHIPPING` → `CLEAN`. A repository only
 counts as gated when it actually carries a CI workflow file — a verdict left behind
 by a workflow that has since been removed does not count.
 

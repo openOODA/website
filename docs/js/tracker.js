@@ -17,9 +17,9 @@
   var sortKey = "name";
   var sortDir = 1;
 
-  /* The four canonical organizations, in architectural order rather than
-     alphabetical: root, core, system, apps. */
-  var ORG_ORDER = ["openOODA", "openOODA-core", "openOODA-system", "openOODA-apps"];
+  /* The five canonical organizations, in architectural order rather than
+     alphabetical: root, core, system, apps, games. */
+  var ORG_ORDER = ["openOODA", "openOODA-core", "openOODA-system", "openOODA-apps", "openOODA-games"];
   var TIER_ORDER = {
     complete: 0,
     blocked: 1,

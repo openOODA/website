@@ -20,8 +20,6 @@ OODA_RUNTIME_ROOT ?= $(HOME)/.openooda/bin
 export OODA_RUNTIME_ROOT
 OODA_STANDARD_ROOT ?= $(HOME)/.openooda/ooda-standard
 export OODA_STANDARD_ROOT
-unexport OODA_OODAR_ROOT
-unexport OODA_OOSTD_ROOT
 BIN := bin/website
 WASM := docs/js/site_ui.wasm
 TBIN := .ooda-cache/test_functional
@@ -217,8 +215,8 @@ test: $(BIN) $(WASM)
 	@mkdir -p .ooda-cache
 	@$(ENV) $(RESOLVED_COMP) build tests/test_functional.oo -o $(TBIN) > /dev/null
 	@$(ENV) $(RESOLVED_COMP) build tests/test_refusal.oo -o $(TBIN2) > /dev/null
-	@PATH=/nonexistent $(ENV) ./$(TBIN) | grep -q "PASS: functional" && echo "PASS: functional suite under PATH=/nonexistent"
-	@PATH=/nonexistent $(ENV) ./$(TBIN2) | grep -q "PASS: refusal" && echo "PASS: refusal suite under PATH=/nonexistent"
+	@OODA_LEAK_CHECK=1 PATH=/nonexistent $(ENV) ./$(TBIN) | grep -q "PASS: functional" && echo "PASS: functional suite under PATH=/nonexistent + OODA_LEAK_CHECK=1"
+	@OODA_LEAK_CHECK=1 PATH=/nonexistent $(ENV) ./$(TBIN2) | grep -q "PASS: refusal" && echo "PASS: refusal suite under PATH=/nonexistent + OODA_LEAK_CHECK=1"
 	@PATH=/nonexistent $(ENV) ./$(BIN) check | grep -q "verdict=PASS" && echo "PASS: website check gate"
 	@rc=0; PATH=/nonexistent $(ENV) ./$(BIN) bogusverb > /dev/null 2>&1 || rc=$$?; [ "$$rc" = "2" ] && echo "PASS: unknown verb refused exit 2"
 	@./$(BIN) about | grep -q "Binary       : website" && echo "PASS: about card"
