@@ -57,18 +57,6 @@ jobs:
             exit 1
           fi
           echo "[static-gate OK] docs/ is a self-contained zero-telemetry webroot"
-
-  deploy:
-    needs: static-gate
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          path: site
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
@@ -77,6 +65,14 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: site/docs
+
+  deploy:
+    needs: static-gate
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
