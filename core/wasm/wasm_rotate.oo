@@ -58,7 +58,7 @@ export fn oo_ui_headline_text(idx: Int) -> Int {
     if k == 3 { return oo_wasm_scratch_write_str("Systems + Crypto + AI Unified"); }
     if k == 4 { return oo_wasm_scratch_write_str("Conservation of Authority"); }
     if k == 5 { return oo_wasm_scratch_write_str("Born With No Privileges"); }
-    if k == 6 { return oo_wasm_scratch_write_str("5 Orgs, 65 Packages, 74 Repos"); }
+    if k == 6 { return oo_wasm_scratch_write_str("5 Orgs, 66 Packages, 75 Repos"); }
     return oo_wasm_scratch_write_str("Verifiable Proof Over Trust");
 }
 

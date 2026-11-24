@@ -1,6 +1,6 @@
 # `@openOODA/website`
 
-Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.6.0** documents the canonical 5-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`11`), `@openOODA-system` (`26`), `@openOODA-apps` (`19`), `@openOODA-games` (`9`) — `65` product packages, `74` repositories total.
+Static website source for [https://openOODA.org](https://openOODA.org), served via GitHub Pages from [`docs/`](docs). **v2.6.0** documents the canonical 5-organization architecture: `@openOODA` (4 platform + `.github`), `@openOODA-core` (`11`), `@openOODA-system` (`27`), `@openOODA-apps` (`19`), `@openOODA-games` (`9`) — `66` product packages, `75` repositories total.
 
 **Zero telemetry.** The shipped webroot carries no third-party beacons or remote
 subresource loads — `core/site_check.oo`, `tests/`, `make site-gate`, both CI gates,
@@ -21,7 +21,7 @@ full invariant and verification ladder.
 
 ## Repository Completion Tracker
 
-The tracker on the landing page is a live census of all `74` repositories across the
+The tracker on the landing page is a live census of all `75` repositories across the
 five organizations. It is generated, never hand-edited, so the page cannot drift from
 the repositories it describes.
 
